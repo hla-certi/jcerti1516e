@@ -1,0 +1,22 @@
+
+package hla.rti;
+
+/**
+ * Public exception class AsynchronousDeliveryAlreadyDisabled
+*/
+public final class AsynchronousDeliveryAlreadyDisabled extends RTIexception {
+
+  /**
+   * @param reason    String to be carried with exception
+   */
+  public AsynchronousDeliveryAlreadyDisabled(String reason) {
+	super(reason, 0);
+  }  
+
+  /**
+   * @param serial    serial number also printed with the exception
+   */
+  public AsynchronousDeliveryAlreadyDisabled(String reason, int serial) {
+	super(reason, serial);
+  }  
+}

@@ -52,7 +52,7 @@
 				<include name="certi/communication/**/*" />
 				<include name="certi/logging/**/*" />
 				<include name="certi/rti/**/*" />								
-				<include name="rti/hla/**/*" />			
+				<include name="hla/rti/**/*" />			
 			</fileset>
 		</jar>		
 		<echo file="${jar.dir}/README">
@@ -117,18 +117,20 @@ JAR List :
 	<property name="test.work.dir" value="${test.report.dir}/work" />
 	<property name="test.html.dir" value="${test.report.dir}/html" />
 
-    <!--
 	<target name="test" depends="create-jar, test-clean" description="o run JUnit tests">
 		<mkdir dir="${test.class.dir}" />
-		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" target="1.4" source="1.4" deprecation="on">
-			<classpath refid="jcerti-tools.classpath" />
+		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" target="1.5" source="1.5" deprecation="on">			
 			<include name="**/*.java" />
+			<classpath>
+				<path refid="jcerti.classpath" />
+			</classpath>
 		</javac>
 		<copy todir="${test.class.dir}">
 			<fileset dir="${test.src.dir}" includes="**/*.xml"/>
 		</copy>
 		<mkdir dir="${test.report.dir}" />
 		<mkdir dir="${test.work.dir}" />
+		<!--
 		<junit printsummary="withOutAndErr" fork="yes">
 			<jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
 			<formatter type="xml" />
@@ -140,8 +142,10 @@ JAR List :
 				<fileset dir="${test.class.dir}" includes="**/*Test.class" />
 			</batchtest>
 		</junit>
+		-->
 	</target>
 
+	<!--
 	<target name="test-report" depends="test">
 		<delete dir="${test.html.dir}" />
 		<junitreport todir="${test.work.dir}">
@@ -152,12 +156,12 @@ JAR List :
 		</junitreport>
 		<echo>Test report generated at : ${test.html.dir}/index.html </echo>
 	</target>
-
+    -->
+	
 	<target name="test-clean">
 		<delete dir="${test.class.dir}" />
 		<delete dir="${test.report.dir}" />
-	</target>
-	-->
+	</target>	
 
 	<!-- help -->
 

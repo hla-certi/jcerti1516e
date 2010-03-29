@@ -9,18 +9,18 @@
 	<property name="jar.dir"     value="${build.dir}/jar" />
 
 	<property name="jar.jcerti" value="${jar.dir}/jcerti.jar" />
-	
-	<!-- Properties for patch generation through ant rule --> 
+
+	<!-- Properties for patch generation through ant rule -->
 	<property name="jcerti.tree.ref" value="USE_CVS" />
 	<property name="jcerti.tree.current" value="${home.dir}" />
 
 	<!-- Lib definition : IzPack -->
 	<property name="lib.izpack.dir" value="${lib.dir}/IzPack" />
 	<path id="izpack.classpath">
-        <fileset dir="${lib.izpack.dir}">
+		<fileset dir="${lib.izpack.dir}">
 			<include name="*.jar" />
 		</fileset>
-	</path>			   
+	</path>
 
 	<target name="main" description="o build all jcerti components">
 		<antcall target="create-jar"/>
@@ -36,7 +36,7 @@
 				<path refid="lib.rpc.classpath" />
 			</classpath>
 			-->
-			<!-- <compilerarg value="-Xlint:unchecked"/> -->			
+			<!-- <compilerarg value="-Xlint:unchecked"/> -->
 		</javac>
 		<!--
 		<copy todir="${class.dir}">
@@ -51,10 +51,10 @@
 			<fileset dir="${class.dir}">
 				<include name="certi/communication/**/*" />
 				<include name="certi/logging/**/*" />
-				<include name="certi/rti/**/*" />								
-				<include name="hla/rti/**/*" />			
+				<include name="certi/rti/**/*" />
+				<include name="hla/rti/**/*" />
 			</fileset>
-		</jar>		
+		</jar>
 		<echo file="${jar.dir}/README">
 JAR List : 
     jcerti.jar : the main jcerti library, includes :
@@ -71,22 +71,22 @@ JAR List :
 		<delete dir="${class.dir}" />
 		<delete dir="${jar.dir}" />
 	</target>
-	
+
 	<!-- distribution clean, ANY produced file is deleted -->
 	<target name="distclean" depends="clean">
-		<delete dir="${build.dir}" />		
+		<delete dir="${build.dir}" />
 	</target>
-	
+
 	<!-- Classpath -->
 
-	<path id="jcerti.classpath">		
+	<path id="jcerti.classpath">
 		<pathelement location="${jar.jcerti}" />
 	</path>
-	
+
 	<!-- Javadoc -->
-	
+
 	<target name="javadoc" depends="">
-					<javadoc author="false" version="false"
+		<javadoc author="false" version="false"
 						destdir="${javadoc.dir}"
 						packagenames="certi.*, hla.*"						
 						source="1.5"
@@ -96,33 +96,37 @@ JAR List :
 						maxmemory="128m"
 					/>
 	</target>
-		
-		
+
+
 	<!-- Tests -->
-	
+
 	<property name="test.src.dir" value="${home.dir}/src_test" />
 	<property name="test.class.dir" value="${build.dir}/class_test" />
 	<property name="test.report.dir" value="${build.dir}/report_test" />
 	<property name="test.work.dir" value="${test.report.dir}/work" />
 	<property name="test.html.dir" value="${test.report.dir}/html" />
-	
-	<path id="jcerti.test.classpath">		
-			<pathelement location="${test.class.dir}" />
-	</path>
 
-	<target name="test" depends="create-jar, test-clean" description="o run JUnit tests">
+	<path id="jcerti.test.classpath">
+		<pathelement location="${test.class.dir}" />
+	</path>
+	
+	<target name="prepare-test" depends="create-jar, test-clean">
 		<mkdir dir="${test.class.dir}" />
-		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" target="1.5" source="1.5" deprecation="on">			
-			<include name="**/*.java" />
-			<classpath>
-				<path refid="jcerti.classpath" />
-			</classpath>
+		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" target="1.5" source="1.5" deprecation="on">				
+				<include name="**/*.java" />
+				<classpath>
+					<path refid="jcerti.classpath" />
+				</classpath>
 		</javac>
-		<copy todir="${test.class.dir}">
-			<fileset dir="${test.src.dir}" includes="**/*.xml"/>
-		</copy>
 		<mkdir dir="${test.report.dir}" />
 		<mkdir dir="${test.work.dir}" />
+		<copy todir="${test.work.dir}" flatten="yes">
+			<fileset dir="${test.src.dir}" includes="**/*.xml"/>
+			<fileset dir="${test.src.dir}" includes="**/*.fed"/>
+		</copy>			
+	</target>
+
+	<target name="test" depends="prepare-test" description="o run JUnit tests">	
 		<!--
 		<junit printsummary="withOutAndErr" fork="yes">
 			<jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
@@ -137,28 +141,28 @@ JAR List :
 		</junit>
 		-->
 	</target>
-	
+
 	<!-- Test Federate launchers-->
 
-		<property name="jcerti.opt" value="" />
+	<property name="jcerti.opt" value="" />
 
-		<target name="UAVSend-run" description="o run the jcerti UAV Send example">
-			<java classname="certi.UavSend" fork="true">
-				<classpath refid="jcerti.classpath" />
-				<classpath refid="jcerti.test.classpath" />
-				<arg value="${jcerti.opt}" />
-				<arg value="1" />			
-			</java>
-		</target>
-		
-		<target name="UAVReceive-run" description="o run the jcerti UAV Receive example">
-				<java classname="certi.UavReceive" fork="true">
-					<classpath refid="jcerti.classpath" />
-					<classpath refid="jcerti.test.classpath" />
-					<arg value="${jcerti.opt}" />
-					<arg value="1" />			
-				</java>
-		</target>
+	<target name="UAVSend-run" depends="prepare-test" description="o run the jcerti UAV Send example">
+		<java classname="certi.UavSend" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+		</java>
+	</target>
+
+	<target name="UAVReceive-run" depends="prepare-test" description="o run the jcerti UAV Receive example">
+		<java classname="certi.UavReceive" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+		</java>
+	</target>
 
 	<!--
 	<target name="test-report" depends="test">
@@ -172,11 +176,11 @@ JAR List :
 		<echo>Test report generated at : ${test.html.dir}/index.html </echo>
 	</target>
     -->
-	
+
 	<target name="test-clean">
 		<delete dir="${test.class.dir}" />
 		<delete dir="${test.report.dir}" />
-	</target>	
+	</target>
 
 	<!-- help -->
 
@@ -200,65 +204,71 @@ You can get junit.jar at : http://www.junit.org
 	</target>
 
 	<!-- distribution -->
-    <target name="prepare-dist" depends="clean">
-      <mkdir dir="${dist.dir}"/>
-    </target>
-
-    <!-- Make a source zip file distribution -->
-	<target name="create-src-zip-dist" depends="prepare-dist">
-	  <zip destfile="${dist.dir}/jcerti-src.zip" filesonly="false">             
-	       <zipfileset dir="${src.dir}" prefix="jcerti/src">
-				<exclude name="${src.dir}/tsp/core/rpc/**/*"/>
-		   </zipfileset>
-	       <zipfileset dir="${lib.dir}" prefix="jcerti/lib"/>
-	       <zipfileset dir="${test.src.dir}" prefix="jcerti/src_test"/>	       
-	       <zipfileset dir="${home.dir}" prefix="jcerti">
-	            <include name="AUTHORS"/>
-	            <include name="COPYING"/>
-	            <include name="README"/>
-	            <include name="TODO"/>
-	            <include name="*.xml"/>
-	       </zipfileset>
-	 </zip>
+	<target name="prepare-dist" depends="clean">
+		<mkdir dir="${dist.dir}"/>
 	</target>
-	<!-- Source zip timestamped with creator -->
-	<target name="create-src-zip-dist-timestamped" depends="create-src-zip-dist">
-		  <tstamp>
-		      <format property="zipTimeStamp" pattern="dMMMMyyyy-HH'h'mm" locale="fr"/>
-		  </tstamp>
-		<move file="${dist.dir}/jcerti-src.zip" tofile="${dist.dir}/jcerti-src-${zipTimeStamp}-${user.name}.zip"/>		
+
+	<!-- Make a source zip file distribution -->
+	<target name="create-src-zip-dist" depends="prepare-dist">
+		<zip destfile="${dist.dir}/jcerti-src.zip" filesonly="false">
+			<zipfileset dir="${src.dir}" prefix="jcerti/src">
+				<exclude name="${src.dir}/tsp/core/rpc/**/*"/>
+			</zipfileset>
+			<zipfileset dir="${lib.dir}" prefix="jcerti/lib"/>
+			<zipfileset dir="${test.src.dir}" prefix="jcerti/src_test"/>
+			<zipfileset dir="${home.dir}" prefix="jcerti">
+				<include name="AUTHORS"/>
+				<include name="COPYING"/>
+				<include name="README"/>
+				<include name="TODO"/>
+				<include name="*.xml"/>
+			</zipfileset>
+		</zip>
 	</target>
 	
-    <target name="create-izpack-dist" depends="create-src-zip-dist,prepare-dist,javadoc,create-jar">
-       <taskdef name="izpack" classpath="${lib.izpack.dir}/standalone-compiler.jar"
+	<!-- Source zip timestamped with creator -->
+	<target name="create-src-zip-dist-timestamped" depends="create-src-zip-dist">
+		<tstamp>
+			<format property="zipTimeStamp" pattern="dMMMMyyyy-HH'h'mm" locale="fr"/>
+		</tstamp>
+		<move file="${dist.dir}/jcerti-src.zip" tofile="${dist.dir}/jcerti-src-${zipTimeStamp}-${user.name}.zip"/>
+	</target>
+	
+	<target name="package-source" depends="create-izpack-dist" description="o create a source package"/>
+
+	<target name="create-izpack-dist" depends="create-src-zip-dist,prepare-dist,javadoc,create-jar">
+		<taskdef name="izpack" classpath="${lib.izpack.dir}/standalone-compiler.jar"
 		         classname="com.izforge.izpack.ant.IzPackTask"/>
-        <tstamp>
-    	  <format property="izpackTimeStamp" pattern="dMMMMyyyy-HH'h'mm" locale="fr"/>
-       </tstamp>
-       <izpack input="${lib.izpack.dir}/jcerti-IzPackInstaller.xml" 
+		<tstamp>
+			<format property="izpackTimeStamp" pattern="dMMMMyyyy-HH'h'mm" locale="fr"/>
+		</tstamp>
+		<izpack input="${lib.izpack.dir}/jcerti-IzPackInstaller.xml" 
                output="${dist.dir}/jcertiInstaller-${izpackTimeStamp}.jar" 
                installerType="standard" 
                basedir="${home.dir}" 
                izPackDir="${lib.izpack.dir}"/>
-    </target>
+	</target>
 	
+	<target name="package" depends="create-izpack-dist" description="o create an IzPack installer"/>
+
 	<!-- Timestamp bzip2 patch -->
 	<target name="create-patch-bz2-dist-timestamped" depends="create-patch-bz2-dist">
-		  <tstamp>
-		      <format property="TimeStamp" pattern="dMMMMyyyy-HH'h'mm" locale="fr"/>
-		  </tstamp>
-		<move file="${dist.dir}/jcerti-patch.txt.bz2" tofile="${dist.dir}/jcerti-patch-${TimeStamp}-${user.name}.txt.bz2"/>		
+		<tstamp>
+			<format property="TimeStamp" pattern="dMMMMyyyy-HH'h'mm" locale="fr"/>
+		</tstamp>
+		<move file="${dist.dir}/jcerti-patch.txt.bz2" tofile="${dist.dir}/jcerti-patch-${TimeStamp}-${user.name}.txt.bz2"/>
 	</target>
-			
+
 	<!-- Create bzip2 patch -->
 	<target name="create-patch-bz2-dist" depends="prepare-dist">
-		
-	  <exec executable="diff" output="${dist.dir}/jcerti-patch.txt">
-	  	<arg line="-urN ${jcerti.tree.ref} ${jcerti.tree.current}" />
-	  </exec>
 
-	  <bzip2 src="${dist.dir}/jcerti-patch.txt" destfile="${dist.dir}/jcerti-patch.txt.bz2"></bzip2>
-	  <delete file="${dist.dir}/jcerti-patch.txt" />
+		<exec executable="diff" output="${dist.dir}/jcerti-patch.txt">
+			<arg line="-urN ${jcerti.tree.ref} ${jcerti.tree.current}" />
+		</exec>
+
+		<bzip2 src="${dist.dir}/jcerti-patch.txt" destfile="${dist.dir}/jcerti-patch.txt.bz2">
+		</bzip2>
+		<delete file="${dist.dir}/jcerti-patch.txt" />
 
 	</target>
 

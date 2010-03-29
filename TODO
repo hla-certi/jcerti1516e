@@ -3,4 +3,6 @@
 - udpate CERTI message generator in order to fully generate 
   certi.communication.messages.
 
-- ,,,
+- Add more easily launchable test in build.xml
+
+- Add JUnit auto-testing

@@ -1,2 +1,35 @@
-jcerti is a Java Binding for the CERTI HLA RTI
+
+jcerti is a Java Binding for the CERTI HLA RTI.
 jcerti is SISO DLC compliant.  
+
+
+INSTALL/COMPILING INSTRUCTION
+-----------------------------
+jcerti comes with a build.xml ant file
+(see http://ant.apache.org/manual/)
+
+Thus building jcerti should be as simple as unpacking the source
+and calling
+"ant" 
+
+with no argument.
+
+If you want more help about possible ant target just type
+"ant -p"
+
+
+RUNNING TEST INSTRUCTION
+-------------------------
+Before running jcerti example yuo should have C++ CERTI installed
+http://www.nongnu.org/certi/certi_doc/Install/html/index.html
+
+(or if you are a CERTI C++ developer you can just define
+ CERTI_HOST and CERTI_HOME env variables and update PATH in order to make rtia/rtig executable automatically reachable)
+
+Shipped with jcerti there is currently a small UAV Send/Receive test.
+If you want to try this you should:
+
+1) in a first terminal run rtig
+2) in a second terminal run "ant UAVSend-run"
+3) in a second terminal run "ant UAVReceive-run"
+

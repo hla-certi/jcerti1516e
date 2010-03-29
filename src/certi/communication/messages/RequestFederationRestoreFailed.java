@@ -19,28 +19,12 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class RequestFederationRestoreFailed extends CertiMessage {
-   private String label;
-   private byte[] tag;
+   private String reason;
 
    public RequestFederationRestoreFailed() {
       super(CertiMessageType.REQUEST_FEDERATION_RESTORE_FAILED);
@@ -50,37 +34,27 @@ public class RequestFederationRestoreFailed extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(label);
-      messageBuffer.writeBytesWithSize(tag);
+      messageBuffer.write(reason);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      label = messageBuffer.readString();
-      tag = messageBuffer.readBytesWithSize();
+      reason = messageBuffer.readString();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", label: " + label + ", tag: " + tag);
+      return (super.toString() + ", reason: " + reason);
    }
 
-   public String getLabel() {
-      return label;
+   public String getReason() {
+      return reason;
    }
 
-   public byte[] getTag() {
-      return tag;
-   }
-
-   public void setLabel(String newLabel) {
-      this.label = newLabel;
-   }
-
-   public void setTag(byte[] newTag) {
-      this.tag = newTag;
+   public void setReason(String newReason) {
+      this.reason = newReason;
    }
 
 }

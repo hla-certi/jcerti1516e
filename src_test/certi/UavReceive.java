@@ -131,8 +131,6 @@ public class UavReceive {
                         System.out.println("Reflect: " + EncodingHelpers.decodeFloat(theAttributes.getValue(i)));
                     }
                 }
-
-
             } catch (ArrayIndexOutOfBounds ex) {
                 LOGGER.log(Level.SEVERE, "Exception:", ex);
             }

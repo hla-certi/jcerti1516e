@@ -19,27 +19,12 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class LocalDeleteObjectInstance extends CertiMessage {
-   private long object;
+   private int object;
 
    public LocalDeleteObjectInstance() {
       super(CertiMessageType.LOCAL_DELETE_OBJECT_INSTANCE);
@@ -56,7 +41,7 @@ public class LocalDeleteObjectInstance extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      object = messageBuffer.readLong();
+      object = messageBuffer.readInt();
    }
 
    @Override
@@ -64,11 +49,11 @@ public class LocalDeleteObjectInstance extends CertiMessage {
       return (super.toString() + ", object: " + object);
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 

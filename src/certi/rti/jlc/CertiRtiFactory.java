@@ -30,13 +30,10 @@ import hla.rti.SuppliedAttributes;
 import hla.rti.SuppliedParameters;
 import hla.rti.jlc.RTIambassadorEx;
 import hla.rti.jlc.RtiFactory;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiRtiFactory implements RtiFactory {
 
@@ -46,12 +43,7 @@ public class CertiRtiFactory implements RtiFactory {
      * @throws RTIinternalError
      */
     public RTIambassadorEx createRtiAmbassador() throws RTIinternalError {
-        try {
             return new CertiRtiAmbassador();
-        } catch (IOException ex) {
-            Logger.getLogger(CertiRtiFactory.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RTIinternalError(ex.getMessage());
-        }
     }
 
     /**

@@ -19,27 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class CancelNegotiatedAttributeOwnershipDivestiture extends CertiMessage {
-   private long object;
+   private int object;
    private AttributeHandleSet attributes;
 
    public CancelNegotiatedAttributeOwnershipDivestiture() {
@@ -58,7 +44,7 @@ public class CancelNegotiatedAttributeOwnershipDivestiture extends CertiMessage 
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      object = messageBuffer.readLong();
+      object = messageBuffer.readInt();
       attributes = messageBuffer.readAttributeHandleSet();
    }
 
@@ -67,7 +53,7 @@ public class CancelNegotiatedAttributeOwnershipDivestiture extends CertiMessage 
       return (super.toString() + ", object: " + object + ", attributes: " + attributes);
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
@@ -75,7 +61,7 @@ public class CancelNegotiatedAttributeOwnershipDivestiture extends CertiMessage 
       return attributes;
    }
 
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 

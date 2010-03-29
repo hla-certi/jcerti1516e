@@ -19,29 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class GetInteractionClassName extends CertiMessage {
-   private long interactionClass;
-   private String name;
-   private short parameter;
+   private int interactionClass;
+   private String className;
 
    public GetInteractionClassName() {
       super(CertiMessageType.GET_INTERACTION_CLASS_NAME);
@@ -52,46 +36,36 @@ public class GetInteractionClassName extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(interactionClass);
-      messageBuffer.write(name);
-       messageBuffer.write(parameter);
+      messageBuffer.write(className);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      interactionClass = messageBuffer.readLong();
-      name = messageBuffer.readString();
-      parameter = messageBuffer.readShort();
+      interactionClass = messageBuffer.readInt();
+      className = messageBuffer.readString();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", name: " + name + ", parameter: " + parameter);
+      return (super.toString() + ", interactionClass: " + interactionClass + ", className: " + className);
    }
 
-   public long getInteractionClass() {
+   public int getInteractionClass() {
       return interactionClass;
    }
 
-   public String getName() {
-      return name;
+   public String getClassName() {
+      return className;
    }
 
-   public short getParameter() {
-      return parameter;
-   }
-
-   public void setInteractionClass(long newInteractionClass) {
+   public void setInteractionClass(int newInteractionClass) {
       this.interactionClass = newInteractionClass;
    }
 
-   public void setName(String newName) {
-      this.name = newName;
-   }
-
-   public void setParameter(short newParameter) {
-      this.parameter = newParameter;
+   public void setClassName(String newClassName) {
+      this.className = newClassName;
    }
 
 }

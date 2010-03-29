@@ -30,24 +30,26 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
- * This class is used to process all the primary data type and to store them into a Vector<Byte>. Depending on
- * how the Socket works, the output will change.
+ * This class is used to process all the primary data types and to store them into a Vector<Byte>. It can handle sending and receiving of <code>CertiMessage</code> from streams.
  *
  * The JVM is big endian, so all the write methods are big endians.
- * the read methods can handle big and little endians.
+ * The read methods can handle both big and little endians.
  *
- * @author apancik@gmail.com
- * @author <a href = "mailto:yannick.bisiaux@supaero.fr">Yannick Bisiaux</a>, <a href = "mailto:ronan.bossard@supaero.fr">Ronan Bossard</a>, <a href = "mailto:samuel.reese@supaero.fr">Samuel Reese</a>
- * @version 3.3.4
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
+ * @author <a href = "mailto:yannick.bisiaux@supaero.fr">Yannick Bisiaux</a>
+ * @author <a href = "mailto:ronan.bossard@supaero.fr">Ronan Bossard</a>
+ * @author <a href = "mailto:samuel.reese@supaero.fr">Samuel Reese</a>
+ * @version 3.3.3
  */
 public class MessageBuffer {
-    //Use a Vector of Byte: no problems of array resizing. easily changed in array if necessary thanks to toArray()
-    //Beware! use of Byte instead of byte. Has an influence in the send method.
+    public static final int BYTE_LENGTH = 8;
 
+    private final static Logger LOGGER = Logger.getLogger(MessageBuffer.class.getName());
     private Vector<Byte> buffer = new Vector<Byte>();
-    private Iterator<Byte> ite;	//the Iterator will be useful for the read operations
+    private Iterator<Byte> iter;	//the Iterator useful for the read operations
     private static byte BIG_ENDIAN = 1;
     private byte endianness;
 
@@ -55,8 +57,6 @@ public class MessageBuffer {
      *
      */
     public MessageBuffer() {
-        //the first five bytes are for the header. If this buffer is used to read instead of write, they'll be over-written
-        //in the receive method
         endianness = BIG_ENDIAN;
         reset();
     }
@@ -64,14 +64,15 @@ public class MessageBuffer {
     /**
      * This method set the buffer back in the state just after its creation
      * should be used before re-using the buffer to write.
-     * It is already aotomatically done when a message is read from the socket
+     * It is already automatically done when a message is read from the socket.
      */
     public void reset() {
         buffer.clear();
     }
 
     /**
-     * This method just copy the byte b at the end of the buffer. It's the most basic writing method.
+     * Write the supplied byte at the end of the buffer.
+     *
      * @param b
      */
     public void write(byte b) {
@@ -79,114 +80,93 @@ public class MessageBuffer {
     }
 
     /**
-     * Basic read method.
-     * @return just the byte we were looking for
+     * Read the byte from the buffer and return it
+     *
+     * @return byte
      * @throws NoSuchElementException
      */
     public byte readByte() throws NoSuchElementException {
-        return ite.next();
+        return iter.next();
     }
 
     /**
-     * Write an array of bytes in the buffer. First is the length of the array, stored as a long, then the bytes themselves
-     * Even if the length of the array is stored in a long int, java is limited to array with 32 bits int length.
-     * @param byteArray
+     * Write byte array to buffer. First is the length of the array, stored as a integer, then the bytes themselves.
+     *
+     * @param array array to store
      */
-    public void write(byte[] byteArray) {
-        //this.write((long) byteArray.length, "longueur du tableau");
-        for (byte b : byteArray) {
+    public void write(byte[] array) {
+        this.write(array.length);
+
+        for (byte b : array) {
             buffer.add(b);
         }
     }
 
     /**
-     * read an Array of bytes, given its size
-     * @param size the number of bytes to be read
-     * @return
-     */
-    public byte[] readBytes(int size) {
-        byte[] byteArray = new byte[size];
-        for (int i = 0; i <= size - 1; i++) {
-            byteArray[i] = this.readByte();
-        }
-        return byteArray;
-    }
-
-    /**
+     * Read an array of bytes from the buffer. First read the size (integer) and then the vales.
      *
-     * @param array
+     * @return read array
      */
-    public void writeBytesWithSize(byte[] array) {
-        this.write(array.length);
-        this.write(array);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public byte[] readBytesWithSize() {
+    public byte[] readBytes() {
         int size = this.readInt(); //Treat first integer as length
+
         byte[] byteArray = new byte[size];
-        for (int i = 0; i <= size - 1; i++) {
+        for (int i = 0; i < size; i++) {
             byteArray[i] = this.readByte();
         }
+
         return byteArray;
     }
 
     /**
-     * Write in a big endian way
-     * @param s
+     * Write short to the buffer in a big endian way
      *
+     * @param s short to be written
      */
     public void write(short s) {
-        buffer.add((byte) (s >>> 8));
+        buffer.add((byte) (s >>> BYTE_LENGTH));
         buffer.add((byte) s);
     }
 
     /**
-     * The endianness is taken care of.
+     * Read short from the buffer with correct endianess.
+     * 
      * Beware! there are no unsigned integers of any size in java.
      * This methods assume that the short it is trying to read is inside the bounds of a signed short.
      * There are no conversion to an int if it is not the case.
-     * @return
+     *
+     * @return read short
      * @throws NoSuchElementException
      */
     public short readShort() throws NoSuchElementException {
-        int s;	// the << just don't work here with the short, according to Eclipse.
-        //
-        //I assume that the ite.next occur in the "left to right" order
-        //no implicit transtyping
-        //if the byte we read is <0, the transtyping puts some 1's to fill the int.
-        //the 0x00FF mask set them to 0.
-        //I could use  if(endianity), but i won't do this before i'm SURE I didn't swapped the value of BIG_ENDIAN and LITTLE_ENDIAN
+        int s;
+
         if (endianness == BIG_ENDIAN) {
-            s = ((int) ite.next() & 0x00FF) << 8 | ((int) ite.next() & 0x00FF);
+            s = ((int) iter.next() & 0x00FF) << BYTE_LENGTH | ((int) iter.next() & 0x00FF);
         } else {
-            s = ((int) ite.next() & 0x00FF) | ((int) ite.next() & 0x00FF) << 8;
+            s = ((int) iter.next() & 0x00FF) | ((int) iter.next() & 0x00FF) << BYTE_LENGTH;
         }
         return (short) s;
     }
 
     /**
-     * Write in a big endian way
-     * @param b
+     * Write integer to the buffer in a big endian way
+     * 
+     * @param b integer to be written
      */
     public void write(int b) {
         for (int i = 3; i >= 0; i--) {
-            buffer.add((byte) (b >>> i * 8));
+            buffer.add((byte) (b >>> i * BYTE_LENGTH));
         }
-        //java is big-endian.
-        //the type conversion in byte take the 8 last (low weight) bits
-        //So I move the int to the right to take the byte I need until the 4 bytes have been processed.
-        //I use >>> instead of >> to be sure all the added bits on the left are 0s.
     }
 
     /**
-     * The endianness is taken care of.
+     * Read integer form the buffer with correct endianess.
+     * 
      * Beware! there are no unsigned integers of any size in java.
      * This methods assume that the int it is trying to read is inside the bounds of a signed int.
      * There are no conversion to an long if it is not the case.
+     *
      * @return an int
      * @throws NoSuchElementException
      */
@@ -194,24 +174,24 @@ public class MessageBuffer {
         int i = 0;
         if (endianness == BIG_ENDIAN) {
             for (int s = 3; s >= 0; s--) {
-                i = i | (((int) ite.next()) & 0x000000FF) << 8 * s;
+                i = i | (((int) iter.next()) & 0x000000FF) << BYTE_LENGTH * s;
             }
         } else {
             for (int s = 0; s <= 3; s++) {
-                i = i | ((int) ite.next() & 0x000000FF) << s * 8;
+                i = i | ((int) iter.next() & 0x000000FF) << s * BYTE_LENGTH;
             }
         }
         return i;
     }
 
     /**
-     * Write in a big endian way
-     * @param l
+     * Write long to the buffer in a big endian way
+     *
+     * @param l long to be written
      */
     public void write(long l) {
-        int i;
-        for (i = 7; i >= 0; i--) {
-            buffer.add((byte) (l >>> i * 8));
+        for (int i = 7; i >= 0; i--) {
+            buffer.add((byte) (l >>> i * BYTE_LENGTH));
         }
     }
 
@@ -227,11 +207,11 @@ public class MessageBuffer {
         long l = 0;
         if (endianness == BIG_ENDIAN) {
             for (int i = 7; i >= 0; i--) {
-                l = l | ((long) ite.next() & 0x00000000000000FF) << i * 8;
+                l = l | ((long) iter.next() & 0x00000000000000FF) << i * BYTE_LENGTH;
             }
         } else {
             for (int i = 0; i <= 7; i++) {
-                l = l | ((long) ite.next() & 0x00000000000000FF) << i * 8;
+                l = l | ((long) iter.next() & 0x00000000000000FF) << i * BYTE_LENGTH;
             }
         }
         return l;
@@ -243,7 +223,7 @@ public class MessageBuffer {
      * @throws NoSuchElementException
      */
     public void write(float f) throws NoSuchElementException {
-        //The floatToIntBits return exactly what we are looking for: IEE 754 coding of the double
+        //The floatToIntBits return exactly what we are looking for: IEEE 754 coding of the double
         this.write(Float.floatToIntBits(f));
     }
 
@@ -275,13 +255,7 @@ public class MessageBuffer {
      * @param bool
      */
     public void write(boolean bool) {
-        //The boolean isn't just a bit or byte of information in java. the offical doc says:
-        //"This data type represents one bit of information, but its "size" isn't something that's precisely defined."
-        if (bool) {
-            buffer.add((byte) 1);
-        } else {
-            buffer.add((byte) 0);
-        }
+        buffer.add(bool ? (byte) 1 : (byte) 0);
     }
 
     /**
@@ -290,30 +264,7 @@ public class MessageBuffer {
      * @throws NoSuchElementException
      */
     public boolean readBoolean() throws NoSuchElementException {
-        return (ite.next() == 1);
-    }
-
-    /**
-     * Write a char in two bytes, big endian way.
-     * Should be UTF-16... That's net totally sure yet.
-     * @param ch
-     */
-    public void write(char ch) {
-        //java uses utf-16... I'm nearly sure.
-        //It only writes the two bytes of a character one after the other. I'm not sure this should be public, because there
-        //are no equivalent in the C++ version.
-        buffer.add((byte) (ch >>> 8));
-        buffer.add((byte) ch);
-    }
-
-    /**
-     * The endianness is taken care of.
-     * @return java use utf-16BE chars; there are no problems with the C++ version of CERTI
-     */
-    public char readChar() {
-        //Quite dirty... the toChars return a char[], that's why there is a [0].
-        return Character.toChars((int) this.readShort())[0];
-
+        return iter.next() == 1;
     }
 
     /**
@@ -324,10 +275,7 @@ public class MessageBuffer {
         if (string == null) {
             write("");
         } else {
-            byte[] bytesArray = string.getBytes();
-
-            this.write(bytesArray.length);
-            this.write(bytesArray);
+            this.write(string.getBytes());
         }
     }
 
@@ -336,21 +284,20 @@ public class MessageBuffer {
      * @return
      */
     public String readString() {
-        int length = this.readInt();
-
-        byte[] byteArray = new byte[length];
-        byteArray = this.readBytes(length);
-
-        return new String(byteArray);
+        return new String(readBytes());
     }
 
     /**
+     * Instantiate <code>CertiMessage</code> from supplied message type. It does not use reflection for safety.
      *
-     * @param messageType
-     * @return
+     * @param messageType message type to instantiate
+     * @return instantiated message
      */
     public CertiMessage instantiate(CertiMessageType messageType) {
+        LOGGER.info("Trying to instantiate " + messageType);
         switch (messageType) {
+            case OPEN_CONNEXION:
+                return new OpenConnexion();
             case CLOSE_CONNEXION:
                 return new CloseConnexion();
             case CREATE_FEDERATION_EXECUTION:
@@ -608,8 +555,7 @@ public class MessageBuffer {
             case TICK_REQUEST_NEXT:
                 return new TickRequestNext();
             default:
-                //TODO Log
-                System.out.println("Unknown type " + messageType);
+                LOGGER.severe("Received an unknown type of message: " + messageType);
                 throw new UnsupportedOperationException("Message is not supported yet.");
         }
     }
@@ -628,11 +574,11 @@ public class MessageBuffer {
         //Same as readInt, but on the InputStream instead of the iterator
         if (endianness == BIG_ENDIAN) {
             for (int i = 3; i >= 0; i--) {
-                size = size | (in.read() & 0x000000FF) << i * 8;
+                size = size | (in.read() & 0x000000FF) << i * BYTE_LENGTH;
             }
         } else {
             for (int i = 0; i <= 3; i++) {
-                size = size | (in.read() & 0x000000FF) << i * 8;
+                size = size | (in.read() & 0x000000FF) << i * BYTE_LENGTH;
             }
         }
 
@@ -640,7 +586,7 @@ public class MessageBuffer {
             buffer.add((byte) in.read());
         }
 
-        ite = buffer.iterator();
+        iter = buffer.iterator();
 
         CertiMessage message = instantiate(CertiMessageType.reverseType.get(this.readInt())); //read first integer from header and instantiate class
 
@@ -655,13 +601,14 @@ public class MessageBuffer {
      * @throws IOException
      */
     public void send(OutputStream out) throws IOException {
-        //Add size to header
+        //Construct the header
         Vector<Byte> message = new Vector<Byte>();
 
-        int size = (buffer.size() + 5);
         message.add(BIG_ENDIAN);
+
+        int size = (buffer.size() + 5);
         for (int i = 3; i >= 0; i--) {
-            message.add((byte) (size >>> i * 8));
+            message.add((byte) (size >>> i * BYTE_LENGTH));
         }
 
         //Add constructed body to buffer
@@ -673,6 +620,7 @@ public class MessageBuffer {
             byteArray[i] = message.get(i);
         }
 
+        //Write it to output stream
         out.write(byteArray);
         this.reset();
     }
@@ -682,12 +630,12 @@ public class MessageBuffer {
      * @param attributes
      */
     public void write(AttributeHandleSet attributes) {
-        this.write((short) attributes.size());
+        this.write(attributes.size());
 
         HandleIterator iterator = attributes.handles();
-        this.write((long) iterator.first()); //TODO PRETYPOVANIE
-        for (int i = 1; i < attributes.size(); i++) { //TODO CHECK ci ta ma byt 1
-            this.write((long) iterator.next()); //TODO PRETYPOVANIE
+        this.write(iterator.first());
+        for (int i = 1; i < attributes.size(); i++) { //Starting at 1 since first value was written with iterator.first()
+            this.write(iterator.next());
         }
     }
 
@@ -696,15 +644,15 @@ public class MessageBuffer {
      * @return
      */
     public AttributeHandleSet readAttributeHandleSet() {
-        int size = this.readShort();
+        int size = this.readInt();
 
         CertiAttributeHandleSet attributeHandleSet = new CertiAttributeHandleSet();
 
-        for (int i = 1; i < size; i++) { //TODO CHECK ci ta ma byt 1
+        for (int i = 0; i < size; i++) {
             try {
-                attributeHandleSet.add((int) this.readLong());
+                attributeHandleSet.add((int) this.readInt());
             } catch (AttributeNotDefined ex) {
-                //TODO LOG
+                LOGGER.severe("Error has occured while reading AttributeHandleSet from buffer.");
             }
         }
 
@@ -717,10 +665,10 @@ public class MessageBuffer {
      */
     public void write(List<CertiExtent> extents) {
 
-        this.write((long) extents.size());
+        this.write(extents.size());
         if (extents.size() > 0) {
             int numberOfDimensions = extents.get(0).getNumberOfDimensions();
-            this.write((long) numberOfDimensions);
+            this.write(numberOfDimensions);
 
             for (CertiExtent extent : extents) {
                 for (int handle = 1; handle <= numberOfDimensions; handle++) {
@@ -728,7 +676,7 @@ public class MessageBuffer {
                         this.write(extent.getRangeLowerBound(handle));
                         this.write(extent.getRangeUpperBound(handle));
                     } catch (ArrayIndexOutOfBounds ex) {
-                        //TODO log it
+                        LOGGER.severe("Error occured while writing extents to buffer.");
                     }
                 }
             }
@@ -740,7 +688,7 @@ public class MessageBuffer {
      * @return
      */
     public List<CertiExtent> readExtents() {
-        int numberOfExtents = (int) this.readLong();
+        int numberOfExtents = this.readInt();
         List<CertiExtent> extents = new ArrayList<CertiExtent>(numberOfExtents);
 
         if (numberOfExtents > 0) {
@@ -763,20 +711,18 @@ public class MessageBuffer {
      * @param pairCollection
      */
     public void write(CertiHandleValuePairCollection pairCollection) {
-        this.write((short) pairCollection.size());
-
         try {
+            this.write(pairCollection.size());
             for (int i = 0; i < pairCollection.size(); i++) {
-                this.write((long) pairCollection.getHandle(i));
+                this.write(pairCollection.getHandle(i));
             }
 
+            this.write(pairCollection.size());
             for (int i = 0; i < pairCollection.size(); i++) {
-                this.write(pairCollection.getValue(i).length); //TODO check c++ code for reason of size-1-i
                 this.write(pairCollection.getValue(i));
             }
         } catch (ArrayIndexOutOfBounds ex) {
-            //LOG It
-            System.out.print("DEBUG: index array out of bounds");
+            LOGGER.severe("index array out of bounds");
         }
     }
 
@@ -785,18 +731,20 @@ public class MessageBuffer {
      * @return
      */
     public CertiHandleValuePairCollection readHandleValuePairCollection() {
-        int size = (int) this.readShort();//TODO oznacit pretypovanie
+        int size = this.readInt();
 
         CertiHandleValuePairCollection pairCollection = new CertiHandleValuePairCollection(size);
 
         List<Integer> handles = new ArrayList<Integer>(size);
 
         for (int i = 0; i < size; i++) {
-            handles.add((int) this.readLong()); //TODO oznacit pretypovanie
+            handles.add(this.readInt()); //TODO oznacit pretypovanie
         }
 
+        size = this.readInt();
+
         for (int i = 0; i < size; i++) {
-            pairCollection.add(handles.get(i), this.readBytesWithSize());
+            pairCollection.add(handles.get(i), this.readBytes());
         }
 
         return pairCollection;
@@ -807,10 +755,10 @@ public class MessageBuffer {
      * @param regions
      */
     public void writeRegions(List<Long> regions) { //TODO Refactor name
-        long n = regions.size();
+        int n = regions.size();
         this.write(n);
         for (int i = 0; i < n; i++) {
-            this.write((long) regions.get(i));
+            this.write(regions.get(i));
         }
     }
 
@@ -819,7 +767,7 @@ public class MessageBuffer {
      * @return
      */
     public List<Long> readRegions() {
-        int n = (int) this.readLong();
+        int n = (int) this.readInt();
         List<Long> regions = new ArrayList<Long>(n);
 
         for (int i = 0; i < n; i++) {
@@ -850,12 +798,18 @@ public class MessageBuffer {
      * @param attributes
      */
     public void write(FederateHandleSet attributes) {
-        this.write((short) attributes.size());
+        if (attributes == null) {
+            this.write(0);
+        } else {
+            this.write(attributes.size());
 
-        HandleIterator iterator = attributes.handles();
-        this.write((long) iterator.first()); //TODO PRETYPOVANIE
-        for (int i = 1; i < attributes.size(); i++) { //TODO CHECK ci ta ma byt 1
-            this.write((long) iterator.next()); //TODO PRETYPOVANIE
+            HandleIterator iterator = attributes.handles();
+
+            this.write(iterator.first());
+
+            for (int i = 1; i < attributes.size(); i++) {
+                this.write(iterator.next());
+            }
         }
     }
 
@@ -864,12 +818,12 @@ public class MessageBuffer {
      * @return
      */
     public FederateHandleSet readFederateHandleSet() {
-        int size = this.readShort();
+        int size = this.readInt();
 
         CertiFederateHandleSet attributeHandleSet = new CertiFederateHandleSet();
 
-        for (int i = 1; i < size; i++) { //TODO CHECK ci ta ma byt 1
-            attributeHandleSet.add((int) this.readLong());
+        for (int i = 0; i < size; i++) {
+            attributeHandleSet.add(this.readInt());
         }
 
         return attributeHandleSet;
@@ -922,5 +876,17 @@ public class MessageBuffer {
     public ReceivedInteraction readReceivedInteraction() {
         //TODO Finish
         return new CertiReceivedInteraction(0, 0, null, this.readHandleValuePairCollection());
+    }
+
+    public void write(EventRetractionHandle EventRetractionHandle) {
+        this.write(((CertiEventRetractionHandle) EventRetractionHandle).getSendingFederate());
+        this.write(((CertiEventRetractionHandle) EventRetractionHandle).getSN());
+    }
+
+    public EventRetractionHandle readEventRetractionHandle() {
+        int sendingFederate = this.readInt();
+        long SN = this.readLong();
+
+        return new CertiEventRetractionHandle(sendingFederate, SN);
     }
 }

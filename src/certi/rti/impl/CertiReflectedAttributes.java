@@ -30,6 +30,8 @@ import hla.rti.SuppliedAttributes;
  * with an initial capacity and the ability to grow.
  * You enumerate by stepping index from 0 to size()-1.
  *
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
+ * @version 3.3.3
  */
 public class CertiReflectedAttributes implements ReflectedAttributes {
 

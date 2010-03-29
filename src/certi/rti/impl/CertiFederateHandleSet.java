@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiFederateHandleSet extends HashSet<Integer> implements FederateHandleSet {
 

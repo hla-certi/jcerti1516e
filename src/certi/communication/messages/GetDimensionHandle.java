@@ -19,29 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+
+import certi.communication.*;
 
 public class GetDimensionHandle extends CertiMessage {
-   private String name;
-   private long dimension;
-   private long space;
+   private String dimensionName;
+   private int space;
+   private int dimension=0;
 
    public GetDimensionHandle() {
       super(CertiMessageType.GET_DIMENSION_HANDLE);
@@ -51,47 +35,47 @@ public class GetDimensionHandle extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(name);
-      messageBuffer.write(dimension);
+      messageBuffer.write(dimensionName);
       messageBuffer.write(space);
+      messageBuffer.write(dimension);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      name = messageBuffer.readString();
-      dimension = messageBuffer.readLong();
-      space = messageBuffer.readLong();
+      dimensionName = messageBuffer.readString();
+      space = messageBuffer.readInt();
+      dimension = messageBuffer.readInt();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", name: " + name + ", dimension: " + dimension + ", space: " + space);
+      return (super.toString() + ", dimensionName: " + dimensionName + ", space: " + space + ", dimension: " + dimension);
    }
 
-   public String getName() {
-      return name;
+   public String getDimensionName() {
+      return dimensionName;
    }
 
-   public long getDimension() {
-      return dimension;
-   }
-
-   public long getSpace() {
+   public int getSpace() {
       return space;
    }
 
-   public void setName(String newName) {
-      this.name = newName;
+   public int getDimension() {
+      return dimension;
    }
 
-   public void setDimension(long newDimension) {
-      this.dimension = newDimension;
+   public void setDimensionName(String newDimensionName) {
+      this.dimensionName = newDimensionName;
    }
 
-   public void setSpace(long newSpace) {
+   public void setSpace(int newSpace) {
       this.space = newSpace;
+   }
+
+   public void setDimension(int newDimension) {
+      this.dimension = newDimension;
    }
 
 }

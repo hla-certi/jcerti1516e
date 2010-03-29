@@ -26,7 +26,7 @@ import hla.rti.LogicalTimeIntervalFactory;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiLogicalTimeIntervalFactory implements LogicalTimeIntervalFactory{
 

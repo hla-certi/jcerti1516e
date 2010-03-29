@@ -26,74 +26,117 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Collection similar to standard array that holds handle-value pairs and has ability to dynamically grow.
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
+ * @version 3.3.3
  */
 public class CertiHandleValuePairCollection implements SuppliedAttributes, SuppliedParameters {
 
     private List<HandleValuePair> pairs;
 
     /**
-     *
+     * Constructs the handle-value pair collection
      */
     public CertiHandleValuePairCollection() {
         pairs = new ArrayList<HandleValuePair>();
     }
 
     /**
-     *
-     * @param size
+     * Constructs the handle-value pair collection with specified initial capacity. This is prefered to default constructor because of better performance.
+     * 
+     * @param size starting initial capacity of collection
      */
     public CertiHandleValuePairCollection(int size) {
         pairs = new ArrayList<HandleValuePair>(size);
     }
 
+    /**
+     * Add pair beyond last index.
+     *
+     * @param handle int
+     * @param value byte[]
+     */
     public void add(int handle, byte[] value) {
         pairs.add(new HandleValuePair(handle, value));
     }
 
+    /**
+     * Removes all handles & values.
+     */
     public void empty() {
         pairs.clear();
     }
 
+    /**
+     * Return handle at index position.
+     *
+     * @return int attribute handle
+     * @param index int
+     * @exception hla.rti.ArrayIndexOutOfBounds
+     */
     public int getHandle(int index) throws ArrayIndexOutOfBounds {
         return pairs.get(index).getHandle();
     }
 
+    /**
+     * Return copy of value at index position.
+     *
+     * @return byte[] copy (clone) of value
+     * @param index int
+     * @exception hla.rti.ArrayIndexOutOfBounds
+     */
     public byte[] getValue(int index) throws ArrayIndexOutOfBounds {
         return this.getValueReference(index).clone();
     }
 
+    /**
+     * Return length of value at index position.
+     *
+     * @return int value length
+     * @param index int
+     * @exception hla.rti.ArrayIndexOutOfBounds
+     */
     public int getValueLength(int index) throws ArrayIndexOutOfBounds {
         return this.getValueReference(index).length;
     }
 
-    public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {        
+    /**
+     * Get the reference of the value at position index (not a clone)
+     *
+     * @return byte[] the reference
+     * @param index int
+     * @exception hla.rti.ArrayIndexOutOfBounds
+     */
+    public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {
         return pairs.get(index).getValue();
     }
 
+    /**
+     * Remove handle & value corresponding to handle. All other elements shifted down.
+     * Not safe during iteration.
+     *
+     * @param handle int
+     * @exception hla.rti.ArrayIndexOutOfBounds if handle not in set
+     */
     public void remove(int handle) throws ArrayIndexOutOfBounds {
         pairs.remove(new HandleValuePair(handle, null));
     }
 
+    /**
+     * Remove handle & value at index position. All other elements shifted down.
+     * Not safe during iteration.
+     *
+     * @param index int
+     * @exception hla.rti.ArrayIndexOutOfBounds
+     */
     public void removeAt(int index) throws ArrayIndexOutOfBounds {
         pairs.remove(index);
     }
 
     /**
-     *
-     * @return
+     * @return int Number of elements
      */
-    public List<Integer> getHandles() {
-        List<Integer> list = new ArrayList<Integer>(this.size());
-
-        for (HandleValuePair pair : pairs) {
-            list.add(pair.getHandle());
-        }
-
-        return list;
-    }
-
     public int size() {
         return pairs.size();
     }

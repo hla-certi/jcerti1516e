@@ -19,29 +19,15 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class ChangeAttributeOrderType extends CertiMessage {
-   private long transport;
-   private long order;
-   private long object;
+   private short transport;
+   private short order;
+   private int object;
    private AttributeHandleSet attributes;
 
    public ChangeAttributeOrderType() {
@@ -62,9 +48,9 @@ public class ChangeAttributeOrderType extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      transport = messageBuffer.readLong();
-      order = messageBuffer.readLong();
-      object = messageBuffer.readLong();
+      transport = messageBuffer.readShort();
+      order = messageBuffer.readShort();
+      object = messageBuffer.readInt();
       attributes = messageBuffer.readAttributeHandleSet();
    }
 
@@ -73,15 +59,15 @@ public class ChangeAttributeOrderType extends CertiMessage {
       return (super.toString() + ", transport: " + transport + ", order: " + order + ", object: " + object + ", attributes: " + attributes);
    }
 
-   public long getTransport() {
+   public short getTransport() {
       return transport;
    }
 
-   public long getOrder() {
+   public short getOrder() {
       return order;
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
@@ -89,15 +75,15 @@ public class ChangeAttributeOrderType extends CertiMessage {
       return attributes;
    }
 
-   public void setTransport(long newTransport) {
+   public void setTransport(short newTransport) {
       this.transport = newTransport;
    }
 
-   public void setOrder(long newOrder) {
+   public void setOrder(short newOrder) {
       this.order = newOrder;
    }
 
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 

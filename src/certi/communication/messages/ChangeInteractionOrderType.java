@@ -19,29 +19,14 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class ChangeInteractionOrderType extends CertiMessage {
-   private long interactionClass;
-   private long transport;
-   private long order;
+   private int interactionClass;
+   private short transport;
+   private short order;
 
    public ChangeInteractionOrderType() {
       super(CertiMessageType.CHANGE_INTERACTION_ORDER_TYPE);
@@ -60,9 +45,9 @@ public class ChangeInteractionOrderType extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      interactionClass = messageBuffer.readLong();
-      transport = messageBuffer.readLong();
-      order = messageBuffer.readLong();
+      interactionClass = messageBuffer.readInt();
+      transport = messageBuffer.readShort();
+      order = messageBuffer.readShort();
    }
 
    @Override
@@ -70,27 +55,27 @@ public class ChangeInteractionOrderType extends CertiMessage {
       return (super.toString() + ", interactionClass: " + interactionClass + ", transport: " + transport + ", order: " + order);
    }
 
-   public long getInteractionClass() {
+   public int getInteractionClass() {
       return interactionClass;
    }
 
-   public long getTransport() {
+   public short getTransport() {
       return transport;
    }
 
-   public long getOrder() {
+   public short getOrder() {
       return order;
    }
 
-   public void setInteractionClass(long newInteractionClass) {
+   public void setInteractionClass(int newInteractionClass) {
       this.interactionClass = newInteractionClass;
    }
 
-   public void setTransport(long newTransport) {
+   public void setTransport(short newTransport) {
       this.transport = newTransport;
    }
 
-   public void setOrder(long newOrder) {
+   public void setOrder(short newOrder) {
       this.order = newOrder;
    }
 

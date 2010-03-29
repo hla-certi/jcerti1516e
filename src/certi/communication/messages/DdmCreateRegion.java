@@ -19,29 +19,16 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
+import certi.communication.*;
 import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.rti.impl.*;
 
 public class DdmCreateRegion extends CertiMessage {
-   private long space;
-   private long number;
-   private long region;
+   private int space;
+   private List<CertiExtent> extentSet;
+   private int region;
 
    public DdmCreateRegion() {
       super(CertiMessageType.DDM_CREATE_REGION);
@@ -52,7 +39,7 @@ public class DdmCreateRegion extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(space);
-      messageBuffer.write(number);
+      messageBuffer.write(extentSet);
       messageBuffer.write(region);
    }
 
@@ -60,37 +47,37 @@ public class DdmCreateRegion extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      space = messageBuffer.readLong();
-      number = messageBuffer.readLong();
-      region = messageBuffer.readLong();
+      space = messageBuffer.readInt();
+      extentSet = messageBuffer.readExtents();
+      region = messageBuffer.readInt();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", space: " + space + ", number: " + number + ", region: " + region);
+      return (super.toString() + ", space: " + space + ", extentSet: " + extentSet + ", region: " + region);
    }
 
-   public long getSpace() {
+   public int getSpace() {
       return space;
    }
 
-   public long getNumber() {
-      return number;
+   public List<CertiExtent> getExtentSet() {
+      return extentSet;
    }
 
-   public long getRegion() {
+   public int getRegion() {
       return region;
    }
 
-   public void setSpace(long newSpace) {
+   public void setSpace(int newSpace) {
       this.space = newSpace;
    }
 
-   public void setNumber(long newNumber) {
-      this.number = newNumber;
+   public void setExtentSet(List<CertiExtent> newExtentSet) {
+      this.extentSet = newExtentSet;
    }
 
-   public void setRegion(long newRegion) {
+   public void setRegion(int newRegion) {
       this.region = newRegion;
    }
 

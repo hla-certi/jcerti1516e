@@ -19,28 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class GetOrderingName extends CertiMessage {
-   private String name;
-   private long order;
+   private String orderingName;
+   private short ordering;
 
    public GetOrderingName() {
       super(CertiMessageType.GET_ORDERING_NAME);
@@ -50,37 +35,37 @@ public class GetOrderingName extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(name);
-      messageBuffer.write(order);
+      messageBuffer.write(orderingName);
+      messageBuffer.write(ordering);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      name = messageBuffer.readString();
-      order = messageBuffer.readLong();
+      orderingName = messageBuffer.readString();
+      ordering = messageBuffer.readShort();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", name: " + name + ", order: " + order);
+      return (super.toString() + ", orderingName: " + orderingName + ", ordering: " + ordering);
    }
 
-   public String getName() {
-      return name;
+   public String getOrderingName() {
+      return orderingName;
    }
 
-   public long getOrder() {
-      return order;
+   public short getOrdering() {
+      return ordering;
    }
 
-   public void setName(String newName) {
-      this.name = newName;
+   public void setOrderingName(String newOrderingName) {
+      this.orderingName = newOrderingName;
    }
 
-   public void setOrder(long newOrder) {
-      this.order = newOrder;
+   public void setOrdering(short newOrdering) {
+      this.ordering = newOrdering;
    }
 
 }

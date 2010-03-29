@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiExtent {
 

@@ -19,28 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class CreateFederationExecution extends CertiMessage {
    private String federationName;
-   private String fedId;
+   private String FEDid;
 
    public CreateFederationExecution() {
       super(CertiMessageType.CREATE_FEDERATION_EXECUTION);
@@ -51,7 +36,7 @@ public class CreateFederationExecution extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(federationName);
-      messageBuffer.write(fedId);
+      messageBuffer.write(FEDid);
    }
 
    @Override
@@ -59,28 +44,28 @@ public class CreateFederationExecution extends CertiMessage {
       super.readMessage(messageBuffer); //Header 
 
       federationName = messageBuffer.readString();
-      fedId = messageBuffer.readString();
+      FEDid = messageBuffer.readString();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", federationName: " + federationName + ", fedId: " + fedId);
+      return (super.toString() + ", federationName: " + federationName + ", FEDid: " + FEDid);
    }
 
    public String getFederationName() {
       return federationName;
    }
 
-   public String getFedId() {
-      return fedId;
+   public String getFEDid() {
+      return FEDid;
    }
 
    public void setFederationName(String newFederationName) {
       this.federationName = newFederationName;
    }
 
-   public void setFedId(String newFedId) {
-      this.fedId = newFedId;
+   public void setFEDid(String newFEDid) {
+      this.FEDid = newFEDid;
    }
 
 }

@@ -19,29 +19,15 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class DdmSubscribeAttributes extends CertiMessage {
-   private long objectClass;
-   private long region;
-   private boolean booleanValue;
+   private int objectClass;
+   private int region;
+   private boolean passive;
    private AttributeHandleSet attributes;
 
    public DdmSubscribeAttributes() {
@@ -54,7 +40,7 @@ public class DdmSubscribeAttributes extends CertiMessage {
 
       messageBuffer.write(objectClass);
       messageBuffer.write(region);
-      messageBuffer.write(booleanValue);
+      messageBuffer.write(passive);
       messageBuffer.write(attributes);
    }
 
@@ -62,43 +48,43 @@ public class DdmSubscribeAttributes extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      objectClass = messageBuffer.readLong();
-      region = messageBuffer.readLong();
-      booleanValue = messageBuffer.readBoolean();
+      objectClass = messageBuffer.readInt();
+      region = messageBuffer.readInt();
+      passive = messageBuffer.readBoolean();
       attributes = messageBuffer.readAttributeHandleSet();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", region: " + region + ", booleanValue: " + booleanValue + ", attributes: " + attributes);
+      return (super.toString() + ", objectClass: " + objectClass + ", region: " + region + ", passive: " + passive + ", attributes: " + attributes);
    }
 
-   public long getObjectClass() {
+   public int getObjectClass() {
       return objectClass;
    }
 
-   public long getRegion() {
+   public int getRegion() {
       return region;
    }
 
-   public boolean getBooleanValue() {
-      return booleanValue;
+   public boolean getPassive() {
+      return passive;
    }
 
    public AttributeHandleSet getAttributes() {
       return attributes;
    }
 
-   public void setObjectClass(long newObjectClass) {
+   public void setObjectClass(int newObjectClass) {
       this.objectClass = newObjectClass;
    }
 
-   public void setRegion(long newRegion) {
+   public void setRegion(int newRegion) {
       this.region = newRegion;
    }
 
-   public void setBooleanValue(boolean newBooleanValue) {
-      this.booleanValue = newBooleanValue;
+   public void setPassive(boolean newPassive) {
+      this.passive = newPassive;
    }
 
    public void setAttributes(AttributeHandleSet newAttributes) {

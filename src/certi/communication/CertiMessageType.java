@@ -25,13 +25,16 @@ import java.util.HashMap;
  * <p><code>CertiMessageType</code> represents the type of the messages which is exchanged between the federate and the RTIA.
  * The type of the message is a request from the Java federate or from the RTIA for the other one.</p>
  *
- * @author apancik@gmail.com
- * @author <a href = "mailto:yannick.bisiaux@supaero.fr">Yannick Bisiaux</a>, <a href = "mailto:ronan.bossard@supaero.fr">Ronan Bossard</a>, <a href = "mailto:samuel.reese@supaero.fr">Samuel Reese</a>
- * @version 1.0
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
+ * @author <a href = "mailto:yannick.bisiaux@supaero.fr">Yannick Bisiaux</a>
+ * @author <a href = "mailto:ronan.bossard@supaero.fr">Ronan Bossard</a>
+ * @author <a href = "mailto:samuel.reese@supaero.fr">Samuel Reese</a>
+ * @version 3.3.3
  */
 public enum CertiMessageType {
 
     NOT_USED,
+    OPEN_CONNEXION,
     CLOSE_CONNEXION,
     // gestion federation
     CREATE_FEDERATION_EXECUTION,
@@ -181,10 +184,9 @@ public enum CertiMessageType {
     DISABLE_INTERACTION_RELEVANCE_ADVISORY_SWITCH,
     TICK_REQUEST,
     TICK_REQUEST_NEXT,
-    TICK_REQUEST_STOP,
-    LAST;
-    /**<p>Makes a HashMap between the <code>int</code> which corresponds with the <code>CertiMessageType</code> and the <code>CertiMessageType</code> itself.</p>
-     * <p>For instance, <code>CertiMessageType.reverseType.get(1)</code> will return the <code>CertiMessageType</code> CREATE_FEDERATION_EXECUTION.</p>
+    TICK_REQUEST_STOP;
+    /**<p>Constructs a HashMap between the <code>int</code> which corresponds to the <code>CertiMessageType</code> and the <code>CertiMessageType</code> itself.</p>
+     * <p>For instance, <code>CertiMessageType.reverseType.get(1)</code> will return the <code>CertiMessageType</code> CLOSE_CONNEXION.</p>
      */
     public static HashMap<Integer, CertiMessageType> reverseType = new HashMap<Integer, CertiMessageType>();
 
@@ -205,7 +207,7 @@ public enum CertiMessageType {
     }
 
     /**Returns the <code>int</code> which corresponds with the <code>CertiMessageType</code>.
-     * @return the <code>int</code>
+     * @return the <code>int</code> representing the <code>CertiMessageType</code>
      */
     public int getType() {
         return this.ordinal();

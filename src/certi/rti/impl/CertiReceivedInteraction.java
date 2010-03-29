@@ -26,7 +26,7 @@ import hla.rti.SuppliedAttributes;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiReceivedInteraction implements ReceivedInteraction {
 

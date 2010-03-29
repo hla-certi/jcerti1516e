@@ -19,29 +19,15 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class ChangeAttributeTransportationType extends CertiMessage {
-   private long transport;
-   private long order;
-   private long object;
+   private short transportationType;
+   private short orderType;
+   private int object;
    private AttributeHandleSet attributes;
 
    public ChangeAttributeTransportationType() {
@@ -52,8 +38,8 @@ public class ChangeAttributeTransportationType extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(transport);
-      messageBuffer.write(order);
+      messageBuffer.write(transportationType);
+      messageBuffer.write(orderType);
       messageBuffer.write(object);
       messageBuffer.write(attributes);
    }
@@ -62,26 +48,26 @@ public class ChangeAttributeTransportationType extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      transport = messageBuffer.readLong();
-      order = messageBuffer.readLong();
-      object = messageBuffer.readLong();
+      transportationType = messageBuffer.readShort();
+      orderType = messageBuffer.readShort();
+      object = messageBuffer.readInt();
       attributes = messageBuffer.readAttributeHandleSet();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", transport: " + transport + ", order: " + order + ", object: " + object + ", attributes: " + attributes);
+      return (super.toString() + ", transportationType: " + transportationType + ", orderType: " + orderType + ", object: " + object + ", attributes: " + attributes);
    }
 
-   public long getTransport() {
-      return transport;
+   public short getTransportationType() {
+      return transportationType;
    }
 
-   public long getOrder() {
-      return order;
+   public short getOrderType() {
+      return orderType;
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
@@ -89,15 +75,15 @@ public class ChangeAttributeTransportationType extends CertiMessage {
       return attributes;
    }
 
-   public void setTransport(long newTransport) {
-      this.transport = newTransport;
+   public void setTransportationType(short newTransportationType) {
+      this.transportationType = newTransportationType;
    }
 
-   public void setOrder(long newOrder) {
-      this.order = newOrder;
+   public void setOrderType(short newOrderType) {
+      this.orderType = newOrderType;
    }
 
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 

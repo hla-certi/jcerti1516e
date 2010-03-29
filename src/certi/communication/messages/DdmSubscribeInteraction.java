@@ -19,29 +19,14 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class DdmSubscribeInteraction extends CertiMessage {
-   private long interactionClass;
-   private long region;
-   private boolean booleanValue;
+   private int interactionClass;
+   private int region;
+   private boolean passive;
 
    public DdmSubscribeInteraction() {
       super(CertiMessageType.DDM_SUBSCRIBE_INTERACTION);
@@ -53,45 +38,45 @@ public class DdmSubscribeInteraction extends CertiMessage {
 
       messageBuffer.write(interactionClass);
       messageBuffer.write(region);
-      messageBuffer.write(booleanValue);
+      messageBuffer.write(passive);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      interactionClass = messageBuffer.readLong();
-      region = messageBuffer.readLong();
-      booleanValue = messageBuffer.readBoolean();
+      interactionClass = messageBuffer.readInt();
+      region = messageBuffer.readInt();
+      passive = messageBuffer.readBoolean();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", region: " + region + ", booleanValue: " + booleanValue);
+      return (super.toString() + ", interactionClass: " + interactionClass + ", region: " + region + ", passive: " + passive);
    }
 
-   public long getInteractionClass() {
+   public int getInteractionClass() {
       return interactionClass;
    }
 
-   public long getRegion() {
+   public int getRegion() {
       return region;
    }
 
-   public boolean getBooleanValue() {
-      return booleanValue;
+   public boolean getPassive() {
+      return passive;
    }
 
-   public void setInteractionClass(long newInteractionClass) {
+   public void setInteractionClass(int newInteractionClass) {
       this.interactionClass = newInteractionClass;
    }
 
-   public void setRegion(long newRegion) {
+   public void setRegion(int newRegion) {
       this.region = newRegion;
    }
 
-   public void setBooleanValue(boolean newBooleanValue) {
-      this.booleanValue = newBooleanValue;
+   public void setPassive(boolean newPassive) {
+      this.passive = newPassive;
    }
 
 }

@@ -23,7 +23,7 @@ import hla.rti.LogicalTimeInterval;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiLogicalTimeInterval implements LogicalTimeInterval, Comparable<CertiLogicalTimeInterval> {
 

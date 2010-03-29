@@ -19,55 +19,32 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
+import certi.communication.*;
 
 public class AnnounceSynchronizationPoint extends CertiMessage {
 
-    private String label;
-    private byte[] tag;
+   public AnnounceSynchronizationPoint() {
+      super(CertiMessageType.ANNOUNCE_SYNCHRONIZATION_POINT);
+   }
 
-    public AnnounceSynchronizationPoint() {
-        super(CertiMessageType.ANNOUNCE_SYNCHRONIZATION_POINT);
-    }
+   @Override
+   public void writeMessage(MessageBuffer messageBuffer) {
+      super.writeMessage(messageBuffer); //Header
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+   }
 
-        messageBuffer.write(label);
-        messageBuffer.writeBytesWithSize(tag);
-    }
+   @Override
+   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+      super.readMessage(messageBuffer); //Header 
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+   }
 
-        label = messageBuffer.readString();
-        tag = messageBuffer.readBytesWithSize();
-    }
+   @Override
+   public String toString() {
+      return (super.toString());
+   }
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", label: " + label + ", tag: " + tag);
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public byte[] getTag() {
-        return tag;
-    }
-
-    public void setLabel(String newLabel) {
-        this.label = newLabel;
-    }
-
-    public void setTag(byte[] newTag) {
-        this.tag = newTag;
-    }
 }
 

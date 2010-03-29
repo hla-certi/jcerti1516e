@@ -27,10 +27,9 @@ import java.util.Iterator;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiAttributeHandleSet extends HashSet<Integer> implements AttributeHandleSet {
-
 
     public void add(int handle) throws AttributeNotDefined {
         super.add(handle);

@@ -19,28 +19,15 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
+import certi.communication.*;
 import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.rti.impl.*;
 
 public class DdmModifyRegion extends CertiMessage {
-   private long region;
-   private List<CertiExtent> extents;
+   private int region;
+   private List<CertiExtent> extentSet;
 
    public DdmModifyRegion() {
       super(CertiMessageType.DDM_MODIFY_REGION);
@@ -51,36 +38,36 @@ public class DdmModifyRegion extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(region);
-      messageBuffer.write(extents);
+      messageBuffer.write(extentSet);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      region = messageBuffer.readLong();
-      extents = messageBuffer.readExtents();
+      region = messageBuffer.readInt();
+      extentSet = messageBuffer.readExtents();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", region: " + region + ", extents: " + extents);
+      return (super.toString() + ", region: " + region + ", extentSet: " + extentSet);
    }
 
-   public long getRegion() {
+   public int getRegion() {
       return region;
    }
 
-   public List<CertiExtent> getExtents() {
-      return extents;
+   public List<CertiExtent> getExtentSet() {
+      return extentSet;
    }
 
-   public void setRegion(long newRegion) {
+   public void setRegion(int newRegion) {
       this.region = newRegion;
    }
 
-   public void setExtents(List<CertiExtent> newExtents) {
-      this.extents = newExtents;
+   public void setExtentSet(List<CertiExtent> newExtentSet) {
+      this.extentSet = newExtentSet;
    }
 
 }

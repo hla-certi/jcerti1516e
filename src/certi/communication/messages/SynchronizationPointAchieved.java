@@ -19,27 +19,11 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class SynchronizationPointAchieved extends CertiMessage {
-   private String label;
 
    public SynchronizationPointAchieved() {
       super(CertiMessageType.SYNCHRONIZATION_POINT_ACHIEVED);
@@ -49,27 +33,17 @@ public class SynchronizationPointAchieved extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(label);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      label = messageBuffer.readString();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", label: " + label);
-   }
-
-   public String getLabel() {
-      return label;
-   }
-
-   public void setLabel(String newLabel) {
-      this.label = newLabel;
+      return (super.toString());
    }
 
 }

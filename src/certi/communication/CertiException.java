@@ -17,50 +17,43 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 //
 // ----------------------------------------------------------------------------
-
 package certi.communication;
 
 /**
+ * Class that describes the exception received with <code>CertiMessage</code>. It contains the type and reason of exception.
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
+ * @version 3.3.3
  */
 public class CertiException extends Exception {
 
-    private CertiMessageType messageType;
     private CertiExceptionType exceptionType;
     private String reason;
 
     /**
+     * Constructs new <code>CertiException</code> based on supplied parameters
      *
-     * @param messageType
      * @param exceptionType
      * @param reason
      */
-    public CertiException(CertiMessageType messageType, CertiExceptionType exceptionType, String reason) {
-        this.messageType = messageType;
+    public CertiException(CertiExceptionType exceptionType, String reason) {
         this.exceptionType = exceptionType;
         this.reason = reason;
     }
 
     /**
+     * Returns the type of the expection
      *
-     * @return
-     */
-    public CertiMessageType getMessageType() {
-        return messageType;
-    }
-
-    /**
-     *
-     * @return
+     * @return the type
      */
     public CertiExceptionType getExceptionType() {
         return exceptionType;
     }
 
     /**
+     * Returns the reason of exception
      *
-     * @return
+     * @return the reason
      */
     public String getReason() {
         return reason;

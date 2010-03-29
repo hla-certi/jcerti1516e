@@ -19,28 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class EnableTimeRegulation extends CertiMessage {
-   private boolean booleanValue;
-   private LogicalTimeInterval lookahead;
+   private LogicalTimeInterval lookAhead;
 
    public EnableTimeRegulation() {
       super(CertiMessageType.ENABLE_TIME_REGULATION);
@@ -50,38 +35,29 @@ public class EnableTimeRegulation extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(booleanValue);
-      messageBuffer.write(lookahead);
+      messageBuffer.write(lookAhead);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      booleanValue = messageBuffer.readBoolean();
-      lookahead = messageBuffer.readLogicalTimeInterval();
+      lookAhead = messageBuffer.readLogicalTimeInterval();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", booleanValue: " + booleanValue + ", lookahead: " + lookahead);
+      return (super.toString() + ", LogicalTimeInterval: " + lookAhead);
    }
 
-   public boolean getBooleanValue() {
-      return booleanValue;
-   }
+    public LogicalTimeInterval getLookAhead() {
+        return lookAhead;
+    }
 
-   public LogicalTimeInterval getLookahead() {
-      return lookahead;
-   }
+    public void setLookAhead(LogicalTimeInterval lookAhead) {
+        this.lookAhead = lookAhead;
+    }
 
-   public void setBooleanValue(boolean newBooleanValue) {
-      this.booleanValue = newBooleanValue;
-   }
-
-   public void setLookahead(LogicalTimeInterval newLookahead) {
-      this.lookahead = newLookahead;
-   }
-
+   
 }
 

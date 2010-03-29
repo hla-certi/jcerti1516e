@@ -35,11 +35,14 @@ import java.util.List;
  *
  * The Region is conceptually an array, with the extents addressed
  * by index running from 0 to getNumberOfExtents()-1.
+ *
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
+ * @version 3.3.3
  */
 public class CertiRegion implements Region {
 
     private int spaceHandle;
-    private long handle;
+    private int handle;
     private List<CertiExtent> extents;
 
     /**
@@ -48,10 +51,14 @@ public class CertiRegion implements Region {
      * @param space
      * @param numberOfExtends
      */
-    public CertiRegion(long handle, int space, int numberOfExtends) {
+    public CertiRegion(int handle, int space, int numberOfExtends) {
         this.handle = handle;
         this.spaceHandle = space;
         this.extents = new ArrayList<CertiExtent>(numberOfExtends);
+        
+        for (int i = 0; i < numberOfExtends; i++) {
+            extents.add(new CertiExtent());
+        }
     }
 
     /**
@@ -130,7 +137,7 @@ public class CertiRegion implements Region {
      *
      * @return
      */
-    public long getHandle() {
+    public int getHandle() {
         return handle;
     }
 
@@ -138,7 +145,7 @@ public class CertiRegion implements Region {
      *
      * @param handle
      */
-    public void setHandle(long handle) {
+    public void setHandle(int handle) {
         this.handle = handle;
     }
 
@@ -157,6 +164,4 @@ public class CertiRegion implements Region {
     public void setExtents(List<CertiExtent> extents) {
         this.extents = extents;
     }
-
-    
 }

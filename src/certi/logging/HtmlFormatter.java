@@ -27,7 +27,7 @@ import java.util.logging.LogRecord;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class HtmlFormatter extends Formatter {
 

@@ -19,29 +19,14 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class AttributeIsNotOwned extends CertiMessage {
-   private long object;
-   private short attribute;
-   private short federate;
+   private int object;
+   private int attribute;
+   private int federate;
 
    public AttributeIsNotOwned() {
       super(CertiMessageType.ATTRIBUTE_IS_NOT_OWNED);
@@ -52,17 +37,17 @@ public class AttributeIsNotOwned extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(object);
-       messageBuffer.write(attribute);
-       messageBuffer.write(federate);
+      messageBuffer.write(attribute);
+      messageBuffer.write(federate);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      object = messageBuffer.readLong();
-      attribute = messageBuffer.readShort();
-      federate = messageBuffer.readShort();
+      object = messageBuffer.readInt();
+      attribute = messageBuffer.readInt();
+      federate = messageBuffer.readInt();
    }
 
    @Override
@@ -70,27 +55,27 @@ public class AttributeIsNotOwned extends CertiMessage {
       return (super.toString() + ", object: " + object + ", attribute: " + attribute + ", federate: " + federate);
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
-   public short getAttribute() {
+   public int getAttribute() {
       return attribute;
    }
 
-   public short getFederate() {
+   public int getFederate() {
       return federate;
    }
 
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 
-   public void setAttribute(short newAttribute) {
+   public void setAttribute(int newAttribute) {
       this.attribute = newAttribute;
    }
 
-   public void setFederate(short newFederate) {
+   public void setFederate(int newFederate) {
       this.federate = newFederate;
    }
 

@@ -19,29 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class GetObjectClassName extends CertiMessage {
-   private long objectClass;
-   private String name;
-   private short attribute;
+   private int objectClass;
+   private String className;
 
    public GetObjectClassName() {
       super(CertiMessageType.GET_OBJECT_CLASS_NAME);
@@ -52,46 +36,36 @@ public class GetObjectClassName extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(objectClass);
-      messageBuffer.write(name);
-       messageBuffer.write(attribute);
+      messageBuffer.write(className);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      objectClass = messageBuffer.readLong();
-      name = messageBuffer.readString();
-      attribute = messageBuffer.readShort();
+      objectClass = messageBuffer.readInt();
+      className = messageBuffer.readString();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", name: " + name + ", attribute: " + attribute);
+      return (super.toString() + ", objectClass: " + objectClass + ", className: " + className);
    }
 
-   public long getObjectClass() {
+   public int getObjectClass() {
       return objectClass;
    }
 
-   public String getName() {
-      return name;
+   public String getClassName() {
+      return className;
    }
 
-   public short getAttribute() {
-      return attribute;
-   }
-
-   public void setObjectClass(long newObjectClass) {
+   public void setObjectClass(int newObjectClass) {
       this.objectClass = newObjectClass;
    }
 
-   public void setName(String newName) {
-      this.name = newName;
-   }
-
-   public void setAttribute(short newAttribute) {
-      this.attribute = newAttribute;
+   public void setClassName(String newClassName) {
+      this.className = newClassName;
    }
 
 }

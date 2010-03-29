@@ -19,31 +19,16 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class DdmRegisterObject extends CertiMessage {
-   private long objectClass;
-   private long object;
-   private byte[] tag;
+   private int objectClass;
+   private int object;
+   private String objectInstanceName;
    private AttributeHandleSet attributes;
-   private List<Long> regions;
 
    public DdmRegisterObject() {
       super(CertiMessageType.DDM_REGISTER_OBJECT);
@@ -55,65 +40,63 @@ public class DdmRegisterObject extends CertiMessage {
 
       messageBuffer.write(objectClass);
       messageBuffer.write(object);
-      messageBuffer.writeBytesWithSize(tag);
+      if(objectInstanceName != null){
+         messageBuffer.write(true);
+         messageBuffer.write(objectInstanceName);
+      } else {
+         messageBuffer.write(false);
+      }
       messageBuffer.write(attributes);
-      messageBuffer.writeRegions(regions);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      objectClass = messageBuffer.readLong();
-      object = messageBuffer.readLong();
-      tag = messageBuffer.readBytesWithSize();
+      objectClass = messageBuffer.readInt();
+      object = messageBuffer.readInt();
+      boolean hasObjectInstanceName = messageBuffer.readBoolean();
+      if(hasObjectInstanceName){
+         objectInstanceName = messageBuffer.readString();
+      }
       attributes = messageBuffer.readAttributeHandleSet();
-      regions = messageBuffer.readRegions();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", tag: " + tag + ", attributes: " + attributes + ", regions: " + regions);
+      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectInstanceName: " + objectInstanceName + ", attributes: " + attributes);
    }
 
-   public long getObjectClass() {
+   public int getObjectClass() {
       return objectClass;
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
-   public byte[] getTag() {
-      return tag;
+   public String getObjectInstanceName() {
+      return objectInstanceName;
    }
 
    public AttributeHandleSet getAttributes() {
       return attributes;
    }
 
-   public List<Long> getRegions() {
-      return regions;
-   }
-
-   public void setObjectClass(long newObjectClass) {
+   public void setObjectClass(int newObjectClass) {
       this.objectClass = newObjectClass;
    }
 
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 
-   public void setTag(byte[] newTag) {
-      this.tag = newTag;
+   public void setObjectInstanceName(String newObjectInstanceName) {
+      this.objectInstanceName = newObjectInstanceName;
    }
 
    public void setAttributes(AttributeHandleSet newAttributes) {
       this.attributes = newAttributes;
-   }
-
-   public void setRegions(List<Long> newRegions) {
-      this.regions = newRegions;
    }
 
 }

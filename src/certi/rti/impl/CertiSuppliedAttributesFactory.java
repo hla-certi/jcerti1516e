@@ -24,7 +24,7 @@ import hla.rti.SuppliedAttributesFactory;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiSuppliedAttributesFactory implements SuppliedAttributesFactory{
 

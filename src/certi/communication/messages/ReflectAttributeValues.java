@@ -19,113 +19,77 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class ReflectAttributeValues extends CertiMessage {
-   private long objectClass;
-   private long object;
-   private byte[] tag;
-   private ReflectedAttributes reflectedAttributes;
-   private int resignAction;
-   private boolean booleanValue;
 
-   public ReflectAttributeValues() {
-      super(CertiMessageType.REFLECT_ATTRIBUTE_VALUES);
-   }
+    private int objectClass;
+    private int object;
+    private ReflectedAttributes reflectedAttributes;
+    private EventRetractionHandle EventRetractionHandle;
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+    public ReflectAttributeValues() {
+        super(CertiMessageType.REFLECT_ATTRIBUTE_VALUES);
+    }
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(object);
-      messageBuffer.writeBytesWithSize(tag);
-      messageBuffer.write(reflectedAttributes);
-      messageBuffer.write(resignAction);
-      messageBuffer.write(booleanValue);
-   }
+    public ReflectedAttributes getReflectedAttributes() {
+        return reflectedAttributes;
+    }
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+    public void setReflectedAttributes(ReflectedAttributes reflectedAttributes) {
+        this.reflectedAttributes = reflectedAttributes;
+    }
 
-      objectClass = messageBuffer.readLong();
-      object = messageBuffer.readLong();
-      tag = messageBuffer.readBytesWithSize();
-      reflectedAttributes = messageBuffer.readReflectedAttributes();
-      resignAction = messageBuffer.readInt();
-      booleanValue = messageBuffer.readBoolean();
-   }
+    @Override
+    public void writeMessage(MessageBuffer messageBuffer) {
+        super.writeMessage(messageBuffer); //Header
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", tag: " + tag + ", reflectedAttributes: " + reflectedAttributes + ", resignAction: " + resignAction + ", booleanValue: " + booleanValue);
-   }
+        messageBuffer.write(objectClass);
+        messageBuffer.write(object);
+        messageBuffer.write(reflectedAttributes);
+        
+        if (EventRetractionHandle == null) {
+            messageBuffer.write(false);
+        } else {
+            messageBuffer.write(true);
+            messageBuffer.write(EventRetractionHandle);
+        }
+    }
 
-   public long getObjectClass() {
-      return objectClass;
-   }
+    @Override
+    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+        super.readMessage(messageBuffer); //Header
 
-   public long getObject() {
-      return object;
-   }
+        objectClass = messageBuffer.readInt();
+        object = messageBuffer.readInt();
+        reflectedAttributes = messageBuffer.readReflectedAttributes();
 
-   public byte[] getTag() {
-      return tag;
-   }
+        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+        if (hasEventRetractionHandle) {
+            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+        }
+    }
 
-   public ReflectedAttributes getReflectedAttributes() {
-      return reflectedAttributes;
-   }
+    @Override
+    public String toString() {
+        return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", AttributeHandleValuePairSet: " + reflectedAttributes + ", EventRetractionHandle: " + EventRetractionHandle);
+    }
 
-   public int getResignAction() {
-      return resignAction;
-   }
+    public int getObjectClass() {
+        return objectClass;
+    }
 
-   public boolean getBooleanValue() {
-      return booleanValue;
-   }
+    public int getObject() {
+        return object;
+    }
 
-   public void setObjectClass(long newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+    public void setObjectClass(int newObjectClass) {
+        this.objectClass = newObjectClass;
+    }
 
-   public void setObject(long newObject) {
-      this.object = newObject;
-   }
-
-   public void setTag(byte[] newTag) {
-      this.tag = newTag;
-   }
-
-   public void setReflectedAttributes(ReflectedAttributes newReflectedAttributes) {
-      this.reflectedAttributes = newReflectedAttributes;
-   }
-
-   public void setResignAction(int newResignAction) {
-      this.resignAction = newResignAction;
-   }
-
-   public void setBooleanValue(boolean newBooleanValue) {
-      this.booleanValue = newBooleanValue;
-   }
-
+    public void setObject(int newObject) {
+        this.object = newObject;
+    }
 }
 

@@ -19,28 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class GetObjectClass extends CertiMessage {
-   private long object;
-   private long objectClass;
+   private int objectClass;
+   private int object;
 
    public GetObjectClass() {
       super(CertiMessageType.GET_OBJECT_CLASS);
@@ -50,37 +35,37 @@ public class GetObjectClass extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(object);
       messageBuffer.write(objectClass);
+      messageBuffer.write(object);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      object = messageBuffer.readLong();
-      objectClass = messageBuffer.readLong();
+      objectClass = messageBuffer.readInt();
+      object = messageBuffer.readInt();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", object: " + object + ", objectClass: " + objectClass);
+      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object);
    }
 
-   public long getObject() {
-      return object;
-   }
-
-   public long getObjectClass() {
+   public int getObjectClass() {
       return objectClass;
    }
 
-   public void setObject(long newObject) {
-      this.object = newObject;
+   public int getObject() {
+      return object;
    }
 
-   public void setObjectClass(long newObjectClass) {
+   public void setObjectClass(int newObjectClass) {
       this.objectClass = newObjectClass;
+   }
+
+   public void setObject(int newObject) {
+      this.object = newObject;
    }
 
 }

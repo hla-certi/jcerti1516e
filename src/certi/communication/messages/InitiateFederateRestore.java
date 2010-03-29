@@ -19,28 +19,12 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class InitiateFederateRestore extends CertiMessage {
-   private short federate;
-   private String label;
+   private int federate;
 
    public InitiateFederateRestore() {
       super(CertiMessageType.INITIATE_FEDERATE_RESTORE);
@@ -50,37 +34,27 @@ public class InitiateFederateRestore extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-       messageBuffer.write(federate);
-      messageBuffer.write(label);
+      messageBuffer.write(federate);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      federate = messageBuffer.readShort();
-      label = messageBuffer.readString();
+      federate = messageBuffer.readInt();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", federate: " + federate + ", label: " + label);
+      return (super.toString() + ", federate: " + federate);
    }
 
-   public short getFederate() {
+   public int getFederate() {
       return federate;
    }
 
-   public String getLabel() {
-      return label;
-   }
-
-   public void setFederate(short newFederate) {
+   public void setFederate(int newFederate) {
       this.federate = newFederate;
-   }
-
-   public void setLabel(String newLabel) {
-      this.label = newLabel;
    }
 
 }

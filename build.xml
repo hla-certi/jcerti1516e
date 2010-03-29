@@ -36,7 +36,7 @@
 				<path refid="lib.rpc.classpath" />
 			</classpath>
 			-->
-			<include name="**/*.java" />
+			<!-- <compilerarg value="-Xlint:unchecked"/> -->			
 		</javac>
 		<!--
 		<copy todir="${class.dir}">
@@ -96,18 +96,7 @@ JAR List :
 						maxmemory="128m"
 					/>
 	</target>
-	
-	<!-- Federate launchers-->
-
-	<property name="jcerti.opt" value="" />
-
-	<target name="federate-run" description="o run the jcerti example">
-		<java classname="whatever.path.you.want" fork="true">
-			<classpath refid="jcerti.classpath" />
-			<arg value="${jcerti.opt}" />
-			<arg value="1" />			
-		</java>
-	</target>
+		
 		
 	<!-- Tests -->
 	
@@ -116,6 +105,10 @@ JAR List :
 	<property name="test.report.dir" value="${build.dir}/report_test" />
 	<property name="test.work.dir" value="${test.report.dir}/work" />
 	<property name="test.html.dir" value="${test.report.dir}/html" />
+	
+	<path id="jcerti.test.classpath">		
+			<pathelement location="${test.class.dir}" />
+	</path>
 
 	<target name="test" depends="create-jar, test-clean" description="o run JUnit tests">
 		<mkdir dir="${test.class.dir}" />
@@ -144,6 +137,28 @@ JAR List :
 		</junit>
 		-->
 	</target>
+	
+	<!-- Test Federate launchers-->
+
+		<property name="jcerti.opt" value="" />
+
+		<target name="UAVSend-run" description="o run the jcerti UAV Send example">
+			<java classname="certi.UavSend" fork="true">
+				<classpath refid="jcerti.classpath" />
+				<classpath refid="jcerti.test.classpath" />
+				<arg value="${jcerti.opt}" />
+				<arg value="1" />			
+			</java>
+		</target>
+		
+		<target name="UAVReceive-run" description="o run the jcerti UAV Receive example">
+				<java classname="certi.UavReceive" fork="true">
+					<classpath refid="jcerti.classpath" />
+					<classpath refid="jcerti.test.classpath" />
+					<arg value="${jcerti.opt}" />
+					<arg value="1" />			
+				</java>
+		</target>
 
 	<!--
 	<target name="test-report" depends="test">

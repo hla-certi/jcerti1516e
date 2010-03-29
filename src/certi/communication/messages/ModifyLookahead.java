@@ -19,27 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class ModifyLookahead extends CertiMessage {
-   private LogicalTimeInterval lookahead;
+   private LogicalTimeInterval lookAhead;
 
    public ModifyLookahead() {
       super(CertiMessageType.MODIFY_LOOKAHEAD);
@@ -49,27 +35,29 @@ public class ModifyLookahead extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(lookahead);
+      messageBuffer.write(lookAhead);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      lookahead = messageBuffer.readLogicalTimeInterval();
+      lookAhead = messageBuffer.readLogicalTimeInterval();
    }
+
+    public LogicalTimeInterval getLookAhead() {
+        return lookAhead;
+    }
+
+    public void setLookAhead(LogicalTimeInterval lookAhead) {
+        this.lookAhead = lookAhead;
+    }
+
+   
 
    @Override
    public String toString() {
-      return (super.toString() + ", lookahead: " + lookahead);
-   }
-
-   public LogicalTimeInterval getLookahead() {
-      return lookahead;
-   }
-
-   public void setLookahead(LogicalTimeInterval newLookahead) {
-      this.lookahead = newLookahead;
+      return (super.toString() + ", LogicalTimeInterval: " + lookAhead);
    }
 
 }

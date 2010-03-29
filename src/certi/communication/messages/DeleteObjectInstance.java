@@ -19,124 +19,77 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class DeleteObjectInstance extends CertiMessage {
-   private long objectClass;
-   private long object;
-   private byte[] tag;
-   private String name;
-   private String label;
-   private int resignAction;
-   private boolean booleanValue;
 
-   public DeleteObjectInstance() {
-      super(CertiMessageType.DELETE_OBJECT_INSTANCE);
-   }
+    private int objectClass;
+    private int object;
+    private String objectName;
+    private EventRetractionHandle EventRetractionHandle;
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+    public DeleteObjectInstance() {
+        super(CertiMessageType.DELETE_OBJECT_INSTANCE);
+    }
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(object);
-      messageBuffer.writeBytesWithSize(tag);
-      messageBuffer.write(name);
-      messageBuffer.write(label);
-      messageBuffer.write(resignAction);
-      messageBuffer.write(booleanValue);
-   }
+    @Override
+    public void writeMessage(MessageBuffer messageBuffer) {
+        super.writeMessage(messageBuffer); //Header
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+        messageBuffer.write(objectClass);
+        messageBuffer.write(object);
+        messageBuffer.write(objectName);
 
-      objectClass = messageBuffer.readLong();
-      object = messageBuffer.readLong();
-      tag = messageBuffer.readBytesWithSize();
-      name = messageBuffer.readString();
-      label = messageBuffer.readString();
-      resignAction = messageBuffer.readInt();
-      booleanValue = messageBuffer.readBoolean();
-   }
+        if (EventRetractionHandle == null) {
+            messageBuffer.write(false);
+        } else {
+            messageBuffer.write(true);
+            messageBuffer.write(EventRetractionHandle);
+        }
+    }
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", tag: " + tag + ", name: " + name + ", label: " + label + ", resignAction: " + resignAction + ", booleanValue: " + booleanValue);
-   }
+    @Override
+    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+        super.readMessage(messageBuffer); //Header
 
-   public long getObjectClass() {
-      return objectClass;
-   }
+        objectClass = messageBuffer.readInt();
+        object = messageBuffer.readInt();
+        objectName = messageBuffer.readString();
 
-   public long getObject() {
-      return object;
-   }
+        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+        if (hasEventRetractionHandle) {
+            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+        }
+    }
 
-   public byte[] getTag() {
-      return tag;
-   }
+    @Override
+    public String toString() {
+        return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectName: " + objectName + ", EventRetractionHandle: " + EventRetractionHandle);
+    }
 
-   public String getName() {
-      return name;
-   }
+    public int getObjectClass() {
+        return objectClass;
+    }
 
-   public String getLabel() {
-      return label;
-   }
+    public int getObject() {
+        return object;
+    }
 
-   public int getResignAction() {
-      return resignAction;
-   }
+    public String getObjectName() {
+        return objectName;
+    }
 
-   public boolean getBooleanValue() {
-      return booleanValue;
-   }
+    public void setObjectClass(int newObjectClass) {
+        this.objectClass = newObjectClass;
+    }
 
-   public void setObjectClass(long newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+    public void setObject(int newObject) {
+        this.object = newObject;
+    }
 
-   public void setObject(long newObject) {
-      this.object = newObject;
-   }
-
-   public void setTag(byte[] newTag) {
-      this.tag = newTag;
-   }
-
-   public void setName(String newName) {
-      this.name = newName;
-   }
-
-   public void setLabel(String newLabel) {
-      this.label = newLabel;
-   }
-
-   public void setResignAction(int newResignAction) {
-      this.resignAction = newResignAction;
-   }
-
-   public void setBooleanValue(boolean newBooleanValue) {
-      this.booleanValue = newBooleanValue;
-   }
-
+    public void setObjectName(String newObjectName) {
+        this.objectName = newObjectName;
+    }
 }
 

@@ -19,80 +19,63 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class GetParameterHandle extends CertiMessage {
-   private long interactionClass;
-   private String name;
-   private short parameter;
 
-   public GetParameterHandle() {
-      super(CertiMessageType.GET_PARAMETER_HANDLE);
-   }
+    private int interactionClass;
+    private String parameterName;
+    private int parameter = 0;
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+    public GetParameterHandle() {
+        super(CertiMessageType.GET_PARAMETER_HANDLE);
+    }
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.write(name);
-       messageBuffer.write(parameter);
-   }
+    @Override
+    public void writeMessage(MessageBuffer messageBuffer) {
+        super.writeMessage(messageBuffer); //Header
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+        messageBuffer.write(interactionClass);
+        messageBuffer.write(parameterName);
+        messageBuffer.write(parameter);
+    }
 
-      interactionClass = messageBuffer.readLong();
-      name = messageBuffer.readString();
-      parameter = messageBuffer.readShort();
-   }
+    @Override
+    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+        super.readMessage(messageBuffer); //Header
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", name: " + name + ", parameter: " + parameter);
-   }
+        interactionClass = messageBuffer.readInt();
+        parameterName = messageBuffer.readString();
+        parameter = messageBuffer.readInt();
+    }
 
-   public long getInteractionClass() {
-      return interactionClass;
-   }
+    @Override
+    public String toString() {
+        return (super.toString() + ", interactionClass: " + interactionClass + ", parameterName: " + parameterName + ", parameter: " + parameter);
+    }
 
-   public String getName() {
-      return name;
-   }
+    public int getInteractionClass() {
+        return interactionClass;
+    }
 
-   public short getParameter() {
-      return parameter;
-   }
+    public String getParameterName() {
+        return parameterName;
+    }
 
-   public void setInteractionClass(long newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+    public int getParameter() {
+        return parameter;
+    }
 
-   public void setName(String newName) {
-      this.name = newName;
-   }
+    public void setInteractionClass(int newInteractionClass) {
+        this.interactionClass = newInteractionClass;
+    }
 
-   public void setParameter(short newParameter) {
-      this.parameter = newParameter;
-   }
+    public void setParameterName(String newParameterName) {
+        this.parameterName = newParameterName;
+    }
 
+    public void setParameter(int newParameter) {
+        this.parameter = newParameter;
+    }
 }
 

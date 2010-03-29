@@ -19,66 +19,65 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
+import certi.communication.*;
 
 public class JoinFederationExecution extends CertiMessage {
+   private int federate;
+   private String federationName;
+   private String federateName;
 
-    private short federate;
-    private String federationName;
-    private String federateName;
+   public JoinFederationExecution() {
+      super(CertiMessageType.JOIN_FEDERATION_EXECUTION);
+   }
 
-    public JoinFederationExecution() {
-        super(CertiMessageType.JOIN_FEDERATION_EXECUTION);
-    }
+   @Override
+   public void writeMessage(MessageBuffer messageBuffer) {
+      super.writeMessage(messageBuffer); //Header
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+      messageBuffer.write(federate);
+      messageBuffer.write(federationName);
+      messageBuffer.write(federateName);
+   }
 
-        messageBuffer.write(federate);
-        messageBuffer.write(federationName);
-        messageBuffer.write(federateName);
-    }
+   @Override
+   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+      super.readMessage(messageBuffer); //Header 
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+      federate = messageBuffer.readInt();
+      federationName = messageBuffer.readString();
+      federateName = messageBuffer.readString();
+   }
 
-        federate = messageBuffer.readShort();
-        federationName = messageBuffer.readString();
-        federateName = messageBuffer.readString();
-    }
+   @Override
+   public String toString() {
+      return (super.toString() + ", federate: " + federate + ", federationName: " + federationName + ", federateName: " + federateName);
+   }
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", federate: " + federate + ", federationName: " + federationName + ", federateName: " + federateName);
-    }
+   public int getFederate() {
+      return federate;
+   }
 
-    public short getFederate() {
-        return federate;
-    }
+   public String getFederationName() {
+      return federationName;
+   }
 
-    public String getFederationName() {
-        return federationName;
-    }
+   public String getFederateName() {
+      return federateName;
+   }
 
-    public String getFederateName() {
-        return federateName;
-    }
+   public void setFederate(int newFederate) {
+      this.federate = newFederate;
+   }
 
-    public void setFederate(short newFederate) {
-        this.federate = newFederate;
-    }
+   public void setFederationName(String newFederationName) {
+      this.federationName = newFederationName;
+   }
 
-    public void setFederationName(String newFederationName) {
-        this.federationName = newFederationName;
-    }
+   public void setFederateName(String newFederateName) {
+      this.federateName = newFederateName;
+   }
 
-    public void setFederateName(String newFederateName) {
-        this.federateName = newFederateName;
-    }
 }
 

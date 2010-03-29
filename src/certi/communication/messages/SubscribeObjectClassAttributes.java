@@ -19,28 +19,14 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+
+import certi.communication.*;
+import hla.rti.*;
 
 public class SubscribeObjectClassAttributes extends CertiMessage {
-   private long objectClass;
+   private int objectClass;
    private AttributeHandleSet attributes;
+   private boolean active=true;
 
    public SubscribeObjectClassAttributes() {
       super(CertiMessageType.SUBSCRIBE_OBJECT_CLASS_ATTRIBUTES);
@@ -52,22 +38,24 @@ public class SubscribeObjectClassAttributes extends CertiMessage {
 
       messageBuffer.write(objectClass);
       messageBuffer.write(attributes);
+      messageBuffer.write(active);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      objectClass = messageBuffer.readLong();
+      objectClass = messageBuffer.readInt();
       attributes = messageBuffer.readAttributeHandleSet();
+      active = messageBuffer.readBoolean();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", attributes: " + attributes);
+      return (super.toString() + ", objectClass: " + objectClass + ", attributes: " + attributes + ", active: " + active);
    }
 
-   public long getObjectClass() {
+   public int getObjectClass() {
       return objectClass;
    }
 
@@ -75,7 +63,11 @@ public class SubscribeObjectClassAttributes extends CertiMessage {
       return attributes;
    }
 
-   public void setObjectClass(long newObjectClass) {
+   public boolean getActive() {
+      return active;
+   }
+
+   public void setObjectClass(int newObjectClass) {
       this.objectClass = newObjectClass;
    }
 
@@ -83,5 +75,8 @@ public class SubscribeObjectClassAttributes extends CertiMessage {
       this.attributes = newAttributes;
    }
 
+   public void setActive(boolean newActive) {
+      this.active = newActive;
+   }
 }
 

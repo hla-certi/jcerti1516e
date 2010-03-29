@@ -19,27 +19,12 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class DdmDeleteRegion extends CertiMessage {
-   private long region;
+   private int region;
 
    public DdmDeleteRegion() {
       super(CertiMessageType.DDM_DELETE_REGION);
@@ -56,7 +41,7 @@ public class DdmDeleteRegion extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      region = messageBuffer.readLong();
+      region = messageBuffer.readInt();
    }
 
    @Override
@@ -64,11 +49,11 @@ public class DdmDeleteRegion extends CertiMessage {
       return (super.toString() + ", region: " + region);
    }
 
-   public long getRegion() {
+   public int getRegion() {
       return region;
    }
 
-   public void setRegion(long newRegion) {
+   public void setRegion(int newRegion) {
       this.region = newRegion;
    }
 

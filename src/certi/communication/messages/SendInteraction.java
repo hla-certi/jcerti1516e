@@ -19,20 +19,16 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
+import certi.communication.*;
+import certi.rti.impl.*;
+import hla.rti.*;
 
 public class SendInteraction extends CertiMessage {
 
-    private long interactionClass;
-    private byte[] tag;
+    private int interactionClass;
     private CertiHandleValuePairCollection suppliedParameters;
-    private long region;
-    private int resignAction;
-    private boolean booleanValue;
+    private int region;
+    private EventRetractionHandle EventRetractionHandle;
 
     public SendInteraction() {
         super(CertiMessageType.SEND_INTERACTION);
@@ -43,76 +39,58 @@ public class SendInteraction extends CertiMessage {
         super.writeMessage(messageBuffer); //Header
 
         messageBuffer.write(interactionClass);
-        messageBuffer.writeBytesWithSize(tag);
         messageBuffer.write(suppliedParameters);
         messageBuffer.write(region);
-        messageBuffer.write(resignAction);
-        messageBuffer.write(booleanValue);
+
+        if (EventRetractionHandle == null) {
+            messageBuffer.write(false);
+        } else {
+            messageBuffer.write(true);
+            messageBuffer.write(EventRetractionHandle);
+        }
     }
 
     @Override
     public void readMessage(MessageBuffer messageBuffer) throws CertiException {
         super.readMessage(messageBuffer); //Header
 
-        interactionClass = messageBuffer.readLong();
-        tag = messageBuffer.readBytesWithSize();
+        interactionClass = messageBuffer.readInt();
         suppliedParameters = messageBuffer.readHandleValuePairCollection();
-        region = messageBuffer.readLong();
-        resignAction = messageBuffer.readInt();
-        booleanValue = messageBuffer.readBoolean();
+        region = messageBuffer.readInt();
+
+        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+        if (hasEventRetractionHandle) {
+            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+        }
     }
 
     @Override
     public String toString() {
-        return (super.toString() + ", interactionClass: " + interactionClass + ", tag: " + tag + ", suppliedParameters: " + suppliedParameters + ", region: " + region + ", resignAction: " + resignAction + ", booleanValue: " + booleanValue);
+        return (super.toString() + ", interactionClass: " + interactionClass + ", ParameterHandleValuePairSet: " + suppliedParameters + ", region: " + region + ", EventRetractionHandle: " + EventRetractionHandle);
     }
 
-    public long getInteractionClass() {
+    public int getInteractionClass() {
         return interactionClass;
     }
 
-    public byte[] getTag() {
-        return tag;
+    public int getRegion() {
+        return region;
+    }
+
+    public void setInteractionClass(int newInteractionClass) {
+        this.interactionClass = newInteractionClass;
+    }
+
+    public void setRegion(int newRegion) {
+        this.region = newRegion;
     }
 
     public CertiHandleValuePairCollection getSuppliedParameters() {
         return suppliedParameters;
     }
 
-    public long getRegion() {
-        return region;
-    }
-
-    public int getResignAction() {
-        return resignAction;
-    }
-
-    public boolean getBooleanValue() {
-        return booleanValue;
-    }
-
-    public void setInteractionClass(long newInteractionClass) {
-        this.interactionClass = newInteractionClass;
-    }
-
-    public void setTag(byte[] newTag) {
-        this.tag = newTag;
-    }
-
-    public void setSuppliedParameters(CertiHandleValuePairCollection newSuppliedParameters) {
-        this.suppliedParameters = newSuppliedParameters;
-    }
-
-    public void setRegion(long newRegion) {
-        this.region = newRegion;
-    }
-
-    public void setResignAction(int newResignAction) {
-        this.resignAction = newResignAction;
-    }
-
-    public void setBooleanValue(boolean newBooleanValue) {
-        this.booleanValue = newBooleanValue;
+    public void setSuppliedParameters(CertiHandleValuePairCollection suppliedParameters) {
+        this.suppliedParameters = suppliedParameters;
     }
 }
 

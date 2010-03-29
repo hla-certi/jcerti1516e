@@ -19,28 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class GetTransportationName extends CertiMessage {
-   private String name;
-   private long transport;
+   private String transportationName;
+   private short transportation;
 
    public GetTransportationName() {
       super(CertiMessageType.GET_TRANSPORTATION_NAME);
@@ -50,37 +35,37 @@ public class GetTransportationName extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(name);
-      messageBuffer.write(transport);
+      messageBuffer.write(transportationName);
+      messageBuffer.write(transportation);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      name = messageBuffer.readString();
-      transport = messageBuffer.readLong();
+      transportationName = messageBuffer.readString();
+      transportation = messageBuffer.readShort();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", name: " + name + ", transport: " + transport);
+      return (super.toString() + ", transportationName: " + transportationName + ", transportation: " + transportation);
    }
 
-   public String getName() {
-      return name;
+   public String getTransportationName() {
+      return transportationName;
    }
 
-   public long getTransport() {
-      return transport;
+   public short getTransportation() {
+      return transportation;
    }
 
-   public void setName(String newName) {
-      this.name = newName;
+   public void setTransportationName(String newTransportationName) {
+      this.transportationName = newTransportationName;
    }
 
-   public void setTransport(long newTransport) {
-      this.transport = newTransport;
+   public void setTransportation(short newTransportation) {
+      this.transportation = newTransportation;
    }
 
 }

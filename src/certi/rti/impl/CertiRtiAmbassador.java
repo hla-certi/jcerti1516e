@@ -31,6 +31,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,27 +61,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         }
     }
 
-    class SocketListener extends Thread {
-
-        private CertiRtiAmbassador rtia;
-
-        public SocketListener(CertiRtiAmbassador rtia) {
-            super("Socket listener");
-            this.rtia = rtia;
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            try {
-                rtia.socket = rtia.serverSocket.accept();
-            } catch (IOException ex) {
-                LOGGER.log(Level.SEVERE, "Socket listener error", ex);
-            }
-        }
-    }
-
-    public CertiRtiAmbassador() throws IOException {
+    public CertiRtiAmbassador() throws RTIinternalError {
         /////////////////////
         // Prepare logging //
         /////////////////////
@@ -88,28 +70,54 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         //fileTxt.setFormatter(new SimpleFormatter());
         //LOGGER.addHandler(fileTxt);
 
-        FileHandler fileHtml = new FileHandler("rti-ambassador.html");
-        fileHtml.setFormatter(new HtmlFormatter());
-        LOGGER.addHandler(fileHtml);
-        LOGGER.setLevel(Level.ALL);
+        Logger rootLogger = Logger.getLogger("certi");
+
+        try {
+            FileHandler fileHtml = new FileHandler("rti-ambassador.html");
+            fileHtml.setFormatter(new HtmlFormatter());
+            rootLogger.addHandler(fileHtml);
+        } catch (IOException exception) {
+            LOGGER.severe("Creating log file failed. " + exception.getLocalizedMessage());
+
+        }
+
+        rootLogger.setLevel(Level.ALL);
 
         ////////////////////
         // Prepare socket //
         ////////////////////
-        serverSocket = new ServerSocket(0);
+        try {
+            serverSocket = new ServerSocket(0, 1);
+        } catch (IOException exception) {
+            throw new RTIinternalError("Creating server socket failed. " + exception.getLocalizedMessage());
+        }
 
-        LOGGER.info("Listening with server socket on port " + serverSocket.getLocalPort());
-
-        SocketListener socketListener = new SocketListener(this);
-        socketListener.start();
-
-        Process rtiaProcess = Runtime.getRuntime().exec("rtia -p " + serverSocket.getLocalPort());
+        LOGGER.info("Using TCP socket server on port " + serverSocket.getLocalPort());
 
         try {
-            socketListener.join();
-            LOGGER.info("Successfully connected.");
-        } catch (InterruptedException ex) {
-            LOGGER.severe("System was unable to receive connection on socket.");
+            Runtime.getRuntime().exec("rtia -p " + serverSocket.getLocalPort());
+
+        } catch (IOException exception) {
+            throw new RTIinternalError("RTI Ambassador executable not found. " + exception.getLocalizedMessage());
+        }
+
+        try {
+            socket = serverSocket.accept();
+        } catch (IOException exception) {
+            throw new RTIinternalError("Connection to RTIA failed. " + exception.getLocalizedMessage());
+        }
+
+
+        ////////////////////
+        // Open connexion //
+        ////////////////////
+        try {
+            OpenConnexion openConnexion = new OpenConnexion();
+            openConnexion.setVersionMinor(0);
+            openConnexion.setVersionMajor(1);
+            OpenConnexion response = (OpenConnexion) processRequest(openConnexion);
+        } catch (Exception exception) {
+            throw new RTIinternalError("Connection to RTIA failed. " + exception.getLocalizedMessage());
         }
 
         ///////////////////////////////
@@ -152,7 +160,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         }
 
         LOGGER.fine("Reading response(s) from the local RTIA");
-        while (true) { //TODO maybe restructuralize -> remove while true
+        while (true) {
             try {
                 InputStream in = this.socket.getInputStream();
 
@@ -234,7 +242,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setFederationName(executionName);
 
         try {
-            request.setFedId(new File(fed.toURI()).getCanonicalPath());
+            request.setFEDid(new File(fed.toURI()).getCanonicalPath());
         } catch (URISyntaxException ex) {
             Logger.getLogger(CertiRtiAmbassador.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -302,8 +310,8 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         JoinFederationExecution request = new JoinFederationExecution();
 
-        request.setFederationName(federationExecutionName);
         request.setFederateName(federateName);
+        request.setFederationName(federationExecutionName);
 
         try {
             JoinFederationExecution response = (JoinFederationExecution) processRequest(request);
@@ -335,7 +343,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
     public void resignFederationExecution(int resignAction) throws FederateOwnsAttributes, FederateNotExecutionMember, InvalidResignAction, RTIinternalError, ConcurrentAccessAttempted {
         ResignFederationExecution request = new ResignFederationExecution();
-        request.setResignAction(resignAction);
+        request.setResignAction((short) resignAction);
 
         try {
             ResignFederationExecution response = (ResignFederationExecution) processRequest(request);
@@ -358,6 +366,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     }
 
     public void registerFederationSynchronizationPoint(String synchronizationPointLabel, byte[] userSuppliedTag) throws FederateNotExecutionMember, SaveInProgress, RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
+
         if (synchronizationPointLabel == null || synchronizationPointLabel.length() == 0) {
             throw new RTIinternalError("Incorrect or empty suncrhonization point label");
         }
@@ -369,7 +378,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setLabel(synchronizationPointLabel);
         request.setTag(userSuppliedTag);
-        request.setBooleanValue(false); //without set of federates
+        //request.setBooleanValue(false); //without set of federates
 
         try {
             RegisterFederationSynchronizationPoint response = (RegisterFederationSynchronizationPoint) processRequest(request);
@@ -408,12 +417,16 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setLabel(synchronizationPointLabel);
         request.setTag(userSuppliedTag);
 
+        request.setFederateSet(synchronizationSet);
+
+        /*
         if (synchronizationSet.isEmpty()) {
-            request.setBooleanValue(false);
+        //TODO Check request.setBooleanValue(false);
         } else {
-            request.setBooleanValue(true);
-            request.setAttributes(synchronizationSet);
+        //TODO Check request.setBooleanValue(true);
+        request.setFederateSet(synchronizationSet);
         }
+         */
 
         try {
             RegisterFederationSynchronizationPoint response = (RegisterFederationSynchronizationPoint) processRequest(request);
@@ -477,7 +490,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setFederationTime((CertiLogicalTime) theTime);
         request.setLabel(label);
-        request.setBooleanValue(true);
+        //request.setTimestamped(true);
 
         try {
             RequestFederationSave response = (RequestFederationSave) processRequest(request);
@@ -511,7 +524,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         RequestFederationSave request = new RequestFederationSave();
 
         request.setLabel(label);
-        request.setBooleanValue(false); // without time
+        //request.setTimestamped(false); // without time
 
         try {
             RequestFederationSave response = (RequestFederationSave) processRequest(request);
@@ -967,7 +980,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         RegisterObjectInstance request = new RegisterObjectInstance();
         request.setObjectClass(theClass);
-        request.setName(theObjectName);
+        request.setObjectName(theObjectName);
 
         try {
             RegisterObjectInstance response = (RegisterObjectInstance) processRequest(request);
@@ -1052,7 +1065,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setObject(theObject);
         request.setTag(userSuppliedTag);
         request.setSuppliedAttributes((CertiHandleValuePairCollection) theAttributes);
-        request.setIsMessageTimestamped(true);
+        //request.setTimestamped(true);
 
         try {
             UpdateAttributeValues response = (UpdateAttributeValues) processRequest(request);
@@ -1137,7 +1150,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setTag(userSuppliedTag);
 
         request.setRegion(0);
-        request.setBooleanValue(true); //With time
+        //request.setTimestamped(true); //With time
 
         try {
             SendInteraction response = (SendInteraction) processRequest(request);
@@ -1178,7 +1191,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setObject(ObjectHandle);
         request.setTag(userSuppliedTag);
-        request.setBooleanValue(false); //No time
+        //request.setTimestamped(false); //No time
 
         try {
             DeleteObjectInstance response = (DeleteObjectInstance) processRequest(request);
@@ -1217,7 +1230,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setObject(ObjectHandle);
         request.setFederationTime((CertiLogicalTime) theTime);
         request.setTag(userSuppliedTag);
-        request.setBooleanValue(true);//With time
+        //request.setTimestamped(true);//With time
 
         try {
             DeleteObjectInstance response = (DeleteObjectInstance) processRequest(request);
@@ -1285,7 +1298,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setObject(theObject);
         request.setAttributes(theAttributes);
-        request.setTransport(theType);
+        request.setTransportationType((short) theType);
 
         try {
             ChangeAttributeTransportationType response = (ChangeAttributeTransportationType) processRequest(request);
@@ -1319,7 +1332,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         ChangeInteractionTransportationType request = new ChangeInteractionTransportationType();
 
         request.setInteractionClass(theClass);
-        request.setTransport(theType);
+        request.setTransportationType((short) theType);
 
         try {
             ChangeInteractionTransportationType response = (ChangeInteractionTransportationType) processRequest(request);
@@ -1770,8 +1783,8 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setFederationTime((CertiLogicalTime) theFederateTime);
 
-        request.setLookahead(theLookahead);
-        request.setBooleanValue(true);
+        request.setLookAhead(theLookahead);
+        //request.setBooleanValue(true);
 
 
         try {
@@ -1807,7 +1820,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     public void disableTimeRegulation() throws TimeRegulationWasNotEnabled, FederateNotExecutionMember, SaveInProgress, RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
         DisableTimeRegulation request = new DisableTimeRegulation();
 
-        request.setBooleanValue(false);
+        //request.setBooleanValue(false);
 
         try {
             DisableTimeRegulation response = (DisableTimeRegulation) processRequest(request);
@@ -1834,7 +1847,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     public void enableTimeConstrained() throws TimeConstrainedAlreadyEnabled, EnableTimeConstrainedPending, TimeAdvanceAlreadyInProgress, FederateNotExecutionMember, SaveInProgress, RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
         EnableTimeConstrained request = new EnableTimeConstrained();
 
-        request.setBooleanValue(true);
+        //request.setBooleanValue(true);
 
         try {
             EnableTimeConstrained response = (EnableTimeConstrained) processRequest(request);
@@ -1865,7 +1878,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     public void disableTimeConstrained() throws TimeConstrainedWasNotEnabled, FederateNotExecutionMember, SaveInProgress, RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
         DisableTimeConstrained request = new DisableTimeConstrained();
 
-        request.setBooleanValue(false);
+        // request.setBooleanValue(false);
 
         try {
             DisableTimeConstrained response = (DisableTimeConstrained) processRequest(request);
@@ -2215,7 +2228,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         ModifyLookahead request = new ModifyLookahead();
 
-        request.setLookahead(theLookahead);
+        request.setLookAhead(theLookahead);
 
         try {
             ModifyLookahead response = (ModifyLookahead) processRequest(request);
@@ -2244,7 +2257,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             QueryLookahead response = (QueryLookahead) processRequest(request);
 
-            return response.getLookahead();
+            return response.getLookAhead();
         } catch (FederateNotExecutionMember ex) {
             throw ex;
         } catch (SaveInProgress ex) {
@@ -2276,7 +2289,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         ChangeAttributeOrderType request = new ChangeAttributeOrderType();
 
         request.setObject(theObject);
-        request.setOrder(theType);
+        request.setOrder((short) theType);
         request.setAttributes(theAttributes);
 
         try {
@@ -2311,7 +2324,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         ChangeInteractionOrderType request = new ChangeInteractionOrderType();
 
         request.setInteractionClass(theClass);
-        request.setOrder(theType);
+        request.setOrder((short) theType);
 
         try {
             ChangeInteractionOrderType response = (ChangeInteractionOrderType) processRequest(request);
@@ -2343,7 +2356,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         DdmCreateRegion request = new DdmCreateRegion();
 
         request.setSpace(spaceHandle);
-        request.setNumber(numberOfExtents);
+//TODO        request.setNumber(numberOfExtents);
 
         try {
             DdmCreateRegion response = (DdmCreateRegion) processRequest(request);
@@ -2379,7 +2392,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         DdmModifyRegion request = new DdmModifyRegion();
 
         request.setRegion(((CertiRegion) modifiedRegionInstance).getHandle());
-        request.setExtents(((CertiRegion) modifiedRegionInstance).getExtents());
+//TODO        request.setExtents(((CertiRegion) modifiedRegionInstance).getExtents());
 
         try {
             DdmModifyRegion response = (DdmModifyRegion) processRequest(request);
@@ -2440,7 +2453,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     }
 
     public int registerObjectInstanceWithRegion(int theClass, int[] theAttributes, Region[] theRegions) throws ObjectClassNotDefined, ObjectClassNotPublished, AttributeNotDefined, AttributeNotPublished, RegionNotKnown, InvalidRegionContext, FederateNotExecutionMember, SaveInProgress, RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
-        if (theAttributes == null || theAttributes.length==0) {
+        if (theAttributes == null || theAttributes.length == 0) {
             throw new RTIinternalError("Incorrect supplied parameter - the attributes");
         }
         if (theRegions == null || theRegions.length == 0) {
@@ -2453,7 +2466,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 //TODO Convert attributes
         request.setAttributes(null);
 //TODO Convert regions
-        request.setRegions(null);
+//TODO        request.setRegions(null);
 
 
         try {
@@ -2491,7 +2504,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     }
 
     public int registerObjectInstanceWithRegion(int theClass, String theObject, int[] theAttributes, Region[] theRegions) throws ObjectClassNotDefined, ObjectClassNotPublished, AttributeNotDefined, AttributeNotPublished, RegionNotKnown, InvalidRegionContext, ObjectAlreadyRegistered, FederateNotExecutionMember, SaveInProgress, RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
-    if (theAttributes == null || theAttributes.length==0) {
+        if (theAttributes == null || theAttributes.length == 0) {
             throw new RTIinternalError("Incorrect supplied parameter - the attributes");
         }
         if (theRegions == null) {
@@ -2502,10 +2515,22 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setObjectClass(theClass);
         request.setTag(theObject.getBytes());
-//TODO Convert attributes
-        request.setAttributes(null);
-//TODO Convert regions
-        request.setRegions(null);
+
+        CertiAttributeHandleSet attributeHandles = new CertiAttributeHandleSet();
+
+        for (int i = 0; i < theAttributes.length; i++) {
+            attributeHandles.add(theAttributes[i]);
+        }
+
+        request.setAttributes(attributeHandles);
+
+        List<Integer> regions = new ArrayList<Integer>(theRegions.length);
+
+        for (int i = 0; i < theRegions.length; i++) {
+            regions.add(((CertiRegion) theRegions[i]).getHandle());
+        }
+
+//        request.setRegions(regions); TODO
 
         try {
             DdmRegisterObject response = (DdmRegisterObject) processRequest(request);
@@ -2627,7 +2652,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setObjectClass(theClass);
         request.setRegion(((CertiRegion) theRegion).getHandle());
         request.setAttributes(attributeList);
-        request.setBooleanValue(false); //Not passive
+        request.setPassive(false); //Not passive
 
         try {
             DdmSubscribeAttributes response = (DdmSubscribeAttributes) processRequest(request);
@@ -2670,7 +2695,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setObjectClass(theClass);
         request.setRegion(((CertiRegion) theRegion).getHandle());
         request.setAttributes(attributeList);
-        request.setBooleanValue(true); //Passive
+        request.setPassive(true); //Passive
 
         try {
             DdmSubscribeAttributes response = (DdmSubscribeAttributes) processRequest(request);
@@ -2744,7 +2769,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setInteractionClass(theClass);
         request.setRegion(((CertiRegion) theRegion).getHandle());
-        request.setBooleanValue(false); //Not passive
+        request.setPassive(false); //Not passive
 
         try {
             DdmSubscribeInteraction response = (DdmSubscribeInteraction) processRequest(request);
@@ -2783,7 +2808,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         request.setInteractionClass(theClass);
         request.setRegion(((CertiRegion) theRegion).getHandle());
-        request.setBooleanValue(true); //Passive
+        request.setPassive(true); //Passive
 
         try {
             DdmSubscribeInteraction response = (DdmSubscribeInteraction) processRequest(request);
@@ -2949,7 +2974,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         }
 
         GetObjectClassHandle request = new GetObjectClassHandle();
-        request.setName(theName);
+        request.setClassName(theName);
 
         try {
             GetObjectClassHandle response = (GetObjectClassHandle) processRequest(request);
@@ -2978,7 +3003,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         }
 
         GetAttributeHandle request = new GetAttributeHandle();
-        request.setName(theName);
+        request.setAttributeName(theName);
         request.setObjectClass(whichClass);
 
         try {
@@ -3011,7 +3036,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetAttributeName response = (GetAttributeName) processRequest(request);
 
-            return response.getName();
+            return response.getAttributeName();
         } catch (ObjectClassNotDefined ex) {
             throw ex;
         } catch (AttributeNotDefined ex) {
@@ -3035,7 +3060,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         GetInteractionClassHandle request = new GetInteractionClassHandle();
 
-        request.setName(theName);
+        request.setClassName(theName);
 
         try {
             GetInteractionClassHandle response = (GetInteractionClassHandle) processRequest(request);
@@ -3063,7 +3088,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetInteractionClassName response = (GetInteractionClassName) processRequest(request);
 
-            return response.getName();
+            return response.getClassName();
         } catch (InteractionClassNotDefined ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3087,7 +3112,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         GetParameterHandle request = new GetParameterHandle();
 
-        request.setName(theName);
+        request.setParameterName(theName);
         request.setInteractionClass(whichClass);
 
         try {
@@ -3119,7 +3144,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetParameterName response = (GetParameterName) processRequest(request);
 
-            return response.getName();
+            return response.getParameterName();
         } catch (InteractionClassNotDefined ex) {
             throw ex;
         } catch (InteractionParameterNotDefined ex) {
@@ -3143,7 +3168,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         GetObjectInstanceHandle request = new GetObjectInstanceHandle();
 
-        request.setName(theName);
+        request.setObjectInstanceName(theName);
 
         try {
             GetObjectInstanceHandle response = (GetObjectInstanceHandle) processRequest(request);
@@ -3173,7 +3198,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetObjectInstanceName response = (GetObjectInstanceName) processRequest(request);
 
-            return response.getName();
+            return response.getObjectInstanceName();
         } catch (ObjectNotKnown ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3196,7 +3221,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         GetSpaceHandle request = new GetSpaceHandle();
 
-        request.setName(theName);
+        request.setSpaceName(theName);
 
         try {
             GetSpaceHandle response = (GetSpaceHandle) processRequest(request);
@@ -3225,7 +3250,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetSpaceName response = (GetSpaceName) processRequest(request);
 
-            return response.getName();
+            return response.getSpaceName();
         } catch (SpaceNotDefined ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3248,7 +3273,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         GetDimensionHandle request = new GetDimensionHandle();
 
-        request.setName(theName);
+        request.setDimensionName(theName);
         request.setDimension(whichSpace);
 
         try {
@@ -3281,7 +3306,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetDimensionName response = (GetDimensionName) processRequest(request);
 
-            return response.getName();
+            return response.getDimensionName();
         } catch (SpaceNotDefined ex) {
             throw ex;
         } catch (DimensionNotDefined ex) {
@@ -3302,7 +3327,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     public int getAttributeRoutingSpaceHandle(int theHandle, int whichClass) throws ObjectClassNotDefined, AttributeNotDefined, FederateNotExecutionMember, RTIinternalError {
         GetAttributeSpaceHandle request = new GetAttributeSpaceHandle();
 
-        request.setAttribute(theHandle);
+        request.setAttribute((short) theHandle);
         request.setObjectClass(whichClass);
 
         try {
@@ -3381,12 +3406,12 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         GetTransportationHandle request = new GetTransportationHandle();
 
-        request.setName(theName);
+        request.setTransportationName(theName);
 
         try {
             GetTransportationHandle response = (GetTransportationHandle) processRequest(request);
 
-            return (int) response.getTransport();
+            return (int) response.getTransportation();
         } catch (NameNotFound ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3405,12 +3430,12 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     public String getTransportationName(int theHandle) throws InvalidTransportationHandle, FederateNotExecutionMember, RTIinternalError {
         GetTransportationName request = new GetTransportationName();
 
-        request.setTransport(theHandle);
+        request.setTransportation((short) theHandle);
 
         try {
             GetTransportationName response = (GetTransportationName) processRequest(request);
 
-            return response.getName();
+            return response.getTransportationName();
         } catch (InvalidTransportationHandle ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3429,12 +3454,12 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     public int getOrderingHandle(String theName) throws NameNotFound, FederateNotExecutionMember, RTIinternalError {
         GetOrderingHandle request = new GetOrderingHandle();
 
-        request.setName(theName);
+        request.setOrderingName(theName);
 
         try {
             GetOrderingHandle response = (GetOrderingHandle) processRequest(request);
 
-            return (int) response.getOrder();
+            return (int) response.getOrdering();
         } catch (NameNotFound ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3453,12 +3478,12 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     public String getOrderingName(int theHandle) throws InvalidOrderingHandle, FederateNotExecutionMember, RTIinternalError {
         GetOrderingName request = new GetOrderingName();
 
-        request.setOrder(theHandle);
+        request.setOrdering((short) theHandle);
 
         try {
             GetOrderingName response = (GetOrderingName) processRequest(request);
 
-            return response.getName();
+            return response.getOrderingName();
         } catch (InvalidOrderingHandle ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3682,392 +3707,301 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     }
 
     private void translateException(CertiException ex) throws ArrayIndexOutOfBounds, AsynchronousDeliveryAlreadyEnabled, AsynchronousDeliveryAlreadyDisabled, AttributeAlreadyOwned, AttributeAlreadyBeingAcquired, AttributeAlreadyBeingDivested, AttributeDivestitureWasNotRequested, AttributeAcquisitionWasNotRequested, AttributeNotDefined, AttributeNotKnown, AttributeNotOwned, AttributeNotPublished, RTIinternalError, ConcurrentAccessAttempted, CouldNotDiscover, CouldNotOpenFED, CouldNotRestore, DeletePrivilegeNotHeld, ErrorReadingFED, EventNotKnown, FederateAlreadyExecutionMember, FederateInternalError, FederateNotExecutionMember, FederateOwnsAttributes, FederatesCurrentlyJoined, FederateWasNotAskedToReleaseAttribute, FederationExecutionAlreadyExists, FederationExecutionDoesNotExist, FederationTimeAlreadyPassed, RegionNotKnown, InteractionClassNotDefined, InteractionClassNotKnown, InteractionClassNotPublished, InteractionParameterNotDefined, InteractionParameterNotKnown, InvalidExtents, InvalidFederationTime, InvalidLookahead, InvalidOrderingHandle, InvalidResignAction, InvalidRetractionHandle, InvalidTransportationHandle, NameNotFound, ObjectClassNotDefined, ObjectClassNotKnown, ObjectClassNotPublished, ObjectClassNotSubscribed, ObjectNotKnown, ObjectAlreadyRegistered, RestoreInProgress, RestoreNotRequested, SpaceNotDefined, SaveInProgress, SaveNotInitiated, SpecifiedSaveLabelDoesNotExist, TimeAdvanceAlreadyInProgress, TimeAdvanceWasNotInProgress, UnableToPerformSave, DimensionNotDefined, OwnershipAcquisitionPending, FederateLoggingServiceCalls, InteractionClassNotSubscribed, EnableTimeRegulationPending, TimeRegulationAlreadyEnabled, TimeRegulationWasNotEnabled, TimeConstrainedWasNotEnabled, EnableTimeConstrainedPending, TimeConstrainedAlreadyEnabled, RegionInUse, InvalidRegionContext {
+        LOGGER.warning("Throwing exception: " + ex.getExceptionType().toString());
+
         switch (ex.getExceptionType()) {
-            case NoException:
+            case NO_EXCEPTION:
                 break;
-            case ArrayIndexOutOfBounds: {
-                LOGGER.warning("Throwing ArrayIndexOutOfBounds exception.");
+
+            case ARRAY_INDEX_OUT_OF_BOUNDS:
                 throw new ArrayIndexOutOfBounds(ex.getReason());
-            }
-            case AsynchronousDeliveryAlreadyEnabled: {
-                LOGGER.warning("Throwing AsynchronousDeliveryAlreadyEnabled exception.");
+
+            case ASYNCHRONOUS_DELIVERY_ALREADY_ENABLED:
                 throw new AsynchronousDeliveryAlreadyEnabled(ex.getReason());
-            }
-            case AsynchronousDeliveryAlreadyDisabled: {
-                LOGGER.warning("Throwing AsynchronousDeliveryAlreadyDisabled exception.");
+
+            case ASYNCHRONOUS_DELIVERY_ALREADY_DISABLED:
                 throw new AsynchronousDeliveryAlreadyDisabled(ex.getReason());
-            }
-            case AttributeAlreadyOwned: {
-                LOGGER.warning("Throwing AttributeAlreadyOwned exception.");
+
+            case ATTRIBUTE_ALREADY_OWNED:
                 throw new AttributeAlreadyOwned(ex.getReason());
-            }
-            case AttributeAlreadyBeingAcquired: {
-                LOGGER.warning("Throwing AttributeAlreadyBeingAcquired exception.");
+
+            case ATTRIBUTE_ALREADY_BEING_ACQUIRED:
                 throw new AttributeAlreadyBeingAcquired(ex.getReason());
-            }
-            case AttributeAlreadyBeingDivested: {
-                LOGGER.warning("Throwing AttributeAlreadyBeingDivested exception.");
+
+            case ATTRIBUTE_ALREADY_BEING_DIVESTED:
                 throw new AttributeAlreadyBeingDivested(ex.getReason());
-            }
-            case AttributeDivestitureWasNotRequested: {
-                LOGGER.warning("Throwing AttributeDivestitureWasNotRequested exception.");
+
+            case ATTRIBUTE_DIVESTITURE_WAS_NOT_REQUESTED:
                 throw new AttributeDivestitureWasNotRequested(ex.getReason());
-            }
-            case AttributeAcquisitionWasNotRequested: {
-                LOGGER.warning("Throwing AttributeAcquisitionWasNotRequested exception.");
+
+            case ATTRIBUTE_ACQUISITION_WAS_NOT_REQUESTED:
                 throw new AttributeAcquisitionWasNotRequested(ex.getReason());
-            }
-            case AttributeNotDefined: {
-                LOGGER.warning("Throwing AttributeNotDefined exception.");
+
+            case ATTRIBUTE_NOT_DEFINED:
                 throw new AttributeNotDefined(ex.getReason());
-            }
-            case AttributeNotKnown: {
-                LOGGER.warning("Throwing AttributeNotKnown exception.");
+
+            case ATTRIBUTE_NOT_KNOWN:
                 throw new AttributeNotKnown(ex.getReason());
-            }
-            case AttributeNotOwned: {
-                LOGGER.warning("Throwing AttributeNotOwned exception.");
+
+            case ATTRIBUTE_NOT_OWNED:
                 throw new AttributeNotOwned(ex.getReason());
-            }
-            case AttributeNotPublished: {
-                LOGGER.warning("Throwing AttributeNotPublished exception.");
+
+            case ATTRIBUTE_NOT_PUBLISHED:
                 throw new AttributeNotPublished(ex.getReason());
-            }
-            case AttributeNotSubscribed: {
-                LOGGER.warning("Throwing AttributeNotSubscribed exception.");
+
+            case ATTRIBUTE_NOT_SUBSCRIBED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case ConcurrentAccessAttempted: {
-                LOGGER.warning("Throwing ConcurrentAccessAttempted exception.");
+
+            case CONCURRENT_ACCESS_ATTEMPTED:
                 throw new ConcurrentAccessAttempted(ex.getReason());
-            }
-            case CouldNotDiscover: {
-                LOGGER.warning("Throwing CouldNotDiscover exception.");
+
+            case COULD_NOT_DISCOVER:
                 throw new CouldNotDiscover(ex.getReason());
-            }
-            case CouldNotOpenFED: {
-                LOGGER.warning("Throwing CouldNotOpenFED exception.");
+
+            case COULD_NOT_OPEN_FED:
                 throw new CouldNotOpenFED(ex.getReason());
-            }
-            case CouldNotOpenRID: {
-                LOGGER.warning("Throwing CouldNotOpenRID exception.");
+
+            case COULD_NOT_OPEN_RID:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case CouldNotRestore: {
-                LOGGER.warning("Throwing CouldNotRestore exception.");
+
+            case COULD_NOT_RESTORE:
                 throw new CouldNotRestore(ex.getReason());
-            }
-            case DeletePrivilegeNotHeld: {
-                LOGGER.warning("Throwing DeletePrivilegeNotHeld exception.");
+
+            case DELETE_PRIVILEGE_NOT_HELD:
                 throw new DeletePrivilegeNotHeld(ex.getReason());
-            }
-            case ErrorReadingRID: {
-                LOGGER.warning("Throwing ErrorReadingRID exception.");
+
+            case ERROR_READING_RID:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case ErrorReadingFED: {
-                LOGGER.warning("Throwing ErrorReadingFED exception.");
+
+            case ERROR_READING_FED:
                 throw new ErrorReadingFED(ex.getReason());
-            }
-            case EventNotKnown: {
-                LOGGER.warning("Throwing EventNotKnown exception.");
+
+            case EVENT_NOT_KNOWN:
                 throw new EventNotKnown(ex.getReason());
-            }
-            case FederateAlreadyPaused: {
-                LOGGER.warning("Throwing FederateAlreadyPaused exception.");
+
+            case FEDERATE_ALREADY_PAUSED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case FederateAlreadyExecutionMember: {
-                LOGGER.warning("Throwing FederateAlreadyExecutionMember exception.");
+
+            case FEDERATE_ALREADY_EXECUTION_MEMBER:
                 throw new FederateAlreadyExecutionMember(ex.getReason());
-            }
-            case FederateDoesNotExist: {
-                LOGGER.warning("Throwing FederateDoesNotExist exception.");
+
+            case FEDERATE_DOES_NOT_EXIST:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case FederateInternalError: {
-                LOGGER.warning("Throwing FederateInternalError exception.");
+
+            case FEDERATE_INTERNAL_ERROR:
                 throw new FederateInternalError(ex.getReason());
-            }
-            case FederateNameAlreadyInUse: {
-                LOGGER.warning("Throwing FederateNameAlreadyInUse exception.");
+
+            case FEDERATE_NAME_ALREADY_IN_USE:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case FederateNotExecutionMember: {
-                LOGGER.warning("Throwing FederateNotExecutionMember exception.");
+
+            case FEDERATE_NOT_EXECUTION_MEMBER:
                 throw new FederateNotExecutionMember(ex.getReason());
-            }
-            case FederateNotPaused: {
-                LOGGER.warning("Throwing FederateNotPaused exception.");
+
+            case FEDERATE_NOT_PAUSED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case FederateOwnsAttributes: {
-                LOGGER.warning("Throwing FederateOwnsAttributes exception.");
+
+            case FEDERATE_OWNS_ATTRIBUTES:
                 throw new FederateOwnsAttributes(ex.getReason());
-            }
-            case FederatesCurrentlyJoined: {
-                LOGGER.warning("Throwing FederatesCurrentlyJoined exception.");
+
+            case FEDERATES_CURRENTLY_JOINED:
                 throw new FederatesCurrentlyJoined(ex.getReason());
-            }
-            case FederateWasNotAskedToReleaseAttribute: {
-                LOGGER.warning("Throwing FederateWasNotAskedToReleaseAttribute exception.");
+
+            case FEDERATE_WAS_NOT_ASKED_TO_RELEASE_ATTRIBUTE:
                 throw new FederateWasNotAskedToReleaseAttribute(ex.getReason());
-            }
-            case FederationAlreadyPaused: {
-                LOGGER.warning("Throwing FederationAlreadyPaused exception.");
+
+            case FEDERATION_ALREADY_PAUSED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case FederationExecutionAlreadyExists:
-                LOGGER.warning("Throwing FederationExecutionAlreadyExists excep.");
+
+            case FEDERATION_EXECUTION_ALREADY_EXISTS:
                 throw new FederationExecutionAlreadyExists(ex.getReason());
-            case FederationExecutionDoesNotExist: {
-                LOGGER.warning("Throwing FederationExecutionDoesNotExist except.");
+
+            case FEDERATION_EXECUTION_DOES_NOT_EXIST:
                 throw new FederationExecutionDoesNotExist(ex.getReason());
-            }
-            case FederationNotPaused: {
-                LOGGER.warning("Throwing FederationNotPaused exception.");
+
+            case FEDERATION_NOT_PAUSED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case FederationTimeAlreadyPassed: {
-                LOGGER.warning("Throwing FederationTimeAlreadyPassed exception.");
+
+            case FEDERATION_TIME_ALREADY_PASSED:
                 throw new FederationTimeAlreadyPassed(ex.getReason());
-            }
-            case FederateNotPublishing: {
-                LOGGER.warning("Throwing FederateNotPublishing exception.");
+
+            case FEDERATE_NOT_PUBLISHING:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case FederateNotSubscribing: {
-                LOGGER.warning("Throwing FederateNotSubscribing exception.");
+
+            case FEDERATE_NOT_SUBSCRIBING:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case RegionNotKnown: {
-                LOGGER.warning("Throwing RegionNotKnown exception.");
+
+            case REGION_NOT_KNOWN:
                 throw new RegionNotKnown(ex.getReason());
-            }
-            case IDsupplyExhausted: {
-                LOGGER.warning("Throwing IDsupplyExhausted exception.");
+
+            case ID_SUPPLY_EXHAUSTED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case InteractionClassNotDefined: {
-                LOGGER.warning("Throwing InteractionClassNotDefined exception.");
+
+            case INTERACTION_CLASS_NOT_DEFINED:
                 throw new InteractionClassNotDefined(ex.getReason());
-            }
-            case InteractionClassNotKnown: {
-                LOGGER.warning("Throwing InteractionClassNotKnown exception.");
+
+            case INTERACTION_CLASS_NOT_KNOWN:
                 throw new InteractionClassNotKnown(ex.getReason());
-            }
-            case InteractionClassNotPublished: {
-                LOGGER.warning("Throwing InteractionClassNotPublished exception.");
+
+            case INTERACTION_CLASS_NOT_PUBLISHED:
                 throw new InteractionClassNotPublished(ex.getReason());
-            }
-            case InteractionParameterNotDefined: {
-                LOGGER.warning("Throwing InteractionParameterNotDefined exception.");
+
+            case INTERACTION_PARAMETER_NOT_DEFINED:
                 throw new InteractionParameterNotDefined(ex.getReason());
-            }
-            case InteractionParameterNotKnown: {
-                LOGGER.warning("Throwing InteractionParameterNotKnown exception.");
+
+            case INTERACTION_PARAMETER_NOT_KNOWN:
                 throw new InteractionParameterNotKnown(ex.getReason());
-            }
-            case InvalidDivestitureCondition: {
-                LOGGER.warning("Throwing InvalidDivestitureCondition exception.");
+
+            case INVALID_DIVESTITURE_CONDITION:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case InvalidExtents: {
-                LOGGER.warning("Throwing InvalidExtents exception.");
+
+            case INVALID_EXTENTS:
                 throw new InvalidExtents(ex.getReason());
-            }
-            case InvalidFederationTime: {
-                LOGGER.warning("Throwing InvalidFederationTime exception.");
+
+            case INVALID_FEDERATION_TIME:
                 throw new InvalidFederationTime(ex.getReason());
-            }
-            case InvalidFederationTimeDelta: {
-                LOGGER.warning("Throwing InvalidFederationTimeDelta exception.");
+
+            case INVALID_FEDERATION_TIME_DELTA:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case InvalidLookahead: {
-                LOGGER.warning("Throwing InvalidLookahead.");
+
+            case INVALID_LOOKAHEAD:
                 throw new InvalidLookahead(ex.getReason());
-            }
-            case InvalidObjectHandle: {
-                LOGGER.warning("Throwing InvalidObjectHandle exception.");
+
+            case INVALID_OBJECT_HANDLE:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case InvalidOrderingHandle: {
-                LOGGER.warning("Throwing InvalidOrderingHandle exception.");
+
+            case INVALID_ORDERING_HANDLE:
                 throw new InvalidOrderingHandle(ex.getReason());
-            }
-            case InvalidResignAction: {
-                LOGGER.warning("Throwing InvalidResignAction exception.");
+
+            case INVALID_RESIGN_ACTION:
                 throw new InvalidResignAction(ex.getReason());
-            }
-            case InvalidRetractionHandle: {
-                LOGGER.warning("Throwing InvalidRetractionHandle exception.");
+
+            case INVALID_RETRACTION_HANDLE:
                 throw new InvalidRetractionHandle(ex.getReason());
-            }
-            case InvalidRoutingSpace: {
-                LOGGER.warning("Throwing InvalidRoutingSpace exception.");
+
+            case INVALID_ROUTING_SPACE:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case InvalidTransportationHandle: {
-                LOGGER.warning("Throwing InvalidTransportationHandle exception.");
+
+            case INVALID_TRANSPORTATION_HANDLE:
                 throw new InvalidTransportationHandle(ex.getReason());
-            }
-            case MemoryExhausted: {
-                LOGGER.warning("Throwing MemoryExhausted exception.");
+
+            case MEMORY_EXHAUSTED:
                 throw new RTIinternalError("Memory Exhausted: " + ex.getReason());
-            }
-            case NameNotFound: {
-                LOGGER.warning("Throwing NameNotFound exception.");
+
+            case NAME_NOT_FOUND:
                 throw new NameNotFound(ex.getReason());
-            }
-            case NoPauseRequested: {
-                LOGGER.warning("Throwing NoPauseRequested exception.");
+
+            case NO_PAUSE_REQUESTED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case NoResumeRequested: {
-                LOGGER.warning("Throwing NoResumeRequested exception.");
+
+            case NO_RESUME_REQUESTED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case ObjectClassNotDefined: {
-                LOGGER.warning("Throwing ObjectClassNotDefined exception.");
+
+            case OBJECT_CLASS_NOT_DEFINED:
                 throw new ObjectClassNotDefined(ex.getReason());
-            }
-            case ObjectClassNotKnown: {
-                LOGGER.warning("Throwing ObjectClassNotKnown exception.");
+
+            case OBJECT_CLASS_NOT_KNOWN:
                 throw new ObjectClassNotKnown(ex.getReason());
-            }
-            case ObjectClassNotPublished: {
-                LOGGER.warning("Throwing ObjectClassNotPublished exception.");
+
+            case OBJECT_CLASS_NOT_PUBLISHED:
                 throw new ObjectClassNotPublished(ex.getReason());
-            }
-            case ObjectClassNotSubscribed: {
-                LOGGER.warning("Throwing ObjectClassNotSubscribed exception.");
+
+            case OBJECT_CLASS_NOT_SUBSCRIBED:
                 throw new ObjectClassNotSubscribed(ex.getReason());
-            }
-            case ObjectNotKnown: {
-                LOGGER.warning("Throwing ObjectNotKnown exception.");
+
+            case OBJECT_NOT_KNOWN:
                 throw new ObjectNotKnown(ex.getReason());
-            }
-            case ObjectAlreadyRegistered: {
-                LOGGER.warning("Throwing ObjectAlreadyRegistered exception.");
+
+            case OBJECT_ALREADY_REGISTERED:
                 throw new ObjectAlreadyRegistered(ex.getReason());
-            }
-            case RestoreInProgress: {
-                LOGGER.warning("Throwing RestoreInProgress exception.");
+
+            case RESTORE_IN_PROGRESS:
                 throw new RestoreInProgress(ex.getReason());
-            }
-            case RestoreNotRequested: {
-                LOGGER.warning("Throwing RestoreNotRequested exception.");
+
+            case RESTORE_NOT_REQUESTED:
                 throw new RestoreNotRequested(ex.getReason());
-            }
-            case RTIinternalError: {
-                LOGGER.warning("Throwing RTIinternalError exception.");
+
+            case RTI_INTERNAL_ERROR:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case SpaceNotDefined: {
-                LOGGER.warning("Throwing SpaceNotDefined exception.");
+
+            case SPACE_NOT_DEFINED:
                 throw new SpaceNotDefined(ex.getReason());
-            }
-            case SaveInProgress: {
-                LOGGER.warning("Throwing SaveInProgress exception.");
+
+            case SAVE_IN_PROGRESS:
                 throw new SaveInProgress(ex.getReason());
-            }
-            case SaveNotInitiated: {
-                LOGGER.warning("Throwing SaveNotInitiated exception.");
+
+            case SAVE_NOT_INITIATED:
                 throw new SaveNotInitiated(ex.getReason());
-            }
-            case SecurityError: {
-                LOGGER.warning("Throwing SecurityError exception.");
+
+            case SECURITY_ERROR:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case SpecifiedSaveLabelDoesNotExist: {
-                LOGGER.warning("Throwing SpecifiedSaveLabelDoesNotExist exception.");
+
+            case SPECIFIED_SAVE_LABEL_DOES_NOT_EXIST:
                 throw new SpecifiedSaveLabelDoesNotExist(ex.getReason());
-            }
-            case TimeAdvanceAlreadyInProgress: {
-                LOGGER.warning("Throwing TimeAdvanceAlreadyInProgress exception.");
+
+            case TIME_ADVANCE_ALREADY_IN_PROGRESS:
                 throw new TimeAdvanceAlreadyInProgress(ex.getReason());
-            }
-            case TimeAdvanceWasNotInProgress: {
-                LOGGER.warning("Throwing TimeAdvanceWasNotInProgress exception.");
+
+            case TIME_ADVANCE_WAS_NOT_IN_PROGRESS:
                 throw new TimeAdvanceWasNotInProgress(ex.getReason());
-            }
-            case TooManyIDsRequested: {
-                LOGGER.warning("Throwing TooManyIDsRequested exception.");
+
+            case TOO_MANY_IDS_REQUESTED:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case UnableToPerformSave: {
-                LOGGER.warning("Throwing UnableToPerformSave exception.");
+
+            case UNABLE_TO_PERFORM_SAVE:
                 throw new UnableToPerformSave(ex.getReason());
-            }
-            case UnimplementedService: {
-                LOGGER.warning("Throwing UnimplementedService exception.");
+
+            case UNIMPLEMENTED_SERVICE:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case UnknownLabel: {
-                LOGGER.warning("Throwing UnknownLabel exception.");
+
+            case UNKNOWN_LABEL:
                 throw new RTIinternalError(ex.getReason());
-            }
-            case ValueCountExceeded: {
-                LOGGER.warning("Throwing ValueCountExceeded exception.");
+
+            case VALUE_COUNT_EXCEEDED:
                 throw new RTIinternalError("Value Count Exceeded " + ex.getReason());
-            }
-            case ValueLengthExceeded: {
-                LOGGER.warning("Throwing ValueLengthExceeded exception.");
+
+            case VALUE_LENGTH_EXCEEDED:
                 throw new RTIinternalError("Value Length Exceeded " + ex.getReason());
-            }
-            case DimensionNotDefined: {
-                LOGGER.warning("Throwing DimensionNotDefined exception.");
+
+            case DIMENSION_NOT_DEFINED:
                 throw new DimensionNotDefined(ex.getReason());
-            }
-            case OwnershipAcquisitionPending: {
-                LOGGER.warning("Throwing OwnershipAcquisitionPending exception.");
+
+            case OWNERSHIP_ACQUISITION_PENDING:
                 throw new OwnershipAcquisitionPending(ex.getReason());
-            }
-            case FederateLoggingServiceCalls: {
-                LOGGER.warning("Throwing FederateLoggingServiceCalls exception.");
+
+            case FEDERATE_LOGGING_SERVICE_CALLS:
                 throw new FederateLoggingServiceCalls(ex.getReason());
-            }
-            case InteractionClassNotSubscribed: {
-                LOGGER.warning("Throwing InteractionClassNotSubscribed exception.");
+
+            case INTERACTION_CLASS_NOT_SUBSCRIBED:
                 throw new InteractionClassNotSubscribed(ex.getReason());
-            }
-            case TimeRegulationAlreadyEnabled: {
-                LOGGER.warning("Throwing TimeRegulationAlreadyEnabled exception.");
+
+            case TIME_REGULATION_ALREADY_ENABLED:
                 throw new TimeRegulationAlreadyEnabled(ex.getReason());
-            }
-            case EnableTimeRegulationPending: {
-                LOGGER.warning("Throwing EnableTimeRegulationPending exception.");
+
+            case ENABLE_TIME_REGULATION_PENDING:
                 throw new EnableTimeRegulationPending(ex.getReason());
-            }
-            case TimeRegulationWasNotEnabled: {
-                LOGGER.warning("Throwing TimeRegulationWasNotEnabled exception.");
+
+            case TIME_REGULATION_WAS_NOT_ENABLED:
                 throw new TimeRegulationWasNotEnabled(ex.getReason());
-            }
-            case TimeConstrainedWasNotEnabled: {
-                LOGGER.warning("Throwing TimeConstrainedWasNotEnabled exception.");
+
+            case TIME_CONSTRAINED_WAS_NOT_ENABLED:
                 throw new TimeConstrainedWasNotEnabled(ex.getReason());
-            }
-            case EnableTimeConstrainedPending: {
-                LOGGER.warning("Throwing EnableTimeConstrainedPending exception.");
+
+            case ENABLE_TIME_CONSTRAINED_PENDING:
                 throw new EnableTimeConstrainedPending(ex.getReason());
-            }
-            case TimeConstrainedAlreadyEnabled: {
-                LOGGER.warning("Throwing TimeConstrainedAlreadyEnabled exception.");
+
+            case TIME_CONSTRAINED_ALREADY_ENABLED:
                 throw new TimeConstrainedAlreadyEnabled(ex.getReason());
-            }
-            case RegionInUse: {
-                LOGGER.warning("Throwing RegionInUse exception.");
+
+            case REGION_IN_USE:
                 throw new RegionInUse(ex.getReason());
-            }
-            case InvalidRegionContext: {
-                LOGGER.warning("Throwing InvalidRegionContext exception.");
+
+            case INVALID_REGION_CONTEXT:
                 throw new InvalidRegionContext(ex.getReason());
-            }
-            default: {
+
+            default:
                 LOGGER.severe("Throwing unknown exception !");
-                throw new RTIinternalError(ex.getReason());
-            }
+                //throw new RTIinternalError(ex.getReason());
+                throw new RuntimeException("Can not translate exception (it is probably not implemented yet).");
         }
     }
 
@@ -4152,15 +4086,16 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
                     federateAmbassador.discoverObjectInstance(
                             (int) ((DiscoverObjectInstance) message).getObject(),
                             (int) ((DiscoverObjectInstance) message).getObjectClass(),
-                            ((DiscoverObjectInstance) message).getName());
+                            ((DiscoverObjectInstance) message).getObjectName());
                     break;
 
                 case REFLECT_ATTRIBUTE_VALUES:
-                    if (((ReflectAttributeValues) message).getBooleanValue()) {
+                    if (((ReflectAttributeValues) message).getFederationTime() != null) {
                         federateAmbassador.reflectAttributeValues(
                                 (int) ((ReflectAttributeValues) message).getObject(),
                                 ((ReflectAttributeValues) message).getReflectedAttributes(),
-                                ((ReflectAttributeValues) message).getTag(), message.getFederationTime(), message.getEventRetraction());
+                                ((ReflectAttributeValues) message).getTag(),
+                                message.getFederationTime(), message.getEventRetraction());
                     } else {
                         federateAmbassador.reflectAttributeValues(
                                 (int) ((ReflectAttributeValues) message).getObject(),
@@ -4171,7 +4106,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
                     break;
 
                 case RECEIVE_INTERACTION:
-                    if (((ReceiveInteraction) message).getBooleanValue()) {
+                    if (((ReceiveInteraction) message).getFederationTime() != null) {
                         federateAmbassador.receiveInteraction(
                                 (int) ((ReceiveInteraction) message).getInteractionClass(),
                                 ((ReceiveInteraction) message).getReceivedInteraction(),
@@ -4188,7 +4123,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
 
                 case REMOVE_OBJECT_INSTANCE:
-                    if (((RemoveObjectInstance) message).getBooleanValue()) {
+                    if (((RemoveObjectInstance) message).getFederationTime() != null) {
                         federateAmbassador.removeObjectInstance(
                                 (int) ((RemoveObjectInstance) message).getObject(),
                                 ((RemoveObjectInstance) message).getTag(),

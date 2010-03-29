@@ -19,29 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class IsAttributeOwnedByFederate extends CertiMessage {
-   private long object;
-   private short attribute;
-   private byte[] tag;
+   private int object;
+   private int attribute;
 
    public IsAttributeOwnedByFederate() {
       super(CertiMessageType.IS_ATTRIBUTE_OWNED_BY_FEDERATE);
@@ -52,46 +36,36 @@ public class IsAttributeOwnedByFederate extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(object);
-       messageBuffer.write(attribute);
-      messageBuffer.writeBytesWithSize(tag);
+      messageBuffer.write(attribute);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      object = messageBuffer.readLong();
-      attribute = messageBuffer.readShort();
-      tag = messageBuffer.readBytesWithSize();
+      object = messageBuffer.readInt();
+      attribute = messageBuffer.readInt();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", object: " + object + ", attribute: " + attribute + ", tag: " + tag);
+      return (super.toString() + ", object: " + object + ", attribute: " + attribute);
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
-   public short getAttribute() {
+   public int getAttribute() {
       return attribute;
    }
 
-   public byte[] getTag() {
-      return tag;
-   }
-
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 
-   public void setAttribute(short newAttribute) {
+   public void setAttribute(int newAttribute) {
       this.attribute = newAttribute;
-   }
-
-   public void setTag(byte[] newTag) {
-      this.tag = newTag;
    }
 
 }

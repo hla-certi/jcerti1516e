@@ -19,15 +19,11 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import hla.rti.LogicalTimeInterval;
+import certi.communication.*;
 
 public class EnableTimeConstrained extends CertiMessage {
-   private boolean booleanValue;
-   private LogicalTimeInterval lookahead;
 
    public EnableTimeConstrained() {
       super(CertiMessageType.ENABLE_TIME_CONSTRAINED);
@@ -37,37 +33,17 @@ public class EnableTimeConstrained extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(booleanValue);
-      messageBuffer.write(lookahead);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      booleanValue = messageBuffer.readBoolean();
-      lookahead = messageBuffer.readLogicalTimeInterval();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", booleanValue: " + booleanValue + ", lookahead: " + lookahead);
-   }
-
-   public boolean getBooleanValue() {
-      return booleanValue;
-   }
-
-   public LogicalTimeInterval getLookahead() {
-      return lookahead;
-   }
-
-   public void setBooleanValue(boolean newBooleanValue) {
-      this.booleanValue = newBooleanValue;
-   }
-
-   public void setLookahead(LogicalTimeInterval newLookahead) {
-      this.lookahead = newLookahead;
+      return (super.toString());
    }
 
 }

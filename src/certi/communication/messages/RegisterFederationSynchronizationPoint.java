@@ -19,80 +19,44 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import hla.rti.FederateHandleSet;
+import certi.communication.*;
+import hla.rti.*;
 
 public class RegisterFederationSynchronizationPoint extends CertiMessage {
+   private FederateHandleSet federateSet;
 
-    private String label;
-    private byte[] tag;
-    private boolean booleanValue;
-    private FederateHandleSet attributes;
+   public RegisterFederationSynchronizationPoint() {
+      super(CertiMessageType.REGISTER_FEDERATION_SYNCHRONIZATION_POINT);
+   }
 
-    public RegisterFederationSynchronizationPoint() {
-        super(CertiMessageType.REGISTER_FEDERATION_SYNCHRONIZATION_POINT);
-    }
+   @Override
+   public void writeMessage(MessageBuffer messageBuffer) {
+      super.writeMessage(messageBuffer); //Header
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+      messageBuffer.write(federateSet);
+   }
 
-        messageBuffer.write(label);
-        messageBuffer.writeBytesWithSize(tag);
-        messageBuffer.write(booleanValue);
-        if(booleanValue)
-        messageBuffer.write(attributes);
-    }
+   @Override
+   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+      super.readMessage(messageBuffer); //Header 
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+      federateSet = messageBuffer.readFederateHandleSet();
+   }
 
-        label = messageBuffer.readString();
-        tag = messageBuffer.readBytesWithSize();
-        booleanValue = messageBuffer.readBoolean();
-        if(booleanValue)
-        attributes = messageBuffer.readFederateHandleSet();
-    }
+   @Override
+   public String toString() {
+      return (super.toString() + ", federateSet: " + federateSet);
+   }
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", label: " + label + ", tag: " + tag + ", booleanValue: " + booleanValue + ", attributes: " + attributes);
-    }
+   public FederateHandleSet getFederateSet() {
+      return federateSet;
+   }
 
-    public String getLabel() {
-        return label;
-    }
+   public void setFederateSet(FederateHandleSet newFederateSet) {
+      this.federateSet = newFederateSet;
+   }
 
-    public byte[] getTag() {
-        return tag;
-    }
-
-    public boolean getBooleanValue() {
-        return booleanValue;
-    }
-
-    public FederateHandleSet getAttributes() {
-        return attributes;
-    }
-
-    public void setLabel(String newLabel) {
-        this.label = newLabel;
-    }
-
-    public void setTag(byte[] newTag) {
-        this.tag = newTag;
-    }
-
-    public void setBooleanValue(boolean newBooleanValue) {
-        this.booleanValue = newBooleanValue;
-    }
-
-    public void setAttributes(FederateHandleSet newAttributes) {
-        this.attributes = newAttributes;
-    }
 }
 

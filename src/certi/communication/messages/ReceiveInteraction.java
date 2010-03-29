@@ -19,113 +19,75 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class ReceiveInteraction extends CertiMessage {
-   private long interactionClass;
-   private byte[] tag;
-   private ReceivedInteraction receivedInteraction;
-   private long region;
-   private int resignAction;
-   private boolean booleanValue;
 
-   public ReceiveInteraction() {
-      super(CertiMessageType.RECEIVE_INTERACTION);
-   }
+    private int interactionClass;
+    private ReceivedInteraction receivedInteraction;
+    private int region;
+    private EventRetractionHandle EventRetractionHandle;
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+    public ReceiveInteraction() {
+        super(CertiMessageType.RECEIVE_INTERACTION);
+    }
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.writeBytesWithSize(tag);
-      messageBuffer.write(receivedInteraction);
-      messageBuffer.write(region);
-      messageBuffer.write(resignAction);
-      messageBuffer.write(booleanValue);
-   }
+    @Override
+    public void writeMessage(MessageBuffer messageBuffer) {
+        super.writeMessage(messageBuffer); //Header
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+        messageBuffer.write(interactionClass);
+        messageBuffer.write(receivedInteraction);
+        messageBuffer.write(region);
+        if (EventRetractionHandle == null) {
+            messageBuffer.write(false);
+        } else {
+            messageBuffer.write(true);
+            messageBuffer.write(EventRetractionHandle);
+        }
+    }
 
-      interactionClass = messageBuffer.readLong();
-      tag = messageBuffer.readBytesWithSize();
-      receivedInteraction = messageBuffer.readReceivedInteraction();
-      region = messageBuffer.readLong();
-      resignAction = messageBuffer.readInt();
-      booleanValue = messageBuffer.readBoolean();
-   }
+    @Override
+    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+        super.readMessage(messageBuffer); //Header
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", tag: " + tag + ", receivedInteraction: " + receivedInteraction + ", region: " + region + ", resignAction: " + resignAction + ", booleanValue: " + booleanValue);
-   }
+        interactionClass = messageBuffer.readInt();
+        receivedInteraction = messageBuffer.readReceivedInteraction();
+        region = messageBuffer.readInt();
+        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+        if (hasEventRetractionHandle) {
+            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+        }
+    }
 
-   public long getInteractionClass() {
-      return interactionClass;
-   }
+    @Override
+    public String toString() {
+        return (super.toString() + ", interactionClass: " + interactionClass + ", ParameterHandleValuePairSet: " + receivedInteraction + ", region: " + region + ", EventRetractionHandle: " + EventRetractionHandle);
+    }
 
-   public byte[] getTag() {
-      return tag;
-   }
+    public int getInteractionClass() {
+        return interactionClass;
+    }
 
-   public ReceivedInteraction getReceivedInteraction() {
-      return receivedInteraction;
-   }
+    public int getRegion() {
+        return region;
+    }
 
-   public long getRegion() {
-      return region;
-   }
+    public void setInteractionClass(int newInteractionClass) {
+        this.interactionClass = newInteractionClass;
+    }
 
-   public int getResignAction() {
-      return resignAction;
-   }
+    public void setRegion(int newRegion) {
+        this.region = newRegion;
+    }
 
-   public boolean getBooleanValue() {
-      return booleanValue;
-   }
+    public ReceivedInteraction getReceivedInteraction() {
+        return receivedInteraction;
+    }
 
-   public void setInteractionClass(long newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
-
-   public void setTag(byte[] newTag) {
-      this.tag = newTag;
-   }
-
-   public void setReceivedInteraction(ReceivedInteraction newReceivedInteraction) {
-      this.receivedInteraction = newReceivedInteraction;
-   }
-
-   public void setRegion(long newRegion) {
-      this.region = newRegion;
-   }
-
-   public void setResignAction(int newResignAction) {
-      this.resignAction = newResignAction;
-   }
-
-   public void setBooleanValue(boolean newBooleanValue) {
-      this.booleanValue = newBooleanValue;
-   }
-
+    public void setReceivedInteraction(ReceivedInteraction receivedInteraction) {
+        this.receivedInteraction = receivedInteraction;
+    }
 }
 

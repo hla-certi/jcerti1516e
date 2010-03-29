@@ -25,7 +25,7 @@ import hla.rti.FederationExecutionDoesNotExist;
 
 /**
  *
- * @author aVe
+ * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
 public class CertiFederateHandleSetFactory implements FederateHandleSetFactory {
 

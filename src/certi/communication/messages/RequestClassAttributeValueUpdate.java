@@ -19,27 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import hla.rti.*;
 
 public class RequestClassAttributeValueUpdate extends CertiMessage {
-   private long objectClass;
+   private int objectClass;
    private AttributeHandleSet attributes;
 
    public RequestClassAttributeValueUpdate() {
@@ -58,7 +44,7 @@ public class RequestClassAttributeValueUpdate extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      objectClass = messageBuffer.readLong();
+      objectClass = messageBuffer.readInt();
       attributes = messageBuffer.readAttributeHandleSet();
    }
 
@@ -67,7 +53,7 @@ public class RequestClassAttributeValueUpdate extends CertiMessage {
       return (super.toString() + ", objectClass: " + objectClass + ", attributes: " + attributes);
    }
 
-   public long getObjectClass() {
+   public int getObjectClass() {
       return objectClass;
    }
 
@@ -75,7 +61,7 @@ public class RequestClassAttributeValueUpdate extends CertiMessage {
       return attributes;
    }
 
-   public void setObjectClass(long newObjectClass) {
+   public void setObjectClass(int newObjectClass) {
       this.objectClass = newObjectClass;
    }
 

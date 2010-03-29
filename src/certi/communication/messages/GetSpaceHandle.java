@@ -19,28 +19,13 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class GetSpaceHandle extends CertiMessage {
-   private String name;
-   private long space;
+   private String spaceName;
+   private int space=0;
 
    public GetSpaceHandle() {
       super(CertiMessageType.GET_SPACE_HANDLE);
@@ -50,7 +35,7 @@ public class GetSpaceHandle extends CertiMessage {
    public void writeMessage(MessageBuffer messageBuffer) {
       super.writeMessage(messageBuffer); //Header
 
-      messageBuffer.write(name);
+      messageBuffer.write(spaceName);
       messageBuffer.write(space);
    }
 
@@ -58,28 +43,28 @@ public class GetSpaceHandle extends CertiMessage {
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      name = messageBuffer.readString();
-      space = messageBuffer.readLong();
+      spaceName = messageBuffer.readString();
+      space = messageBuffer.readInt();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", name: " + name + ", space: " + space);
+      return (super.toString() + ", spaceName: " + spaceName + ", space: " + space);
    }
 
-   public String getName() {
-      return name;
+   public String getSpaceName() {
+      return spaceName;
    }
 
-   public long getSpace() {
+   public int getSpace() {
       return space;
    }
 
-   public void setName(String newName) {
-      this.name = newName;
+   public void setSpaceName(String newSpaceName) {
+      this.spaceName = newSpaceName;
    }
 
-   public void setSpace(long newSpace) {
+   public void setSpace(int newSpace) {
       this.space = newSpace;
    }
 

@@ -19,29 +19,14 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class RegisterObjectInstance extends CertiMessage {
-   private long objectClass;
-   private long object;
-   private String name;
+   private int objectClass;
+   private int object;
+   private String objectName;
 
    public RegisterObjectInstance() {
       super(CertiMessageType.REGISTER_OBJECT_INSTANCE);
@@ -53,45 +38,53 @@ public class RegisterObjectInstance extends CertiMessage {
 
       messageBuffer.write(objectClass);
       messageBuffer.write(object);
-      messageBuffer.write(name);
+      if(objectName != null){
+         messageBuffer.write(true);
+         messageBuffer.write(objectName);
+      } else {
+         messageBuffer.write(false);
+      }
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      objectClass = messageBuffer.readLong();
-      object = messageBuffer.readLong();
-      name = messageBuffer.readString();
+      objectClass = messageBuffer.readInt();
+      object = messageBuffer.readInt();
+      boolean hasObjectName = messageBuffer.readBoolean();
+      if(hasObjectName){
+         objectName = messageBuffer.readString();
+      }
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", name: " + name);
+      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectName: " + objectName);
    }
 
-   public long getObjectClass() {
+   public int getObjectClass() {
       return objectClass;
    }
 
-   public long getObject() {
+   public int getObject() {
       return object;
    }
 
-   public String getName() {
-      return name;
+   public String getObjectName() {
+      return objectName;
    }
 
-   public void setObjectClass(long newObjectClass) {
+   public void setObjectClass(int newObjectClass) {
       this.objectClass = newObjectClass;
    }
 
-   public void setObject(long newObject) {
+   public void setObject(int newObject) {
       this.object = newObject;
    }
 
-   public void setName(String newName) {
-      this.name = newName;
+   public void setObjectName(String newObjectName) {
+      this.objectName = newObjectName;
    }
 
 }

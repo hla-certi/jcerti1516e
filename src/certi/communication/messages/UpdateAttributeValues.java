@@ -19,113 +19,78 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
+import certi.rti.impl.*;
+import hla.rti.*;
 
 public class UpdateAttributeValues extends CertiMessage {
-   private long objectClass;
-   private long object;
-   private byte[] tag;
-   private CertiHandleValuePairCollection suppliedAttributes;
-   private int resignAction;
-   private boolean isMessageTimestamped;
 
-   public UpdateAttributeValues() {
-      super(CertiMessageType.UPDATE_ATTRIBUTE_VALUES);
-   }
+    private int objectClass;
+    private int object;
+    private CertiHandleValuePairCollection suppliedAttributes;
+    private EventRetractionHandle EventRetractionHandle;
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+    public UpdateAttributeValues() {
+        super(CertiMessageType.UPDATE_ATTRIBUTE_VALUES);
+    }
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(object);
-      messageBuffer.writeBytesWithSize(tag);
-      messageBuffer.write(suppliedAttributes);
-      messageBuffer.write(resignAction);
-      messageBuffer.write(isMessageTimestamped);
-   }
+    @Override
+    public void writeMessage(MessageBuffer messageBuffer) {
+        super.writeMessage(messageBuffer); //Header
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+        messageBuffer.write(objectClass);
+        messageBuffer.write(object);
+        messageBuffer.write(suppliedAttributes);
 
-      objectClass = messageBuffer.readLong();
-      object = messageBuffer.readLong();
-      tag = messageBuffer.readBytesWithSize();
-      suppliedAttributes = messageBuffer.readHandleValuePairCollection();
-      resignAction = messageBuffer.readInt();
-      isMessageTimestamped = messageBuffer.readBoolean();
-   }
+        if (EventRetractionHandle == null) {
+            messageBuffer.write(false);
+        } else {
+            messageBuffer.write(true);
+            messageBuffer.write(EventRetractionHandle);
+        }
+    }
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", tag: " + tag + ", suppliedAttributes: " + suppliedAttributes + ", resignAction: " + resignAction + ", isMessageTimestamped: " + isMessageTimestamped);
-   }
+    public CertiHandleValuePairCollection getSuppliedAttributes() {
+        return suppliedAttributes;
+    }
 
-   public long getObjectClass() {
-      return objectClass;
-   }
+    public void setSuppliedAttributes(CertiHandleValuePairCollection suppliedAttributes) {
+        this.suppliedAttributes = suppliedAttributes;
+    }
 
-   public long getObject() {
-      return object;
-   }
+    @Override
+    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+        super.readMessage(messageBuffer); //Header
 
-   public byte[] getTag() {
-      return tag;
-   }
+        objectClass = messageBuffer.readInt();
+        object = messageBuffer.readInt();
+        suppliedAttributes = messageBuffer.readHandleValuePairCollection();
 
-   public CertiHandleValuePairCollection getSuppliedAttributes() {
-      return suppliedAttributes;
-   }
+        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+        if (hasEventRetractionHandle) {
+            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+        }
+    }
 
-   public int getResignAction() {
-      return resignAction;
-   }
+    @Override
+    public String toString() {
+        return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", AttributeHandleValuePairSet: " + suppliedAttributes + ", EventRetractionHandle: " + EventRetractionHandle);
+    }
 
-   public boolean getIsMessageTimestamped() {
-      return isMessageTimestamped;
-   }
+    public int getObjectClass() {
+        return objectClass;
+    }
 
-   public void setObjectClass(long newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+    public int getObject() {
+        return object;
+    }
 
-   public void setObject(long newObject) {
-      this.object = newObject;
-   }
+    public void setObjectClass(int newObjectClass) {
+        this.objectClass = newObjectClass;
+    }
 
-   public void setTag(byte[] newTag) {
-      this.tag = newTag;
-   }
-
-   public void setSuppliedAttributes(CertiHandleValuePairCollection newSuppliedAttributes) {
-      this.suppliedAttributes = newSuppliedAttributes;
-   }
-
-   public void setResignAction(int newResignAction) {
-      this.resignAction = newResignAction;
-   }
-
-   public void setIsMessageTimestamped(boolean newIsMessageTimestamped) {
-      this.isMessageTimestamped = newIsMessageTimestamped;
-   }
-
+    public void setObject(int newObject) {
+        this.object = newObject;
+    }
 }
 

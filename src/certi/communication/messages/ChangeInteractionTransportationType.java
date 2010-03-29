@@ -19,29 +19,14 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+
 import certi.communication.CertiException;
-import certi.communication.MessageBuffer;
-import certi.communication.CertiMessageType;
-import certi.communication.CertiMessage;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.AttributeHandleSet;
-import hla.rti.SuppliedAttributes;
-import certi.rti.impl.CertiExtent;
-import java.util.List;
-import hla.rti.Region;
-import hla.rti.FederateHandleSet;
-import hla.rti.SuppliedParameters;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import hla.rti.LogicalTime;
-import hla.rti.LogicalTimeInterval;
-import hla.rti.ReflectedAttributes;
-import hla.rti.ReceivedInteraction;
+import certi.communication.*;
 
 public class ChangeInteractionTransportationType extends CertiMessage {
-   private long interactionClass;
-   private long transport;
-   private long order;
+   private int interactionClass;
+   private short transportationType;
+   private short orderType;
 
    public ChangeInteractionTransportationType() {
       super(CertiMessageType.CHANGE_INTERACTION_TRANSPORTATION_TYPE);
@@ -52,46 +37,46 @@ public class ChangeInteractionTransportationType extends CertiMessage {
       super.writeMessage(messageBuffer); //Header
 
       messageBuffer.write(interactionClass);
-      messageBuffer.write(transport);
-      messageBuffer.write(order);
+      messageBuffer.write(transportationType);
+      messageBuffer.write(orderType);
    }
 
    @Override
    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
       super.readMessage(messageBuffer); //Header 
 
-      interactionClass = messageBuffer.readLong();
-      transport = messageBuffer.readLong();
-      order = messageBuffer.readLong();
+      interactionClass = messageBuffer.readInt();
+      transportationType = messageBuffer.readShort();
+      orderType = messageBuffer.readShort();
    }
 
    @Override
    public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", transport: " + transport + ", order: " + order);
+      return (super.toString() + ", interactionClass: " + interactionClass + ", transportationType: " + transportationType + ", orderType: " + orderType);
    }
 
-   public long getInteractionClass() {
+   public int getInteractionClass() {
       return interactionClass;
    }
 
-   public long getTransport() {
-      return transport;
+   public short getTransportationType() {
+      return transportationType;
    }
 
-   public long getOrder() {
-      return order;
+   public short getOrderType() {
+      return orderType;
    }
 
-   public void setInteractionClass(long newInteractionClass) {
+   public void setInteractionClass(int newInteractionClass) {
       this.interactionClass = newInteractionClass;
    }
 
-   public void setTransport(long newTransport) {
-      this.transport = newTransport;
+   public void setTransportationType(short newTransportationType) {
+      this.transportationType = newTransportationType;
    }
 
-   public void setOrder(long newOrder) {
-      this.order = newOrder;
+   public void setOrderType(short newOrderType) {
+      this.orderType = newOrderType;
    }
 
 }

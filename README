@@ -5,6 +5,10 @@ jcerti is SISO DLC compliant.
 
 INSTALL/COMPILING INSTRUCTION
 -----------------------------
+As a prerequisite, the following software should be installed
+ - ant
+ - xml-commons-apis
+
 jcerti comes with a build.xml ant file
 (see http://ant.apache.org/manual/)
 

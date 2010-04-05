@@ -6,8 +6,16 @@ jcerti is SISO DLC compliant.
 INSTALL/COMPILING INSTRUCTION
 -----------------------------
 As a prerequisite, the following software should be installed
- - ant
- - xml-commons-apis
+ - Sun Java JDK (http://java.sun.com/javase/downloads)
+ - Apache Ant (http://ant.apache.org)
+ - xml-commons (http://xml.apache.org/commons)
+
+Linux users, please make sure the appropriate 'javac' alternative is used.
+
+Enable the javac alternative from Sun JDK using:
+update-alternatives --install "/usr/bin/javac" javac "/usr/java/jdk1.6.0_19/bin/javac" 1
+update-alternatives --set javac /usr/java/jdk1.6.0_19/bin/javac
+
 
 jcerti comes with a build.xml ant file
 (see http://ant.apache.org/manual/)

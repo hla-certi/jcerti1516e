@@ -3,6 +3,12 @@
 - udpate CERTI message generator in order to fully generate 
   certi.communication.messages.
 
+- Implement configuration options
+  -- to enable/disable logging and set log levels
+  -- to configure RTIA path
+
+- Implement simple regression tests
+
 - Add more easily launchable test in build.xml
 
 - Add JUnit auto-testing

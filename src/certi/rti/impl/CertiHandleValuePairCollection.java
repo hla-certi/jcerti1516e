@@ -187,10 +187,7 @@ public class CertiHandleValuePairCollection implements SuppliedAttributes, Suppl
                 return false;
             }
             final HandleValuePair other = (HandleValuePair) obj;
-            if (this.handle != other.handle) {
-                return false;
-            }
-            return true;
+            return this.handle == other.handle;
         }
 
         @Override

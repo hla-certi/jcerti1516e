@@ -44,7 +44,9 @@ public class HtmlFormatter extends Formatter {
             stringBuffer.append(rec.getLevel());
         }
         stringBuffer.append("</TD><TD>");
-        stringBuffer.append(new Date(rec.getMillis()) + "</TD><TD>" + this.formatMessage(rec));
+        stringBuffer.append(new Date(rec.getMillis()));
+        stringBuffer.append("</TD><TD>");
+        stringBuffer.append(this.formatMessage(rec));
         stringBuffer.append("<TD></TR>\n");
 
         return stringBuffer.toString();

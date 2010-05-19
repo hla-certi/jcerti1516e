@@ -31,7 +31,7 @@ import java.util.Iterator;
 public class CertiFederateHandleSet extends HashSet<Integer> implements FederateHandleSet {
 
     public void add(int handle) {
-        add(handle);
+        super.add(handle);
     }
 
     public void empty() {
@@ -51,7 +51,7 @@ public class CertiFederateHandleSet extends HashSet<Integer> implements Federate
     }
 
     public void remove(int handle) {
-        remove(handle);
+        super.remove(handle);
     }
 
     /**

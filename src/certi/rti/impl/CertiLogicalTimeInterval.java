@@ -170,10 +170,7 @@ public class CertiLogicalTimeInterval implements LogicalTimeInterval, Comparable
             return false;
         }
         final CertiLogicalTimeInterval other = (CertiLogicalTimeInterval) obj;
-        if (this.interval != other.interval) {
-            return false;
-        }
-        return true;
+        return this.interval == other.interval;
     }
 
     @Override

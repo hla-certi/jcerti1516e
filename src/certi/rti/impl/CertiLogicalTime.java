@@ -207,10 +207,7 @@ public class CertiLogicalTime implements LogicalTime, Comparable<CertiLogicalTim
             return false;
         }
         final CertiLogicalTime other = (CertiLogicalTime) obj;
-        if (this.time != other.time) {
-            return false;
-        }
-        return true;
+        return this.time == other.time;
     }
 
     @Override

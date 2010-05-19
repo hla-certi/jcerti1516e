@@ -59,7 +59,7 @@ public class CertiRtiFactory implements RtiFactory {
      * @return
      */
     public String RtiVersion() {
-        return "3.3.3";
+        return "3.4.0";
     }
 
     /**

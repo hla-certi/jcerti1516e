@@ -25,6 +25,8 @@ import certi.logging.HtmlFormatter;
 import hla.rti.*;
 import hla.rti.jlc.RTIambassadorEx;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -33,17 +35,18 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class CertiRtiAmbassador implements RTIambassadorEx {
 
     private final static Logger LOGGER = Logger.getLogger(CertiRtiAmbassador.class.getName());
     private FederateAmbassador federateAmbassador;
     private Socket socket;
-    private ServerSocket serverSocket;
-    private MessageBuffer messageBuffer = new MessageBuffer();
+    private MessageBuffer messageBuffer;
 
     class JavaMachineHook extends Thread {
 
@@ -62,30 +65,67 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     }
 
     public CertiRtiAmbassador() throws RTIinternalError {
+        //////////////////////////
+        // Load properties file //
+        //////////////////////////       
+        Properties properties = new Properties();
+
+        try {
+            InputStream propertyInsideJarStream = CertiRtiAmbassador.class.getClassLoader().getResourceAsStream("certi.properties");
+
+            if (propertyInsideJarStream != null) {
+                properties.load(propertyInsideJarStream);
+            }
+        } catch (IOException ex) {
+            LOGGER.severe("Loading property file from JAR failed. " + ex.getLocalizedMessage());
+        }
+
+        try {
+            properties.load(new FileInputStream("certi.properties"));
+        } catch (FileNotFoundException ex) { //Property file not found - not a big deal
+        } catch (IOException ex) {
+            LOGGER.severe("Loading property file from outside JAR failed. " + ex.getLocalizedMessage());
+        }
+
+
         /////////////////////
         // Prepare logging //
         /////////////////////
-
-        //FileHandler fileTxt = new FileHandler("rti.log");
-        //fileTxt.setFormatter(new SimpleFormatter());
-        //LOGGER.addHandler(fileTxt);
+        Level logLevel = Level.parse(properties.getProperty("logLevel") != null ? properties.getProperty("logLevel") : "OFF");
 
         Logger rootLogger = Logger.getLogger("certi");
+        rootLogger.setLevel(logLevel);
 
-        try {
-            FileHandler fileHtml = new FileHandler("rti-ambassador.html");
-            fileHtml.setFormatter(new HtmlFormatter());
-            rootLogger.addHandler(fileHtml);
-        } catch (IOException exception) {
-            LOGGER.severe("Creating log file failed. " + exception.getLocalizedMessage());
+        if (logLevel != Level.OFF) {
+            String enableHtmlLoggingString = properties.getProperty("enableHtmlLogging") != null ? properties.getProperty("enableHtmlLogging") : "false";
+            if (Boolean.parseBoolean(enableHtmlLoggingString)) {
+                try {
+                    String htmlLogFileNamePropertyString = properties.getProperty("htmlLogFileName") != null ? properties.getProperty("htmlLogFileName") : "librti.html";
+                    FileHandler fileHtml = new FileHandler(htmlLogFileNamePropertyString);
+                    fileHtml.setFormatter(new HtmlFormatter());
+                    rootLogger.addHandler(fileHtml);
+                } catch (IOException exception) {
+                    LOGGER.severe("Creating html log file failed. " + exception.getLocalizedMessage());
+                }
+            }
 
+            String enableTextLoggingString = properties.getProperty("enableTextLogging") != null ? properties.getProperty("enableTextLogging") : "false";
+            if (Boolean.parseBoolean(enableTextLoggingString)) {
+                try {
+                    String textLogFileNameString = properties.getProperty("textLogFileName") != null ? properties.getProperty("textLogFileName") : "librti.log";
+                    FileHandler fileTxt = new FileHandler(textLogFileNameString);
+                    fileTxt.setFormatter(new SimpleFormatter());
+                    LOGGER.addHandler(fileTxt);
+                } catch (IOException exception) {
+                    LOGGER.severe("Creating text log file failed. " + exception.getLocalizedMessage());
+                }
+            }
         }
-
-        rootLogger.setLevel(Level.ALL);
 
         ////////////////////
         // Prepare socket //
         ////////////////////
+        ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(0, 1);
         } catch (IOException exception) {
@@ -95,18 +135,19 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         LOGGER.info("Using TCP socket server on port " + serverSocket.getLocalPort());
 
         try {
-            Runtime.getRuntime().exec("rtia -p " + serverSocket.getLocalPort());
+            String rtiaPathString = properties.getProperty("rtiaPath") != null ? properties.getProperty("rtiaPath") : "";
 
+            Runtime.getRuntime().exec(rtiaPathString + "rtia -p " + serverSocket.getLocalPort());
         } catch (IOException exception) {
             throw new RTIinternalError("RTI Ambassador executable not found. " + exception.getLocalizedMessage());
         }
 
         try {
             socket = serverSocket.accept();
+            messageBuffer = new MessageBuffer(socket.getInputStream(), socket.getOutputStream());
         } catch (IOException exception) {
             throw new RTIinternalError("Connection to RTIA failed. " + exception.getLocalizedMessage());
         }
-
 
         ////////////////////
         // Open connexion //
@@ -142,7 +183,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
     private boolean tickKernel(boolean multiple, double minimum, double maximum) throws SpecifiedSaveLabelDoesNotExist, ConcurrentAccessAttempted, RTIinternalError {
         //TODO Code is hard to read - rewrite
-        TickRequest tickRequest = null;
+        TickRequest tickRequest;
         CertiMessage tickResponse = null;
 
         LOGGER.fine("Request callback(s) from the local RTIA");
@@ -154,7 +195,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         tickRequest.writeMessage(this.messageBuffer);
 
         try {
-            this.messageBuffer.send(this.socket.getOutputStream());
+            this.messageBuffer.send();
         } catch (IOException ex) {
             throw new RTIinternalError("NetworkError in tick() while sending TICK_REQUEST: " + ex.getMessage());
         }
@@ -162,9 +203,8 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         LOGGER.fine("Reading response(s) from the local RTIA");
         while (true) {
             try {
-                InputStream in = this.socket.getInputStream();
+                tickResponse = MessageFactory.readMessage(messageBuffer);
 
-                tickResponse = this.messageBuffer.receive(in);
                 LOGGER.info("Received: " + tickResponse.toString() + "\n");
             } catch (IOException ex) {
                 throw new RTIinternalError("NetworkError in tick() while receiving response: " + ex.getMessage());
@@ -212,7 +252,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
                 tickNext.writeMessage(this.messageBuffer);
 
                 try {
-                    this.messageBuffer.send(this.socket.getOutputStream());
+                    this.messageBuffer.send();
                 } catch (IOException ex) {
                     throw new RTIinternalError("NetworkError in tick() while sending TICK_REQUEST_NEXT: " + ex.getMessage());
                 }
@@ -950,7 +990,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             RegisterObjectInstance response = (RegisterObjectInstance) processRequest(request);
 
-            return (int) response.getObject();
+            return response.getObject();
         } catch (ObjectClassNotDefined ex) {
             throw ex;
         } catch (ObjectClassNotPublished ex) {
@@ -984,7 +1024,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         try {
             RegisterObjectInstance response = (RegisterObjectInstance) processRequest(request);
-            return (int) response.getObject();
+            return response.getObject();
         } catch (ObjectClassNotDefined ex) {
             throw ex;
         } catch (ObjectClassNotPublished ex) {
@@ -2361,7 +2401,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             DdmCreateRegion response = (DdmCreateRegion) processRequest(request);
 
-            return new CertiRegion(response.getRegion(), (int) response.getSpace(), numberOfExtents);
+            return new CertiRegion(response.getRegion(), response.getSpace(), numberOfExtents);
         } catch (SpaceNotDefined ex) {
             throw ex;
         } catch (InvalidExtents ex) {
@@ -2472,7 +2512,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             DdmRegisterObject response = (DdmRegisterObject) processRequest(request);
 
-            return (int) response.getObject();
+            return response.getObject();
         } catch (ObjectClassNotDefined ex) {
             throw ex;
         } catch (ObjectClassNotPublished ex) {
@@ -2535,7 +2575,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             DdmRegisterObject response = (DdmRegisterObject) processRequest(request);
 
-            return (int) response.getObject();
+            return response.getObject();
         } catch (ObjectClassNotDefined ex) {
             throw ex;
         } catch (ObjectClassNotPublished ex) {
@@ -2978,7 +3018,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         try {
             GetObjectClassHandle response = (GetObjectClassHandle) processRequest(request);
-            return (int) response.getObjectClass(); //hack handles maju rozdielne velkosti
+            return response.getObjectClass(); //hack handles maju rozdielne velkosti
         } catch (NameNotFound ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3065,7 +3105,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetInteractionClassHandle response = (GetInteractionClassHandle) processRequest(request);
 
-            return (int) response.getInteractionClass();
+            return response.getInteractionClass();
         } catch (NameNotFound ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3173,7 +3213,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetObjectInstanceHandle response = (GetObjectInstanceHandle) processRequest(request);
 
-            return (int) response.getObject();
+            return response.getObject();
         } catch (ObjectNotKnown ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3226,7 +3266,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetSpaceHandle response = (GetSpaceHandle) processRequest(request);
 
-            return (int) response.getSpace();
+            return response.getSpace();
         } catch (NameNotFound ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3279,7 +3319,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetDimensionHandle response = (GetDimensionHandle) processRequest(request);
 
-            return (int) response.getDimension();
+            return response.getDimension();
         } catch (SpaceNotDefined ex) {
             throw ex;
         } catch (NameNotFound ex) {
@@ -3333,7 +3373,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetAttributeSpaceHandle response = (GetAttributeSpaceHandle) processRequest(request);
 
-            return (int) response.getSpace();
+            return response.getSpace();
         } catch (ObjectClassNotDefined ex) {
             throw ex;
         } catch (AttributeNotDefined ex) {
@@ -3358,7 +3398,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetObjectClass response = (GetObjectClass) processRequest(request);
 
-            return (int) response.getObjectClass();
+            return response.getObjectClass();
         } catch (ObjectNotKnown ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3383,7 +3423,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             GetInteractionSpaceHandle response = (GetInteractionSpaceHandle) processRequest(request);
 
-            return (int) response.getSpace();
+            return response.getSpace();
         } catch (InteractionClassNotDefined ex) {
             throw ex;
         } catch (FederateNotExecutionMember ex) {
@@ -3680,7 +3720,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         try {
             LOGGER.info("Sending message (" + request.toString() + ")");
-            this.messageBuffer.send(this.socket.getOutputStream());
+            this.messageBuffer.send();
         } catch (IOException ex) {
             LOGGER.severe("libRTI: exception: NetworkError (write)");
             throw new RTIinternalError("libRTI: Network Write Error");
@@ -3688,9 +3728,8 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         CertiMessage response = null;
         try {
-            InputStream in = this.socket.getInputStream();
+            response = MessageFactory.readMessage(messageBuffer);
 
-            response = this.messageBuffer.receive(in);
             LOGGER.info("Received message (" + response.toString() + ")\n");
 
             if (request.getType() != (response.getType())) {
@@ -4010,23 +4049,23 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
             switch (message.getType()) {
                 case SYNCHRONIZATION_POINT_REGISTRATION_SUCCEEDED:
                     federateAmbassador.synchronizationPointRegistrationSucceeded(
-                            ((SynchronizationPointRegistrationSucceeded) message).getLabel());
+                            message.getLabel());
                     break;
 
                 case ANNOUNCE_SYNCHRONIZATION_POINT:
                     federateAmbassador.announceSynchronizationPoint(
-                            (((AnnounceSynchronizationPoint) message).getLabel()),
-                            ((AnnounceSynchronizationPoint) message).getTag());
+                            (message.getLabel()),
+                            message.getTag());
                     break;
 
                 case FEDERATION_SYNCHRONIZED:
                     federateAmbassador.federationSynchronized(
-                            ((FederationSynchronized) message).getLabel());
+                            message.getLabel());
                     break;
 
                 case INITIATE_FEDERATE_SAVE:
                     federateAmbassador.initiateFederateSave(
-                            ((InitiateFederateSave) message).getLabel());
+                            message.getLabel());
                     break;
 
                 case FEDERATION_SAVED:
@@ -4035,13 +4074,13 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
                 case REQUEST_FEDERATION_RESTORE_SUCCEEDED:
                     federateAmbassador.requestFederationRestoreSucceeded(
-                            ((RequestFederationRestoreSucceeded) message).getLabel());
+                            message.getLabel());
                     break;
 
                 case REQUEST_FEDERATION_RESTORE_FAILED:
                     federateAmbassador.requestFederationRestoreFailed(
-                            (((RequestFederationRestoreFailed) message).getLabel()),
-                            new String(((RequestFederationRestoreFailed) message).getTag()));
+                            (message.getLabel()),
+                            new String(message.getTag()));
                     break;
 
                 case FEDERATION_RESTORE_BEGUN:
@@ -4050,7 +4089,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
                 case INITIATE_FEDERATE_RESTORE:
                     federateAmbassador.initiateFederateRestore(
-                            (((InitiateFederateRestore) message).getLabel()),
+                            (message.getLabel()),
                             ((InitiateFederateRestore) message).getFederate());
                     break;
 
@@ -4064,82 +4103,82 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
                 case START_REGISTRATION_FOR_OBJECT_CLASS:
                     federateAmbassador.startRegistrationForObjectClass(
-                            (int) ((StartRegistrationForObjectClass) message).getObjectClass());
+                            ((StartRegistrationForObjectClass) message).getObjectClass());
                     break;
 
                 case STOP_REGISTRATION_FOR_OBJECT_CLASS:
                     federateAmbassador.stopRegistrationForObjectClass(
-                            (int) ((StopRegistrationForObjectClass) message).getObjectClass());
+                            ((StopRegistrationForObjectClass) message).getObjectClass());
                     break;
 
                 case TURN_INTERACTIONS_ON:
                     federateAmbassador.turnInteractionsOn(
-                            (int) ((TurnInteractionsOn) message).getInteractionClass());
+                            ((TurnInteractionsOn) message).getInteractionClass());
                     break;
 
                 case TURN_INTERACTIONS_OFF:
                     federateAmbassador.turnInteractionsOff(
-                            (int) ((TurnInteractionsOff) message).getInteractionClass());
+                            ((TurnInteractionsOff) message).getInteractionClass());
                     break;
 
                 case DISCOVER_OBJECT_INSTANCE:
                     federateAmbassador.discoverObjectInstance(
-                            (int) ((DiscoverObjectInstance) message).getObject(),
-                            (int) ((DiscoverObjectInstance) message).getObjectClass(),
+                            ((DiscoverObjectInstance) message).getObject(),
+                            ((DiscoverObjectInstance) message).getObjectClass(),
                             ((DiscoverObjectInstance) message).getObjectName());
                     break;
 
                 case REFLECT_ATTRIBUTE_VALUES:
-                    if (((ReflectAttributeValues) message).getFederationTime() != null) {
+                    if (message.getFederationTime() != null) {
                         federateAmbassador.reflectAttributeValues(
-                                (int) ((ReflectAttributeValues) message).getObject(),
+                                ((ReflectAttributeValues) message).getObject(),
                                 ((ReflectAttributeValues) message).getReflectedAttributes(),
-                                ((ReflectAttributeValues) message).getTag(),
+                                message.getTag(),
                                 message.getFederationTime(), message.getEventRetraction());
                     } else {
                         federateAmbassador.reflectAttributeValues(
-                                (int) ((ReflectAttributeValues) message).getObject(),
+                                ((ReflectAttributeValues) message).getObject(),
                                 ((ReflectAttributeValues) message).getReflectedAttributes(),
-                                ((ReflectAttributeValues) message).getTag());
+                                message.getTag());
                     }
 
                     break;
 
                 case RECEIVE_INTERACTION:
-                    if (((ReceiveInteraction) message).getFederationTime() != null) {
+                    if (message.getFederationTime() != null) {
                         federateAmbassador.receiveInteraction(
-                                (int) ((ReceiveInteraction) message).getInteractionClass(),
+                                ((ReceiveInteraction) message).getInteractionClass(),
                                 ((ReceiveInteraction) message).getReceivedInteraction(),
-                                (((ReceiveInteraction) message).getTag()),
-                                ((ReceiveInteraction) message).getFederationTime(),
-                                ((ReceiveInteraction) message).getEventRetraction());
+                                (message.getTag()),
+                                message.getFederationTime(),
+                                message.getEventRetraction());
                     } else {
                         federateAmbassador.receiveInteraction(
-                                (int) ((ReceiveInteraction) message).getInteractionClass(),
+                                ((ReceiveInteraction) message).getInteractionClass(),
                                 ((ReceiveInteraction) message).getReceivedInteraction(),
-                                (((ReceiveInteraction) message).getTag()));
+                                (message.getTag()));
                     }
                     break;
 
 
                 case REMOVE_OBJECT_INSTANCE:
-                    if (((RemoveObjectInstance) message).getFederationTime() != null) {
+                    if (message.getFederationTime() != null) {
                         federateAmbassador.removeObjectInstance(
-                                (int) ((RemoveObjectInstance) message).getObject(),
-                                ((RemoveObjectInstance) message).getTag(),
-                                ((RemoveObjectInstance) message).getFederationTime(),
-                                ((RemoveObjectInstance) message).getEventRetraction());
+                                ((RemoveObjectInstance) message).getObject(),
+                                message.getTag(),
+                                message.getFederationTime(),
+                                message.getEventRetraction());
                     } else {
                         federateAmbassador.removeObjectInstance(
-                                (int) ((RemoveObjectInstance) message).getObject(),
-                                ((RemoveObjectInstance) message).getTag());
+                                ((RemoveObjectInstance) message).getObject(),
+                                message.getTag());
                     }
                     break;
 
 
                 case PROVIDE_ATTRIBUTE_VALUE_UPDATE:
                     federateAmbassador.provideAttributeValueUpdate(
-                            (int) ((ProvideAttributeValueUpdate) message).getObject(),
+                            ((ProvideAttributeValueUpdate) message).getObject(),
                             ((ProvideAttributeValueUpdate) message).getAttributes());
                     break;
 
@@ -4148,52 +4187,52 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
                 case REQUEST_ATTRIBUTE_OWNERSHIP_ASSUMPTION:
                     federateAmbassador.requestAttributeOwnershipAssumption(
-                            (int) ((RequestAttributeOwnershipAssumption) message).getObject(),
+                            ((RequestAttributeOwnershipAssumption) message).getObject(),
                             ((RequestAttributeOwnershipAssumption) message).getAttributes(),
-                            ((RequestAttributeOwnershipAssumption) message).getTag());
+                            message.getTag());
                     break;
 
                 case REQUEST_ATTRIBUTE_OWNERSHIP_RELEASE:
                     federateAmbassador.requestAttributeOwnershipRelease(
-                            (int) ((RequestAttributeOwnershipRelease) message).getObject(),
+                            ((RequestAttributeOwnershipRelease) message).getObject(),
                             ((RequestAttributeOwnershipRelease) message).getAttributes(),
-                            ((RequestAttributeOwnershipRelease) message).getTag());
+                            message.getTag());
                     break;
 
                 case ATTRIBUTE_OWNERSHIP_UNAVAILABLE:
                     federateAmbassador.attributeOwnershipUnavailable(
-                            (int) ((AttributeOwnershipUnavailable) message).getObject(),
+                            ((AttributeOwnershipUnavailable) message).getObject(),
                             (((AttributeOwnershipUnavailable) message).getAttributes()));
                     break;
 
                 case ATTRIBUTE_OWNERSHIP_ACQUISITION_NOTIFICATION:
                     federateAmbassador.attributeOwnershipAcquisitionNotification(
-                            (int) ((AttributeOwnershipAcquisitionNotification) message).getObject(),
+                            ((AttributeOwnershipAcquisitionNotification) message).getObject(),
                             ((AttributeOwnershipAcquisitionNotification) message).getAttributes());
                     break;
 
                 case ATTRIBUTE_OWNERSHIP_DIVESTITURE_NOTIFICATION:
                     federateAmbassador.attributeOwnershipDivestitureNotification(
-                            (int) ((AttributeOwnershipDivestitureNotification) message).getObject(),
+                            ((AttributeOwnershipDivestitureNotification) message).getObject(),
                             ((AttributeOwnershipDivestitureNotification) message).getAttributes());
                     break;
 
                 case CONFIRM_ATTRIBUTE_OWNERSHIP_ACQUISITION_CANCELLATION:
                     federateAmbassador.confirmAttributeOwnershipAcquisitionCancellation(
-                            (int) ((ConfirmAttributeOwnershipAcquisitionCancellation) message).getObject(),
+                            ((ConfirmAttributeOwnershipAcquisitionCancellation) message).getObject(),
                             ((ConfirmAttributeOwnershipAcquisitionCancellation) message).getAttributes());
                     break;
 
                 case INFORM_ATTRIBUTE_OWNERSHIP:
                     federateAmbassador.informAttributeOwnership(
-                            (int) ((InformAttributeOwnership) message).getObject(),
+                            ((InformAttributeOwnership) message).getObject(),
                             ((InformAttributeOwnership) message).getAttribute(),
                             ((InformAttributeOwnership) message).getFederate());
                     break;
 
                 case ATTRIBUTE_IS_NOT_OWNED:
                     federateAmbassador.attributeIsNotOwned(
-                            (int) ((AttributeIsNotOwned) message).getObject(),
+                            ((AttributeIsNotOwned) message).getObject(),
                             ((AttributeIsNotOwned) message).getAttribute());
                     break;
 

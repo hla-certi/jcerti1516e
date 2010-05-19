@@ -52,7 +52,7 @@ public class CertiAttributeHandleSet extends HashSet<Integer> implements Attribu
     }
 
     public void remove(int handle) throws AttributeNotDefined {
-        remove(handle);
+        super.remove(handle);
     }
 
     /**

@@ -53,6 +53,7 @@
 				<include name="certi/logging/**/*" />
 				<include name="certi/rti/**/*" />
 				<include name="hla/rti/**/*" />
+				<include name="hla/rti1516e/**/*" />
 			</fileset>
 		</jar>
 		<echo file="${jar.dir}/README">
@@ -212,7 +213,7 @@ You can get junit.jar at : http://www.junit.org
 	<target name="create-src-zip-dist" depends="prepare-dist">
 		<zip destfile="${dist.dir}/jcerti-src.zip" filesonly="false">
 			<zipfileset dir="${src.dir}" prefix="jcerti/src">
-				<exclude name="${src.dir}/tsp/core/rpc/**/*"/>
+				<!-- <exclude name="${src.dir}/IGNOREME/**/*"/> -->
 			</zipfileset>
 			<zipfileset dir="${lib.dir}" prefix="jcerti/lib"/>
 			<zipfileset dir="${test.src.dir}" prefix="jcerti/src_test"/>

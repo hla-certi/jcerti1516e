@@ -30,7 +30,7 @@
 	<target name="build">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${class.dir}" />
-		<javac srcdir="${src.dir}" destdir="${class.dir}" target="1.5" source="1.5" deprecation="on">
+		<javac srcdir="${src.dir}" includeantruntime="false" destdir="${class.dir}" target="1.5" source="1.5" deprecation="on">
 			<!--
 			<classpath>
 				<path refid="lib.rpc.classpath" />
@@ -88,11 +88,11 @@ JAR List :
 	<target name="javadoc" depends="">
 		<javadoc author="false" version="false"
 						destdir="${javadoc.dir}"
-						packagenames="certi.*, hla.*"						
+						packagenames="certi.*, hla.*"
 						source="1.5"
 						sourcepath="${src.dir}"
 						classpath="${classpath}"
-			            access="protected"
+			access="protected"
 						maxmemory="128m"
 					/>
 	</target>
@@ -109,24 +109,24 @@ JAR List :
 	<path id="jcerti.test.classpath">
 		<pathelement location="${test.class.dir}" />
 	</path>
-	
+
 	<target name="prepare-test" depends="create-jar, test-clean">
 		<mkdir dir="${test.class.dir}" />
-		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" target="1.5" source="1.5" deprecation="on">				
-				<include name="**/*.java" />
-				<classpath>
-					<path refid="jcerti.classpath" />
-				</classpath>
+		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" includeantruntime="false" target="1.5" source="1.5" deprecation="on">
+			<include name="**/*.java" />
+			<classpath>
+				<path refid="jcerti.classpath" />
+			</classpath>
 		</javac>
 		<mkdir dir="${test.report.dir}" />
 		<mkdir dir="${test.work.dir}" />
 		<copy todir="${test.work.dir}" flatten="yes">
 			<fileset dir="${test.src.dir}" includes="**/*.xml"/>
 			<fileset dir="${test.src.dir}" includes="**/*.fed"/>
-		</copy>			
+		</copy>
 	</target>
 
-	<target name="test" depends="prepare-test" description="o run JUnit tests">	
+	<target name="test" depends="prepare-test" description="o run JUnit tests">
 		<!--
 		<junit printsummary="withOutAndErr" fork="yes">
 			<jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
@@ -225,7 +225,7 @@ You can get junit.jar at : http://www.junit.org
 			</zipfileset>
 		</zip>
 	</target>
-	
+
 	<!-- Source zip timestamped with creator -->
 	<target name="create-src-zip-dist-timestamped" depends="create-src-zip-dist">
 		<tstamp>
@@ -233,7 +233,7 @@ You can get junit.jar at : http://www.junit.org
 		</tstamp>
 		<move file="${dist.dir}/jcerti-src.zip" tofile="${dist.dir}/jcerti-src-${zipTimeStamp}-${user.name}.zip"/>
 	</target>
-	
+
 	<target name="package-source" depends="create-izpack-dist" description="o create a source package"/>
 
 	<target name="create-izpack-dist" depends="create-src-zip-dist,prepare-dist,javadoc,create-jar">
@@ -248,7 +248,7 @@ You can get junit.jar at : http://www.junit.org
                basedir="${home.dir}" 
                izPackDir="${lib.izpack.dir}"/>
 	</target>
-	
+
 	<target name="package" depends="create-izpack-dist" description="o create an IzPack installer"/>
 
 	<!-- Timestamp bzip2 patch -->

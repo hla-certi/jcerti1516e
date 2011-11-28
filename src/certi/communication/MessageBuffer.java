@@ -296,7 +296,7 @@ public class MessageBuffer {
      * @throws IOException
      * @throws CertiException
      */
-    public void receiveData() throws IOException, CertiException {
+    synchronized public void receiveData() throws IOException, CertiException {
         this.reset();
 
         //Read endianess
@@ -328,7 +328,7 @@ public class MessageBuffer {
      * @param out
      * @throws IOException
      */
-    public void send() throws IOException {
+    synchronized public void send() throws IOException {
         //Construct the header
         Vector<Byte> message = new Vector<Byte>();
 

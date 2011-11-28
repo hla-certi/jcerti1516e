@@ -66,27 +66,31 @@ public class CertiMessage {
      * @param messageBuffer the <code>MessageBuffer</code> in which the method will write the state of the <code>CertiMessage</code>
      */
     public void writeMessage(MessageBuffer messageBuffer) {
-        //write the header
-        messageBuffer.reset();
-        //HEADER
-        messageBuffer.write(this.type.getType());
-        messageBuffer.write(this.exception.getException());
-        //messageBuffer.write(this.federationTime);
+        
+        synchronized (messageBuffer) {
 
-        //BASIC MESSAGE
-        messageBuffer.write(federationTime != null);
-        if (federationTime != null) {
-            messageBuffer.write(federationTime.getTime());
-        }
+            //write the header
+            messageBuffer.reset();
+            //HEADER
+            messageBuffer.write(this.type.getType());
+            messageBuffer.write(this.exception.getException());
+            //messageBuffer.write(this.federationTime);
 
-        messageBuffer.write(label != null);
-        if (label != null) {
-            messageBuffer.write(label);
-        }
+            //BASIC MESSAGE
+            messageBuffer.write(federationTime != null);
+            if (federationTime != null) {
+                messageBuffer.write(federationTime.getTime());
+            }
 
-        messageBuffer.write(tag != null);
-        if (tag != null) {
-            messageBuffer.write(tag);
+            messageBuffer.write(label != null);
+            if (label != null) {
+                messageBuffer.write(label);
+            }
+
+            messageBuffer.write(tag != null);
+            if (tag != null) {
+                messageBuffer.write(tag);
+            }
         }
     }
 
@@ -97,29 +101,33 @@ public class CertiMessage {
      * @throws CertiException
      */
     public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        this.exception = CertiExceptionType.reverse.get(messageBuffer.readInt());
+        
+        synchronized (messageBuffer) {
 
-        if (this.exception != CertiExceptionType.NO_EXCEPTION) {
-            // If the message carry an exception, the Body will only contain the exception reason.
+            this.exception = CertiExceptionType.reverse.get(messageBuffer.readInt());
 
-            throw new CertiException(this.exception, messageBuffer.readString()); //Reads the reason and throws the exception
-        }
-        //BASIC MESSAGE
+            if (this.exception != CertiExceptionType.NO_EXCEPTION) {
+                // If the message carry an exception, the Body will only contain the exception reason.
 
-        //this.federationTime = messageBuffer.readLogicalTime();
-        boolean timestamped = messageBuffer.readBoolean();
-        if (timestamped) {
-            federationTime = messageBuffer.readLogicalTime();
-        }
+                throw new CertiException(this.exception, messageBuffer.readString()); //Reads the reason and throws the exception
+            }
+            //BASIC MESSAGE
 
-        boolean labelled = messageBuffer.readBoolean();
-        if (labelled) {
-            label = messageBuffer.readString();
-        }
+            //this.federationTime = messageBuffer.readLogicalTime();
+            boolean timestamped = messageBuffer.readBoolean();
+            if (timestamped) {
+                federationTime = messageBuffer.readLogicalTime();
+            }
 
-        boolean tagged = messageBuffer.readBoolean();
-        if (tagged) {
-            tag = messageBuffer.readBytes();
+            boolean labelled = messageBuffer.readBoolean();
+            if (labelled) {
+                label = messageBuffer.readString();
+            }
+
+            boolean tagged = messageBuffer.readBoolean();
+            if (tagged) {
+                tag = messageBuffer.readBytes();
+            }
         }
     }
 

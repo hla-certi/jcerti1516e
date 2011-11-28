@@ -181,7 +181,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         return false;
     }
 
-    private boolean tickKernel(boolean multiple, double minimum, double maximum) throws SpecifiedSaveLabelDoesNotExist, ConcurrentAccessAttempted, RTIinternalError {
+    synchronized private boolean tickKernel(boolean multiple, double minimum, double maximum) throws SpecifiedSaveLabelDoesNotExist, ConcurrentAccessAttempted, RTIinternalError {
         //TODO Code is hard to read - rewrite
         TickRequest tickRequest;
         CertiMessage tickResponse = null;

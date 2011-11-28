@@ -113,7 +113,7 @@ JAR List :
 
 	<target name="prepare-test" depends="create-jar, test-clean">
 		<mkdir dir="${test.class.dir}" />
-		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" includeantruntime="false" target="1.5" source="1.5" deprecation="on">
+		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" includeantruntime="false" target="1.5" source="1.5" deprecation="on" debug="true" debuglevel="lines,vars,source">
 			<include name="**/*.java" />
 			<classpath>
 				<path refid="jcerti.classpath" />

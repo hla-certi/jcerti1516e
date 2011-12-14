@@ -23,52 +23,70 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-public class HLAunicodeChar extends DataElementBase implements
-        hla.rti1516e.encoding.HLAunicodeChar {
+public class HLAunicodeStringImpl extends DataElementBase implements
+        hla.rti1516e.encoding.HLAunicodeString {
 
-    private BasicHLAoctetPairBE value;
+    private String value;
     
-    public HLAunicodeChar() {
-        value = new BasicHLAoctetPairBE();
+    public HLAunicodeStringImpl() {
+        value = "";
+    }
+
+    public HLAunicodeStringImpl(String s) {
+        value = (null!=s ? s : "");
     }
     
-    public HLAunicodeChar(short c) {
-        value = new BasicHLAoctetPairBE(c);
-    }
     
-    @Override
     public int getOctetBoundary() {
-        return value.getOctetBoundary();
+        return 4;
     }
 
-    @Override
+    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        value.encode(byteWrapper);
+       byteWrapper.align(getOctetBoundary());
+       int ls = value.length();
+       // put size of the string first
+       byteWrapper.putInt(ls);
+       int c;
+       for (int i=0; i<ls; ++i) {
+           c = (int) value.charAt(i);
+           byteWrapper.put((c >>> 8) & 0xFF);
+           byteWrapper.put((c >>> 0) & 0xFF);
+       }
     }
 
-    @Override
+    
     public int getEncodedLength() {
-        return value.getEncodedLength();
+        return 4+2*value.length();
     }
 
-    @Override
+    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
-        value.decode(byteWrapper);
+        byteWrapper.align(getOctetBoundary());
+        int ls = byteWrapper.getInt();
+        char[] s = new char[ls];
+        int upper;
+        int lower;
+        for (int i=0;i<ls;++i) {
+            upper = byteWrapper.get();
+            lower = byteWrapper.get();
+            s[i] = (char)((upper << 8) + (lower << 0));
+        }
     }
 
-    @Override
+    
     public void decode(byte[] bytes) throws DecoderException {
-        value.decode(bytes);
+        throw new DecoderException("Not Implemented");
     }
 
-    @Override
-    public short getValue() {
-        return value.getValue();
+    
+    public String getValue() {
+        return value;
     }
 
-    @Override
-    public void setValue(short value) {
-        this.value.setValue(value);
+    
+    public void setValue(String value) {
+        this.value = value;
     }
 
 }

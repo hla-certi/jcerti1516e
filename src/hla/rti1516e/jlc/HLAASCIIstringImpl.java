@@ -19,74 +19,74 @@
 // ----------------------------------------------------------------------------
 package hla.rti1516e.jlc;
 
+import java.io.UnsupportedEncodingException;
+
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-public class HLAunicodeString extends DataElementBase implements
-        hla.rti1516e.encoding.HLAunicodeString {
-
-    private String value;
+public class HLAASCIIstringImpl extends DataElementBase implements
+        hla.rti1516e.encoding.HLAASCIIstring {
     
-    public HLAunicodeString() {
+    private String value;
+    private static final String CHARACTER_SET = "ISO-8859-1";
+
+    public HLAASCIIstringImpl() {
         value = "";
     }
-
-    public HLAunicodeString(String s) {
-        value = (null!=s ? s : "");
+    
+    public HLAASCIIstringImpl(String s) {
+        value = (null!=s ? s: "");
     }
     
-    @Override
     public int getOctetBoundary() {
         return 4;
     }
 
-    @Override
+    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
-       byteWrapper.align(getOctetBoundary());
-       int ls = value.length();
-       // put size of the string first
-       byteWrapper.putInt(ls);
-       int c;
-       for (int i=0; i<ls; ++i) {
-           c = (int) value.charAt(i);
-           byteWrapper.put((c >>> 8) & 0xFF);
-           byteWrapper.put((c >>> 0) & 0xFF);
-       }
+        byteWrapper.align(getOctetBoundary());
+        byte[] content;
+        
+        try {
+            content = value.getBytes(CHARACTER_SET);
+        } catch (UnsupportedEncodingException e) {
+            throw new EncoderException("Character Set not handled",e);
+        }
+        byteWrapper.putInt(value.length());
+        byteWrapper.put(content);
     }
 
-    @Override
+    
     public int getEncodedLength() {
-        return 4+2*value.length();
+        return 4  + value.length();
     }
 
-    @Override
+    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
-        int ls = byteWrapper.getInt();
-        char[] s = new char[ls];
-        int upper;
-        int lower;
-        for (int i=0;i<ls;++i) {
-            upper = byteWrapper.get();
-            lower = byteWrapper.get();
-            s[i] = (char)((upper << 8) + (lower << 0));
+        int len = byteWrapper.getInt();
+        byte content[] = new byte[len];
+        try {
+            value = new String(content,CHARACTER_SET);
+        } catch (UnsupportedEncodingException e) {
+            throw new DecoderException("Character Set not Handled",e);
         }
     }
 
-    @Override
+    
     public void decode(byte[] bytes) throws DecoderException {
-        throw new DecoderException("Not Implemented");
+        throw new DecoderException("NOT IMPLEMENTED");
     }
 
-    @Override
+    
     public String getValue() {
         return value;
     }
 
-    @Override
+    
     public void setValue(String value) {
-        this.value = value;
+        this.value = value; 
     }
 
 }

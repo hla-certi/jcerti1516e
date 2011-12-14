@@ -24,24 +24,24 @@ import hla.rti1516e.encoding.HLAfloat32BE;
 //Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 //
 //----------------------------------------------------------------------------
-public class BasicHLAfloat32BE extends DataElementBase implements HLAfloat32BE {
+public class BasicHLAfloat32BEImpl extends DataElementBase implements HLAfloat32BE {
 
     private float value;
     
-    public BasicHLAfloat32BE() {
+    public BasicHLAfloat32BEImpl() {
         value = 0.0f;
     }
     
-    public BasicHLAfloat32BE(float f) {
+    public BasicHLAfloat32BEImpl(float f) {
         value = f;
     }
     
-    @Override
+    
     public int getOctetBoundary() {
         return 4;
     }
 
-    @Override
+    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
         byteWrapper.align(getOctetBoundary());
         int f_as_i = Float.floatToIntBits(value);
@@ -51,12 +51,12 @@ public class BasicHLAfloat32BE extends DataElementBase implements HLAfloat32BE {
         byteWrapper.put((int)(f_as_i >>>  0) & 0xFF);
     }
 
-    @Override
+    
     public int getEncodedLength() {
         return 4;
     }
 
-    @Override
+    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
         int f_as_i;
@@ -68,7 +68,7 @@ public class BasicHLAfloat32BE extends DataElementBase implements HLAfloat32BE {
         value = Float.intBitsToFloat(f_as_i);
     }
 
-    @Override
+    
     public void decode(byte[] bytes) throws DecoderException {
         
         int f_as_i;
@@ -80,12 +80,12 @@ public class BasicHLAfloat32BE extends DataElementBase implements HLAfloat32BE {
         value = Float.intBitsToFloat(f_as_i);
     }
 
-    @Override
+    
     public float getValue() {
         return value;
     }
 
-    @Override
+    
     public void setValue(float value) {
         this.value = value;
     }

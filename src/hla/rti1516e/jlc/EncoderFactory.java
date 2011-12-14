@@ -30,240 +30,238 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
        return CERTI_ENCODER_FACTORY;
     }
 
-    @Override
+    
     public HLAASCIIchar createHLAASCIIchar() {
-        return new HLAASCIIchar();
+        return new HLAASCIIcharImpl();
     }
 
-    @Override
+    
     public HLAASCIIchar createHLAASCIIchar(byte b) {
-        return new HLAASCIIchar(b);
+        return new HLAASCIIcharImpl(b);
     }
 
-    @Override
+    
     public HLAASCIIstring createHLAASCIIstring() {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAASCIIstringImpl();
     }
 
-    @Override
+    
     public HLAASCIIstring createHLAASCIIstring(String s) {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAASCIIstringImpl(s);
     }
 
-    @Override
+    
     public HLAboolean createHLAboolean() {
-        return new HLAboolean();
+        return new HLAbooleanImpl();
     }
 
-    @Override
+    
     public HLAboolean createHLAboolean(boolean b) {
-        return new HLAboolean(b);
+        return new HLAbooleanImpl(b);
     }
 
-    @Override
+    
     public HLAbyte createHLAbyte() {
-        return new BasicHLAbyte();
+        return new BasicHLAbyteImpl();
     }
 
-    @Override
+    
     public HLAbyte createHLAbyte(byte b) {
-        return new BasicHLAbyte(b);
+        return new BasicHLAbyteImpl(b);
     }
 
-    @Override
+    
     public <T extends DataElement> HLAvariantRecord<T> createHLAvariantRecord(
             T discriminant) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public HLAfixedRecord createHLAfixedRecord() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public <T extends DataElement> HLAfixedArray<T> createHLAfixedArray(
             DataElementFactory<T> factory, int size) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public <T extends DataElement> HLAfixedArray<T> createHLAfixedArray(
             T... elements) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public HLAfloat32BE createHLAfloat32BE() {
-        return new BasicHLAfloat32BE();
+        return new BasicHLAfloat32BEImpl();
     }
 
-    @Override
+    
     public HLAfloat32BE createHLAfloat32BE(float f) {
-        return new BasicHLAfloat32BE(f);
+        return new BasicHLAfloat32BEImpl(f);
     }
 
-    @Override
+    
     public HLAfloat32LE createHLAfloat32LE() {
-        return new BasicHLAfloat32LE();
+        return new BasicHLAfloat32LEImpl();
     }
 
-    @Override
+    
     public HLAfloat32LE createHLAfloat32LE(float f) {
-        return new BasicHLAfloat32LE(f);
+        return new BasicHLAfloat32LEImpl(f);
     }
 
-    @Override
+    
     public HLAfloat64BE createHLAfloat64BE() {
-        return new BasicHLAfloat64BE();
+        return new BasicHLAfloat64BEImpl();
     }
 
-    @Override
+    
     public HLAfloat64BE createHLAfloat64BE(double d) {
-        return new BasicHLAfloat64BE(d);
+        return new BasicHLAfloat64BEImpl(d);
     }
 
-    @Override
+    
     public HLAfloat64LE createHLAfloat64LE() {
-        return new BasicHLAfloat64LE();
+        return new BasicHLAfloat64LEImpl();
     }
 
-    @Override
+    
     public HLAfloat64LE createHLAfloat64LE(double d) {
-        return new BasicHLAfloat64LE(d);
+        return new BasicHLAfloat64LEImpl(d);
     }
 
-    @Override
+    
     public HLAinteger16BE createHLAinteger16BE() {
-        return new BasicHLAinteger16BE();
+        return new BasicHLAinteger16BEImpl();
     }
 
-    @Override
+    
     public HLAinteger16BE createHLAinteger16BE(short s) {
-        return new BasicHLAinteger16BE(s);
+        return new BasicHLAinteger16BEImpl(s);
     }
 
-    @Override
+    
     public HLAinteger16LE createHLAinteger16LE() {
-        return new BasicHLAinteger16LE();
+        return new BasicHLAinteger16LEImpl();
     }
 
-    @Override
+    
     public HLAinteger16LE createHLAinteger16LE(short s) {
-        return new BasicHLAinteger16LE(s);
+        return new BasicHLAinteger16LEImpl(s);
     }
 
-    @Override
+    
     public HLAinteger32BE createHLAinteger32BE() {
-        return new BasicHLAinteger32BE();
+        return new BasicHLAinteger32BEImpl();
     }
 
-    @Override
+    
     public HLAinteger32BE createHLAinteger32BE(int i) {
-        return new BasicHLAinteger32BE(i);
+        return new BasicHLAinteger32BEImpl(i);
     }
 
-    @Override
+    
     public HLAinteger32LE createHLAinteger32LE() {
-        return new BasicHLAinteger32LE();
+        return new BasicHLAinteger32LEImpl();
     }
 
-    @Override
+    
     public HLAinteger32LE createHLAinteger32LE(int i) {
-        return new BasicHLAinteger32LE(i);
+        return new BasicHLAinteger32LEImpl(i);
     }
 
-    @Override
+    
     public HLAinteger64BE createHLAinteger64BE() {
-        return new BasicHLAinteger64BE();
+        return new BasicHLAinteger64BEImpl();
     }
 
-    @Override
+    
     public HLAinteger64BE createHLAinteger64BE(long l) {
-        return new BasicHLAinteger64BE(l);
+        return new BasicHLAinteger64BEImpl(l);
     }
 
-    @Override
+    
     public HLAinteger64LE createHLAinteger64LE() {
-        return new BasicHLAinteger64LE();
+        return new BasicHLAinteger64LEImpl();
     }
 
-    @Override
+    
     public HLAinteger64LE createHLAinteger64LE(long l) {
-        return new BasicHLAinteger64LE(l);
+        return new BasicHLAinteger64LEImpl(l);
     }
 
-    @Override
+    
     public HLAoctet createHLAoctet() {
-        return new BasicHLAoctet();
+        return new BasicHLAoctetImpl();
     }
 
-    @Override
+    
     public HLAoctet createHLAoctet(byte b) {
-        return new BasicHLAoctet(b);
+        return new BasicHLAoctetImpl(b);
     }
 
-    @Override
+    
     public HLAoctetPairBE createHLAoctetPairBE() {
-       return new BasicHLAoctetPairBE();
+       return new BasicHLAoctetPairBEImpl();
     }
 
-    @Override
+    
     public HLAoctetPairBE createHLAoctetPairBE(short s) {
-        return new BasicHLAoctetPairBE(s);
+        return new BasicHLAoctetPairBEImpl(s);
     }
 
-    @Override
+    
     public HLAoctetPairLE createHLAoctetPairLE() {
-        return new BasicHLAoctetPairLE();
+        return new BasicHLAoctetPairLEImpl();
     }
 
-    @Override
+    
     public HLAoctetPairLE createHLAoctetPairLE(short s) {
-        return new BasicHLAoctetPairLE(s);
+        return new BasicHLAoctetPairLEImpl(s);
     }
 
-    @Override
+    
     public HLAopaqueData createHLAopaqueData() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public HLAopaqueData createHLAopaqueData(byte[] b) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public HLAunicodeChar createHLAunicodeChar() {
-        return new HLAunicodeChar();
+        return new HLAunicodeCharImpl();
     }
 
-    @Override
+    
     public HLAunicodeChar createHLAunicodeChar(short c) {
-        return new HLAunicodeChar(c);
+        return new HLAunicodeCharImpl(c);
     }
 
-    @Override
+    
     public HLAunicodeString createHLAunicodeString() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public HLAunicodeString createHLAunicodeString(String s) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    
     public <T extends DataElement> HLAvariableArray<T> createHLAvariableArray(
             DataElementFactory<T> factory, T... elements) {
         // TODO Auto-generated method stub

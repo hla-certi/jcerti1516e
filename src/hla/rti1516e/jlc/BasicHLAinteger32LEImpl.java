@@ -22,53 +22,67 @@ package hla.rti1516e.jlc;
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
+import hla.rti1516e.encoding.HLAinteger32LE;
 
-public class HLAASCIIchar extends DataElementBase implements
-        hla.rti1516e.encoding.HLAASCIIchar {
+public class BasicHLAinteger32LEImpl extends DataElementBase implements
+        HLAinteger32LE {
+
+    private int value;
     
-    private BasicHLAoctet value;
-    
-    public HLAASCIIchar() {
-        value = new BasicHLAoctet();
+    public BasicHLAinteger32LEImpl() {
+        value = 0;
     }
     
-    public HLAASCIIchar(byte value) {
-        this.value = new BasicHLAoctet(value);
+    public BasicHLAinteger32LEImpl(int value) {
+        this.value = value;
     }
     
-    @Override
+    
     public int getOctetBoundary() {
-        return value.getOctetBoundary();
+        return 4;
     }
 
-    @Override
+    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        value.encode(byteWrapper);
+        byteWrapper.align(getOctetBoundary());
+        byteWrapper.put((int)(value >>>  0) & 0xFF);
+        byteWrapper.put((int)(value >>>  8) & 0xFF);
+        byteWrapper.put((int)(value >>> 16) & 0xFF);
+        byteWrapper.put((int)(value >>> 24) & 0xFF);
     }
 
-    @Override
+    
     public int getEncodedLength() {
-        return value.getEncodedLength();
+        return 4;
     }
 
-    @Override
+    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
-        value.decode(byteWrapper);
+        byteWrapper.align(getOctetBoundary());
+        value  = 0;
+        value += (int)((byteWrapper.get() & 0xFF) <<  0);
+        value += (int)((byteWrapper.get() & 0xFF) <<  8);
+        value += (int)((byteWrapper.get() & 0xFF) << 16);
+        value += (int)((byteWrapper.get() & 0xFF) << 24);
     }
 
-    @Override
+    
     public void decode(byte[] bytes) throws DecoderException {
-        value.decode(bytes);
+        value  = 0;
+        value += (int)((bytes[0] & 0xFF) <<  0);
+        value += (int)((bytes[1] & 0xFF) <<  8);
+        value += (int)((bytes[2] & 0xFF) << 16);
+        value += (int)((bytes[3] & 0xFF) << 24);
     }
 
-    @Override
-    public byte getValue() {
-        return value.getValue();
+    
+    public int getValue() {
+        return value;
     }
 
-    @Override
-    public void setValue(byte value) {
-        this.value.setValue(value);
+    
+    public void setValue(int value) {
+        this.value = value;
     }
 
 }

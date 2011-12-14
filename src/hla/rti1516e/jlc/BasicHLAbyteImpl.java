@@ -23,53 +23,52 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-public class HLAASCIIstring extends DataElementBase implements
-        hla.rti1516e.encoding.HLAASCIIstring {
+public class BasicHLAbyteImpl extends DataElementBase implements
+        hla.rti1516e.encoding.HLAbyte {
 
-    public HLAASCIIstring() {
-        // TODO Auto-generated constructor stub
+    private BasicHLAoctetImpl value;
+    
+    public BasicHLAbyteImpl() {
+        value = new BasicHLAoctetImpl();
+    }
+    
+    public BasicHLAbyteImpl(byte b) {
+        value = new BasicHLAoctetImpl(b);
     }
 
-    @Override
+    
     public int getOctetBoundary() {
-        // TODO Auto-generated method stub
-        return 0;
+        return value.getOctetBoundary();
     }
 
-    @Override
+    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        // TODO Auto-generated method stub
-
+        value.encode(byteWrapper);
     }
 
-    @Override
+    
     public int getEncodedLength() {
-        // TODO Auto-generated method stub
-        return 0;
+        return value.getEncodedLength();
     }
 
-    @Override
+    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
-        // TODO Auto-generated method stub
-
+        value.decode(byteWrapper);
     }
 
-    @Override
+    
     public void decode(byte[] bytes) throws DecoderException {
-        // TODO Auto-generated method stub
-
+        value.decode(bytes);
     }
 
-    @Override
-    public String getValue() {
-        // TODO Auto-generated method stub
-        return null;
+    
+    public byte getValue() {
+        return value.getValue();
     }
 
-    @Override
-    public void setValue(String value) {
-        // TODO Auto-generated method stub
-
+    
+    public void setValue(byte value) {
+        this.value.setValue(value);
     }
 
 }

@@ -23,50 +23,50 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-public class BasicHLAbyte extends DataElementBase implements
-        hla.rti1516e.encoding.HLAbyte {
-
-    private BasicHLAoctet value;
+public class HLAASCIIcharImpl extends DataElementBase implements
+        hla.rti1516e.encoding.HLAASCIIchar {
     
-    public BasicHLAbyte() {
-        value = new BasicHLAoctet();
+    private BasicHLAoctetImpl value;
+    
+    public HLAASCIIcharImpl() {
+        value = new BasicHLAoctetImpl();
     }
     
-    public BasicHLAbyte(byte b) {
-        value = new BasicHLAoctet(b);
+    public HLAASCIIcharImpl(byte value) {
+        this.value = new BasicHLAoctetImpl(value);
     }
-
-    @Override
+    
+    
     public int getOctetBoundary() {
         return value.getOctetBoundary();
     }
 
-    @Override
+    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
         value.encode(byteWrapper);
     }
 
-    @Override
+    
     public int getEncodedLength() {
         return value.getEncodedLength();
     }
 
-    @Override
+    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         value.decode(byteWrapper);
     }
 
-    @Override
+    
     public void decode(byte[] bytes) throws DecoderException {
         value.decode(bytes);
     }
 
-    @Override
+    
     public byte getValue() {
         return value.getValue();
     }
 
-    @Override
+    
     public void setValue(byte value) {
         this.value.setValue(value);
     }

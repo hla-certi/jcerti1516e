@@ -24,24 +24,24 @@ import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 import hla.rti1516e.encoding.HLAfloat64BE;
 
-public class BasicHLAfloat64BE extends DataElementBase implements HLAfloat64BE {
+public class BasicHLAfloat64BEImpl extends DataElementBase implements HLAfloat64BE {
 
     private double value;
     
-    public BasicHLAfloat64BE() {
+    public BasicHLAfloat64BEImpl() {
         value = 0.0;
     }
     
-    public BasicHLAfloat64BE(double d) {
+    public BasicHLAfloat64BEImpl(double d) {
         value = d;
     }
     
-    @Override
+    
     public int getOctetBoundary() {
         return 8;
     }
 
-    @Override
+    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
         byteWrapper.align(getOctetBoundary());
         long d_as_l = Double.doubleToLongBits(value);
@@ -55,12 +55,12 @@ public class BasicHLAfloat64BE extends DataElementBase implements HLAfloat64BE {
         byteWrapper.put((int)(d_as_l >>>  0) & 0xFF);
     }
 
-    @Override
+    
     public int getEncodedLength() {
         return 8;
     }
 
-    @Override
+    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
         long d_as_l;
@@ -76,7 +76,7 @@ public class BasicHLAfloat64BE extends DataElementBase implements HLAfloat64BE {
         value = Double.longBitsToDouble(d_as_l);
     }
 
-    @Override
+    
     public void decode(byte[] bytes) throws DecoderException {
         
         long d_as_l;
@@ -92,12 +92,12 @@ public class BasicHLAfloat64BE extends DataElementBase implements HLAfloat64BE {
         value = Double.longBitsToDouble(d_as_l);
     }
 
-    @Override
+    
     public double getValue() {
         return value;
     }
 
-    @Override
+    
     public void setValue(double value) {
         this.value = value;
     }

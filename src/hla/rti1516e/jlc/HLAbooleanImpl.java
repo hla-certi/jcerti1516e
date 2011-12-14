@@ -23,52 +23,52 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-public class BasicHLAoctet extends DataElementBase implements
-        hla.rti1516e.encoding.HLAoctet {
-    private byte value;
+public class HLAbooleanImpl extends DataElementBase implements
+        hla.rti1516e.encoding.HLAboolean {
+
+    private BasicHLAinteger32BEImpl value;
     
-    public BasicHLAoctet(byte value) {
-        this.value = value;
+    public HLAbooleanImpl() {
+        value = new BasicHLAinteger32BEImpl(0);
     }
     
-    public BasicHLAoctet() {
-        value = 0;
+    public HLAbooleanImpl(boolean b) {
+        value = new BasicHLAinteger32BEImpl(b ? 1 :0);
     }
     
-    @Override
+    
     public int getOctetBoundary() {
-        return 1;
+        return value.getOctetBoundary();
     }
 
-    @Override
-    public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        byteWrapper.align(getOctetBoundary());
-        byteWrapper.put(value);
-    }
-
-    @Override
-    public int getEncodedLength() {
-        return 1;
-    }
-
-    @Override
-    public void decode(ByteWrapper byteWrapper) throws DecoderException {
-        byteWrapper.align(getOctetBoundary());
-        value = (byte)byteWrapper.get();
-    }
-
-    @Override
-    public void decode(byte[] bytes) throws DecoderException {
-        value = bytes[0];
-    }
     
-    @Override
-    public byte getValue() {
-        return value;
+    public void encode(ByteWrapper byteWrapper) throws EncoderException {
+        value.encode(byteWrapper);
     }
 
-    @Override
-    public void setValue(byte value) {
-        this.value = value;
+    
+    public int getEncodedLength() {
+        return value.getEncodedLength();
     }
+
+    
+    public void decode(ByteWrapper byteWrapper) throws DecoderException {
+        value.decode(byteWrapper);
+    }
+
+    
+    public void decode(byte[] bytes) throws DecoderException {
+        value.decode(bytes);
+    }
+
+    
+    public boolean getValue() {
+        return (value.getValue()==1);
+    }
+
+    
+    public void setValue(boolean value) {
+        this.value.setValue(value ? 1 : 0);
+    }
+
 }

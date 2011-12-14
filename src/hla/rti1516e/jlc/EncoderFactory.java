@@ -32,14 +32,12 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
 
     @Override
     public HLAASCIIchar createHLAASCIIchar() {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAASCIIchar();
     }
 
     @Override
     public HLAASCIIchar createHLAASCIIchar(byte b) {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAASCIIchar(b);
     }
 
     @Override
@@ -56,14 +54,12 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
 
     @Override
     public HLAboolean createHLAboolean() {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAboolean();
     }
 
     @Override
     public HLAboolean createHLAboolean(boolean b) {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAboolean(b);
     }
 
     @Override
@@ -247,14 +243,12 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
 
     @Override
     public HLAunicodeChar createHLAunicodeChar() {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAunicodeChar();
     }
 
     @Override
     public HLAunicodeChar createHLAunicodeChar(short c) {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAunicodeChar(c);
     }
 
     @Override

@@ -32,6 +32,10 @@ public class HLAunicodeChar extends DataElementBase implements
         value = new BasicHLAoctetPairBE();
     }
     
+    public HLAunicodeChar(short c) {
+        value = new BasicHLAoctetPairBE(c);
+    }
+    
     @Override
     public int getOctetBoundary() {
         return value.getOctetBoundary();

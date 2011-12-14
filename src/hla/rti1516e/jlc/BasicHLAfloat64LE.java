@@ -38,7 +38,7 @@ public class BasicHLAfloat64LE extends DataElementBase implements HLAfloat64LE {
     
     @Override
     public int getOctetBoundary() {
-        return 4;
+        return 8;
     }
 
     @Override

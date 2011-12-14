@@ -39,7 +39,7 @@ public class BasicHLAinteger64LE extends DataElementBase implements
     
     @Override
     public int getOctetBoundary() {
-        return 4;
+        return 8;
     }
 
     @Override

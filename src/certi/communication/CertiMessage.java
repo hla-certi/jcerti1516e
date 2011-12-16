@@ -91,7 +91,7 @@ public class CertiMessage {
             if (tag != null) {
                 messageBuffer.write(tag);
             }
-        }
+        }  // end of synchronized(messageBuffer)
     }
 
     /**
@@ -128,7 +128,7 @@ public class CertiMessage {
             if (tagged) {
                 tag = messageBuffer.readBytes();
             }
-        }
+        } // end of synchronized(messageBuffer)
     }
 
     /**

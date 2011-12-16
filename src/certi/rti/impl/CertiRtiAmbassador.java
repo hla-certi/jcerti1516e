@@ -191,73 +191,76 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         tickRequest.setMultiple(multiple);
         tickRequest.setMinTickTime(minimum);
         tickRequest.setMaxTickTime(maximum);
+        
+        synchronized(this.messageBuffer) {
 
-        tickRequest.writeMessage(this.messageBuffer);
+            tickRequest.writeMessage(this.messageBuffer);
 
-        try {
-            this.messageBuffer.send();
-        } catch (IOException ex) {
-            throw new RTIinternalError("NetworkError in tick() while sending TICK_REQUEST: " + ex.getMessage());
-        }
-
-        LOGGER.fine("Reading response(s) from the local RTIA");
-        while (true) {
             try {
-                tickResponse = MessageFactory.readMessage(messageBuffer);
-
-                LOGGER.info("Received: " + tickResponse.toString() + "\n");
+                this.messageBuffer.send();
             } catch (IOException ex) {
-                throw new RTIinternalError("NetworkError in tick() while receiving response: " + ex.getMessage());
-            } catch (CertiException certiException) {
-                // tick() may only throw exceptions defined in the HLA standard
-                // the RTIA is responsible for sending 'allowed' exceptions only
-                try {
-                    translateException(certiException);
-                } catch (SpecifiedSaveLabelDoesNotExist ex) {
-                    throw ex;
-                } catch (ConcurrentAccessAttempted ex) {
-                    throw ex;
-                } catch (RTIinternalError ex) {
-                    throw ex;
-                } catch (RuntimeException ex) {
-                    throw ex;
-                } catch (Exception ex) {
-                    LOGGER.severe("Tick() error");
-                }
+                throw new RTIinternalError("NetworkError in tick() while sending TICK_REQUEST: " + ex.getMessage());
             }
 
-            // If the type is TICK_REQUEST, the tickKernel() has terminated.
-            if (tickResponse.getType() == CertiMessageType.TICK_REQUEST) {
-                LOGGER.fine("TICK_REQUEST is received - ending tick");
-                return ((TickRequest) tickResponse).isMultiple();
-            } else {
+            LOGGER.fine("Reading response(s) from the local RTIA");
+            while (true) {
                 try {
-                    // Otherwise, the RTI calls a FederateAmbassador service.
-                    callFederateAmbassador(tickResponse);
-                } catch (RTIinternalError ex) {
-                    // RTIA awaits TICK_REQUEST_NEXT, terminate the tick() processing
-                    TickRequestStop tickRequestStop = new TickRequestStop();
-                    try {
-                        processRequest(tickRequestStop);
-                    } catch (Exception tickResponseException) {
-                        // ignore the response, ignore exceptions
-                        // rep.type == TICK_REQUEST;
-                    }
-                    // ignore the response and re-throw the original exception
-                    throw ex;
-                }
+                    tickResponse = MessageFactory.readMessage(messageBuffer);
 
-                LOGGER.fine("Sending TICK_NEXT");
-                CertiMessage tickNext = new TickRequestNext();
-                tickNext.writeMessage(this.messageBuffer);
-
-                try {
-                    this.messageBuffer.send();
+                    LOGGER.info("Received: " + tickResponse.toString() + "\n");
                 } catch (IOException ex) {
-                    throw new RTIinternalError("NetworkError in tick() while sending TICK_REQUEST_NEXT: " + ex.getMessage());
+                    throw new RTIinternalError("NetworkError in tick() while receiving response: " + ex.getMessage());
+                } catch (CertiException certiException) {
+                    // tick() may only throw exceptions defined in the HLA standard
+                    // the RTIA is responsible for sending 'allowed' exceptions only
+                    try {
+                        translateException(certiException);
+                    } catch (SpecifiedSaveLabelDoesNotExist ex) {
+                        throw ex;
+                    } catch (ConcurrentAccessAttempted ex) {
+                        throw ex;
+                    } catch (RTIinternalError ex) {
+                        throw ex;
+                    } catch (RuntimeException ex) {
+                        throw ex;
+                    } catch (Exception ex) {
+                        LOGGER.severe("Tick() error");
+                    }
+                }
+
+                // If the type is TICK_REQUEST, the tickKernel() has terminated.
+                if (tickResponse.getType() == CertiMessageType.TICK_REQUEST) {
+                    LOGGER.fine("TICK_REQUEST is received - ending tick");
+                    return ((TickRequest) tickResponse).isMultiple();
+                } else {
+                    try {
+                        // Otherwise, the RTI calls a FederateAmbassador service.
+                        callFederateAmbassador(tickResponse);
+                    } catch (RTIinternalError ex) {
+                        // RTIA awaits TICK_REQUEST_NEXT, terminate the tick() processing
+                        TickRequestStop tickRequestStop = new TickRequestStop();
+                        try {
+                            processRequest(tickRequestStop);
+                        } catch (Exception tickResponseException) {
+                            // ignore the response, ignore exceptions
+                            // rep.type == TICK_REQUEST;
+                        }
+                        // ignore the response and re-throw the original exception
+                        throw ex;
+                    }
+
+                    LOGGER.fine("Sending TICK_NEXT");
+                    CertiMessage tickNext = new TickRequestNext();
+                    tickNext.writeMessage(this.messageBuffer);
+
+                    try {
+                        this.messageBuffer.send();
+                    } catch (IOException ex) {
+                        throw new RTIinternalError("NetworkError in tick() while sending TICK_REQUEST_NEXT: " + ex.getMessage());
+                    }
                 }
             }
-        }
+        } // end of synchronized(this.messageBuffer)
     }
 
     public void closeConnexion() {
@@ -3716,32 +3719,34 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
     }
 
     private CertiMessage processRequest(CertiMessage request) throws ArrayIndexOutOfBounds, AsynchronousDeliveryAlreadyEnabled, AsynchronousDeliveryAlreadyDisabled, AttributeAlreadyOwned, AttributeAlreadyBeingAcquired, AttributeAlreadyBeingDivested, AttributeDivestitureWasNotRequested, AttributeAcquisitionWasNotRequested, AttributeNotDefined, AttributeNotKnown, AttributeNotOwned, AttributeNotPublished, RTIinternalError, ConcurrentAccessAttempted, CouldNotDiscover, CouldNotOpenFED, CouldNotRestore, DeletePrivilegeNotHeld, ErrorReadingFED, EventNotKnown, FederateAlreadyExecutionMember, FederateInternalError, FederateNotExecutionMember, FederateOwnsAttributes, FederatesCurrentlyJoined, FederateWasNotAskedToReleaseAttribute, FederationExecutionAlreadyExists, FederationExecutionDoesNotExist, FederationTimeAlreadyPassed, RegionNotKnown, InteractionClassNotDefined, InteractionClassNotKnown, InteractionClassNotPublished, InteractionParameterNotDefined, InteractionParameterNotKnown, InvalidExtents, InvalidFederationTime, InvalidLookahead, InvalidOrderingHandle, InvalidResignAction, InvalidRetractionHandle, InvalidTransportationHandle, NameNotFound, ObjectClassNotDefined, ObjectClassNotKnown, ObjectClassNotPublished, ObjectClassNotSubscribed, ObjectNotKnown, ObjectAlreadyRegistered, RestoreInProgress, RestoreNotRequested, SpaceNotDefined, SaveInProgress, SaveNotInitiated, SpecifiedSaveLabelDoesNotExist, TimeAdvanceAlreadyInProgress, TimeAdvanceWasNotInProgress, UnableToPerformSave, DimensionNotDefined, OwnershipAcquisitionPending, FederateLoggingServiceCalls, InteractionClassNotSubscribed, EnableTimeRegulationPending, TimeRegulationAlreadyEnabled, TimeRegulationWasNotEnabled, TimeConstrainedWasNotEnabled, EnableTimeConstrainedPending, TimeConstrainedAlreadyEnabled, RegionInUse, InvalidRegionContext {
-        request.writeMessage(this.messageBuffer);
-
-        try {
-            LOGGER.info("Sending message (" + request.toString() + ")");
-            this.messageBuffer.send();
-        } catch (IOException ex) {
-            LOGGER.severe("libRTI: exception: NetworkError (write)");
-            throw new RTIinternalError("libRTI: Network Write Error");
-        }
 
         CertiMessage response = null;
-        try {
-            response = MessageFactory.readMessage(messageBuffer);
+        synchronized(this.messageBuffer) {
+            request.writeMessage(this.messageBuffer);
 
-            LOGGER.info("Received message (" + response.toString() + ")\n");
-
-            if (request.getType() != (response.getType())) {
-                throw new RTIinternalError("RTI Ambassador Process request: request type != response type");
+            try {
+                LOGGER.info("Sending message (" + request.toString() + ")");
+                this.messageBuffer.send();
+            } catch (IOException ex) {
+                LOGGER.severe("libRTI: exception: NetworkError (write)");
+                throw new RTIinternalError("libRTI: Network Write Error");
             }
-        } catch (IOException ex) {
-            LOGGER.severe("libRTI: exception: NetworkError (read)");
-            throw new RTIinternalError("libRTI: Network Read Error");
-        } catch (CertiException ex) {
-            translateException(ex);
-        }
 
+            try {
+                response = MessageFactory.readMessage(messageBuffer);
+
+                LOGGER.info("Received message (" + response.toString() + ")\n");
+
+                if (request.getType() != (response.getType())) {
+                    throw new RTIinternalError("RTI Ambassador Process request: request type != response type");
+                }
+            } catch (IOException ex) {
+                LOGGER.severe("libRTI: exception: NetworkError (read)");
+                throw new RTIinternalError("libRTI: Network Read Error");
+            } catch (CertiException ex) {
+                translateException(ex);
+            }
+        } // end of synchronized(this.messageBuffer)
         return response;
     }
 

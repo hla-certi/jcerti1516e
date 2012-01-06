@@ -229,14 +229,12 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
 
     
     public HLAopaqueData createHLAopaqueData() {
-        // TODO Auto-generated method stub
-        return null;
+        return new BasicHLAopaqueDataImpl();
     }
 
     
     public HLAopaqueData createHLAopaqueData(byte[] b) {
-        // TODO Auto-generated method stub
-        return null;
+        return new BasicHLAopaqueDataImpl(b);
     }
 
     
@@ -251,21 +249,18 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
 
     
     public HLAunicodeString createHLAunicodeString() {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAunicodeStringImpl();
     }
 
     
     public HLAunicodeString createHLAunicodeString(String s) {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAunicodeStringImpl(s);
     }
 
     
     public <T extends DataElement> HLAvariableArray<T> createHLAvariableArray(
             DataElementFactory<T> factory, T... elements) {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAvariableArrayImpl<T>(factory);
     }
 
 }

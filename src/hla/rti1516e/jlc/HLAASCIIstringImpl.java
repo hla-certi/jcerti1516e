@@ -75,11 +75,6 @@ public class HLAASCIIstringImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        throw new DecoderException("NOT IMPLEMENTED");
-    }
-
-    
     public String getValue() {
         return value;
     }

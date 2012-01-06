@@ -57,11 +57,6 @@ public class HLAunicodeCharImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        value.decode(bytes);
-    }
-
-    
     public short getValue() {
         return value.getValue();
     }

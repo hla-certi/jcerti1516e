@@ -65,16 +65,6 @@ public class BasicHLAinteger32BEImpl extends DataElementBase implements
         value += (int)((byteWrapper.get() & 0xFF) <<  8);
         value += (int)((byteWrapper.get() & 0xFF) <<  0);
     }
-
-    
-    public void decode(byte[] bytes) throws DecoderException {
-        value  = 0;
-        value += (int)((bytes[4] & 0xFF) << 24);
-        value += (int)((bytes[5] & 0xFF) << 16);
-        value += (int)((bytes[6] & 0xFF) <<  8);
-        value += (int)((bytes[7] & 0xFF) <<  0);
-    }
-
     
     public int getValue() {
         return value;

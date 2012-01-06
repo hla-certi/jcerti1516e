@@ -69,18 +69,6 @@ public class BasicHLAfloat32BEImpl extends DataElementBase implements HLAfloat32
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        
-        int f_as_i;
-        f_as_i  = 0;
-        f_as_i += (long)((bytes[4] & 0xFF) << 24);
-        f_as_i += (long)((bytes[5] & 0xFF) << 16);
-        f_as_i += (long)((bytes[6] & 0xFF) <<  8);
-        f_as_i += (long)((bytes[7] & 0xFF) <<  0);
-        value = Float.intBitsToFloat(f_as_i);
-    }
-
-    
     public float getValue() {
         return value;
     }

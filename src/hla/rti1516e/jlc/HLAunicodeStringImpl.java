@@ -73,12 +73,6 @@ public class HLAunicodeStringImpl extends DataElementBase implements
             s[i] = (char)((upper << 8) + (lower << 0));
         }
     }
-
-    
-    public void decode(byte[] bytes) throws DecoderException {
-        throw new DecoderException("Not Implemented");
-    }
-
     
     public String getValue() {
         return value;

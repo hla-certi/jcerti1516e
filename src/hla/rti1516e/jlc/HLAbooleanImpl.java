@@ -57,11 +57,6 @@ public class HLAbooleanImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        value.decode(bytes);
-    }
-
-    
     public boolean getValue() {
         return (value.getValue()==1);
     }

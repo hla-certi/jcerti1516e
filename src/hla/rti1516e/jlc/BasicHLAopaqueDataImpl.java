@@ -22,53 +22,65 @@ package hla.rti1516e.jlc;
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
-import hla.rti1516e.encoding.HLAinteger16BE;
 
-public class BasicHLAinteger16BEImpl extends DataElementBase implements
-        HLAinteger16BE {
+import java.util.ArrayList;
+import java.util.Iterator;
 
-    private short value;
-    
-    public BasicHLAinteger16BEImpl() {
-        value = 0;
+public class BasicHLAopaqueDataImpl extends DataElementBase implements
+        hla.rti1516e.encoding.HLAopaqueData {
+
+    private  byte[]   values;
+
+    public BasicHLAopaqueDataImpl() {
+        values  = new byte[0];
     }
     
-    public BasicHLAinteger16BEImpl(short value) {
-        this.value = value;
+    public BasicHLAopaqueDataImpl(byte[] bytes) {
+        values = bytes;
     }
-    
     
     public int getOctetBoundary() {
-        return 2;
+        return 4;
     }
 
-    
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        byteWrapper.align(getOctetBoundary());
-        byteWrapper.put((int)(value >>>  8) & 0xFF);
-        byteWrapper.put((int)(value >>>  0) & 0xFF);
+       byteWrapper.align(getOctetBoundary());
+       byteWrapper.putInt(values.length);
+       byteWrapper.put(values);
     }
 
-    
     public int getEncodedLength() {
-        return 2;
+        return 4+values.length;
     }
 
-    
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
-        value  = 0;
-        value += (short)((byteWrapper.get() & 0xFF) <<  8);
-        value += (short)((byteWrapper.get() & 0xFF) <<  0);
+        values = new byte[byteWrapper.getInt()];
+        byteWrapper.get(values);
     }
 
-    public short getValue() {
-        return value;
+    public int size() {
+        return values.length;
     }
 
-    
-    public void setValue(short value) {
-        this.value = value;
+    public Iterator<Byte> iterator() {
+        ArrayList<Byte> barray = new ArrayList<Byte>(values.length);
+        for (int i =0; i<values.length;++i) {
+            barray.add(values[i]);
+        }
+        return barray.iterator();
+    }
+
+    public byte[] getValue() {
+        return values;
+    }
+
+    public void setValue(byte[] value) {
+        this.values = value;
+    }
+
+    public byte get(int index) {
+        return values[index];
     }
 
 }

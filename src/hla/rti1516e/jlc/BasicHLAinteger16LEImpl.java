@@ -63,13 +63,6 @@ public class BasicHLAinteger16LEImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        value  = 0;
-        value += (short)((bytes[0] & 0xFF) <<  0);
-        value += (short)((bytes[1] & 0xFF) <<  8);
-    }
-
-    
     public short getValue() {
         return value;
     }

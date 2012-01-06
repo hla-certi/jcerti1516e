@@ -58,11 +58,6 @@ public class BasicHLAoctetImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        value = bytes[0];
-    }
-    
-    
     public byte getValue() {
         return value;
     }

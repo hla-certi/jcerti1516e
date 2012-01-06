@@ -21,6 +21,7 @@ package hla.rti1516e.jlc;
 
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DataElement;
+import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
 public abstract class DataElementBase implements DataElement {
@@ -30,5 +31,9 @@ public abstract class DataElementBase implements DataElement {
         encode(bw);
         return bw.array();
     }
-
+    
+    public void decode(byte[] bytes) throws DecoderException {
+        ByteWrapper bw = new ByteWrapper(bytes);
+        decode(bw);
+    }
 }

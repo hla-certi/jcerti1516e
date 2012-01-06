@@ -75,19 +75,6 @@ public class BasicHLAinteger64BEImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        value  = 0L;
-        value += (long)((bytes[0] & 0xFF) << 56);
-        value += (long)((bytes[1] & 0xFF) << 48);
-        value += (long)((bytes[2] & 0xFF) << 40);
-        value += (long)((bytes[3] & 0xFF) << 32);
-        value += (long)((bytes[4] & 0xFF) << 24);
-        value += (long)((bytes[5] & 0xFF) << 16);
-        value += (long)((bytes[6] & 0xFF) <<  8);
-        value += (long)((bytes[7] & 0xFF) <<  0);
-    }
-
-    
     public long getValue() {
         return value;
     }

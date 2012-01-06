@@ -67,15 +67,6 @@ public class BasicHLAinteger32LEImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        value  = 0;
-        value += (int)((bytes[0] & 0xFF) <<  0);
-        value += (int)((bytes[1] & 0xFF) <<  8);
-        value += (int)((bytes[2] & 0xFF) << 16);
-        value += (int)((bytes[3] & 0xFF) << 24);
-    }
-
-    
     public int getValue() {
         return value;
     }

@@ -57,11 +57,6 @@ public class BasicHLAbyteImpl extends DataElementBase implements
     }
 
     
-    public void decode(byte[] bytes) throws DecoderException {
-        value.decode(bytes);
-    }
-
-    
     public byte getValue() {
         return value.getValue();
     }

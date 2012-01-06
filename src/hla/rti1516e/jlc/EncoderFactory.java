@@ -229,12 +229,12 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
 
     
     public HLAopaqueData createHLAopaqueData() {
-        return new BasicHLAopaqueDataImpl();
+        return new HLAopaqueDataImpl();
     }
 
     
     public HLAopaqueData createHLAopaqueData(byte[] b) {
-        return new BasicHLAopaqueDataImpl(b);
+        return new HLAopaqueDataImpl(b);
     }
 
     

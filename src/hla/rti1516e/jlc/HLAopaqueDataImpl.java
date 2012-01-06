@@ -26,16 +26,16 @@ import hla.rti1516e.encoding.EncoderException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class BasicHLAopaqueDataImpl extends DataElementBase implements
+public class HLAopaqueDataImpl extends DataElementBase implements
         hla.rti1516e.encoding.HLAopaqueData {
 
     private  byte[]   values;
 
-    public BasicHLAopaqueDataImpl() {
+    public HLAopaqueDataImpl() {
         values  = new byte[0];
     }
     
-    public BasicHLAopaqueDataImpl(byte[] bytes) {
+    public HLAopaqueDataImpl(byte[] bytes) {
         values = bytes;
     }
     

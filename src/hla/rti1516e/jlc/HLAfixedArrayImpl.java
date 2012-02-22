@@ -29,30 +29,24 @@ import hla.rti1516e.encoding.DataElementFactory;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-public class HLAvariableArrayImpl<T extends DataElement> extends DataElementBase
-    implements hla.rti1516e.encoding.HLAvariableArray<T> {
+public class HLAfixedArrayImpl<T extends DataElement> extends DataElementBase
+    implements hla.rti1516e.encoding.HLAfixedArray<T> {
 
     private ArrayList<T>          values;
     private DataElementFactory<T> efactory;
 
-    public HLAvariableArrayImpl() {
-        values  = new ArrayList<T>(20);
-        efactory = null;
+    public HLAfixedArrayImpl(int size) {
+        values  = new ArrayList<T>(size);
+
     }
     
-    public HLAvariableArrayImpl(T[] elements) {
+    public HLAfixedArrayImpl(T[] elements) {
         values = new ArrayList<T>(elements.length);
         values.addAll(Arrays.asList(elements));
         efactory = null;
     }
-    
-    public HLAvariableArrayImpl(DataElementFactory<T> factory, T[] elements) {
-        values = new ArrayList<T>(elements.length);
-        values.addAll(Arrays.asList(elements));
-        efactory = factory;
-    }
-    
-    public HLAvariableArrayImpl(DataElementFactory<T> factory, int size) {
+
+    public HLAfixedArrayImpl(DataElementFactory<T> factory, int size) {
         values   = new ArrayList<T>(size);
         efactory = factory;
     }

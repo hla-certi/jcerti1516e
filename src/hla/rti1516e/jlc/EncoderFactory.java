@@ -79,22 +79,21 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
 
     
     public HLAfixedRecord createHLAfixedRecord() {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAfixedRecordImpl();
     }
 
     
     public <T extends DataElement> HLAfixedArray<T> createHLAfixedArray(
             DataElementFactory<T> factory, int size) {
-        // TODO Auto-generated method stub
-        return null;
+        return new HLAfixedArrayImpl<T>(factory,size);
     }
 
     
     public <T extends DataElement> HLAfixedArray<T> createHLAfixedArray(
             T... elements) {
-        // TODO Auto-generated method stub
-        return null;
+        // FIXME check: is this supposed to work with vaargs elements?
+        // see: http://docs.oracle.com/javase/1.5.0/docs/guide/language/varargs.html
+        return  new HLAfixedArrayImpl<T>(elements);
     }
 
     
@@ -260,7 +259,14 @@ public class EncoderFactory implements hla.rti1516e.encoding.EncoderFactory {
     
     public <T extends DataElement> HLAvariableArray<T> createHLAvariableArray(
             DataElementFactory<T> factory, T... elements) {
-        return new HLAvariableArrayImpl<T>(factory);
+        
+        HLAvariableArray<T> va = new HLAvariableArrayImpl<T>(factory,10);
+        // this is varargs + autoboxing 
+        // see: http://docs.oracle.com/javase/1.5.0/docs/guide/language/varargs.html
+        for (T e : elements) {
+            va.addElement(e);
+        }
+        return va;
     }
 
 }

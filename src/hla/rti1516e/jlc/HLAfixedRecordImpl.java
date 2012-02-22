@@ -29,39 +29,44 @@ import hla.rti1516e.encoding.DataElementFactory;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-public class HLAvariableArrayImpl<T extends DataElement> extends DataElementBase
-    implements hla.rti1516e.encoding.HLAvariableArray<T> {
+public class HLAfixedRecordImpl extends DataElementBase
+    implements hla.rti1516e.encoding.HLAfixedRecord {
 
-    private ArrayList<T>          values;
-    private DataElementFactory<T> efactory;
+    private ArrayList<DataElement>            values;
+    private DataElementFactory<DataElement>   efactory;
 
-    public HLAvariableArrayImpl() {
-        values  = new ArrayList<T>(20);
-        efactory = null;
+    public HLAfixedRecordImpl() {
+        values  = new ArrayList<DataElement>(10);
     }
     
-    public HLAvariableArrayImpl(T[] elements) {
-        values = new ArrayList<T>(elements.length);
-        values.addAll(Arrays.asList(elements));
-        efactory = null;
+    public HLAfixedRecordImpl(int size) {
+        values  = new ArrayList<DataElement>(size);
+    }
+
+    public HLAfixedRecordImpl(DataElement e) {
+        values  = new ArrayList<DataElement>(10);
+        values.add(e);
     }
     
-    public HLAvariableArrayImpl(DataElementFactory<T> factory, T[] elements) {
-        values = new ArrayList<T>(elements.length);
-        values.addAll(Arrays.asList(elements));
+    public HLAfixedRecordImpl(DataElement[] elems) {
+        values  = new ArrayList<DataElement>(10);
+        values.addAll(Arrays.asList(elems));
+    }
+    
+    public HLAfixedRecordImpl(DataElementFactory<DataElement> factory) {
+        values   = new ArrayList<DataElement>(20);
         efactory = factory;
     }
     
-    public HLAvariableArrayImpl(DataElementFactory<T> factory, int size) {
-        values   = new ArrayList<T>(size);
-        efactory = factory;
+    public void add(DataElement e) {
+        values.add(e);
     }
     
     public int getOctetBoundary() {
         /* at least 4 since we encode the size */
         int obound = 4;
-        for (Iterator<T> it = values.iterator(); it.hasNext();) {
-            T elem  = it.next();
+        for (Iterator<DataElement> it = values.iterator(); it.hasNext();) {
+            DataElement elem  = it.next();
             obound = Math.max(obound, elem.getOctetBoundary());
         }
         return obound;
@@ -70,16 +75,16 @@ public class HLAvariableArrayImpl<T extends DataElement> extends DataElementBase
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
        byteWrapper.align(getOctetBoundary());
        byteWrapper.putInt(values.size());
-       for (Iterator<T> it = values.iterator(); it.hasNext();) {
-           T elem  = it.next();
+       for (Iterator<DataElement> it = values.iterator(); it.hasNext();) {
+           DataElement elem  = it.next();
            elem.encode(byteWrapper);
        }
     }
 
     public int getEncodedLength() {
         int elength = 4;
-        for (Iterator<T> it = values.iterator(); it.hasNext();) {
-            T elem  = it.next();
+        for (Iterator<DataElement> it = values.iterator(); it.hasNext();) {
+            DataElement elem  = it.next();
             elength += elem.getEncodedLength();
         }
         return elength;
@@ -98,25 +103,21 @@ public class HLAvariableArrayImpl<T extends DataElement> extends DataElementBase
          */
         values.clear();
         for (int i = 0; i<nbElem;++i) {
-            T elem = efactory.createElement(i);
+            DataElement elem = efactory.createElement(i);
             elem.decode(byteWrapper);
             values.add(elem);
         }
-    }
-
-    public void addElement(T dataElement) {
-        values.add(dataElement);
     }
 
     public int size() {
         return values.size();
     }
 
-    public T get(int index) {
+    public DataElement get(int index) {
         return values.get(index);
     }
 
-    public Iterator<T> iterator() {
+    public Iterator<DataElement> iterator() {
         return values.iterator();
     }
 

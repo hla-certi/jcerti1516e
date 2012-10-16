@@ -22,6 +22,7 @@ package certi.rti.impl;
 import certi.communication.*;
 import certi.communication.messages.*;
 import certi.logging.HtmlFormatter;
+import certi.logging.StreamListener;
 import hla.rti.*;
 import hla.rti.jlc.RTIambassadorEx;
 import java.io.File;
@@ -137,7 +138,14 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         try {
             String rtiaPathString = properties.getProperty("rtiaPath") != null ? properties.getProperty("rtiaPath") : "";
 
-            Runtime.getRuntime().exec(rtiaPathString + "rtia -p " + serverSocket.getLocalPort());
+            Process rtiaProcess = Runtime.getRuntime().exec(rtiaPathString + "rtia -p " + 
+                                                            serverSocket.getLocalPort());
+            // Read error and output streams, so that in case debugging is enabled for RTIA
+            // the process will not block because stream buffers are full 
+            StreamListener outListener = new StreamListener(rtiaProcess.getInputStream());
+            StreamListener errListener = new StreamListener(rtiaProcess.getErrorStream());
+            outListener.start();
+            errListener.start();
         } catch (IOException exception) {
             throw new RTIinternalError("RTI Ambassador executable not found. " + exception.getLocalizedMessage());
         }

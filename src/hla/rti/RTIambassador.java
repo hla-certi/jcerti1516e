@@ -1,3 +1,10 @@
+/*
+ * This file comes from SISO STD-004-2004 for HLA 1.3
+ * from http://www.sisostds.org/ProductsPublications/Standards/SISOStandards.aspx.
+ *
+ * It is provided as-is by CERTI project.
+ */
+ 
 
 package hla.rti;
 
@@ -121,28 +128,28 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 4.11
-  public void requestFederationSave (    
-    String         label,   
-    LogicalTime    theTime) 
+  public void requestFederationSave (
+    String         label,
+    LogicalTime    theTime)
   throws
-    FederationTimeAlreadyPassed, 
+    FederationTimeAlreadyPassed,
     InvalidFederationTime,
     FederateNotExecutionMember,
     SaveInProgress,
     RestoreInProgress,
     RTIinternalError,
     ConcurrentAccessAttempted;
-  
+
   // 4.11
-  public void requestFederationSave ( 
-    String label)     
+  public void requestFederationSave (
+    String label)
   throws
     FederateNotExecutionMember,
     SaveInProgress,
     RestoreInProgress,
     RTIinternalError,
     ConcurrentAccessAttempted;
-  
+
   // 4.13
   public void federateSaveBegun ()
   throws
@@ -151,7 +158,7 @@ public interface RTIambassador {
     RestoreInProgress,
     RTIinternalError,
     ConcurrentAccessAttempted;
-  
+
   // 4.14
   public void federateSaveComplete ()
   throws
@@ -160,7 +167,7 @@ public interface RTIambassador {
     RestoreInProgress,
     RTIinternalError,
     ConcurrentAccessAttempted;
-  
+
   // 4.14
   public void federateSaveNotComplete ()
   throws
@@ -169,17 +176,17 @@ public interface RTIambassador {
     RestoreInProgress,
     RTIinternalError,
     ConcurrentAccessAttempted;
-  
+
   // 4.16
-  public void requestFederationRestore (    
-    String label) 
+  public void requestFederationRestore (
+    String label)
   throws
     FederateNotExecutionMember,
     SaveInProgress,
     RestoreInProgress,
     RTIinternalError,
     ConcurrentAccessAttempted;
-  
+
   // 4.20
   public void federateRestoreComplete ()
   throws
@@ -188,7 +195,7 @@ public interface RTIambassador {
     SaveInProgress,
     RTIinternalError,
     ConcurrentAccessAttempted;
-  
+
   // 4.20
   public void federateRestoreNotComplete ()
   throws
@@ -204,8 +211,8 @@ public interface RTIambassador {
 
   // 5.2
   public void publishObjectClass (
-    int                 theClass,      
-    AttributeHandleSet  attributeList) 
+    int                 theClass,
+    AttributeHandleSet  attributeList)
   throws
     ObjectClassNotDefined,
     AttributeNotDefined,
@@ -218,9 +225,9 @@ public interface RTIambassador {
 
   // 5.3
   public void unpublishObjectClass (
-    int theClass) 
+    int theClass)
   throws
-    ObjectClassNotDefined, 
+    ObjectClassNotDefined,
     ObjectClassNotPublished,
     OwnershipAcquisitionPending,
     FederateNotExecutionMember,
@@ -231,7 +238,7 @@ public interface RTIambassador {
 
   // 5.4
   public void publishInteractionClass (
-    int theInteraction) 
+    int theInteraction)
   throws
     InteractionClassNotDefined,
     FederateNotExecutionMember,
@@ -242,7 +249,7 @@ public interface RTIambassador {
 
   // 5.5
   public void unpublishInteractionClass (
-    int theInteraction) 
+    int theInteraction)
   throws
     InteractionClassNotDefined,
     InteractionClassNotPublished,
@@ -254,10 +261,10 @@ public interface RTIambassador {
 
   // 5.6
   public void subscribeObjectClassAttributes (
-    int                 theClass,      
+    int                 theClass,
     AttributeHandleSet  attributeList)
   throws
-    ObjectClassNotDefined, 
+    ObjectClassNotDefined,
     AttributeNotDefined,
     FederateNotExecutionMember,
     SaveInProgress,
@@ -267,10 +274,10 @@ public interface RTIambassador {
 
   // 5.6
   public void subscribeObjectClassAttributesPassively (
-    int                 theClass,      
+    int                 theClass,
     AttributeHandleSet  attributeList)
   throws
-    ObjectClassNotDefined, 
+    ObjectClassNotDefined,
     AttributeNotDefined,
     FederateNotExecutionMember,
     SaveInProgress,
@@ -280,7 +287,7 @@ public interface RTIambassador {
 
   // 5.7
   public void unsubscribeObjectClass (
-    int theClass) 
+    int theClass)
   throws
     ObjectClassNotDefined,
     ObjectClassNotSubscribed,
@@ -316,7 +323,7 @@ public interface RTIambassador {
 
   // 5.9
   public void unsubscribeInteractionClass (
-    int theClass) 
+    int theClass)
   throws
     InteractionClassNotDefined,
     InteractionClassNotSubscribed,
@@ -331,9 +338,9 @@ public interface RTIambassador {
 ////////////////////////////////
 
   // 6.2
-  public int                         
+  public int
   registerObjectInstance (
-       int theClass)  
+       int theClass)
   throws
     ObjectClassNotDefined,
     ObjectClassNotPublished,
@@ -344,10 +351,10 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 6.2
-  public int                          
+  public int
   registerObjectInstance (
-    int    theClass,  
-    String theObject) 
+    int    theClass,
+    String theObject)
   throws
     ObjectClassNotDefined,
     ObjectClassNotPublished,
@@ -360,9 +367,9 @@ public interface RTIambassador {
 
   // 6.4
   public void updateAttributeValues (
-    int                theObject,     
-    SuppliedAttributes theAttributes, 
-    byte[]             userSuppliedTag)        
+    int                theObject,
+    SuppliedAttributes theAttributes,
+    byte[]             userSuppliedTag)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -374,10 +381,10 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 6.4
-  public EventRetractionHandle                               
+  public EventRetractionHandle
   updateAttributeValues (
-    int                theObject,     
-    SuppliedAttributes theAttributes, 
+    int                theObject,
+    SuppliedAttributes theAttributes,
     byte[]             userSuppliedTag,
     LogicalTime        theTime)
   throws
@@ -393,9 +400,9 @@ public interface RTIambassador {
 
   // 6.6
   public void sendInteraction (
-    int                 theInteraction, 
-    SuppliedParameters  theParameters,  
-    byte[]              userSuppliedTag)         
+    int                 theInteraction,
+    SuppliedParameters  theParameters,
+    byte[]              userSuppliedTag)
   throws
     InteractionClassNotDefined,
     InteractionClassNotPublished,
@@ -407,10 +414,10 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 6.6
-  public EventRetractionHandle                                
+  public EventRetractionHandle
   sendInteraction (
-    int                theInteraction, 
-    SuppliedParameters theParameters,  
+    int                theInteraction,
+    SuppliedParameters theParameters,
     byte[]             userSuppliedTag,
     LogicalTime        theTime)
   throws
@@ -426,8 +433,8 @@ public interface RTIambassador {
 
   // 6.8
   public void deleteObjectInstance (
-    int    ObjectHandle, 
-    byte[] userSuppliedTag)       
+    int    ObjectHandle,
+    byte[] userSuppliedTag)
   throws
     ObjectNotKnown,
     DeletePrivilegeNotHeld,
@@ -438,9 +445,9 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   //6.8
-  public EventRetractionHandle                 
+  public EventRetractionHandle
   deleteObjectInstance (
-    int            ObjectHandle, 
+    int            ObjectHandle,
     byte[]         userSuppliedTag,
     LogicalTime    theTime)
   throws
@@ -455,7 +462,7 @@ public interface RTIambassador {
 
   // 6.10
   public void localDeleteObjectInstance (
-    int    ObjectHandle) 
+    int    ObjectHandle)
   throws
     ObjectNotKnown,
     FederateOwnsAttributes,
@@ -467,9 +474,9 @@ public interface RTIambassador {
 
   // 6.11
   public void changeAttributeTransportationType (
-    int                theObject,     
-    AttributeHandleSet theAttributes, 
-    int                theType)       
+    int                theObject,
+    AttributeHandleSet theAttributes,
+    int                theType)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -483,8 +490,8 @@ public interface RTIambassador {
 
   // 6.12
   public void changeInteractionTransportationType (
-    int theClass, 
-    int theType)  
+    int theClass,
+    int theType)
   throws
     InteractionClassNotDefined,
     InteractionClassNotPublished,
@@ -497,8 +504,8 @@ public interface RTIambassador {
 
   // 6.15
   public void requestObjectAttributeValueUpdate (
-    int                 theObject,     
-    AttributeHandleSet  theAttributes) 
+    int                 theObject,
+    AttributeHandleSet  theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -510,10 +517,10 @@ public interface RTIambassador {
 
   // 6.15
   public void requestClassAttributeValueUpdate (
-    int                theClass,      
-    AttributeHandleSet theAttributes) 
+    int                theClass,
+    AttributeHandleSet theAttributes)
   throws
-    ObjectClassNotDefined, 
+    ObjectClassNotDefined,
     AttributeNotDefined,
     FederateNotExecutionMember,
     SaveInProgress,
@@ -527,10 +534,10 @@ public interface RTIambassador {
 
   // 7.2
   public void unconditionalAttributeOwnershipDivestiture (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
-    ObjectNotKnown, 
+    ObjectNotKnown,
     AttributeNotDefined,
     AttributeNotOwned,
     FederateNotExecutionMember,
@@ -541,9 +548,9 @@ public interface RTIambassador {
 
   // 7.3
   public void negotiatedAttributeOwnershipDivestiture (
-    int                theObject,     
-    AttributeHandleSet theAttributes, 
-    byte[]             userSuppliedTag)        
+    int                theObject,
+    AttributeHandleSet theAttributes,
+    byte[]             userSuppliedTag)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -557,9 +564,9 @@ public interface RTIambassador {
 
   // 7.7
   public void attributeOwnershipAcquisition (
-    int                theObject,         
-    AttributeHandleSet desiredAttributes, 
-    byte[]             userSuppliedTag)            
+    int                theObject,
+    AttributeHandleSet desiredAttributes,
+    byte[]             userSuppliedTag)
   throws
     ObjectNotKnown,
     ObjectClassNotPublished,
@@ -574,8 +581,8 @@ public interface RTIambassador {
 
   // 7.8
   public void attributeOwnershipAcquisitionIfAvailable (
-    int                theObject,         
-    AttributeHandleSet desiredAttributes) 
+    int                theObject,
+    AttributeHandleSet desiredAttributes)
   throws
     ObjectNotKnown,
     ObjectClassNotPublished,
@@ -590,10 +597,10 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 7.11
-  public AttributeHandleSet                         
+  public AttributeHandleSet
   attributeOwnershipReleaseResponse (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -607,8 +614,8 @@ public interface RTIambassador {
 
   // 7.12
   public void cancelNegotiatedAttributeOwnershipDivestiture (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -622,8 +629,8 @@ public interface RTIambassador {
 
   // 7.13
   public void cancelAttributeOwnershipAcquisition (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -637,8 +644,8 @@ public interface RTIambassador {
 
   // 7.15
   public void queryAttributeOwnership (
-    int theObject,    
-    int theAttribute) 
+    int theObject,
+    int theAttribute)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -649,10 +656,10 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 7.17
-  public boolean                          
+  public boolean
   isAttributeOwnedByFederate (
-    int theObject,     
-    int theAttribute)  
+    int theObject,
+    int theAttribute)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -668,8 +675,8 @@ public interface RTIambassador {
 
   // 8.2
   public void enableTimeRegulation (
-    LogicalTime         theFederateTime,  
-    LogicalTimeInterval theLookahead)     
+    LogicalTime         theFederateTime,
+    LogicalTimeInterval theLookahead)
   throws
     TimeRegulationAlreadyEnabled,
     EnableTimeRegulationPending,
@@ -716,7 +723,7 @@ public interface RTIambassador {
 
   // 8.8
   public void timeAdvanceRequest (
-    LogicalTime    theTime) 
+    LogicalTime    theTime)
   throws
     InvalidFederationTime,
     FederationTimeAlreadyPassed,
@@ -731,7 +738,7 @@ public interface RTIambassador {
 
   // 8.9
   public void timeAdvanceRequestAvailable (
-    LogicalTime    theTime) 
+    LogicalTime    theTime)
   throws
     InvalidFederationTime,
     FederationTimeAlreadyPassed,
@@ -746,7 +753,7 @@ public interface RTIambassador {
 
   // 8.10
   public void nextEventRequest (
-    LogicalTime    theTime) 
+    LogicalTime    theTime)
   throws
     InvalidFederationTime,
     FederationTimeAlreadyPassed,
@@ -761,13 +768,13 @@ public interface RTIambassador {
 
   // 8.11
   public void nextEventRequestAvailable (
-    LogicalTime    theTime) 
+    LogicalTime    theTime)
   throws
     InvalidFederationTime,
     FederationTimeAlreadyPassed,
     TimeAdvanceAlreadyInProgress,
     EnableTimeRegulationPending,
-    EnableTimeConstrainedPending,  
+    EnableTimeConstrainedPending,
     FederateNotExecutionMember,
     SaveInProgress,
     RestoreInProgress,
@@ -776,13 +783,13 @@ public interface RTIambassador {
 
   // 8.12
   public void flushQueueRequest (
-    LogicalTime    theTime) 
+    LogicalTime    theTime)
   throws
     InvalidFederationTime,
     FederationTimeAlreadyPassed,
     TimeAdvanceAlreadyInProgress,
     EnableTimeRegulationPending,
-    EnableTimeConstrainedPending,  
+    EnableTimeConstrainedPending,
     FederateNotExecutionMember,
     SaveInProgress,
     RestoreInProgress,
@@ -810,7 +817,7 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 8.16
-  public LogicalTime queryLBTS () 
+  public LogicalTime queryLBTS ()
   throws
     FederateNotExecutionMember,
     SaveInProgress,
@@ -819,7 +826,7 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 8.17
-  public LogicalTime queryFederateTime () 
+  public LogicalTime queryFederateTime ()
   throws
     FederateNotExecutionMember,
     SaveInProgress,
@@ -828,7 +835,7 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 8.18
-  public LogicalTime queryMinNextEventTime () 
+  public LogicalTime queryMinNextEventTime ()
   throws
     FederateNotExecutionMember,
     SaveInProgress,
@@ -838,7 +845,7 @@ public interface RTIambassador {
 
   // 8.19
   public void modifyLookahead (
-    LogicalTimeInterval theLookahead) 
+    LogicalTimeInterval theLookahead)
   throws
     InvalidLookahead,
     FederateNotExecutionMember,
@@ -848,7 +855,7 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 8.20
-  public LogicalTimeInterval queryLookahead () 
+  public LogicalTimeInterval queryLookahead ()
   throws
     FederateNotExecutionMember,
     SaveInProgress,
@@ -858,7 +865,7 @@ public interface RTIambassador {
 
   // 8.21
   public void retract (
-    EventRetractionHandle theHandle) 
+    EventRetractionHandle theHandle)
   throws
     InvalidRetractionHandle,
     FederateNotExecutionMember,
@@ -869,9 +876,9 @@ public interface RTIambassador {
 
   // 8.23
   public void changeAttributeOrderType (
-    int                theObject,     
-    AttributeHandleSet theAttributes, 
-    int                theType)       
+    int                theObject,
+    AttributeHandleSet theAttributes,
+    int                theType)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -885,8 +892,8 @@ public interface RTIambassador {
 
   // 8.24
   public void changeInteractionOrderType (
-    int theClass, 
-    int theType)  
+    int theClass,
+    int theType)
   throws
     InteractionClassNotDefined,
     InteractionClassNotPublished,
@@ -902,10 +909,10 @@ public interface RTIambassador {
 //////////////////////////////////
 
   // 9.2
-  public Region                    
+  public Region
   createRegion (
     int spaceHandle,
-    int numberOfExtents)    
+    int numberOfExtents)
   throws
     SpaceNotDefined,
     InvalidExtents,
@@ -917,7 +924,7 @@ public interface RTIambassador {
 
   // 9.3
   public void notifyOfRegionModification (
-    Region modifiedRegionInstance)  
+    Region modifiedRegionInstance)
   throws
     RegionNotKnown,
     InvalidExtents,
@@ -929,7 +936,7 @@ public interface RTIambassador {
 
   // 9.4
   public void deleteRegion (
-    Region  theRegion) 
+    Region  theRegion)
   throws
     RegionNotKnown,
     RegionInUse,
@@ -940,11 +947,11 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   //9.5
-  public int                                    
+  public int
   registerObjectInstanceWithRegion (
-    int      theClass,             
-    int[]    theAttributes,      
-    Region[] theRegions)   
+    int      theClass,
+    int[]    theAttributes,
+    Region[] theRegions)
   throws
     ObjectClassNotDefined,
     ObjectClassNotPublished,
@@ -959,12 +966,12 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 9.5
-  public int                                
+  public int
   registerObjectInstanceWithRegion (
-    int      theClass,           
-    String   theObject,          
-    int[]    theAttributes,    
-    Region[] theRegions) 
+    int      theClass,
+    String   theObject,
+    int[]    theAttributes,
+    Region[] theRegions)
   throws
     ObjectClassNotDefined,
     ObjectClassNotPublished,
@@ -981,9 +988,9 @@ public interface RTIambassador {
 
   // 9.6
   public void associateRegionForUpdates (
-    Region             theRegion,     
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    Region             theRegion,
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotDefined,
@@ -997,8 +1004,8 @@ public interface RTIambassador {
 
   // 9.7
   public void unassociateRegionForUpdates (
-    Region theRegion,     
-    int    theObject)     
+    Region theRegion,
+    int    theObject)
   throws
     ObjectNotKnown,
     InvalidRegionContext,
@@ -1011,8 +1018,8 @@ public interface RTIambassador {
 
   // 9.8
   public void subscribeObjectClassAttributesWithRegion (
-    int                theClass,      
-    Region             theRegion,     
+    int                theClass,
+    Region             theRegion,
     AttributeHandleSet attributeList)
   throws
     ObjectClassNotDefined,
@@ -1027,8 +1034,8 @@ public interface RTIambassador {
 
   // 9.8
   public void subscribeObjectClassAttributesPassivelyWithRegion (
-    int                theClass,      
-    Region             theRegion,     
+    int                theClass,
+    Region             theRegion,
     AttributeHandleSet attributeList)
   throws
     ObjectClassNotDefined,
@@ -1043,8 +1050,8 @@ public interface RTIambassador {
 
   // 9.9
   public void unsubscribeObjectClassWithRegion (
-    int    theClass,          
-    Region theRegion)         
+    int    theClass,
+    Region theRegion)
   throws
     ObjectClassNotDefined,
     RegionNotKnown,
@@ -1057,7 +1064,7 @@ public interface RTIambassador {
 
   // 9.10
   public void subscribeInteractionClassWithRegion (
-    int     theClass,        
+    int     theClass,
     Region  theRegion)
   throws
     InteractionClassNotDefined,
@@ -1072,7 +1079,7 @@ public interface RTIambassador {
 
   // 9.10
   public void subscribeInteractionClassPassivelyWithRegion (
-    int     theClass,        
+    int     theClass,
     Region  theRegion)
   throws
     InteractionClassNotDefined,
@@ -1087,8 +1094,8 @@ public interface RTIambassador {
 
   // 9.11
   public void unsubscribeInteractionClassWithRegion (
-    int    theClass,  
-    Region theRegion) 
+    int    theClass,
+    Region theRegion)
   throws
     InteractionClassNotDefined,
     InteractionClassNotSubscribed,
@@ -1101,10 +1108,10 @@ public interface RTIambassador {
 
   //9.12
   public void sendInteractionWithRegion (
-    int                theInteraction, 
-    SuppliedParameters theParameters,  
-    byte[]             userSuppliedTag,         
-    Region             theRegion)      
+    int                theInteraction,
+    SuppliedParameters theParameters,
+    byte[]             userSuppliedTag,
+    Region             theRegion)
   throws
     InteractionClassNotDefined,
     InteractionClassNotPublished,
@@ -1118,10 +1125,10 @@ public interface RTIambassador {
     ConcurrentAccessAttempted;
 
   // 9.12
-  public EventRetractionHandle                                
+  public EventRetractionHandle
   sendInteractionWithRegion (
-    int                theInteraction, 
-    SuppliedParameters theParameters,  
+    int                theInteraction,
+    SuppliedParameters theParameters,
     byte[]             userSuppliedTag,
     Region             theRegion,
     LogicalTime        theTime)
@@ -1140,11 +1147,11 @@ public interface RTIambassador {
 
   // 9.13
   public void requestClassAttributeValueUpdateWithRegion (
-    int                theClass,      
-    AttributeHandleSet theAttributes, 
-    Region             theRegion)     
+    int                theClass,
+    AttributeHandleSet theAttributes,
+    Region             theRegion)
   throws
-    ObjectClassNotDefined, 
+    ObjectClassNotDefined,
     AttributeNotDefined,
     RegionNotKnown,
     FederateNotExecutionMember,
@@ -1158,28 +1165,28 @@ public interface RTIambassador {
 //////////////////////////
 
   // 10.2
-  public int                
+  public int
   getObjectClassHandle (
-    String theName) 
+    String theName)
   throws
     NameNotFound,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.3
-  public String 
+  public String
   getObjectClassName (
-    int theHandle) 
+    int theHandle)
   throws
     ObjectClassNotDefined,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.4
-  public int                       
+  public int
   getAttributeHandle (
-    String theName,    
-    int    whichClass) 
+    String theName,
+    int    whichClass)
   throws
     ObjectClassNotDefined,
     NameNotFound,
@@ -1187,10 +1194,10 @@ public interface RTIambassador {
     RTIinternalError;
 
   // 10.5
-  public String 
+  public String
   getAttributeName (
-    int theHandle,  
-    int whichClass) 
+    int theHandle,
+    int whichClass)
   throws
     ObjectClassNotDefined,
     AttributeNotDefined,
@@ -1198,28 +1205,28 @@ public interface RTIambassador {
     RTIinternalError;
 
   // 10.6
-  public int                
+  public int
   getInteractionClassHandle (
-    String theName) 
+    String theName)
   throws
     NameNotFound,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.7
-  public String 
+  public String
   getInteractionClassName (
-    int theHandle) 
+    int theHandle)
   throws
     InteractionClassNotDefined,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.8
-  public int                            
+  public int
   getParameterHandle (
-    String theName,    
-    int whichClass) 
+    String theName,
+    int whichClass)
   throws
     InteractionClassNotDefined,
     NameNotFound,
@@ -1227,10 +1234,10 @@ public interface RTIambassador {
     RTIinternalError;
 
   // 10.9
-  public String 
+  public String
   getParameterName (
-    int        theHandle,  
-    int whichClass) 
+    int        theHandle,
+    int whichClass)
   throws
     InteractionClassNotDefined,
     InteractionParameterNotDefined,
@@ -1238,46 +1245,46 @@ public interface RTIambassador {
     RTIinternalError;
 
   // 10.10
-  public int                 
+  public int
   getObjectInstanceHandle (
-    String theName)  
+    String theName)
   throws
     ObjectNotKnown,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.11
-  public String 
+  public String
   getObjectInstanceName (
-    int theHandle)  
+    int theHandle)
   throws
     ObjectNotKnown,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.12
-  public int                
+  public int
   getRoutingSpaceHandle (
-    String theName) 
+    String theName)
   throws
     NameNotFound,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.13
-  public String 
+  public String
   getRoutingSpaceName (
-    int theHandle) 
+    int theHandle)
   throws
     SpaceNotDefined,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.14
-  public int                   
+  public int
   getDimensionHandle (
-    String theName,    
-    int    whichSpace) 
+    String theName,
+    int    whichSpace)
   throws
     SpaceNotDefined,
     NameNotFound,
@@ -1285,10 +1292,10 @@ public interface RTIambassador {
     RTIinternalError;
 
   // 10.15
-  public String 
+  public String
   getDimensionName (
-    int theHandle,  
-    int whichClass) 
+    int theHandle,
+    int whichClass)
   throws
     SpaceNotDefined,
     DimensionNotDefined,
@@ -1296,10 +1303,10 @@ public interface RTIambassador {
     RTIinternalError;
 
   // 10.16
-  public int                      
+  public int
   getAttributeRoutingSpaceHandle (
-    int theHandle,   
-    int whichClass)  
+    int theHandle,
+    int whichClass)
   throws
     ObjectClassNotDefined,
     AttributeNotDefined,
@@ -1307,54 +1314,54 @@ public interface RTIambassador {
     RTIinternalError;
 
   // 10.17
-  public int            
+  public int
   getObjectClass (
-    int theObject)    
+    int theObject)
   throws
     ObjectNotKnown,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.18
-  public int                             
+  public int
   getInteractionRoutingSpaceHandle (
-    int theHandle)   
+    int theHandle)
   throws
     InteractionClassNotDefined,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.19
-  public int                
+  public int
   getTransportationHandle (
-    String theName) 
+    String theName)
   throws
     NameNotFound,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.20
-  public String 
+  public String
   getTransportationName (
-    int theHandle) 
+    int theHandle)
   throws
     InvalidTransportationHandle,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.21
-  public int                
+  public int
   getOrderingHandle (
-    String theName) 
+    String theName)
   throws
     NameNotFound,
     FederateNotExecutionMember,
     RTIinternalError;
 
   // 10.22
-  public String 
+  public String
   getOrderingName (
-    int theHandle) 
+    int theHandle)
   throws
     InvalidOrderingHandle,
     FederateNotExecutionMember,
@@ -1425,17 +1432,17 @@ public interface RTIambassador {
     RTIinternalError;
 
   public Region getRegion(int regionToken)
-     throws 
-     FederateNotExecutionMember, 
+     throws
+     FederateNotExecutionMember,
      ConcurrentAccessAttempted,
-     RegionNotKnown, 
+     RegionNotKnown,
      RTIinternalError;
 
   public int getRegionToken(Region region)
-     throws 
-     FederateNotExecutionMember, 
+     throws
+     FederateNotExecutionMember,
      ConcurrentAccessAttempted,
-     RegionNotKnown, 
+     RegionNotKnown,
      RTIinternalError;
 
    public void tick()

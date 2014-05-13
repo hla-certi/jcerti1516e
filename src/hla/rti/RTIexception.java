@@ -1,3 +1,10 @@
+/*
+ * This file comes from SISO STD-004-2004 for HLA 1.3
+ * from http://www.sisostds.org/ProductsPublications/Standards/SISOStandards.aspx.
+ *
+ * It is provided as-is by CERTI project.
+ */
+ 
 
 package hla.rti;
 
@@ -16,7 +23,7 @@ public class RTIexception extends Exception {
   public RTIexception(String reason) {
 	super(reason);
 	_serial = 0;
-  }  
+  }
   /**
   * @param serial    serial number also printed with the exception:
   *                   programmer can assign these to tell where the
@@ -25,15 +32,15 @@ public class RTIexception extends Exception {
   public RTIexception(String reason, int serial) {
 	super(reason);
 	_serial = serial;
-  }  
-  
+  }
+
   public int getSerial()
   {
      return _serial;
   }
-  
+
   public String toString() {
 	String rep = super.toString();
 	return rep += " serial:" + _serial;
-  }  
+  }
 }

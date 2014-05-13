@@ -1,3 +1,10 @@
+/*
+ * This file comes from SISO STD-004-2004 for HLA 1.3
+ * from http://www.sisostds.org/ProductsPublications/Standards/SISOStandards.aspx.
+ *
+ * It is provided as-is by CERTI project.
+ */
+ 
 
 package hla.rti;
 
@@ -6,7 +13,7 @@ package hla.rti;
  * updateAttributeValues. This is conceptually an array
  * with an initial capacity and the ability to grow.
  * You enumerate by stepping index from 0 to size()-1.
- * 
+ *
  */
 public interface SuppliedAttributes {
 
@@ -38,7 +45,7 @@ public byte[] getValue ( int index) throws ArrayIndexOutOfBounds;
  * Return length of value at index position.
  * @return int value length
  * @param index int
- * @exception hla.rti.ArrayIndexOutOfBounds 
+ * @exception hla.rti.ArrayIndexOutOfBounds
  */
 public int getValueLength ( int index) throws ArrayIndexOutOfBounds;
 /**

@@ -1,15 +1,22 @@
+/*
+ * This file comes from SISO STD-004-2004 for HLA 1.3
+ * from http://www.sisostds.org/ProductsPublications/Standards/SISOStandards.aspx.
+ *
+ * It is provided as-is by CERTI project.
+ */
+ 
 
 package hla.rti;
 
 /**
- * 
+ *
  * Represents a Region in federate's space.
  * A federate creates a Region by calling RTIambassador.createRegion.
  * The federate mdifies the Region by invoking Region methods
  * on it. The federate modifies a Region by first modifying
  * its local instance, then supplying the modified instance
  * to RTIambassador.notifyOfRegionModification.
- * 
+ *
  * The Region is conceptually an array, with the extents addressed
  * by index running from 0 to getNumberOfExtents()-1.
  */

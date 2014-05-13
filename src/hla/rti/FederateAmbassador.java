@@ -1,3 +1,10 @@
+/*
+ * This file comes from SISO STD-004-2004 for HLA 1.3
+ * from http://www.sisostds.org/ProductsPublications/Standards/SISOStandards.aspx.
+ *
+ * It is provided as-is by CERTI project.
+ */
+ 
 
 package hla.rti;
 
@@ -26,7 +33,7 @@ public interface FederateAmbassador {
 
   //4.8
   public void announceSynchronizationPoint(
-    String synchronizationPointLabel, 
+    String synchronizationPointLabel,
     byte[] userSuppliedTag)
   throws
     FederateInternalError;
@@ -97,28 +104,28 @@ public interface FederateAmbassador {
 
   // 5.10
   public void startRegistrationForObjectClass (
-    int theClass)      
+    int theClass)
   throws
     ObjectClassNotPublished,
     FederateInternalError;
 
   // 5.11
   public void stopRegistrationForObjectClass (
-    int theClass)      
+    int theClass)
   throws
     ObjectClassNotPublished,
     FederateInternalError;
 
   // 5.12
   public void turnInteractionsOn (
-    int theHandle) 
+    int theHandle)
   throws
     InteractionClassNotPublished,
     FederateInternalError;
 
   // 5.13
   public void turnInteractionsOff (
-    int theHandle) 
+    int theHandle)
   throws
     InteractionClassNotPublished,
     FederateInternalError;
@@ -129,9 +136,9 @@ public interface FederateAmbassador {
 
   // 6.3
   public void discoverObjectInstance (
-    int    theObject,      
+    int    theObject,
     int    theObjectClass,
-    String objectName) 
+    String objectName)
   throws
     CouldNotDiscover,
     ObjectClassNotKnown,
@@ -139,9 +146,9 @@ public interface FederateAmbassador {
 
   // 6.5
   public void reflectAttributeValues (
-    int                 theObject,     
-    ReflectedAttributes theAttributes, 
-    byte[]              userSuppliedTag)        
+    int                 theObject,
+    ReflectedAttributes theAttributes,
+    byte[]              userSuppliedTag)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -150,9 +157,9 @@ public interface FederateAmbassador {
 
   // 6.5
   public void reflectAttributeValues (
-    int                 theObject,     
-    ReflectedAttributes theAttributes, 
-    byte[]              userSuppliedTag,        
+    int                 theObject,
+    ReflectedAttributes theAttributes,
+    byte[]              userSuppliedTag,
     LogicalTime         theTime,
     EventRetractionHandle retractionHandle)
   throws
@@ -164,9 +171,9 @@ public interface FederateAmbassador {
 
   // 6.7
   public void receiveInteraction (
-    int                 interactionClass, 
-    ReceivedInteraction theInteraction,  
-    byte[]              userSuppliedTag)         
+    int                 interactionClass,
+    ReceivedInteraction theInteraction,
+    byte[]              userSuppliedTag)
   throws
     InteractionClassNotKnown,
     InteractionParameterNotKnown,
@@ -174,8 +181,8 @@ public interface FederateAmbassador {
 
   // 6.7
   public void receiveInteraction (
-    int                 interactionClass, 
-    ReceivedInteraction theInteraction,  
+    int                 interactionClass,
+    ReceivedInteraction theInteraction,
     byte[]              userSuppliedTag,
     LogicalTime         theTime,
     EventRetractionHandle eventRetractionHandle)
@@ -187,15 +194,15 @@ public interface FederateAmbassador {
 
   // 6.9
   public void removeObjectInstance (
-    int    theObject, 
-    byte[] userSuppliedTag)    
+    int    theObject,
+    byte[] userSuppliedTag)
   throws
     ObjectNotKnown,
     FederateInternalError;
 
   // 6.9
   public void removeObjectInstance (
-    int            theObject, 
+    int            theObject,
     byte[]         userSuppliedTag,
     LogicalTime    theTime,
     EventRetractionHandle retractionHandle)
@@ -206,8 +213,8 @@ public interface FederateAmbassador {
 
   // 6.13
   public void attributesInScope (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -215,8 +222,8 @@ public interface FederateAmbassador {
 
   // 6.14
   public void attributesOutOfScope (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -224,8 +231,8 @@ public interface FederateAmbassador {
 
   // 6.16
   public void provideAttributeValueUpdate (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -234,8 +241,8 @@ public interface FederateAmbassador {
 
   // 6.17
   public void turnUpdatesOnForObjectInstance (
-    int                theObject,     
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotOwned,
@@ -243,8 +250,8 @@ public interface FederateAmbassador {
 
   // 6.18
   public void turnUpdatesOffForObjectInstance (
-    int                theObject,      
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotOwned,
@@ -256,9 +263,9 @@ public interface FederateAmbassador {
 
   // 7.4
   public void requestAttributeOwnershipAssumption (
-    int                theObject,         
-    AttributeHandleSet offeredAttributes, 
-    byte[]             userSuppliedTag)            
+    int                theObject,
+    AttributeHandleSet offeredAttributes,
+    byte[]             userSuppliedTag)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -268,8 +275,8 @@ public interface FederateAmbassador {
 
   // 7.5
   public void attributeOwnershipDivestitureNotification (
-    int                theObject,          
-    AttributeHandleSet releasedAttributes) 
+    int                theObject,
+    AttributeHandleSet releasedAttributes)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -279,8 +286,8 @@ public interface FederateAmbassador {
 
   // 7.6
   public void attributeOwnershipAcquisitionNotification (
-    int                theObject,         
-    AttributeHandleSet securedAttributes) 
+    int                theObject,
+    AttributeHandleSet securedAttributes)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -291,8 +298,8 @@ public interface FederateAmbassador {
 
   // 7.9
   public void attributeOwnershipUnavailable (
-    int                theObject,         
-    AttributeHandleSet theAttributes) 
+    int                theObject,
+    AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -302,9 +309,9 @@ public interface FederateAmbassador {
 
   // 7.10
   public void requestAttributeOwnershipRelease (
-    int                theObject,           
-    AttributeHandleSet candidateAttributes, 
-    byte[]             userSuppliedTag)              
+    int                theObject,
+    AttributeHandleSet candidateAttributes,
+    byte[]             userSuppliedTag)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -313,8 +320,8 @@ public interface FederateAmbassador {
 
   // 7.14
   public void confirmAttributeOwnershipAcquisitionCancellation (
-       int                theObject,         
-       AttributeHandleSet theAttributes) 
+       int                theObject,
+       AttributeHandleSet theAttributes)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -324,9 +331,9 @@ public interface FederateAmbassador {
 
   // 7.16
   public void informAttributeOwnership (
-    int theObject,    
-    int theAttribute, 
-    int theOwner)     
+    int theObject,
+    int theAttribute,
+    int theOwner)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -334,8 +341,8 @@ public interface FederateAmbassador {
 
   // 7.16
   public void attributeIsNotOwned (
-    int theObject,    
-    int theAttribute) 
+    int theObject,
+    int theAttribute)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -343,8 +350,8 @@ public interface FederateAmbassador {
 
   // 7.16
   public void attributeOwnedByRTI (
-    int theObject,    
-    int theAttribute) 
+    int theObject,
+    int theAttribute)
   throws
     ObjectNotKnown,
     AttributeNotKnown,
@@ -356,7 +363,7 @@ public interface FederateAmbassador {
 
   // 8.3
   public void timeRegulationEnabled (
-    LogicalTime    theFederateTime) 
+    LogicalTime    theFederateTime)
   throws
     InvalidFederationTime,
     EnableTimeRegulationWasNotPending,
@@ -364,7 +371,7 @@ public interface FederateAmbassador {
 
   // 8.6
   public void timeConstrainedEnabled (
-    LogicalTime    theFederateTime) 
+    LogicalTime    theFederateTime)
   throws
     InvalidFederationTime,
     EnableTimeConstrainedWasNotPending,
@@ -372,7 +379,7 @@ public interface FederateAmbassador {
 
   // 8.13
   public void timeAdvanceGrant (
-    LogicalTime    theTime) 
+    LogicalTime    theTime)
   throws
     InvalidFederationTime,
     TimeAdvanceWasNotInProgress,
@@ -380,7 +387,7 @@ public interface FederateAmbassador {
 
   // 8.22
   public void requestRetraction (
-    EventRetractionHandle theHandle) 
+    EventRetractionHandle theHandle)
   throws
     EventNotKnown,
     FederateInternalError;

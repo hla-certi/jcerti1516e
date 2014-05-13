@@ -30,6 +30,11 @@ import java.util.Iterator;
  */
 public class CertiFederateHandleSet extends HashSet<Integer> implements FederateHandleSet {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3786442709781895872L;
+
     public void add(int handle) {
         super.add(handle);
     }

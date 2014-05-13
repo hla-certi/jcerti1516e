@@ -27,6 +27,10 @@ package certi.communication;
  */
 public class CertiException extends Exception {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -982783725846269859L;
     private CertiExceptionType exceptionType;
     private String reason;
 

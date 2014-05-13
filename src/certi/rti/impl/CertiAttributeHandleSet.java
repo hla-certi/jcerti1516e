@@ -31,6 +31,11 @@ import java.util.Iterator;
  */
 public class CertiAttributeHandleSet extends HashSet<Integer> implements AttributeHandleSet {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3162809907138071826L;
+
     public void add(int handle) throws AttributeNotDefined {
         super.add(handle);
     }

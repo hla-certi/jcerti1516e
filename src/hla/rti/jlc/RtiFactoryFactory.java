@@ -64,7 +64,7 @@ public class RtiFactoryFactory
       return getRtiFactory("certi.rti.jlc.CertiRtiFactory");
    }
 
-   public static Map getAvailableRtis() throws RTIinternalError
+   public static Map<String, String> getAvailableRtis() throws RTIinternalError
    {
       String userHomeDir = System.getProperty("user.home");
       File propertiesFile = new File(userHomeDir, "RTI-list.properties");
@@ -82,7 +82,7 @@ public class RtiFactoryFactory
          throw new RTIinternalError("Error reading Link Compatibility settings file");
       }
 
-      Map map = new HashMap();
+      Map<String, String> map = new HashMap<String, String>();
       int index = 1;
       while (true) {
          String rtiName = properties.getProperty(index + ".name");

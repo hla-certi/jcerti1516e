@@ -53,11 +53,11 @@ public class CertiLogicalTime implements LogicalTime, Comparable<CertiLogicalTim
      * @throws IllegalTimeArithmetic
      */
     public void decreaseBy(LogicalTimeInterval subtrahend) throws IllegalTimeArithmetic {
-        if (getClass() != subtrahend.getClass()) {
-            throw new IllegalTimeArithmetic("Different implementation of logical time supplied");
-        }
-
-        time -= ((CertiLogicalTimeInterval) subtrahend).getInterval();
+        if (subtrahend instanceof CertiLogicalTimeInterval) {
+        	time -= ((CertiLogicalTimeInterval) subtrahend).getInterval();	
+        } else {
+        	throw new IllegalTimeArithmetic("Different implementation of logical time supplied");
+        }        
     }
 
     /**
@@ -83,11 +83,11 @@ public class CertiLogicalTime implements LogicalTime, Comparable<CertiLogicalTim
      * @throws IllegalTimeArithmetic
      */
     public void increaseBy(LogicalTimeInterval addend) throws IllegalTimeArithmetic {
-        if (getClass() != addend.getClass()) {
-            throw new IllegalTimeArithmetic("Different implementation of logical time supplied");
-        }
-
-        time += ((CertiLogicalTimeInterval) addend).getInterval();
+        if (addend instanceof CertiLogicalTimeInterval) {
+        	time += ((CertiLogicalTimeInterval) addend).getInterval();   
+        } else {
+        	throw new IllegalTimeArithmetic("Different implementation of logical time supplied");
+        }        
     }
 
     /**
@@ -170,11 +170,11 @@ public class CertiLogicalTime implements LogicalTime, Comparable<CertiLogicalTim
      * @param value
      */
     public void setTo(LogicalTime value) {
-        if (getClass() != value.getClass()) {
-            throw new IllegalArgumentException("Different implementation of logical time supplied");
-        }
-
-        this.time = ((CertiLogicalTime) value).getTime();
+    	if (value instanceof CertiLogicalTime) {
+    		this.time = ((CertiLogicalTime) value).getTime();    
+    	} else {
+    		throw new IllegalArgumentException("Different implementation of logical time supplied");
+    	}
     }
 
     /**
@@ -183,11 +183,11 @@ public class CertiLogicalTime implements LogicalTime, Comparable<CertiLogicalTim
      * @return
      */
     public LogicalTimeInterval subtract(LogicalTime subtrahend) {
-        if (getClass() != subtrahend.getClass()) {
+        if (subtrahend instanceof CertiLogicalTime) {
+        	return new CertiLogicalTimeInterval(time - ((CertiLogicalTime) subtrahend).getTime());
+        } else {
             throw new IllegalArgumentException("Different implementation of logical time supplied");
-        }
-
-        return new CertiLogicalTimeInterval(time - ((CertiLogicalTime) subtrahend).getTime());
+        }        
     }
 
     /**
@@ -206,6 +206,7 @@ public class CertiLogicalTime implements LogicalTime, Comparable<CertiLogicalTim
         if (getClass() != obj.getClass()) {
             return false;
         }
+        
         final CertiLogicalTime other = (CertiLogicalTime) obj;
         return this.time == other.time;
     }

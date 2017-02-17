@@ -30,7 +30,7 @@
 	<target name="build">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${class.dir}" />
-		<javac srcdir="${src.dir}" includeantruntime="false" destdir="${class.dir}" target="1.5" source="1.5" deprecation="on">
+		<javac srcdir="${src.dir}" includeantruntime="false" destdir="${class.dir}" target="1.5" source="1.5" deprecation="on" debug="on">
 			<!--
 			<classpath>
 				<path refid="lib.rpc.classpath" />

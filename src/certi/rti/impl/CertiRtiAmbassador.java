@@ -136,10 +136,22 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         LOGGER.info("Using TCP socket server on port " + serverSocket.getLocalPort());
 
         try {
+			int max_retry = 5;
+			int nb_retry = 0;
             String rtiaPathString = properties.getProperty("rtiaPath") != null ? properties.getProperty("rtiaPath") : "";
 
             Process rtiaProcess = Runtime.getRuntime().exec(rtiaPathString + "rtia -p " + 
                                                             serverSocket.getLocalPort());
+                                                            
+			// This is a workaround for issue 53878 which allow to fiw timing issue
+			// Here we wait for few milliseconds to be sure process is created
+			while ( (rtiaProcess.isAlive() != true) && (nb_retry <  max_retry))
+			{
+				nb_retry = nb_retry + 1;
+				// sleep for 50 milliseconds
+				Thread.sleep(50);
+			}
+			LOGGER.info("RTIA process is seen as alive after " + nb_retry + " attemps");
             // Read error and output streams, so that in case debugging is enabled for RTIA
             // the process will not block because stream buffers are full 
             StreamListener outListener = new StreamListener(rtiaProcess.getInputStream());
@@ -149,6 +161,12 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         } catch (IOException exception) {
             throw new RTIinternalError("RTI Ambassador executable not found. " + exception.getLocalizedMessage());
         }
+        catch(InterruptedException ex) 
+		{
+			Thread.currentThread().interrupt();
+		}
+		
+		LOGGER.info("Using TCP socket server on port " + serverSocket.getLocalPort());
 
         try {
             socket = serverSocket.accept();

@@ -148,8 +148,8 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 			while ( (rtiaProcess.isAlive() != true) && (nb_retry <  max_retry))
 			{
 				nb_retry = nb_retry + 1;
-				// sleep for 50 milliseconds
-				Thread.sleep(50);
+				// sleep for nb_retry times 20 milliseconds (see comment #7 in issue 53878)
+				Thread.sleep(nb_retry*20);
 			}
 			LOGGER.info("RTIA process is seen as alive after " + nb_retry + " attemps");
             // Read error and output streams, so that in case debugging is enabled for RTIA

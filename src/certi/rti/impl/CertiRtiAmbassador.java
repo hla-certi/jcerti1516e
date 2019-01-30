@@ -299,6 +299,64 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         }
     }
 
+     /** The argument that has to be passed to createFederationExecution() is,
+     * according to the standard, the location of the FED file on a possibly
+     * _remote_ file system, the file system where the RTIG is running.
+     * - In Java, getCanonicalPath() resolves the path on the _local_ filesystem.
+     * - getName():only work if the FED file can be found by the RTIG using
+     *   only the filename (needs to be on the CERTI_FOM_PATH).
+     * The following API is not compliant with the standard:
+     * public void createFederationExecution(String executionName, URL fed)
+     * The second argument needs to be a string, not a URL.
+     * The way the standard is written, and the way the RTIG is implemented in
+     * the C++ code, the FED file is not a network resource. It is a private
+     * resource to the RTIG on the local filesystem where the RTIG is running.
+     */
+    
+    /** Create a federation execution with the specified name and FED file.
+     *  @param executionName The name of the execution.
+     *  @param fed The file name or path and file name of the FED file on
+     *   the machine that is executing the RTIG.
+     */
+    public void createFederationExecution(String executionName, String fed)
+            throws FederationExecutionAlreadyExists, CouldNotOpenFED, ErrorReadingFED, RTIinternalError, ConcurrentAccessAttempted {
+        if (executionName == null || executionName.length() == 0) {
+            throw new RTIinternalError("Incorrect or empty execution name");
+        }
+        if (fed == null || fed.length() == 0) {
+            throw new RTIinternalError("No fed file specified.");
+        }
+        
+        CreateFederationExecution request = new CreateFederationExecution();
+        request.setFederationName(executionName);
+        
+        request.setFEDid(fed);
+        
+        try {
+            CertiMessage response = processRequest(request);
+        } catch (FederationExecutionAlreadyExists ex) {
+            throw ex;
+        } catch (CouldNotOpenFED ex) {
+            throw ex;
+        } catch (ErrorReadingFED ex) {
+            throw ex;
+        } catch (RTIinternalError ex) {
+            throw ex;
+        } catch (ConcurrentAccessAttempted ex) {
+            throw ex;
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Unexpected exception caught", ex);
+            throw new RTIinternalError("Unexpected exception caught.");
+        }
+    }
+    
+    /** The following incorrect implementation is kept for backward compatibility.
+     *  This version is incorrect because it turns the URL fed argument into a path
+     *  with a path resolved the _current_ machine (the one running the federation),
+     *  which is not necessarily the same as the one running the RTIG.
+     */
     public void createFederationExecution(String executionName, URL fed) throws FederationExecutionAlreadyExists, CouldNotOpenFED, ErrorReadingFED, RTIinternalError, ConcurrentAccessAttempted {
         if (executionName == null || executionName.length() == 0) {
             throw new RTIinternalError("Incorrect or empty execution name");

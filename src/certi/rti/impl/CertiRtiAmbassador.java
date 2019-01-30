@@ -311,12 +311,12 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setFederationName(executionName);
 
         try {
-            request.setFEDid(new File(fed.toURI()).getName());
+            request.setFEDid(new File(fed.toURI()).getCanonicalPath());
         } catch (URISyntaxException ex) {
             Logger.getLogger(CertiRtiAmbassador.class.getName()).log(Level.SEVERE, null, ex);
-        } //catch (IOException ex) {
-            //Logger.getLogger(CertiRtiAmbassador.class.getName()).log(Level.SEVERE, null, ex);
-        //}
+        } catch (IOException ex) {
+            Logger.getLogger(CertiRtiAmbassador.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         try {
             CertiMessage response = processRequest(request);

@@ -18,14 +18,16 @@
 //
 // ----------------------------------------------------------------------------
 package certi;
-
+import certi.rti.impl.CertiLogicalTime;
+import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
 import hla.rti.*;
 import hla.rti.jlc.*;
 import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UavSend {
+public class UavSend  {
 
     private final static Logger LOGGER = Logger.getLogger(UavSend.class.getName());
     private int myObject;
@@ -33,37 +35,72 @@ public class UavSend {
     private int fomAttributeHandle;
 
     public void runFederate() throws Exception {
+		
         //////////////
         // UAV-SEND //
         //////////////
-        LOGGER.info("        UAV-SEND");
-        LOGGER.info("     1. Get a link to the RTI");
+        System.out.println("        UAV-SEND");
+        System.out.println("     1. Get a link to the RTI");
         RtiFactory factory = RtiFactoryFactory.getRtiFactory();
         RTIambassador rtia = factory.createRtiAmbassador();
+        boolean flagCreator;
 
-        LOGGER.info("     2. Create federation - nofail");
+        System.out.println("     2. Create federation - nofail");
         try {
             File fom = new File("uav.fed");
             rtia.createFederationExecution("uav", fom.toURI().toURL());
+            flagCreator = true;
         } catch (FederationExecutionAlreadyExists ex) {
             LOGGER.warning("Can't create federation. It already exists.");
+			flagCreator = false;
         }
 
-        LOGGER.info("     3. Join federation");
+        System.out.println("     3. Join federation");
         FederateAmbassador mya = new MyFederateAmbassador();
         rtia.joinFederationExecution("uav-send", "uav", mya);
+        ((MyFederateAmbassador) mya).isCreator = flagCreator;
 
-        LOGGER.info("     4. Initialize Federate Ambassador");
+        System.out.println("     4. Initialize Federate Ambassador");
         ((MyFederateAmbassador) mya).initialize(rtia);
 
+        if (((MyFederateAmbassador) mya).isCreator) 
+        {
+			System.out.println("     5 Press Enter to Launch Federation (Sync Point)");
+			System.in.read();
+			byte[] tagsync = EncodingHelpers.encodeString("InitSync");
+           rtia.registerFederationSynchronizationPoint(((MyFederateAmbassador) mya).synchronizationPointName, tagsync);
+            // Wait synchronization point callbacks.
+            while (!(((MyFederateAmbassador) mya).synchronizationSuccess)
+                    && !(((MyFederateAmbassador) mya).synchronizationFailed)) 
+				{
+                    ((CertiRtiAmbassador) rtia).tick2();
+                }
+		}
+		else
+		{
+			System.out.println("     5 Wait for creator to Launch Federation (Sync Point) ");
+		}
+		
+		 // Wait synchronization point announcement.
+        while (!(((MyFederateAmbassador) mya).inPause)) {
+                ((CertiRtiAmbassador) rtia).tick2();
+        }
 
-        LOGGER.info("     5 Initiate main loop");
+        // Satisfied synchronization point.
+        rtia.synchronizationPointAchieved(((MyFederateAmbassador) mya).synchronizationPointName);
+
+        // Wait federation synchronization.
+        while (((MyFederateAmbassador) mya).inPause) 
+        {
+                ((CertiRtiAmbassador) rtia).tick2();
+        }   
+        
         int i = 20;
-
-        while (i-- > 0) {
-            LOGGER.info("     6 Loop");
+		System.out.println("     6 UAV Loop");
+        while (i --> 0) 
+        {
+           
             SuppliedAttributes attributes = RtiFactoryFactory.getRtiFactory().createSuppliedAttributes();
-
             byte[] textAttribute = EncodingHelpers.encodeString("text " + i);
             byte[] fomAttribute = EncodingHelpers.encodeFloat((float) Math.PI);
 
@@ -72,19 +109,23 @@ public class UavSend {
 
             byte[] tag = EncodingHelpers.encodeString("update");
 
-            LOGGER.info("     6.1 Update Attributes");
-            rtia.updateAttributeValues(myObject, attributes, tag);
+            System.out.println("     6.1 UAV with time=" + ((CertiLogicalTime) (((MyFederateAmbassador) mya).updateTime)).getTime());
+            rtia.updateAttributeValues(myObject, attributes, tag, ((MyFederateAmbassador) mya).updateTime);
 
-            LOGGER.info("     6.2 Tick");
-            ((CertiRtiAmbassador) rtia).tick(1.0, 1.0);
-
+            System.out.println("     6.2 TAR with time=" + ((CertiLogicalTime) (((MyFederateAmbassador) mya).timeAdvance)).getTime());
+            rtia.timeAdvanceRequest(((MyFederateAmbassador) mya).timeAdvance);
+            while (!((MyFederateAmbassador) mya).timeAdvanceGranted)
+            {
+				((CertiRtiAmbassador) rtia).tick2();
+			}
+			((MyFederateAmbassador) mya).timeAdvanceGranted = false;
             Thread.sleep(1000);
         }
 
-        LOGGER.info("     7 Resign federation execution");
+        System.out.println("     7 Resign federation execution");
         rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
 
-        LOGGER.info("     8 Destroy federation execution - nofail");
+        System.out.println("     8 Destroy federation execution - nofail");
         try {
             rtia.destroyFederationExecution("uav");
         } catch (FederatesCurrentlyJoined ex) {
@@ -99,24 +140,55 @@ public class UavSend {
     }
 
     private class MyFederateAmbassador extends NullFederateAmbassador {
+		
+		public LogicalTime localHlaTime;
+		public LogicalTimeInterval  lookahead;
+		public LogicalTime  timeStep;
+		public LogicalTime  timeAdvance;
+		public LogicalTime  updateTime;
+		public boolean timeAdvanceGranted;
+		public boolean timeRegulator;
+		public boolean timeConstrained;
+        public boolean synchronizationSuccess;
+        public boolean synchronizationFailed;
+		public boolean inPause;
+		public boolean isCreator;
+		private String synchronizationPointName = "InitSync";
 
-        public void initialize(RTIambassador rtia) throws NameNotFound, FederateNotExecutionMember, RTIinternalError, ObjectClassNotDefined, AttributeNotDefined, OwnershipAcquisitionPending, SaveInProgress, RestoreInProgress, ConcurrentAccessAttempted, ObjectClassNotPublished, ObjectAlreadyRegistered {
-            LOGGER.info("     4.1 Get object class handle");
+        public void initialize(RTIambassador rtia) 
+			throws NameNotFound, FederateNotExecutionMember, RTIinternalError, ObjectClassNotDefined, 
+			       AttributeNotDefined, OwnershipAcquisitionPending, SaveInProgress, RestoreInProgress, AsynchronousDeliveryAlreadyEnabled,
+			       EnableTimeRegulationPending, EnableTimeConstrainedPending, TimeConstrainedAlreadyEnabled, TimeRegulationAlreadyEnabled, 
+			       ConcurrentAccessAttempted, ObjectClassNotPublished, ObjectAlreadyRegistered, TimeAdvanceAlreadyInProgress, 
+			       InvalidFederationTime, InvalidLookahead {
+            System.out.println("     4.1 Get object class handle");
             int classHandle = rtia.getObjectClassHandle("SampleClass");
 
-            LOGGER.info("     4.2 Get atribute handles");
+            System.out.println("     4.2 Get atribute handles");
             textAttributeHandle = rtia.getAttributeHandle("TextAttribute", classHandle);
             fomAttributeHandle = rtia.getAttributeHandle("FOMAttribute", classHandle);
 
             AttributeHandleSet attributes = RtiFactoryFactory.getRtiFactory().createAttributeHandleSet();
             attributes.add(textAttributeHandle);
             attributes.add(fomAttributeHandle);
+            
+			rtia.enableAsynchronousDelivery();
 
-            LOGGER.info("     4.3 Publish object");
+            System.out.println("     4.3 Publish object");
             rtia.publishObjectClass(classHandle, attributes);
 
-            LOGGER.info("     4.4 Register object instance");
+            System.out.println("     4.4 Register object instance");
             myObject = rtia.registerObjectInstance(classHandle, "HAF");
+            
+			System.out.println("     5. Set time management configuration (Regulator with lk=0.1 and Constrained)");
+			localHlaTime = new CertiLogicalTime(0.0);
+			lookahead = new CertiLogicalTimeInterval(0.1);
+			timeStep = new CertiLogicalTime(1.0);
+			timeAdvance = new CertiLogicalTime(1.0);
+			updateTime = new CertiLogicalTime(0.2);
+			timeAdvanceGranted = false;
+			rtia.enableTimeRegulation(localHlaTime, lookahead);
+			rtia.enableTimeConstrained();
         }
 
         @Override
@@ -125,7 +197,21 @@ public class UavSend {
 
             System.out.println("Object class: " + theClass);
         }
-
+        
+        @Override
+        public void timeAdvanceGrant(LogicalTime theTime) 
+				throws InvalidFederationTime, FederateInternalError, TimeAdvanceWasNotInProgress {
+            //super.timeAdvanceGrant(theTime);
+            
+            localHlaTime = new CertiLogicalTime(((CertiLogicalTime) theTime).getTime());
+            timeAdvance = new CertiLogicalTime(((CertiLogicalTime) localHlaTime).getTime() 
+                                               + ((CertiLogicalTime) timeStep).getTime());
+			updateTime = new CertiLogicalTime(((CertiLogicalTime) localHlaTime).getTime() + 0.2);
+			System.out.println("     6.3 TAG with time=" + ((CertiLogicalTime) theTime).getTime());
+			System.out.println("");
+            timeAdvanceGranted = true;
+        }
+        
         @Override
         public void provideAttributeValueUpdate(int theObject, AttributeHandleSet theAttributes) throws ObjectNotKnown, AttributeNotKnown, AttributeNotOwned, FederateInternalError {
             super.provideAttributeValueUpdate(theObject, theAttributes);
@@ -138,5 +224,43 @@ public class UavSend {
             }
             System.out.println();
         }
+        
+        /** Callback delivered by the RTI (CERTI) to notify if the synchronization
+         *  point registration has failed.
+         */
+        @Override
+        public void synchronizationPointRegistrationFailed(
+                String synchronizationPointLabel) throws FederateInternalError {
+            synchronizationFailed = true;
+        }
+
+        /** Callback delivered by the RTI (CERTI) to notify if the synchronization
+         *  point registration has succeed.
+         */
+        @Override
+        public void synchronizationPointRegistrationSucceeded(
+                String synchronizationPointLabel) throws FederateInternalError {
+            synchronizationSuccess = true;
+        }
+
+        /** Callback delivered by the RTI (CERTI) to notify the announcement of
+         *  a synchronization point in the HLA Federation.
+         */
+        @Override
+        public void announceSynchronizationPoint(
+                String synchronizationPointLabel, byte[] userSuppliedTag)
+                throws FederateInternalError {
+            inPause = true;
+        }
+
+        /** Callback delivered by the RTI (CERTI) to notify that the Federate is
+         *  synchronized to others Federates using the same synchronization point
+         *  in the HLA Federation.
+         */
+        @Override
+        public void federationSynchronized(String synchronizationPointLabel)
+                throws FederateInternalError {
+            inPause = false;
+		}
     }
 }

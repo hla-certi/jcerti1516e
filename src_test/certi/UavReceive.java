@@ -18,7 +18,8 @@
 //
 // ----------------------------------------------------------------------------
 package certi;
-
+import certi.rti.impl.CertiLogicalTime;
+import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
 import hla.rti.*;
 import hla.rti.jlc.*;
@@ -37,36 +38,79 @@ public class UavReceive {
         /////////////////
         // UAV-RECEIVE //
         /////////////////
-        LOGGER.info("        UAV-RECEIVE");
-        LOGGER.info("     1. Get a link to the RTI");
+        System.out.println("        UAV-RECEIVE");
+        System.out.println("     1. Get a link to the RTI");
         RtiFactory factory = RtiFactoryFactory.getRtiFactory();
         RTIambassador rtia = factory.createRtiAmbassador();
+        boolean flagCreator;
 
-        LOGGER.info("     2. Create federation - nofail");
+        System.out.println("     2. Create federation - nofail");
         try {
             File fom = new File("uav.fed");
             rtia.createFederationExecution("uav", fom.toURI().toURL());
+            flagCreator = true;
         } catch (FederationExecutionAlreadyExists ex) {
             LOGGER.warning("Federation already exists.");
+             flagCreator = false;
         }
 
-        LOGGER.info("     3. Join federation");
+        System.out.println("     3. Join federation");
         FederateAmbassador mya = new MyFederateAmbassador();
         rtia.joinFederationExecution("uav-receive", "uav", mya);
+		((MyFederateAmbassador) mya).isCreator = flagCreator;
 
-        LOGGER.info("     4. Initialize Federate Ambassador");
+        System.out.println("     4. Initialize Federate Ambassador");
         ((MyFederateAmbassador) mya).initialize(rtia);
-
-        LOGGER.info("     5 Initiate main loop");
-        int i = 20;
-        while (i-- > 0) {
-            ((CertiRtiAmbassador) rtia).tick(1.0, 1.0);
+        
+               if (((MyFederateAmbassador) mya).isCreator) 
+        {
+			System.out.println("     5 Press Enter to Launch Federation (Sync Point)");
+			System.in.read();
+			byte[] tagsync = EncodingHelpers.encodeString("InitSync");
+           rtia.registerFederationSynchronizationPoint(((MyFederateAmbassador) mya).synchronizationPointName, tagsync);
+            // Wait synchronization point callbacks.
+            while (!(((MyFederateAmbassador) mya).synchronizationSuccess)
+                    && !(((MyFederateAmbassador) mya).synchronizationFailed)) 
+				{
+                    ((CertiRtiAmbassador) rtia).tick2();
+                }
+		}
+		else
+		{
+			System.out.println("     5 Wait for creator to Launch Federation (Sync Point) ");
+		}
+		
+		 // Wait synchronization point announcement.
+        while (!(((MyFederateAmbassador) mya).inPause)) {
+                ((CertiRtiAmbassador) rtia).tick2();
         }
 
-        LOGGER.info("     7 Resign federation execution");
+        // Satisfied synchronization point.
+        rtia.synchronizationPointAchieved(((MyFederateAmbassador) mya).synchronizationPointName);
+
+        // Wait federation synchronization.
+        while (((MyFederateAmbassador) mya).inPause) 
+        {
+                ((CertiRtiAmbassador) rtia).tick2();
+        }   
+
+        System.out.println("     6 RAV Loop");
+
+        int i = 20;
+        while (i-- > 0) {
+			System.out.println("     6.1 TAR with time=" + ((CertiLogicalTime) (((MyFederateAmbassador) mya).timeAdvance)).getTime());
+			rtia.timeAdvanceRequest(((MyFederateAmbassador) mya).timeAdvance);
+            while (!((MyFederateAmbassador) mya).timeAdvanceGranted)
+            {
+				((CertiRtiAmbassador) rtia).tick2();
+			}
+			((MyFederateAmbassador) mya).timeAdvanceGranted = false;
+        }
+
+        System.out.println("     7 Resign federation execution");
         rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
 
-        LOGGER.info("     8 Destroy federation execution - nofail");
+        System.out.println("     8 Destroy federation execution - nofail");
         try {
             rtia.destroyFederationExecution("uav");
         } catch (FederatesCurrentlyJoined ex) {
@@ -81,12 +125,32 @@ public class UavReceive {
     }
 
     private class MyFederateAmbassador extends NullFederateAmbassador {
+		
+		public LogicalTime localHlaTime;
+		public LogicalTimeInterval  lookahead;
+		public LogicalTime  timeStep;
+		public LogicalTime  timeAdvance;
+		public boolean timeAdvanceGranted;
+		public boolean timeRegulator;
+		public boolean timeConstrained;
+		public boolean synchronizationSuccess;
+        public boolean synchronizationFailed;
+		public boolean inPause;
+		public boolean isCreator;
+		private String synchronizationPointName = "InitSync";
 
         private RTIambassador rtia;
 
-        public void initialize(RTIambassador rtia) throws NameNotFound, ObjectClassNotDefined, FederateNotExecutionMember, RTIinternalError, AttributeNotDefined, SaveInProgress, RestoreInProgress, ConcurrentAccessAttempted {
+        public void initialize(RTIambassador rtia) 
+			throws NameNotFound, ObjectClassNotDefined, FederateNotExecutionMember, RTIinternalError, AttributeNotDefined, 
+			SaveInProgress, RestoreInProgress, ConcurrentAccessAttempted, AsynchronousDeliveryAlreadyEnabled,
+			EnableTimeRegulationPending, EnableTimeConstrainedPending, TimeConstrainedAlreadyEnabled, 
+			TimeRegulationAlreadyEnabled, TimeAdvanceAlreadyInProgress, InvalidFederationTime, InvalidLookahead { 
             this.rtia = rtia;
+            
+			rtia.enableAsynchronousDelivery();
             int classHandle = rtia.getObjectClassHandle("SampleClass");
+
 
             textAttributeHandle = rtia.getAttributeHandle("TextAttribute", classHandle);
             fomAttributeHandle = rtia.getAttributeHandle("FOMAttribute", classHandle);
@@ -96,6 +160,14 @@ public class UavReceive {
             attributes.add(fomAttributeHandle);
 
             rtia.subscribeObjectClassAttributes(classHandle, attributes);
+            
+            localHlaTime = new CertiLogicalTime(0.0);
+			lookahead = new CertiLogicalTimeInterval(0.1);
+			timeStep = new CertiLogicalTime(1.0);
+			timeAdvance = new CertiLogicalTime(1.0);
+			timeAdvanceGranted = false;
+			rtia.enableTimeRegulation(localHlaTime, lookahead);
+			rtia.enableTimeConstrained();
         }
 
         @Override
@@ -119,21 +191,75 @@ public class UavReceive {
                 LOGGER.log(Level.SEVERE, "Exception:", ex);
             }
         }
+        
+        @Override
+        public void timeAdvanceGrant(LogicalTime theTime) 
+				throws InvalidFederationTime, FederateInternalError, TimeAdvanceWasNotInProgress {
+            //super.timeAdvanceGrant(theTime);
+            
+            localHlaTime = new CertiLogicalTime(((CertiLogicalTime) theTime).getTime());
+            timeAdvance = new CertiLogicalTime(((CertiLogicalTime) localHlaTime).getTime() 
+                                               + ((CertiLogicalTime) timeStep).getTime());
+			System.out.println("     6.3 TAG with time=" + ((CertiLogicalTime) theTime).getTime());
+			System.out.println("");
+            timeAdvanceGranted = true;
+        }
+        
 
         @Override
-        public void reflectAttributeValues(int theObject, ReflectedAttributes theAttributes, byte[] userSuppliedTag) throws ObjectNotKnown, AttributeNotKnown, FederateOwnsAttributes, FederateInternalError {
+        public void reflectAttributeValues(int theObject, ReflectedAttributes theAttributes, byte[] userSuppliedTag, LogicalTime theTime, EventRetractionHandle retractionHandle) 
+			throws ObjectNotKnown, AttributeNotKnown, FederateOwnsAttributes, FederateInternalError {
             try {
+				System.out.println("     6.2 RAV with time=" + ((CertiLogicalTime) theTime).getTime());
                 for (int i = 0; i < theAttributes.size(); i++) {
                     if (theAttributes.getAttributeHandle(i) == textAttributeHandle) {
-                        System.out.println("Reflect: " + EncodingHelpers.decodeString(theAttributes.getValue(i)));
+                        System.out.println("     --> Attribute: " + EncodingHelpers.decodeString(theAttributes.getValue(i)));
                     }
                     if (theAttributes.getAttributeHandle(i) == fomAttributeHandle) {
-                        System.out.println("Reflect: " + EncodingHelpers.decodeFloat(theAttributes.getValue(i)));
+                        System.out.println("     --> Attribute: " + EncodingHelpers.decodeFloat(theAttributes.getValue(i)));
                     }
                 }
             } catch (ArrayIndexOutOfBounds ex) {
                 LOGGER.log(Level.SEVERE, "Exception:", ex);
             }
         }
+        
+        /** Callback delivered by the RTI (CERTI) to notify if the synchronization
+         *  point registration has failed.
+         */
+        @Override
+        public void synchronizationPointRegistrationFailed(
+                String synchronizationPointLabel) throws FederateInternalError {
+            synchronizationFailed = true;
+        }
+
+        /** Callback delivered by the RTI (CERTI) to notify if the synchronization
+         *  point registration has succeed.
+         */
+        @Override
+        public void synchronizationPointRegistrationSucceeded(
+                String synchronizationPointLabel) throws FederateInternalError {
+            synchronizationSuccess = true;
+        }
+
+        /** Callback delivered by the RTI (CERTI) to notify the announcement of
+         *  a synchronization point in the HLA Federation.
+         */
+        @Override
+        public void announceSynchronizationPoint(
+                String synchronizationPointLabel, byte[] userSuppliedTag)
+                throws FederateInternalError {
+            inPause = true;
+        }
+
+        /** Callback delivered by the RTI (CERTI) to notify that the Federate is
+         *  synchronized to others Federates using the same synchronization point
+         *  in the HLA Federation.
+         */
+        @Override
+        public void federationSynchronized(String synchronizationPointLabel)
+                throws FederateInternalError {
+            inPause = false;
+		}
     }
 }

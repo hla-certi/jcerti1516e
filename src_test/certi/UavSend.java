@@ -121,22 +121,45 @@ public class UavSend  {
 			((MyFederateAmbassador) mya).timeAdvanceGranted = false;
             Thread.sleep(1000);
         }
-
+ 
         System.out.println("     7 Resign federation execution");
         rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
 
-        System.out.println("     8 Destroy federation execution - nofail");
+        System.out.println("     8 Try to destroy federation execution - nofail");
+        
+        // Uses a loop with for destroying the federation (with a delay if 
+        // there are other federates that did not resign yet).
+        boolean federationIsActive = true;
         try {
-            rtia.destroyFederationExecution("uav");
-        } catch (FederatesCurrentlyJoined ex) {
-            LOGGER.warning("Federates currently joined - can't destroy the execution.");
-        } catch (FederationExecutionDoesNotExist ex) {
-            LOGGER.warning("Federation execution does not exists - can't destroy the execution.");
-        }
-        // Using closeConnexion so the federate can stops running. 
-        // No rtia alive with this code. Federate UAVReceive.java uses "finally".
-        ((CertiRtiAmbassador) rtia).closeConnexion();
-    } // run
+         while (federationIsActive) {
+                try {
+                    rtia.destroyFederationExecution("uav");
+                    federationIsActive = false;
+                    LOGGER.warning("Federation destroyed by this federate.");
+                } catch (FederatesCurrentlyJoined ex) {
+                    LOGGER.warning("Federates currently joined - can't destroy the execution."
+                            + " Wait some time and try again to destroy the federation.");
+                    try {
+                        // Give the other federates a chance to finish.
+                        Thread.sleep(2000l);
+                    } catch (InterruptedException e1) {
+                        // Ignore.
+                    }
+                } catch (FederationExecutionDoesNotExist ex) {
+                    LOGGER.warning("Federation execution does not exists;"
+                            +  "May be the Federation was destroyed by some other federate.");
+                    federationIsActive = false;
+                }      catch (RTIinternalError e) {
+                    System.out.println("RTIinternalError: " + e.getMessage());
+                } catch (ConcurrentAccessAttempted e) {
+                    System.out.println("ConcurrentAccessAttempted: " + e.getMessage());
+                }              
+         }// while
+        } finally { //always execute this block whether an exception is risen or not
+             // Uses closeConnexion so the federate can stops running. 
+             // No rtia alive with this code.
+            ((CertiRtiAmbassador) rtia).closeConnexion();
+           }     } // run federate
     public static void main(String[] args) throws Exception {
         new UavSend().runFederate();
     }

@@ -116,26 +116,41 @@ public class UavReceive {
                 // What happens with the federate if the exception is risen? 
                 // Add a "finally" with the block related to destroyFederationExecution?
             } 
-        System.out.println("     8 Destroy federation execution - nofail");
-        // Could be interesting to add a loop for destroying the federation?
-        //FIXME: use federationIsActive + while loop : there is a compilation error
-        // boolean federationIsActive = true;
-        // try {
-        //   while federationIsActive {
+        System.out.println("     8 Try to destroy federation execution - nofail");
+        
+        // Uses a loop with for destroying the federation (with a delay if 
+        // there are other federates that did not resign yet).
+        boolean federationIsActive = true;
+        try {
+         while (federationIsActive) {
                 try {
                     rtia.destroyFederationExecution("uav");
-                   // federationIsActive = false;
+                    federationIsActive = false;
+                    LOGGER.warning("Federation destroyed by this federate.");
                 } catch (FederatesCurrentlyJoined ex) {
-                    LOGGER.warning("Federates currently joined - can't destroy the execution.");
+                    LOGGER.warning("Federates currently joined - can't destroy the execution."
+                            + " Wait some time and try again to destroy the federation.");
+                    try {
+                        // Give the other federates a chance to finish.
+                        Thread.sleep(2000l);
+                    } catch (InterruptedException e1) {
+                        // Ignore.
+                    }
                 } catch (FederationExecutionDoesNotExist ex) {
-                    LOGGER.warning("Federation execution does not exists - can't destroy the execution.");
-                }
-                  finally { //always execute this block whether an exception is risen or not
-                        // Using closeConnexion so the federate can stops running. 
-                        // No rtia alive with this code.
-                       ((CertiRtiAmbassador) rtia).closeConnexion();
-                          } 
-               //  } // while
+                    LOGGER.warning("Federation execution does not exists;"
+                            +  "May be the Federation was destroyed by some other federate.");
+                    federationIsActive = false;
+                }   catch (RTIinternalError e) {
+                    System.out.println("RTIinternalError: " + e.getMessage());
+                } catch (ConcurrentAccessAttempted e) {
+                    System.out.println("ConcurrentAccessAttempted: " + e.getMessage());
+                }           
+         }// while
+        } finally { //always execute this block whether an exception is risen or not
+             // Uses closeConnexion so the federate can stops running. 
+             // No rtia alive with this code.
+            ((CertiRtiAmbassador) rtia).closeConnexion();
+           } 
     } // run federate
 
     public static void main(String[] args) throws Exception {

@@ -95,7 +95,7 @@ public class UavSend  {
                 ((CertiRtiAmbassador) rtia).tick2();
         }   
         
-        int i = 20;
+        int i = 3;
 		System.out.println("     6 UAV Loop");
         while (i --> 0) 
         {
@@ -133,8 +133,10 @@ public class UavSend  {
         } catch (FederationExecutionDoesNotExist ex) {
             LOGGER.warning("Federation execution does not exists - can't destroy the execution.");
         }
-    }
-
+        // Using closeConnexion so the federate can stops running. 
+        // No rtia alive with this code. Federate UAVReceive.java uses "finally".
+        ((CertiRtiAmbassador) rtia).closeConnexion();
+    } // run
     public static void main(String[] args) throws Exception {
         new UavSend().runFederate();
     }

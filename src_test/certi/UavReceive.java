@@ -23,6 +23,7 @@ import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
 import hla.rti.*;
 import hla.rti.jlc.*;
+
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,7 +97,7 @@ public class UavReceive {
 
         System.out.println("     6 RAV Loop");
 
-        int i = 20;
+        int i = 3;
         while (i-- > 0) {
 			System.out.println("     6.1 TAR with time=" + ((CertiLogicalTime) (((MyFederateAmbassador) mya).timeAdvance)).getTime());
 			rtia.timeAdvanceRequest(((MyFederateAmbassador) mya).timeAdvance);
@@ -108,17 +109,34 @@ public class UavReceive {
         }
 
         System.out.println("     7 Resign federation execution");
-        rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
-
-        System.out.println("     8 Destroy federation execution - nofail");
         try {
-            rtia.destroyFederationExecution("uav");
-        } catch (FederatesCurrentlyJoined ex) {
-            LOGGER.warning("Federates currently joined - can't destroy the execution.");
-        } catch (FederationExecutionDoesNotExist ex) {
-            LOGGER.warning("Federation execution does not exists - can't destroy the execution.");
-        }
-    }
+            rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
+            } catch (RTIexception e) {
+                LOGGER.warning("Exception when resigning.");
+                // What happens with the federate if the exception is risen? 
+                // Add a "finally" with the block related to destroyFederationExecution?
+            } 
+        System.out.println("     8 Destroy federation execution - nofail");
+        // Could be interesting to add a loop for destroying the federation?
+        //FIXME: use federationIsActive + while loop : there is a compilation error
+        // boolean federationIsActive = true;
+        // try {
+        //   while federationIsActive {
+                try {
+                    rtia.destroyFederationExecution("uav");
+                   // federationIsActive = false;
+                } catch (FederatesCurrentlyJoined ex) {
+                    LOGGER.warning("Federates currently joined - can't destroy the execution.");
+                } catch (FederationExecutionDoesNotExist ex) {
+                    LOGGER.warning("Federation execution does not exists - can't destroy the execution.");
+                }
+                  finally { //always execute this block whether an exception is risen or not
+                        // Using closeConnexion so the federate can stops running. 
+                        // No rtia alive with this code.
+                       ((CertiRtiAmbassador) rtia).closeConnexion();
+                          } 
+               //  } // while
+    } // run federate
 
     public static void main(String[] args) throws Exception {
         new UavReceive().runFederate();

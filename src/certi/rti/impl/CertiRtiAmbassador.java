@@ -19,7 +19,11 @@
 // ----------------------------------------------------------------------------
 package certi.rti.impl;
 
-import certi.communication.*;
+import certi.communication.CertiException;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import certi.communication.MessageFactory;
 import certi.communication.messages.*;
 import certi.logging.HtmlFormatter;
 import certi.logging.StreamListener;

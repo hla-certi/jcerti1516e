@@ -23,25 +23,46 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
+/**
+ * Implementation of an HLAunicodeString
+ * The value of the HLAunicodeString is represented by a String
+ */
 public class HLAunicodeStringImpl extends DataElementBase implements
         hla.rti1516e.encoding.HLAunicodeString {
 
     private String value;
     
+    /**
+     * Default constructor
+     * Set the string value to ""
+     */
     public HLAunicodeStringImpl() {
         value = "";
     }
 
+    /**
+     * Constructor to create a new HLAunicodeStringImpl with a string value s
+     * @param s : value to set
+     */
     public HLAunicodeStringImpl(String s) {
         value = (null!=s ? s : "");
     }
     
-    
+    /**
+     * Returns the octet boundary of this element.
+     * HLAunicodeString octet boundary is defined to 4 in the HLA standard
+     * @return the octet boundary of this element
+     */
     public int getOctetBoundary() {
         return 4;
     }
 
-    
+    /**
+     * Encodes this element into the specified ByteWrapper.
+     * @param byteWrapper destination for the encoded element
+     *
+     * @throws EncoderException if the element can not be encoded
+     */
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
        byteWrapper.align(getOctetBoundary());
        int ls = value.length();
@@ -55,12 +76,21 @@ public class HLAunicodeStringImpl extends DataElementBase implements
        }
     }
 
-    
+    /**
+     * Returns the size in bytes of this element's encoding.
+     * HLAunicodeString size is defined to 4 (to encode the size) + 2 * the lenght of the string 
+     * @return the size in bytes of this element's encoding
+     */
     public int getEncodedLength() {
         return 4+2*value.length();
     }
 
-    
+    /**
+     * Decodes this element from the ByteWrapper.
+     * @param byteWrapper source for the decoding of this element
+     *
+     * @throws DecoderException if the element can not be decoded
+     */
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
         int ls = byteWrapper.getInt();
@@ -72,13 +102,21 @@ public class HLAunicodeStringImpl extends DataElementBase implements
             lower = byteWrapper.get();
             s[i] = (char)((upper << 8) + (lower << 0));
         }
+        value = new String(s);
     }
     
+    /**
+     * Get the string value of the HLAunicodeString
+     * @return  the string value of the HLAunicodeString
+     */
     public String getValue() {
         return value;
     }
 
-    
+    /**
+     * Set the string value of the HLAunicodeString with the parameter value
+     * @param value : string value to set to the HLAunicodeString
+     */
     public void setValue(String value) {
         this.value = value;
     }

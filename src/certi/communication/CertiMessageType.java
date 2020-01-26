@@ -184,7 +184,14 @@ public enum CertiMessageType {
     DISABLE_INTERACTION_RELEVANCE_ADVISORY_SWITCH,
     TICK_REQUEST,
     TICK_REQUEST_NEXT,
-    TICK_REQUEST_STOP;
+    TICK_REQUEST_STOP,
+    RESERVE_OBJECT_INSTANCE_NAME, // HLA1516
+    RESERVE_OBJECT_INSTANCE_NAME_SUCCEEDED, // HLA1516
+    RESERVE_OBJECT_INSTANCE_NAME_FAILED, // HLA1516
+
+    CREATE_FEDERATION_EXECUTION_V4, // CERTI HLA1516E
+    JOIN_FEDERATION_EXECUTION_V4 // CERTI HLA1516E
+    ;
     /**<p>Constructs a HashMap between the <code>int</code> which corresponds to the <code>CertiMessageType</code> and the <code>CertiMessageType</code> itself.</p>
      * <p>For instance, <code>CertiMessageType.reverseType.get(1)</code> will return the <code>CertiMessageType</code> CLOSE_CONNEXION.</p>
      */

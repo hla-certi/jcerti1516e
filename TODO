@@ -1,5 +1,13 @@
 -*- text -*-
 
+TODO list for HLA 1516-2010
+
+FIXME: create this list
+
+
+-------------------------------------------------------------
+FIXME: check if this todo list was already done, and update it
+
 - udpate CERTI message generator in order to fully generate 
   certi.communication.messages.
 

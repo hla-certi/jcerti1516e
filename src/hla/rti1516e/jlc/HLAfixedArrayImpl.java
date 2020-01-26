@@ -29,28 +29,52 @@ import hla.rti1516e.encoding.DataElementFactory;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
+
+/**
+ * HLAfixedArrayImpl is the implementation of type HLAfixedArray
+ * It is an array with a fixe size, wich contains elements with the same type T
+ * @param <T> Type of elements of the array. Can be a simple type or a complexe type
+ */
 public class HLAfixedArrayImpl<T extends DataElement> extends DataElementBase
     implements hla.rti1516e.encoding.HLAfixedArray<T> {
 
     private ArrayList<T>          values;
     private DataElementFactory<T> efactory;
 
+    /**
+     * Contructor of an HLAvariableArray with the size of the array
+     * @param size : size of the array to construct
+     */
     public HLAfixedArrayImpl(int size) {
         values  = new ArrayList<T>(size);
-
+        efactory = null;
     }
     
+    /**
+     * Contructor of an HLAfixedArray with an array of element of type T
+     * @param elements : array witch contains all the elements to add in the HLAfixedArray
+     */
     public HLAfixedArrayImpl(T[] elements) {
         values = new ArrayList<T>(elements.length);
         values.addAll(Arrays.asList(elements));
         efactory = null;
     }
 
+    /**
+     * Constructor of HLAfixedArray with a factory and a size
+     * @param factory : factory to create elements of type T
+     * @param size : number of elements in the array
+     */
     public HLAfixedArrayImpl(DataElementFactory<T> factory, int size) {
         values   = new ArrayList<T>(size);
         efactory = factory;
     }
     
+    /**
+   	 * Calcul the octet boundary 
+   	 * HLAfixedArray octet boundary is the max of all the values's octet boundary
+   	 * @return Value of octet boundary
+   	 */
     public int getOctetBoundary() {
         /* at least 4 since we encode the size */
         int obound = 4;
@@ -60,60 +84,123 @@ public class HLAfixedArrayImpl<T extends DataElement> extends DataElementBase
         }
         return obound;
     }
-
-    public void encode(ByteWrapper byteWrapper) throws EncoderException {
-       byteWrapper.align(getOctetBoundary());
-       byteWrapper.putInt(values.size());
-       for (Iterator<T> it = values.iterator(); it.hasNext();) {
-           T elem  = it.next();
-           elem.encode(byteWrapper);
-       }
+    
+	/**
+	 * Calcul the size of the padding necesary after a specific value of the array
+	 * @param sizeElement : encoded lenght of a specific value
+	 * @param octetBoundary : octet boundary of the HLAfixedArray
+	 * @return size of the padding corresponding to the value
+	 */
+    public int calculPaddingAfterEachElement(int sizeElement, int octetBoundary) {
+    	int padding ;
+    	int r = sizeElement % octetBoundary;
+    	if(r == 0) padding = 0;
+    	else padding = octetBoundary - r;
+    	return padding;
     }
 
-    public int getEncodedLength() {
-        int elength = 4;
-        for (Iterator<T> it = values.iterator(); it.hasNext();) {
-            T elem  = it.next();
-            elength += elem.getEncodedLength();
+    /**
+	 * Encode the HLAfixedArray
+	 * Put in the byteWrapper : 
+	 *  - each value (expect last one) with padding
+	 *  - last value without padding
+	 * @param Object byteWrapper, initialized with the correct lenght
+	 */
+    public void encode(ByteWrapper byteWrapper) throws EncoderException {
+        byteWrapper.align(getOctetBoundary());
+
+        //Encode each element EXCEPT last one, with padding
+        for (int i = 0; i< this.values.size() - 1; i++) {
+            T elem  = values.get(i);
+            elem.encode(byteWrapper);
+            int paddingSize = calculPaddingAfterEachElement(values.get(i).getEncodedLength(), this.getOctetBoundary()); 
+            if(paddingSize > 0) {
+            	byte[] paddingBytes = new byte[paddingSize];
+          	    for(int j =0; j<paddingSize; j++) paddingBytes[j] = 0;
+                byteWrapper.put(paddingBytes); 
+             }
         }
+        //Last element (without padding)
+        this.values.get(this.values.size()-1).encode(byteWrapper);
+     }    
+
+    /**
+	 * Calcul the length necessary to encode this HLAfixedArray
+	 * The lenght is the sum of :
+	 * 		- the size of each value (expect last one) with padding
+	 * 		- the size of the last value without padding
+	 * @return Lenght necessary to encode the variant
+	 */
+    public int getEncodedLength() {
+        int elength = 0;
+        int padding = calculPaddingAfterEachElement(this.values.get(0).getEncodedLength(), this.getOctetBoundary());
+        //size of with element (except last one) with padding
+        for (int i = 0; i< this.values.size() - 1; i++) {
+            T elem  = values.get(i);
+            elength += elem.getEncodedLength();
+            elength += padding;
+        }
+        //Last element (without padding)
+        elength += this.values.get(this.values.size()-1).getEncodedLength();
         return elength;
     }
 
+     /**
+	 * Decode the HLAfixedArray
+	 * The structure must have been defined before the decoding
+	 * @param Object byteWrapper, initialized with the correct lenght, with position reset
+	 */
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
-        int nbElem = byteWrapper.getInt();
-        values.ensureCapacity(nbElem);
-        /* FIXME we may optimize this in order to avoid reallocation 
-         * we should
-         *  - verify size
-         *  - trimToSize
-         *  - clear 
-         *  - add 
-         */
-        values.clear();
-        for (int i = 0; i<nbElem;++i) {
-            T elem = efactory.createElement(i);
-            elem.decode(byteWrapper);
-            values.add(elem);
+        int nbElem = values.size();//byteWrapper.getInt();
+        if(nbElem == 0) throw new DecoderException("HLAfixedArray is empty");
+        int padding = this.calculPaddingAfterEachElement(this.values.get(0).getEncodedLength(), this.getOctetBoundary());
+        for (int i = 0; i<nbElem - 1;++i) {
+            this.values.get(i).decode(byteWrapper);
+            //Pass the padding
+            byteWrapper.advance(padding);
         }
+        //get last element
+        this.values.get(nbElem - 1).decode(byteWrapper);   
     }
 
+    /**
+     * Add an element of type T to the array
+     * @param dataElement : element to add
+     */
     public void addElement(T dataElement) {
         values.add(dataElement);
     }
 
+    /**
+     * Size of the array
+     * @return the size of the array
+     */
     public int size() {
         return values.size();
     }
 
+    /**
+     * Return the object T at a specific position
+     * @param index : position of the object
+     * @return object T at the position of the specified index
+     */
     public T get(int index) {
         return values.get(index);
     }
 
+    /**
+     * Create an iterator on the array
+     * @return iterator on the array
+     */
     public Iterator<T> iterator() {
         return values.iterator();
     }
 
+    /**
+     * Change the size of the array
+     * @param new size of the array
+     */
     public void resize(int newSize) {
         values.ensureCapacity(newSize);
     }

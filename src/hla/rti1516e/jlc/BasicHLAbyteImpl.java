@@ -23,45 +23,82 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
+/**
+ * Implementation of an HLAbyte
+ * The value of the HLAbyte is represented by an BasicHLAoctet
+ */
 public class BasicHLAbyteImpl extends DataElementBase implements
         hla.rti1516e.encoding.HLAbyte {
 
     private BasicHLAoctetImpl value;
     
+    /**
+     * Empty constructor to create a new BasicHLAbyteImpl
+     */
     public BasicHLAbyteImpl() {
         value = new BasicHLAoctetImpl();
     }
     
+    /**
+     * Construcor to create a BasicHLAbyteImpl with a value b
+     * @param b : value of the BasicHLAbyteImpl, in byte
+     */
     public BasicHLAbyteImpl(byte b) {
         value = new BasicHLAoctetImpl(b);
     }
 
-    
+    /**
+     * Returns the octet boundary of this element.
+     *
+     * @return the octet boundary of this element
+     */
     public int getOctetBoundary() {
         return value.getOctetBoundary();
     }
 
-    
+    /**
+     * Encodes this element into the specified ByteWrapper.
+     *
+     * @param byteWrapper destination for the encoded element
+     *
+     * @throws EncoderException if the element can not be encoded
+     */
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
         value.encode(byteWrapper);
     }
 
-    
+    /**
+     * Returns the size in bytes of this element's encoding.
+     *
+     * @return the size in bytes of this element's encoding
+     */
     public int getEncodedLength() {
         return value.getEncodedLength();
     }
 
-    
+    /**
+     * Decodes this element from the ByteWrapper.
+     *
+     * @param byteWrapper source for the decoding of this element
+     *
+     * @throws DecoderException if the element can not be decoded
+     */
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         value.decode(byteWrapper);
     }
 
-    
+    /**
+     * Get the value in byte of the BasicHLAbyteImpl
+     * @return value in byte of the BasicHLAbyteImpl
+     */
     public byte getValue() {
         return value.getValue();
     }
 
-    
+    /**
+     * Change the value of the BasicHLAbyteImpl
+     * @param value : value to set
+     */
     public void setValue(byte value) {
         this.value.setValue(value);
     }

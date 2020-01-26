@@ -22,6 +22,8 @@ package certi.communication.messages;
 import certi.communication.*;
 import certi.rti.impl.*;
 import hla.rti.*;
+import hla.rti1516e.ObjectInstanceHandle;
+import hla.rti1516e.ObjectInstanceHandleFactory;
 
 public class UpdateAttributeValues extends CertiMessage {
 

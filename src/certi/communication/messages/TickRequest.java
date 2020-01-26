@@ -21,9 +21,7 @@ package certi.communication.messages;
 
 
 import certi.communication.CertiException;
-import certi.communication.CertiMessage;
-import certi.communication.CertiMessageType;
-import certi.communication.MessageBuffer;
+import certi.communication.*;
 
 public class TickRequest extends CertiMessage {
    private boolean multiple;

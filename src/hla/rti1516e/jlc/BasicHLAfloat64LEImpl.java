@@ -24,63 +24,108 @@ import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 import hla.rti1516e.encoding.HLAfloat64LE;
 
+/**
+ *	Implementation of an HLAfloat on 64 bytes, encoded in Little Endian
+ *	The value is represented by a double
+ */
 public class BasicHLAfloat64LEImpl extends DataElementBase implements HLAfloat64LE {
 
     private double value;
     
+    /**
+     * Empty constructor to create a new BasicHLAfloat64LE
+     */
     public BasicHLAfloat64LEImpl() {
         value = 0.0;
     }
     
+    /**
+     * Construcor to create a BasicHLAfloat64LE with a value d
+     * @param d : value of the BasicHLAfloat64LE, in double
+     */
     public BasicHLAfloat64LEImpl(double d) {
         value = d;
     }
     
-    
+    /**
+     * Returns the octet boundary of this element.
+     * float64LE octet boundary is defined to 8 in the HLA standard
+     * @return the octet boundary of this element
+     */
     public int getOctetBoundary() {
         return 8;
     }
-
     
+    /**
+     * Encodes this element into the specified ByteWrapper.
+     *
+     * @param byteWrapper destination for the encoded element
+     *
+     * @throws EncoderException if the element can not be encoded
+     */
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
         byteWrapper.align(getOctetBoundary());
         long d_as_l = Double.doubleToLongBits(value);
-        byteWrapper.put((int)(d_as_l >>>  0) & 0xFF);
-        byteWrapper.put((int)(d_as_l >>>  8) & 0xFF);
-        byteWrapper.put((int)(d_as_l >>> 16) & 0xFF);
-        byteWrapper.put((int)(d_as_l >>> 24) & 0xFF);
-        byteWrapper.put((int)(d_as_l >>> 32) & 0xFF);
-        byteWrapper.put((int)(d_as_l >>> 40) & 0xFF);
-        byteWrapper.put((int)(d_as_l >>> 48) & 0xFF);
-        byteWrapper.put((int)(d_as_l >>> 56) & 0xFF);
+        byte[] buffer = new byte[8];
+        
+        buffer[7] = (byte)(d_as_l >>> 56);
+		buffer[6] = (byte)(d_as_l >>> 48);
+		buffer[5] = (byte)(d_as_l >>> 40);
+		buffer[4] = (byte)(d_as_l >>> 32);
+		buffer[3] = (byte)(d_as_l >>> 24);
+		buffer[2] = (byte)(d_as_l >>> 16);
+		buffer[1] = (byte)(d_as_l >>>  8);
+		buffer[0] = (byte)(d_as_l >>>  0);
+		
+		byteWrapper.put(buffer);
+
     }
 
-    
+    /**
+     * Returns the size in bytes of this element's encoding.
+     * float64LE size is defined to 8 in the HLA standard
+     * @return the size in bytes of this element's encoding
+     */
     public int getEncodedLength() {
         return 8;
     }
 
-    
+    /**
+     * Decodes this element from the ByteWrapper.
+     *
+     * @param byteWrapper source for the decoding of this element
+     *
+     * @throws DecoderException if the element can not be decoded
+     */
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
-        long d_as_l;
-        d_as_l  = 0L;
-        d_as_l += (long)((byteWrapper.get() & 0xFF) <<  0);
-        d_as_l += (long)((byteWrapper.get() & 0xFF) <<  8);
-        d_as_l += (long)((byteWrapper.get() & 0xFF) << 16);
-        d_as_l += (long)((byteWrapper.get() & 0xFF) << 24);
-        d_as_l += (long)((byteWrapper.get() & 0xFF) << 32);
-        d_as_l += (long)((byteWrapper.get() & 0xFF) << 40);
-        d_as_l += (long)((byteWrapper.get() & 0xFF) << 48);
-        d_as_l += (long)((byteWrapper.get() & 0xFF) << 56);
+        byte[] buffer = new byte[8];
+		byteWrapper.get( buffer );
+		
+		long d_as_l = (((long)buffer[7] << 56) |
+	             	  ((long)(buffer[6] & 255) << 48) |
+	            	  ((long)(buffer[5] & 255) << 40) |
+	            	  ((long)(buffer[4] & 255) << 32) |
+	            	  ((long)(buffer[3] & 255) << 24) |
+	            	  ((buffer[2] & 255) << 16) |
+	            	  ((buffer[1] & 255) <<  8) |
+	            	  ((buffer[0] & 255) <<  0));
+		
         value = Double.longBitsToDouble(d_as_l);
     }
 
+    /**
+     * Get the value in byte of the BasicHLAfloat64LE
+     * @return value in byte of the BasicHLAfloat64LE
+     */
     public double getValue() {
         return value;
     }
 
-    
+    /**
+     * Change the value of the BasicHLAfloat64LE
+     * @param value : value to set
+     */
     public void setValue(double value) {
         this.value = value;
     }

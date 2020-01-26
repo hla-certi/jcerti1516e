@@ -34,12 +34,12 @@ import hla.rti.EventRetractionHandle;
  */
 public class CertiMessage {
 
-    private CertiMessageType type;
-    private CertiExceptionType exception;
-    private CertiLogicalTime federationTime;
+    protected CertiMessageType type;
+    protected CertiExceptionType exception;
+    protected CertiLogicalTime federationTime;
     private EventRetractionHandle eventRetraction;
-    private byte[] tag;
-    private String label;
+    protected byte[] tag;
+    protected String label;
 
     /**
      * Creates a new instance of <code>CertiMessage</code>. The default initialization sets message type to NOT_USED, exception type to NO_EXCEPTION and federation time to 0.

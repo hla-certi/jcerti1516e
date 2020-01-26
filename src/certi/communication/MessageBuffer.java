@@ -21,14 +21,13 @@ package certi.communication;
 
 import certi.rti.impl.*;
 import hla.rti.*;
-import java.util.List;
-import java.util.Vector;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import hla.rti1516e.AttributeHandle;
+import hla.rti1516e.impl.CertiObjectHandle;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -46,7 +45,7 @@ import java.util.logging.Logger;
 public class MessageBuffer {
 
     public static final int BYTE_LENGTH = 8;
-    private final static Logger LOGGER = Logger.getLogger(MessageBuffer.class.getName());
+    protected final static Logger LOGGER = Logger.getLogger(MessageBuffer.class.getName());
     private Vector<Byte> buffer = new Vector<Byte>();
     private Iterator<Byte> iter;	//the Iterator useful for the read operations
     private static byte BIG_ENDIAN = 1;
@@ -291,8 +290,6 @@ public class MessageBuffer {
     /**
      * Receives the message
      * The buffer is reseted after returning the message.
-     * @param inputStream
-     * @return
      * @throws IOException
      * @throws CertiException
      */
@@ -325,7 +322,6 @@ public class MessageBuffer {
 
     /**
      * Send the message throught the socket
-     * @param out
      * @throws IOException
      */
     synchronized public void send() throws IOException {
@@ -357,7 +353,7 @@ public class MessageBuffer {
      *
      * @param attributes
      */
-    public void write(AttributeHandleSet attributes) {
+    public void write(hla.rti.AttributeHandleSet attributes) {
         this.write(attributes.size());
 
         HandleIterator iterator = attributes.handles();
@@ -382,6 +378,32 @@ public class MessageBuffer {
             } catch (AttributeNotDefined ex) {
                 LOGGER.severe("Error has occured while reading AttributeHandleSet from buffer.");
             }
+        }
+
+        return attributeHandleSet;
+    }
+
+
+    /**
+     *
+     * @param attributes
+     */
+    public void write(hla.rti1516e.AttributeHandleSet attributes) {
+        this.write(attributes.size());
+        for (AttributeHandle attr: attributes) {
+            this.write(attr.hashCode());
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public hla.rti1516e.AttributeHandleSet readAttributeHandleSet1516E() {
+        int size = this.readInt();
+        hla.rti1516e.impl.CertiAttributeHandleSet attributeHandleSet = new hla.rti1516e.impl.CertiAttributeHandleSet();
+        for (int i = 0; i < size; i++) {
+            attributeHandleSet.add(new CertiObjectHandle(this.readInt()));
         }
 
         return attributeHandleSet;
@@ -617,4 +639,5 @@ public class MessageBuffer {
 
         return new CertiEventRetractionHandle(sendingFederate, SN);
     }
+
 }

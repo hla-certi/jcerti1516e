@@ -7,7 +7,6 @@
     <property name="javadoc.dir" value="${dist.dir}/javadoc" />
     <property name="class.dir"   value="${build.dir}/class" />
     <property name="jar.dir"     value="${build.dir}/jar" />
-
     <property name="jar.jcerti" value="${jar.dir}/jcerti.jar" />
 
     <!-- Properties for patch generation through ant rule -->
@@ -22,6 +21,14 @@
             </fileset>
     </path>
 
+	<!-- Lib definition : Junit -->
+	<property name="lib.junit4.12.dir" value="${lib.dir}/junit" />
+	<path id="junit.classpath">
+		<fileset dir="${lib.junit4.12.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
 	<target name="main" description="o build all jcerti components">
 		<antcall target="create-jar"/>
 		<antcall target="help"/>
@@ -30,7 +37,7 @@
 	<target name="build">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${class.dir}" />
-		<javac srcdir="${src.dir}" includeantruntime="false" destdir="${class.dir}" target="1.5" source="1.5" deprecation="on" debug="on">
+		<javac srcdir="${src.dir}" includeantruntime="false" destdir="${class.dir}" target="1.8" source="1.8" deprecation="on" debug="on">
 			<!--
 			<classpath>
 				<path refid="lib.rpc.classpath" />
@@ -48,12 +55,15 @@
 	<target name="create-jar" depends="build">
 		<mkdir dir="${jar.dir}" />
 		<jar destfile="${jar.jcerti}">
+			<metainf dir="src/resources/META-INF"/> 
 			<fileset dir="${class.dir}">
 				<include name="certi/communication/**/*" />
 				<include name="certi/logging/**/*" />
 				<include name="certi/rti/**/*" />
 				<include name="hla/rti/**/*" />
 				<include name="hla/rti1516e/**/*" />
+				<include name="certi/rti1516e/impl/*" />
+				
 			</fileset>
 		</jar>
 		<echo file="${jar.dir}/README">
@@ -88,7 +98,7 @@ JAR List :
 		<javadoc author="false" version="false"
 						destdir="${javadoc.dir}"
 						packagenames="certi.*, hla.*"
-						source="1.5"
+						source="1.8"
 						sourcepath="${src.dir}"
 						classpath="${classpath}"
 			access="protected"
@@ -99,6 +109,7 @@ JAR List :
 
 	<!-- Tests -->
     <property name="test.src.dir" value="${home.dir}/src_test" />
+    <property name="testTypes.src.dir" value="${home.dir}/test/test" />
     <property name="test.class.dir" value="${build.dir}/class_test" />
     <property name="test.report.dir" value="${build.dir}/report_test" />
     <property name="test.work.dir" value="${test.report.dir}/work" />
@@ -110,7 +121,7 @@ JAR List :
 
 	<target name="prepare-test" depends="create-jar, test-clean">
 		<mkdir dir="${test.class.dir}" />
-		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" includeantruntime="false" target="1.5" source="1.5" deprecation="on" debug="true" debuglevel="lines,vars,source">
+		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" includeantruntime="false" target="1.8" source="1.8" deprecation="on" debug="true" debuglevel="lines,vars,source">
 			<include name="**/*.java" />
 			<classpath>
 				<path refid="jcerti.classpath" />
@@ -126,25 +137,24 @@ JAR List :
 	</target>
 
 	<target name="test" depends="prepare-test" description="o run JUnit tests">
-		<!--
 		<junit printsummary="withOutAndErr" fork="yes">
 			<jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
 			<formatter type="xml" />
 			<classpath>
-				<path refid="jcerti-tools.classpath" />
+				<path refid="jcerti.test.classpath" />
 				<pathelement location="${test.class.dir}" />
 			</classpath>
 			<batchtest todir="${test.work.dir}">
 				<fileset dir="${test.class.dir}" includes="**/*Test.class" />
 			</batchtest>
 		</junit>
-		-->
+		
 	</target>
 
     <!-- Test Federate launchers-->
     <property name="jcerti.opt" value=""/>
 
-    <target name="UAVSend-run" depends="prepare-test" description="o run the jcerti UAV Send example">
+    <target name="UAVSend-run" depends="prepare-test" description="o run the jcerti UAV Send example hla 1.3">
         <java classname="certi.UavSend" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
@@ -153,7 +163,7 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="UAVReceive-run" depends="prepare-test" description="o run the jcerti UAV Receive example">
+	<target name="UAVReceive-run" depends="prepare-test" description="o run the jcerti UAV Receive example hla 1.3">
 		<java classname="certi.UavReceive" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
@@ -162,18 +172,90 @@ JAR List :
 		</java>
 	</target>
 
-	<!--
+	<target name="UAVSend1516e-run" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+        <java classname="certi1516e.UavSend" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+
+	<target name="UAVReceive1516e-run" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+		<java classname="certi1516e.UavReceive" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+ 
+ <target name="oneTAR-run" depends="prepare-test" description="Creates the federation and advances its time using TAR">
+     <java classname="certi1516e.OneFederateTAR" fork="true" dir="${test.work.dir}">
+         <classpath refid="jcerti.classpath" />
+         <classpath refid="jcerti.test.classpath" />
+         <arg value="${jcerti.opt}" />
+         <arg value="1" />
+         <arg value="${timeStep}"/>
+         <arg value="${updateTime}"/>
+         <arg value="${lookahead}"/>
+     </java>
+ </target>
+ 
+ <target name="oneTARrtig-run" depends="prepare-test" description="Launches the rtig, advances its time and kill the rtig.">
+     <java classname="certi1516e.OneFederateTARrtig" fork="true" dir="${test.work.dir}">
+         <classpath refid="jcerti.classpath" />
+         <classpath refid="jcerti.test.classpath" />
+         <arg value="${jcerti.opt}" />
+         <arg value="1" />
+         <arg value="${timeStep}"/>
+         <arg value="${updateTime}"/>
+         <arg value="${lookahead}"/>
+     </java>
+ </target>
+    
+    <target name="MinEvokeMCUAVSend1516e-run" depends="prepare-test" description="o run the jcerti UAV Send example with EvokeMultipleCallbacks">
+        <java classname="certi1516e.UavSendEvokeMCmin" fork="true" dir="${test.work.dir}">
+            <classpath refid="jcerti.classpath" />
+            <classpath refid="jcerti.test.classpath" />
+            <arg value="${jcerti.opt}" />
+            <arg value="1" />
+            <arg value="${timeStep}"/>
+            <arg value="${updateTime}"/>
+            <arg value="${lookahead}"/>
+        </java>
+    </target>
+    
+    <target name="MinEvokeMCUAVReceive1516e-run" depends="prepare-test" description="o run the jcerti UAV Receive example with EvokeMultipleCallbacks">
+        <java classname="certi1516e.UavReceiveEvokeMCmin" fork="true" dir="${test.work.dir}">
+            <classpath refid="jcerti.classpath" />
+            <classpath refid="jcerti.test.classpath" />
+            <arg value="${jcerti.opt}" />
+            <arg value="1" />
+            <arg value="${timeStep}"/>
+            <arg value="${updateTime}"/>
+            <arg value="${lookahead}"/>
+        </java>
+    </target>
+
 	<target name="test-report" depends="test">
 		<delete dir="${test.html.dir}" />
 		<junitreport todir="${test.work.dir}">
 			<fileset dir="${test.work.dir}">
 				<include name="TEST-*.xml" />
+				<include name="*TEST.xml" />
 			</fileset>
 			<report format="frames" todir="${test.html.dir}" />
 		</junitreport>
 		<echo>Test report generated at : ${test.html.dir}/index.html </echo>
 	</target>
-    -->
+
 
     <target name="test-clean">
         <delete dir="${test.class.dir}" />
@@ -183,9 +265,9 @@ JAR List :
 	<!-- help -->
     <target name="help" description="o display help on ant build file use">
         <echo>
-Use the command
+Use the command in jcerti folder (that has build.xml):
    ant
-in order to create jcerti jars
+in order to create jcerti jars (in jcerti/build/jar)
 
 Commands that you can use to launch some example federate:
 
@@ -197,6 +279,10 @@ but to do this, you need to copy junit.jar into the lib directory of
 your ant installation (or you can add junit.jar to your global
 CLASSPATH if you do not want to modify ant lib directory)
 You can get junit.jar at : http://www.junit.org
+
+Please read the README file for seeing how to lauch federations
+compliant with HLA 1516-2010.
+
 </echo>
 	</target>
 
@@ -266,4 +352,79 @@ You can get junit.jar at : http://www.junit.org
         <delete file="${dist.dir}/jcerti-patch.txt" />
     </target>
 
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="compile-test" depends="init">
+		<mkdir dir="${lib.junit4.12.dir}"/>
+		<javac srcdir="${src.dir}"
+			   destdir="${class.dir}">
+		</javac>
+	</target>
+
+	<target name="tests" depends="compile-test" description="Run JUnit tests">
+				<junit printsummary="yes" fork="yes" haltonfailure="no">
+					<formatter type="plain"/>
+					<test name="test.SimpleTypeEncoding_Test"/>
+					<test name="test.ComplexeTypeEncoding_Test"/>
+					<test name="test.TimeTypeInteger_Test"/>
+					<test name="test.TimeTypeFloat_Test"/>
+				</junit>
+	</target>
+
+
+	<target name="integration-tests" depends="compile-test" description="Run JUnit integration tests">
+				<junit printsummary="yes" fork="yes" haltonfailure="no">
+					<formatter type="plain"/>
+					<test name="test.IntegrationTests.Connectttt.Connect"/>
+					<test name="test.IntegrationTests.Connect.ConnectTest"/>
+					<test name="test.IntegrationTests.CreateFederation.CreateFederation"/>
+				</junit>
+	</target>
+
+	<target name="tests-report" depends="tests">
+		<junitreport todir="test/report">
+			<fileset dir="test/report">
+				<include name="Test-*.xml"/>
+			</fileset>
+			<report format="frames" todir="src/report/html"/>
+		</junitreport>
+	</target>
+<property name="typeTest.src.dir" value="${home.dir}/test" />
+<property name="typeTest.class.dir" value="${build.dir}/class_Typestest" />
+
+<!-- Essai de compilation des tests unitaires pour les types -->
+
+<target name="prepare-typesTests" depends="create-jar, test-clean">
+		<mkdir dir="${typeTest.class.dir}" />
+		<javac srcdir="${typeTest.src.dir}" destdir="${typeTest.class.dir}" includeantruntime="false" target="1.8" source="1.8" deprecation="on" debug="true" debuglevel="lines,vars,source">
+			<include name="**/*.java" />
+			<classpath>
+				<path refid="jcerti.classpath" />
+			</classpath>
+		</javac>
+</target>
+
+<target name="compile-typesTest" depends="init">
+		<mkdir dir="${lib.junit4.12.dir}"/>
+		<javac srcdir="${typeTest.src.dir}"
+			   destdir="${typeTest.class.dir}">
+		</javac>
+</target>
+
+
+<target name="typesTests" depends="compile-typesTest">
+	  <junit>   
+	    <batchtest>
+	       <fileset dir="${typeTest.class.dir}">
+		    <include name="*_Test.class" />
+	       </fileset>
+	    </batchtest>
+	    <formatter type="brief" usefile="false"/>
+	  </junit>
+</target>   
+
+
+	
 </project>

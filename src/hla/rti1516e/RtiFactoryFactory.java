@@ -12,6 +12,7 @@ package hla.rti1516e;
 import hla.rti1516e.exceptions.RTIinternalError;
 
 import javax.imageio.spi.ServiceRegistry;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

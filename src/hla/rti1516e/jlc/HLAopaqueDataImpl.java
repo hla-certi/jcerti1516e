@@ -26,43 +26,85 @@ import hla.rti1516e.encoding.EncoderException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Implementation of an HLAopaqueData
+ * The value of the HLAopaqueData is represented by a, array of bytes
+ */
 public class HLAopaqueDataImpl extends DataElementBase implements
         hla.rti1516e.encoding.HLAopaqueData {
 
     private  byte[]   values;
 
+    /**
+     * Empty constructor
+     * Create a new array of byte
+     */
     public HLAopaqueDataImpl() {
         values  = new byte[0];
     }
     
+    /**
+     * Create a new HLAopaqueData and set it array with the array in parameter
+     * @param bytes : array of byte to set to the HLAopaqueData
+     */
     public HLAopaqueDataImpl(byte[] bytes) {
         values = bytes;
     }
     
+    /**
+     * Returns the octet boundary of this element.
+     * HLAopaqueData octet boundary is defined to 4 in the HLA standard
+     * @return the octet boundary of this element
+     */
     public int getOctetBoundary() {
         return 4;
     }
 
+    /**
+     * Encodes this element into the specified ByteWrapper.
+     * @param byteWrapper destination for the encoded element
+     *
+     * @throws EncoderException if the element can not be encoded
+     */
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
        byteWrapper.align(getOctetBoundary());
        byteWrapper.putInt(values.length);
        byteWrapper.put(values);
     }
 
+    /**
+     * Returns the size in bytes of this element's encoding.
+     * BasicHLAoctet size is defined to 4 (to encode the size) + the size of the array 
+     * @return the size in bytes of this element's encoding
+     */
     public int getEncodedLength() {
-        return 4+values.length;
+        return 4 + values.length;
     }
 
+    /**
+     * Decodes this element from the ByteWrapper.
+     * @param byteWrapper source for the decoding of this element
+     *
+     * @throws DecoderException if the element can not be decoded
+     */
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
         values = new byte[byteWrapper.getInt()];
         byteWrapper.get(values);
     }
 
+    /**
+     * Size of the array
+     * @return : the size of the array
+     */
     public int size() {
         return values.length;
     }
-
+    
+    /**
+     * Create an iterator on the array
+     * @return iterator on the array
+     */
     public Iterator<Byte> iterator() {
         ArrayList<Byte> barray = new ArrayList<Byte>(values.length);
         for (int i =0; i<values.length;++i) {
@@ -71,14 +113,26 @@ public class HLAopaqueDataImpl extends DataElementBase implements
         return barray.iterator();
     }
 
+    /**
+     * Get the array witch contains all the values
+     * @return the array attributes
+     */
     public byte[] getValue() {
         return values;
     }
 
+    /**
+     * Set the array attribute with a array value
+     * @param : array value to set
+     */
     public void setValue(byte[] value) {
         this.values = value;
     }
 
+    /**
+     * Get the value at a specific position in the array
+     * @return the value at a specific position in the array
+     */
     public byte get(int index) {
         return values[index];
     }

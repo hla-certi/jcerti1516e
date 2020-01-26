@@ -24,25 +24,46 @@ import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 import hla.rti1516e.encoding.HLAinteger32BE;
 
+/**
+ *	Implementation of an HLAinteger on 32 bytes, encoded in Big Endian
+ *	The value is represented by a int
+ */
 public class BasicHLAinteger32BEImpl extends DataElementBase implements
         HLAinteger32BE {
 
     private int value;
     
+    /**
+     * Empty constructor to create a new BasicHLAinteger32BE
+     */
     public BasicHLAinteger32BEImpl() {
         value = 0;
     }
     
-    public BasicHLAinteger32BEImpl(int value) {
-        this.value = value;
+    /**
+     * Constructor to create a HLAinteger32BE with a value i
+     * @param value : value of the HLAinteger32BE, in integer
+     */
+    public BasicHLAinteger32BEImpl(int i) {
+        this.value = i;
     }
     
-    
+    /**
+     * Returns the octet boundary of this element.
+     * HLAinteger32BE octet boundary is defined to 4 in the HLA standard
+     * @return the octet boundary of this element
+     */
     public int getOctetBoundary() {
         return 4;
     }
 
-    
+    /**
+     * Encodes this element into the specified ByteWrapper.
+     *
+     * @param byteWrapper destination for the encoded element
+     *
+     * @throws EncoderException if the element can not be encoded
+     */
     public void encode(ByteWrapper byteWrapper) throws EncoderException {
         byteWrapper.align(getOctetBoundary());
         byteWrapper.put((int)(value >>> 24) & 0xFF);
@@ -50,13 +71,23 @@ public class BasicHLAinteger32BEImpl extends DataElementBase implements
         byteWrapper.put((int)(value >>>  8) & 0xFF);
         byteWrapper.put((int)(value >>>  0) & 0xFF);
     }
-
     
+    /**
+     * Returns the size in bytes of this element's encoding.
+     * float32BE size is defined to 4 in the HLA standard
+     * @return the size in bytes of this element's encoding
+     */
     public int getEncodedLength() {
         return 4;
     }
 
-    
+    /**
+     * Decodes this element from the ByteWrapper.
+     *
+     * @param byteWrapper source for the decoding of this element
+     *
+     * @throws DecoderException if the element can not be decoded
+     */
     public void decode(ByteWrapper byteWrapper) throws DecoderException {
         byteWrapper.align(getOctetBoundary());
         value  = 0;
@@ -66,11 +97,18 @@ public class BasicHLAinteger32BEImpl extends DataElementBase implements
         value += (int)((byteWrapper.get() & 0xFF) <<  0);
     }
     
+    /**
+     * Get the value in byte of the HLAinteger32BE
+     * @return value in byte of the HLAinteger32BE
+     */
     public int getValue() {
         return value;
     }
 
-    
+    /**
+     * Change the value of the HLAinteger32BE
+     * @param value : value to set
+     */
     public void setValue(int value) {
         this.value = value;
     }

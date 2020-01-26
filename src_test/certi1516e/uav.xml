@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<objectModel>
+    <objects>
+        <objectClass name="HLAobjectRoot" sharing="Neither">
+            <attribute name="HLAprivilegeToDeleteObject" dataType="NA" updateType="NA" updateCondition="NA" ownership="DivestAcquire" sharing="PublishSubscribe" dimensions="NA" transportation="HLAreliable" order="TimeStamp"/>
+            <objectClass name="SampleClass" sharing="PublishSubscribe">
+                <attribute name="TextAttribute" dataType="HLAfloat64LE" transportation="HLAreliable" order="TimeStamp"/>
+                <attribute name="StructAttribute" dataType="HLAfloat64LE" transportation="HLAreliable" order="TimeStamp"/>
+               <attribute name="FOMAttribute" dataType="HLAfloat64LE" transportation="HLAreliable" order="TimeStamp"/>
+           </objectClass>
+	  </objectClass>
+    </objects>
+</objectModel>

@@ -1,0 +1,19 @@
+date	fed-o	fed	type	level	status	comment
+1576504468	0	0	128	10	0	
+1576504474	0	0	3	9	0	Federation Name : Federation_Interactive, Handle : 1 created - OK
+1576504474	0	0	5	9	0	Federate "toto" joins Federation "Federation_Interactive"(1) with handle 2. Socket 6 - OK
+1576504474	1	2	35	7	0	Publish Interaction Class = 91 - OK
+1576504474	1	2	35	7	0	Publish Interaction Class = 92 - OK
+1576504474	1	2	39	7	0	Subscribe Interaction Class = 91 - OK
+1576504474	1	2	39	7	0	Subscribe Interaction Class = 92 - OK
+1576504474	1	2	33	7	0	Publish Object Class = 6, # of att. = 1 - OK
+1576504474	1	2	33	7	0	Publish Object Class = 7, # of att. = 1 - OK
+1576504474	1	2	43	6	0	Register Object Class = 6 - OK
+1576504474	1	2	43	6	0	Register Object Class = 7 - OK
+1576504474	1	2	37	7	0	Subscribe Object Class = 6, # of att. = 1 - OK
+1576504474	1	2	37	7	0	Subscribe Object Class = 7, # of att. = 1 - OK
+1576504474	1	2	8	8	0	ON at time 1.000000 - OK
+1576504474	1	2	9	8	0	ON at time 0.000000 - OK
+1576504536	1	2	8	8	0	OFF - OK
+1576504536	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1576504536	0	0	1	9	0	Socket 6 - OK

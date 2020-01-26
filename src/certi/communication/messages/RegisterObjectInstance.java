@@ -38,7 +38,7 @@ public class RegisterObjectInstance extends CertiMessage {
 
       messageBuffer.write(objectClass);
       messageBuffer.write(object);
-      if(objectName != null){
+      if(objectName != null || objectName.length() == 0){
          messageBuffer.write(true);
          messageBuffer.write(objectName);
       } else {

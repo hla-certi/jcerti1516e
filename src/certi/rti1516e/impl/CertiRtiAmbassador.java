@@ -32,6 +32,7 @@ import java.util.logging.SimpleFormatter;
 
 /**
  * Implementation of RTIambassador interface
+ * Most of the Javadoc here is from the standard IEEE Std 1516.1-2010
  */
 public class CertiRtiAmbassador implements RTIambassador {
     private Socket socket;
@@ -245,8 +246,77 @@ public class CertiRtiAmbassador implements RTIambassador {
         }
     }
 
+     /** The argument that has to be passed to createFederationExecution() is,
+     * according to the HLA 1516-2010 standard, the location of the FDD file on
+     * a possibly _remote_ file system, the file system where the RTIG is running.
+     * See https://www.sisostds.org/APIs.aspx (IEEE1516-2010_Java_API.zip), 
+     * java/src/hla/rti1516e/RTIambassador.java where is defined the method
+     * createFederationExecution(String federationExecutionName, URL[] fomModules),
+     * CERTI is written in C++ and is compliant with the C++ API that defines the 
+     * method with a string (std::wstring const & fomModule), where the FDD
+     * file is not a network resource. It is a private resource to the RTIG on 
+     * the local filesystem where the RTIG is running. See also joinFederationExecution.
+     * From the standard: 'The Create Federation Execution service shall create
+     * a new federation execution and add it to the set of supported federation
+     * executions. Each federation execution created by this service shall be
+     * independent of all other federation executions, and there shall be no 
+     * intercommunication within the RTI between federation executions.
+     * At least one FOM module shall be supplied.
+     * The FOM modules supplied shall result in a compliant FDD.
+     * The FOM module designators argument identifies the FOM modules that shall
+     * furnish the FDD for the federation execution to be created.'
+
+     /** Create a federation execution with the specified name and FDD file.
+     * @param federationExecutionName : name of the federation execution
+     * @param fomName : The file name or path and file name of the FED file on
+     *   the machine that is executing the RTIG.
+     */
+    public void createFederationExecution(String federationExecutionName, String fomName)
+            throws  ErrorReadingFDD,
+                    CouldNotOpenFDD,
+                    FederationExecutionAlreadyExists,
+                    NotConnected,
+                    RTIinternalError
+    {
+        if(rtiaProcess == null){
+            throw new NotConnected("RTIA not connected");
+        }
+        if(federationExecutionName == null || federationExecutionName.length() == 0) {
+            throw new RTIinternalError("Incorrect or empty federation execution name");
+        }
+
+        if(fomName == null || fomName == "") {
+            throw new RTIinternalError("Incorrect or empty FDD file name");
+        }
+
+        CreateFederationExecution1516E_V2 request = new CreateFederationExecution1516E_V2();
+        request.setFederationName(federationExecutionName);
+        request.setFomName(fomName);
+
+        try {
+            processRequest(request);
+        } catch (FederationExecutionAlreadyExists ex) {
+            throw ex;
+        } catch (CouldNotOpenFDD ex) {
+            throw ex;
+        } catch (ErrorReadingFDD ex) {
+            throw ex;
+        } catch (RTIinternalError ex) {
+            throw ex;
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Unexpected exception caught", ex);
+            throw new RTIinternalError("Unexpected exception caught.");
+        }
+
+    }
+
     /**
-     * The Create Federation Execution service shall create a new federation execution and add it to the set of
+     * The following implementations do not work if the federation is running in
+     * different computers. It is kept because follow the Java API but it does not
+     * work with CERTI. From the standard:
+     * 'The Create Federation Execution service shall create a new federation execution and add it to the set of
      * supported federation executions. Each federation execution created by this service shall be independent of
      * all other federation executions, and there shall be no intercommunication within the RTI between federation
      * executions.
@@ -256,7 +326,7 @@ public class CertiRtiAmbassador implements RTIambassador {
      * At least one FOM module shall be supplied.
      * The FOM modules supplied, together with the default or supplied MIM, shall result in a compliant FDD.
      * The FOM module designators argument identifies the FOM modules that, together with the MIM, shall
-     * furnish the FDD for the federation execution to be created.
+     * furnish the FDD for the federation execution to be created.'
      * @param federationExecutionName : name of the federation execution
      * @param fomModules : set of FOM module designators
      * @param mimModule : optional MIM designator
@@ -344,6 +414,7 @@ public class CertiRtiAmbassador implements RTIambassador {
      * @param logicalTimeImplementationName : Optional logical time implementation. If not provided, the RTI provided HLAfloat64Time
      * representation of logical time shall be used.
      */
+    @Override
     public void createFederationExecution(  String federationExecutionName,
                                             URL[] fomModules,
                                             String logicalTimeImplementationName)
@@ -496,8 +567,18 @@ public class CertiRtiAmbassador implements RTIambassador {
 
     }
 
-    /**
-     * The Join Federation Execution service shall affiliate the federate with a federation execution. Invocation of
+
+     /** The argument that has to be passed to joinFederationExecution() is,
+     * according to the HLA 1516-2010 standard, the location of FOM modules on
+     * a possibly _remote_ file system.
+     * See https://www.sisostds.org/APIs.aspx (IEEE1516-2010_Java_API.zip), 
+     * java/src/hla/rti1516e/RTIambassador.java where is defined the method
+     * joinFederationExecution(String federationExecutionName, URL[] fomModules),
+     * CERTI is written in C++ and is compliant with the C++ API that defines the 
+     * method with a string (std::wstring const & fomModule), where the FOM
+     * module is not a network resource. It is a private resource to the RTIG on 
+     * the local filesystem where the RTIG is running.
+     * From the standard: 'The Join Federation Execution service shall affiliate the federate with a federation execution. Invocation of
      * the Join Federation Execution service shall indicate the intention to participate in the specified federation.
      * The federate name argument shall be unique within a federation execution at any given time. It may,
      * however, be assigned to a different federate after a restore operation. The RTI shall provide a unique name if
@@ -508,7 +589,88 @@ public class CertiRtiAmbassador implements RTIambassador {
      * In addition, the Join Federation Execution service may also be used to provide additional FOM module
      * designators. The optional set of additional FOM module designators argument identifies the FOM modules
      * that provide additional FDD. Contents of the FOM modules may duplicate information in the current FDD
-     * of the federation execution, but they shall not conflict with the current FDD.
+     * of the federation execution, but they shall not conflict with the current FDD.'
+     * @param federateName : Optional federate name. If not provided, the RTI shall assign a unique name.
+     * @param federateType : Federate type.
+     * @param federationExecutionName : Federation execution name.
+     * @param additionalFomModules : Optional set of additional FOM module designators.
+     * @return Joined federate designator
+     */
+    public FederateHandle joinFederationExecution(  String federateName,
+                                                    String federateType,
+                                                    String federationExecutionName,
+                                                    String[] additionalFomModules)
+            throws
+            FederationExecutionDoesNotExist,
+            ErrorReadingFDD,
+            CouldNotOpenFDD,
+            SaveInProgress,
+            RestoreInProgress,
+            FederateAlreadyExecutionMember,
+            NotConnected,
+            CallNotAllowedFromWithinCallback,
+            RTIinternalError
+    {
+        if(rtiaProcess == null){
+            throw new NotConnected("RTIA not connected");
+        }
+
+        if (federateName == null || federateName.length() == 0) {
+            throw new RTIinternalError("Incorrect or empty federate name");
+        } //-> ne pas lever d'erreur, lui assigner un nom unique
+        if (federationExecutionName == null || federationExecutionName.length() == 0) {
+            throw new RTIinternalError("Incorrect or empty federation name");
+        }
+
+        JoinFederationExecution1516E_V2 request = new JoinFederationExecution1516E_V2();
+        request.setFederateName(federateName);
+        request.setFederateType(federateType);
+        request.setFederationName(federationExecutionName);
+        request.setAdditionalFomModules(additionalFomModules);
+
+        try {
+            JoinFederationExecution1516E response = (JoinFederationExecution1516E) processRequest(request);
+            return new CertiObjectHandle( (Integer)response.getFederate() );
+        } catch (CouldNotOpenFDD ex) {
+            throw ex;
+        } catch (ErrorReadingFDD ex) {
+            throw ex;
+        } catch (CallNotAllowedFromWithinCallback ex) {
+            throw ex;
+        } catch (FederateAlreadyExecutionMember ex) {
+            throw ex;
+        } catch (FederationExecutionDoesNotExist ex) {
+            throw ex;
+        } catch (SaveInProgress ex) {
+            throw ex;
+        } catch (RestoreInProgress ex) {
+            throw ex;
+        } catch (RTIinternalError ex) {
+            throw ex;
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Unexpected exception caught", ex);
+            throw new RTIinternalError("Unexpected exception caught.");
+        }
+    }
+
+    /**
+     * The following implementations do not work if the federation is running in
+     * different computers. It is kept because follow the Java API but it does not
+     * work with CERTI. From the standard:
+     * 'The Join Federation Execution service shall affiliate the federate with a federation execution. Invocation of
+     * the Join Federation Execution service shall indicate the intention to participate in the specified federation.
+     * The federate name argument shall be unique within a federation execution at any given time. It may,
+     * however, be assigned to a different federate after a restore operation. The RTI shall provide a unique name if
+     * no federate name is provided, and it is the responsibility of the federate to obtain and preserve this unique
+     * name for potential restore operations. The federate type argument shall distinguish federate categories for
+     * federation save-and-restore purposes. The returned joined federate designator shall be unique for the lifetime
+     * of the federation execution as long as a restore is not in progress at any federate.
+     * In addition, the Join Federation Execution service may also be used to provide additional FOM module
+     * designators. The optional set of additional FOM module designators argument identifies the FOM modules
+     * that provide additional FDD. Contents of the FOM modules may duplicate information in the current FDD
+     * of the federation execution, but they shall not conflict with the current FDD.'
      * @param federateName : Optional federate name. If not provided, the RTI shall assign a unique name.
      * @param federateType : Federate type.
      * @param federationExecutionName : Federation execution name.
@@ -661,7 +823,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     {
         try
         {
-            return joinFederationExecution( federateName, federateType, federationExecutionName, null );
+            return joinFederationExecution( federateName, federateType, federationExecutionName, (URL[]) null );
         }
         catch( CouldNotOpenFDD cnof )
         {

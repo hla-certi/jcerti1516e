@@ -41,35 +41,41 @@ public class RTIExecutor {
     }
         return false;
     }
+    
+    public static void checkHost() throws Exception {
+        // Request to launch a local RTI.
+        // Check for a compatible CERTI_HOST environment variable.
+        String certiHost = System.getenv("CERTI_HOST");
+        if (certiHost != null
+                && !certiHost.equals("localhost")
+                && !certiHost.equals("127.0.0.1"))
+        {
+            throw new Exception("Error in RTIG execution. The environment variable CERTI_HOST, which has value: "
+            + certiHost + ", is neither localhost nor 127.0.0.1. We cannot launch an RTI at that address. ");
+        }
+    }
 
     public static void ExecuteRTIG() throws RTIinternalError {
 
-        if(rti_running){
-//         if(isRunning() || rti_running) {
-             throw new RTIinternalError("Expected to launch a new RTIG, but one is running already. Kill the process before launch the test.");
-        }
-
-        ProcessBuilder processBuilder =  new ProcessBuilder();
-        processBuilder.command("rtig");
-
-        try{
-            rtig_process = processBuilder.start();
-            rti_running = true;
+        try {
+            checkHost();
         } catch (Exception e){
-            throw new RTIinternalError("Error in RTIG execution");
+            e.printStackTrace();
         }
-//
-//
-//        ProcessBuilder pb = new ProcessBuilder();
-//        List<String> commands = new ArrayList<String>();
-//        commands.add("pkill rtig");
-//        commands.add("rtig");
-//        pb.command(commands);
-//        try {
-//            pb.start();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
+        if(rti_running || isRunning()) {
+             System.out.println("Expected to launch a new RTIG, but one is running already. We will use this one. To launch a new RTIG with the test, kill the process before launch the test.");
+        } else {
+            ProcessBuilder processBuilder =  new ProcessBuilder();
+            processBuilder.command("rtig");
+
+            try{
+                rtig_process = processBuilder.start();
+                rti_running = true;
+            } catch (Exception e){
+                throw new RTIinternalError("Error in RTIG execution");
+            }
+        }
     }
 
     public static void killRTIG() throws RTIinternalError {

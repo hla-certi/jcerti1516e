@@ -66,6 +66,14 @@ Federation "uav" with 2 federates UavSendEvokeMCmin and UavReceiveEvokeMCmin: (u
 3) in a third terminal run "ant -DtimeStep=13 -DupdateTime=5 -Dlookahead=1 MinEvokeMCUAVReceive1516e-run" (press enter)
 Then go back to terminal T2 and press Enter again.
 
+Federation "uav" with 2 federates UavSend.java and UavReceive.java: (using EvokeCallback and createFederation(string,string))
+===================================================================
+
+1) in a first terminal run rtig
+2) in a second terminal run "ant -DtimeStep=2   -DupdateTime=1 -Dlookahead=0.5 UAVSend1516eString-run" (press enter)
+3) in a third terminal run "ant -DtimeStep=13 -DupdateTime=5 -Dlookahead=1 UAVReceive1516eString-run" (press enter)
+Then go back to terminal T2 and press Enter again.
+
 Federation "uav" with 2 federates UavSend.java and UavReceive.java: (using EvokeCallback)
 ===================================================================
 

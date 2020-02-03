@@ -25,8 +25,12 @@ import java.util.logging.Logger;
 /**
  * This class implements a HLA federate. It is based on the JCERTI demo 
  * compliant to HLA 1.3. It extends that class for be compliant with HLA 
- * 1516-2010 Extended (HLA 1516e), and introduces some parameters. It creates
- * (if launched first) and joins a federation called federationExecutionName, 
+ * 1516-2010 Extended (HLA 1516e), and introduces some parameters. 
+ * The RTIG process must be launched before. It creates a federation 
+ * called federationExecutionName (if launched first) by using toURI().toURL().
+ * This way only works if the federate is in the same computer as the RTIG.
+ * For allowing a distribution over different computers, String must be used,
+ * see federate FlexUav*String.java. The federate then joins the federation,  
  * advances its logical time with other federates and reflects attributes of 
  * an instance of a class (updated by UavSend).
  </p><p>The synchronization point 'InitSync' is registered by the first launched

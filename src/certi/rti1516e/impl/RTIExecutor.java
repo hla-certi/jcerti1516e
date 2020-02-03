@@ -6,25 +6,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class RTIExecutor {
-    private static RTIExecutor RTI_EXECUTOR = new RTIExecutor();
-    private static boolean rti_running;
-    private static Process rtig_process;
 
-    public RTIExecutor(){
-        rti_running = false;
-    }
+    private Process rtig_process;
 
     /*
      * Check if there is a rtig process already launched
      */
-
-    public static boolean isRunning() {
+    public boolean isRunning() {
         try {
             String process;
             // getRuntime: Returns the runtime object associated with the current Java application.
             // exec: Executes the specified string command in a separate process.
             // When using '|' (pipe) we need to indicate the shell
-            String[] cmd = {"/bin/sh","-c", "ps -ax | grep rtig | grep -v grep"} ;
+            String[] cmd = {"/bin/bash","-c", "ps -ax | grep rtig | grep -v grep"};
+            //FIXME : grep rtig shouldn't be sentisive to case
             Process p = Runtime.getRuntime().exec(cmd);
 
             BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -37,12 +32,14 @@ public class RTIExecutor {
             input.close();
     } catch (Exception err) {
             err.printStackTrace();
-
     }
         return false;
     }
-    
-    public static void checkHost() throws Exception {
+
+    /**
+     * Check if CERTI_HOST is loaclhost or not
+     */
+    public static boolean checkLocalHost() {
         // Request to launch a local RTI.
         // Check for a compatible CERTI_HOST environment variable.
         String certiHost = System.getenv("CERTI_HOST");
@@ -50,44 +47,41 @@ public class RTIExecutor {
                 && !certiHost.equals("localhost")
                 && !certiHost.equals("127.0.0.1"))
         {
-            throw new Exception("Error in RTIG execution. The environment variable CERTI_HOST, which has value: "
+            System.out.println("WARNING : The environment variable CERTI_HOST, which has value: "
             + certiHost + ", is neither localhost nor 127.0.0.1. We cannot launch an RTI at that address. ");
+//            throw new Exception("Error in RTIG execution. The environment variable CERTI_HOST, which has value: "
+//            + certiHost + ", is neither localhost nor 127.0.0.1. We cannot launch an RTI at that address. ");
+            return false;
         }
+        return  true;
     }
 
-    public static void ExecuteRTIG() throws RTIinternalError {
+    public void executeRTIG() throws RTIinternalError {
+        System.out.println("Function execute RTIG");
 
-        try {
-            checkHost();
-        } catch (Exception e){
-            e.printStackTrace();
+
+        if(!checkLocalHost()){
+            return; //If host=remote, we don't try lo lauch an RTIG
         }
 
-        if(rti_running || isRunning()) {
-             System.out.println("Expected to launch a new RTIG, but one is running already. We will use this one. To launch a new RTIG with the test, kill the process before launch the test.");
+        if(isRunning()) {
+             System.out.println("WARNING : Expected to launch a new RTIG, but one is running already. We will use this one. To launch a new RTIG with the test, kill the process before launch the test.");
         } else {
             ProcessBuilder processBuilder =  new ProcessBuilder();
             processBuilder.command("rtig");
-
             try{
                 rtig_process = processBuilder.start();
-                rti_running = true;
             } catch (Exception e){
                 throw new RTIinternalError("Error in RTIG execution");
             }
         }
     }
 
-    public static void killRTIG() throws RTIinternalError {
-        if(rtig_process != null || rti_running ){
+    public  void killRTIG() {
+        if(rtig_process != null ){
             rtig_process.destroy();
         } else {
-            throw new RTIinternalError("Error while killing RTIG, processus doesn't exist");
+            System.out.println("The rtig cannot be killed by this federate since it did not created it.");
         }
     }
-
-    public static RTIExecutor getInstance(){
-        return RTI_EXECUTOR;
-    }
-
 }

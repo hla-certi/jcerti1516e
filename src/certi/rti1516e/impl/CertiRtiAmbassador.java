@@ -54,11 +54,11 @@ public class CertiRtiAmbassador implements RTIambassador {
         @Override
         public void run() {
             super.run();
-            try {
-                rtia.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                rtia.disconnect();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
     }
 

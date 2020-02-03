@@ -2,6 +2,8 @@ package certi1516e;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
+import certi.rti1516e.impl.CertiRtiAmbassador;
+import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.*;
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.HLAASCIIstring;
@@ -9,9 +11,6 @@ import hla.rti1516e.exceptions.*;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
 import hla.rti1516e.jlc.NullFederateAmbassador;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Logger;
 
 ///////////////////////////////
@@ -21,11 +20,11 @@ import java.util.logging.Logger;
 /**
  * This class implements a HLA time-stepped federate named 'fedTAR'. A time-step
  * federate uses the service Time Advance Request (TAR) for advancing its time.
- * This federate only advances its time up to the stopTime and terminate. It 
+ * This federate only advances its time up to the stopTime and terminate. It
  * creates and joins a federation called TimeAdvanceTAR. It is based on the
- * JCERTI demo UavSend.java. 
+ * JCERTI demo UavSend.java.
  * </p><p>The synchronization point 'InitSync' is registered by the first launched
- * federate. The user must press 'Enter', and 'fedTAR' sends 
+ * federate. The user must press 'Enter', and 'fedTAR' sends
  * synchronizationPointAchieved() and the RTI provides immediately the callback
  * federationSynchronized() since there is no other federate.
  * </p><p>
@@ -35,16 +34,16 @@ import java.util.logging.Logger;
  * <ul>
  * <li> lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical time.
- * <li> timeStep: the federate will ask to advance its time by steps with this 
+ * <li> timeStep: the federate will ask to advance its time by steps with this
  * value, TAR(h + timeStep), 'h' is the current logical time.
- * <li> updateTime: the federate will update attributes with timestamp t = 
+ * <li> updateTime: the federate will update attributes with timestamp t =
  * (h + updateTime), 'h' is the current logical time. For a correct execution,
  * updateTime > lookahead. Otherwise the exception INVALID_FEDERATION_TIME is
  * raised. This parameter is not used in this federate.
  * </ul>
  *  </p><p>
- *  The time advance phase in HLA is a two-step  process: 1) a federate sends 
- *  a time advance request service and 2) waits for the time to be granted by 
+ *  The time advance phase in HLA is a two-step  process: 1) a federate sends
+ *  a time advance request service and 2) waits for the time to be granted by
  *  the timeAdvanceGrant (TAG) service. When TAR is used, the time returned
  *  always equals the asked time h'.
  *  @author J. Cardoso (based on JCERTI federate UavSend.java).
@@ -53,16 +52,16 @@ import java.util.logging.Logger;
 public class OneFederateTAR {
 
     private final static Logger LOGGER = Logger.getLogger(OneFederateTAR.class.getName());
-    
+
     /** The sync point all federates will sync up on before starting */
     public static final String READY_TO_RUN = "ReadyToRun";
-    
+
     //The federate advances while logical time is smaller than 'stopTime'
-    private static final double stopTime = 30.0; 
-    
+    private static final double stopTime = 30.0;
+
     // EvokeCallback waits until BLOCKING_TIME for delivering a callback (if any).
     private static double BLOCKING_TIME = 0.1;
-   
+
 
     /**
      * Run a federate since its creation to its destruction
@@ -74,36 +73,44 @@ public class OneFederateTAR {
         String federateName = "fedTAR";
         String federateType = "whatIsFedType"; // FIXME: What is the goal of this parameter?
         String fomName = "uav.xml";
-        
+
         LOGGER.info("        OneFederateTAR");
         LOGGER.info("     1. Get a link to the RTI");
-        
-        RtiFactory factory = (RtiFactory) RtiFactoryFactory.getRtiFactory();
-        RTIambassador rtia = factory.getRtiAmbassador();
+        RtiFactory factory =  RtiFactoryFactory.getRtiFactory();
+        //RTIambassador rtia = factory.getRtiAmbassador(); using toURI.toURL
+        CertiRtiAmbassador rtia = (CertiRtiAmbassador) factory.getRtiAmbassador(); //It can be done like this all the time, also when we use URL
         MyFederateAmbassador mya = new MyFederateAmbassador();
-        rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
+        try {
+            rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
+        } catch(Exception e){
+            if(!RTIExecutor.checkLocalHost())
+                throw new ConnectionFailed("Connection to the RTIG failed. You are trying to connect to a RTIG of an other machine, but no RTIG was found");
+            else
+                throw new ConnectionFailed("Connection to the RTIG failed. There is probably no RTIG running.");
+        }
+
         System.out.println();
         LOGGER.info("     2. Federate " + federateName + " creates federation "+ federationExecutionName+ " - nofail");
-        
+
         // The first launched federate creates the federation execution
-        File fom = new File(fomName);
+        //File fom = new File(fomName);
+
         try {
-            rtia.createFederationExecution(federationExecutionName,  fom.toURI().toURL());
+            // rtia.createFederationExecution(federationExecutionName,  fom.toURI().toURL());
+            rtia.createFederationExecution(federationExecutionName, fomName);
             flagCreator = true;
         } catch (FederationExecutionAlreadyExists ex) {
             LOGGER.warning("Can't create federation. It already exists.");
             flagCreator = false;
-        } catch( MalformedURLException url )
-        {
-            throw new MalformedURLException();
         }
 
         System.out.println();
         LOGGER.info("     3. Federate " + federateName + " join federation " + federationExecutionName);
-        URL[] joinModules = new URL[]{
-                fom.toURI().toURL()
-            };
-       
+//        URL[] joinModules = new URL[]{
+//                fom.toURI().toURL()
+//            };
+//        rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+        String[] joinModules = {"uav.xml"};
         rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
         mya.isCreator = flagCreator; //
         System.out.println();
@@ -138,18 +145,18 @@ public class OneFederateTAR {
         // Informs the RTIG it is aware of the synchronization point "synchronizationPointName"
         rtia.synchronizationPointAchieved(mya.synchronizationPointName);
 
-        // Wait the callback federationSynchronized() 
-        while (((MyFederateAmbassador) mya).inPause)
+        // Wait the callback federationSynchronized()
+        while (mya.inPause)
         {
             rtia.evokeCallback(BLOCKING_TIME);
         }
 
-        System.out.println();        
+        System.out.println();
         LOGGER.info("     6 TAR Loop");
         //int i = 10;  while (i-- > 0) { // Loop with number of TARs instead of stopTime
         while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {//i++;
- 
-            // The federate asks to advance to (current logical time + timeStep) 
+
+            // The federate asks to advance to (current logical time + timeStep)
             // and waits for the TAG.
             LOGGER.info("     6.1 TAR with time = " + ((CertiLogicalTime1516E)mya.timeAdvance).getTime());
             rtia.timeAdvanceRequest(mya.timeAdvance);
@@ -168,7 +175,7 @@ public class OneFederateTAR {
 
         LOGGER.info("     7 Resign federation execution");
         rtia.resignFederationExecution( ResignAction.DELETE_OBJECTS );
-        
+
         LOGGER.info("     8 Destroy federation execution - nofail");
         // Uses a loop for destroying the federation.
         boolean federationIsActive = true;
@@ -192,6 +199,8 @@ public class OneFederateTAR {
             LOGGER.info("     9 Disconect from the rti");
             rtia.disconnect();
         }
+
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -200,7 +209,7 @@ public class OneFederateTAR {
             double updateTimeArg = Double.valueOf(args[3]);
             double lookahead = Double.valueOf(args[4]);
             new OneFederateTAR().runFederate(timeStepArg, updateTimeArg, lookahead);
-        } catch(NumberFormatException exception) {
+        } catch(NumberFormatException | ArrayIndexOutOfBoundsException exception) {
             // Default values
             new OneFederateTAR().runFederate(10.0, 0.2, 0.1);
         }
@@ -209,7 +218,7 @@ public class OneFederateTAR {
     /**
      * Implementation of a FederateAmbassador
      */
-    
+
     public class MyFederateAmbassador extends NullFederateAmbassador {
         public boolean isCreator;
         public LogicalTime localHlaTime;
@@ -278,7 +287,7 @@ public class OneFederateTAR {
             updateTime1 = updateTimeArg;
             timeStep = new CertiLogicalTime1516E(timeStepArg);
             updateTime = new CertiLogicalTime1516E(updateTimeArg);
-            // The time is advanced by adding localHlaTime + timeStep; starts with (0.0+timeStepArg)            
+            // The time is advanced by adding localHlaTime + timeStep; starts with (0.0+timeStepArg)
             timeAdvance = new CertiLogicalTime1516E(((CertiLogicalTime1516E) timeStep).getTime());
             timeAdvanceGranted = false;
 
@@ -399,9 +408,9 @@ public class OneFederateTAR {
         public void discoverObjectInstance(ObjectInstanceHandle theObject, ObjectClassHandle theObjectClass,
                                            String objectName) throws FederateInternalError {
             LOGGER.info("Discover Object Instance : "
-                        + "Object = " + theObject.toString()
-                        + ", Object class = " + theObjectClass.toString()
-                        + ", Object name = " + objectName );
+                    + "Object = " + theObject.hashCode()
+                    + ", Object class = " + theObjectClass.hashCode()
+                    + ", Object name = " + objectName );
         }
 
         /**
@@ -479,4 +488,3 @@ public class OneFederateTAR {
 }
 
 
-   

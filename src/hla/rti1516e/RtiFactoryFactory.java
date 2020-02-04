@@ -11,7 +11,7 @@ package hla.rti1516e;
 
 import hla.rti1516e.exceptions.RTIinternalError;
 
-import javax.imageio.spi.ServiceRegistry;
+import java.util.ServiceLoader;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -19,16 +19,15 @@ import java.util.Set;
 
 /**
  * Helper class for locating RtiFactory. Uses Service concept described
- * by ServiceRegistry.
+ * by ServiceLoader.
  *
- * @see ServiceRegistry
  */
 public class RtiFactoryFactory {
    public static RtiFactory getRtiFactory(String name)
       throws
       RTIinternalError
    {
-      Iterator<RtiFactory> i = ServiceRegistry.lookupProviders(RtiFactory.class);
+      Iterator<RtiFactory> i = ServiceLoader.load(RtiFactory.class).iterator();
       while (i.hasNext()) {
          RtiFactory rtiFactory = i.next();
          if (rtiFactory.rtiName().equals(name)) {
@@ -42,7 +41,7 @@ public class RtiFactoryFactory {
       throws
       RTIinternalError
    {
-      Iterator<RtiFactory> i = ServiceRegistry.lookupProviders(RtiFactory.class);
+      Iterator<RtiFactory> i = ServiceLoader.load(RtiFactory.class).iterator();
       if (i.hasNext()) {
          return i.next();
       }
@@ -51,7 +50,7 @@ public class RtiFactoryFactory {
 
    public static Set<RtiFactory> getAvailableRtiFactories()
    {
-      Iterator<RtiFactory> i = ServiceRegistry.lookupProviders(RtiFactory.class);
+      Iterator<RtiFactory> i = ServiceLoader.load(RtiFactory.class).iterator();
       Set<RtiFactory> factories = new HashSet<RtiFactory>();
       while (i.hasNext()) {
          RtiFactory rtiFactory = i.next();

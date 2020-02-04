@@ -219,6 +219,10 @@ public class CertiRtiAmbassador implements RTIambassador {
      */
     @Override
     public void disconnect() throws FederateIsExecutionMember, CallNotAllowedFromWithinCallback, RTIinternalError {
+        if(rtiaProcess == null){
+//            throw new CallNotAllowedFromWithinCallback("RTIA not connected");
+            return;
+        }
         CloseConnexion1516E request = new CloseConnexion1516E();
         try {
             LOGGER.info("Closing connection to RTIA");
@@ -349,9 +353,6 @@ public class CertiRtiAmbassador implements RTIambassador {
             NotConnected,
             RTIinternalError
     {
-        if(rtiaProcess == null){
-            throw new NotConnected("RTIA not connected");
-        }
         if(federationExecutionName == null || federationExecutionName.length() == 0) {
             throw new RTIinternalError("Incorrect or empty federation execution name");
         }

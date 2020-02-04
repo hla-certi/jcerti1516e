@@ -286,6 +286,7 @@ public class FlexUavReceiveString {
                 //rtiExecutor.killRTIG();
                 if (mya.isCreator){ 
                     LOGGER.info("   9.2 Kill the RTIG (isCreator=" + mya.isCreator + ") only if RTIG was not launched before by hand on localhost or remote.");
+                    Thread.sleep(1); //Let time to other federate to disconnect from the rti
                     rtiExecutor.killRTIG();
                     }else {
                         LOGGER.info("  9.2. Cannot kill the RTIG (isCreator=" + mya.isCreator + ").");

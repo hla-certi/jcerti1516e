@@ -2,6 +2,8 @@ package certi1516e;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
+import certi.rti1516e.impl.CertiRtiAmbassador;
+import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.*;
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.HLAASCIIstring;
@@ -63,7 +65,8 @@ import java.util.logging.Logger;
 public class UavSend {
 
     private final static Logger LOGGER = Logger.getLogger(UavSend.class.getName());
-    
+    RTIExecutor rtiExecutor;
+
     /** The sync point all federates will sync up on before starting */
     public static final String READY_TO_RUN = "ReadyToRun";
     
@@ -79,10 +82,18 @@ public class UavSend {
     public void runFederate(double timeStepArg, double uptdateTimeArg, double lookaheadArg) throws Exception {
 
         LOGGER.info("        UAV-SEND");
+        LOGGER.info("     0. Launches the RTI");
+        rtiExecutor = new RTIExecutor();
+        try {
+            rtiExecutor.executeRTIG();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         LOGGER.info("     1. Get a link to the RTI");
         
-        RtiFactory factory = (RtiFactory) RtiFactoryFactory.getRtiFactory();
-        RTIambassador rtia = factory.getRtiAmbassador();
+        RtiFactory factory = RtiFactoryFactory.getRtiFactory();
+        CertiRtiAmbassador rtia = (CertiRtiAmbassador) factory.getRtiAmbassador();
         MyFederateAmbassador mya = new MyFederateAmbassador();
         rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
         boolean flagCreator;
@@ -239,6 +250,7 @@ public class UavSend {
         } finally {
             LOGGER.info("     9 Disconect from the rti");
             rtia.disconnect();
+            rtiExecutor.killRTIG();
         }
     }
 

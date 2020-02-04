@@ -2,6 +2,7 @@ package certi1516e;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
+import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.*;
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
@@ -68,6 +69,8 @@ public class UavReceive {
     private AttributeHandle textAttributeHandle;
     private AttributeHandle fomAttributeHandle;
 
+    private RTIExecutor rtiExecutor;
+
     /**
      * Run a federate since its creation to its destruction
      * Reflects values of two attributes (float and string) from a federation
@@ -104,6 +107,14 @@ public class UavReceive {
     {
 
         LOGGER.info("        UAV-RECEIVE");
+        LOGGER.info("     0. Launches the RTI");
+        rtiExecutor = new RTIExecutor();
+        try {
+            rtiExecutor.executeRTIG();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         LOGGER.info("     1. Get a link to the RTI");
         RtiFactory factory = RtiFactoryFactory.getRtiFactory();
         RTIambassador rtia = factory.getRtiAmbassador();
@@ -244,11 +255,12 @@ public class UavReceive {
             }
         } finally {
             try {
-                LOGGER.info("     9 Disconect from the rti");
+                LOGGER.info("     9 Disconnect from the rti");
                 rtia.disconnect();
             } catch (FederateIsExecutionMember federateIsExecutionMember) {
                 LOGGER.info( "Disconnecting failed" );
                 federateIsExecutionMember.printStackTrace();
+                rtiExecutor.killRTIG();
             }
         }
     }

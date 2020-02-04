@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 public class RTIExecutor {
 
-    private Process rtig_process;
+    private Process rtig_process = null;
 
     /*
      * Check if there is a rtig process already launched

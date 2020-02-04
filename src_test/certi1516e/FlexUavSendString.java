@@ -268,11 +268,13 @@ public class FlexUavSendString {
             try{
                 // FIXME may be put a catch for disconnect?
                 rtia.disconnect();
-                //rtiExecutor.killRTIG();
-                if (mya.isCreator){ 
+                rtiExecutor.killRTIG();
+                if (mya.isCreator){
                     LOGGER.info("   9.2 Kill the RTIG (isCreator=" + mya.isCreator + ") only if RTIG was not launched before by hand on localhost or remote.");
+                    Thread.sleep(1); //Let time to other federate to disconnect from the rti
                     rtiExecutor.killRTIG();
-                    }else {
+                    }
+                else {
                         LOGGER.info("  9.2. Cannot kill the RTIG (isCreator=" + mya.isCreator + ").");
                     }
             } catch (Exception e){

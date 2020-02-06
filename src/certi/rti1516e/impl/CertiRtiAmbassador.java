@@ -1,21 +1,5 @@
 package certi.rti1516e.impl;
 
-import certi.communication.CertiException;
-import certi.communication.CertiMessage;
-import certi.communication.CertiMessageType;
-import certi.communication.messages1516E.*;
-import certi.logging.HtmlFormatter;
-import certi.logging.StreamListener;
-import certi.rti.impl.CertiEventRetractionHandle;
-import certi.rti.impl.CertiHandleValuePairCollection;
-import hla.rti.ReflectedAttributes;
-import hla.rti1516.InteractionClassNotSubscribed;
-import hla.rti1516.SpecifiedSaveLabelDoesNotExist;
-import hla.rti1516e.*;
-import hla.rti1516e.exceptions.*;
-import hla.rti1516e.impl.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,6 +12,134 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import certi.communication.CertiException;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.messages1516E.AttributeIsNotOwned1516E;
+import certi.communication.messages1516E.AttributeOwnershipAcquisitionNotification1516E;
+import certi.communication.messages1516E.AttributeOwnershipUnavailable1516E;
+import certi.communication.messages1516E.CertiMessage1516E;
+import certi.communication.messages1516E.CloseConnexion1516E;
+import certi.communication.messages1516E.ConfirmAttributeOwnershipAcquisitionCancellation1516E;
+import certi.communication.messages1516E.CreateFederationExecution1516E;
+import certi.communication.messages1516E.CreateFederationExecution1516E_V2;
+import certi.communication.messages1516E.DeleteObjectInstance1516E;
+import certi.communication.messages1516E.DestroyFederationExecution1516E;
+import certi.communication.messages1516E.DisableAsynchronousDelivery1516E;
+import certi.communication.messages1516E.DisableTimeConstrained1516E;
+import certi.communication.messages1516E.DisableTimeRegulation1516E;
+import certi.communication.messages1516E.DiscoverObjectInstance1516E;
+import certi.communication.messages1516E.EnableAsynchronousDelivery1516E;
+import certi.communication.messages1516E.EnableTimeConstrained1516E;
+import certi.communication.messages1516E.EnableTimeRegulation1516E;
+import certi.communication.messages1516E.GetAttributeHandle1516E;
+import certi.communication.messages1516E.GetAttributeName1516E;
+import certi.communication.messages1516E.GetInteractionClassHandle1516E;
+import certi.communication.messages1516E.GetInteractionClassName1516E;
+import certi.communication.messages1516E.GetObjectClassHandle1516E;
+import certi.communication.messages1516E.GetObjectClassName1516E;
+import certi.communication.messages1516E.GetObjectInstanceHandle1516E;
+import certi.communication.messages1516E.GetObjectInstanceName1516E;
+import certi.communication.messages1516E.GetParameterHandle1516E;
+import certi.communication.messages1516E.GetParameterName1516E;
+import certi.communication.messages1516E.InformAttributeOwnership1516E;
+import certi.communication.messages1516E.InitiateFederateRestore1516E;
+import certi.communication.messages1516E.JoinFederationExecution1516E;
+import certi.communication.messages1516E.JoinFederationExecution1516E_V2;
+import certi.communication.messages1516E.LocalDeleteObjectInstance1516E;
+import certi.communication.messages1516E.MessageBuffer1516E;
+import certi.communication.messages1516E.MessageFactory1516E;
+import certi.communication.messages1516E.NextEventRequest1516E;
+import certi.communication.messages1516E.NextEventRequestAvailable1516E;
+import certi.communication.messages1516E.OpenConnexion1516E;
+import certi.communication.messages1516E.ProvideAttributeValueUpdate1516E;
+import certi.communication.messages1516E.PublishInteractionClass1516E;
+import certi.communication.messages1516E.PublishObjectClass1516E;
+import certi.communication.messages1516E.ReceiveInteraction1516E;
+import certi.communication.messages1516E.ReflectAttributeValues1516E;
+import certi.communication.messages1516E.RegisterFederationSynchronizationPoint1516E;
+import certi.communication.messages1516E.RegisterObjectInstance1516E;
+import certi.communication.messages1516E.RemoveObjectInstance1516E;
+import certi.communication.messages1516E.RequestAttributeOwnershipAssumption1516E;
+import certi.communication.messages1516E.RequestAttributeOwnershipRelease1516E;
+import certi.communication.messages1516E.RequestObjectAttributeValueUpdate1516E;
+import certi.communication.messages1516E.ResignAction1516E;
+import certi.communication.messages1516E.ResignFederationExecution1516E;
+import certi.communication.messages1516E.SendInteraction1516E;
+import certi.communication.messages1516E.StartRegistrationForObjectClass1516E;
+import certi.communication.messages1516E.StopRegistrationForObjectClass1516E;
+import certi.communication.messages1516E.SubscribeInteractionClass1516E;
+import certi.communication.messages1516E.SubscribeObjectClassAttributes1516E;
+import certi.communication.messages1516E.SynchronizationPointAchieved1516E;
+import certi.communication.messages1516E.TickRequest1516E;
+import certi.communication.messages1516E.TickRequestNext1516E;
+import certi.communication.messages1516E.TickRequestStop1516E;
+import certi.communication.messages1516E.TimeAdvanceRequest1516E;
+import certi.communication.messages1516E.TimeAdvanceRequestAvailable1516E;
+import certi.communication.messages1516E.TurnInteractionsOff1516E;
+import certi.communication.messages1516E.TurnInteractionsOn1516E;
+import certi.communication.messages1516E.UnpublishInteractionClass1516E;
+import certi.communication.messages1516E.UnpublishObjectClass1516E;
+import certi.communication.messages1516E.UnsubscribeInteractionClass1516E;
+import certi.communication.messages1516E.UnsubscribeObjectClass1516E;
+import certi.communication.messages1516E.UpdateAttributeValues1516E;
+import certi.logging.HtmlFormatter;
+import certi.logging.StreamListener;
+import certi.rti.impl.CertiEventRetractionHandle;
+import certi.rti.impl.CertiHandleValuePairCollection;
+import hla.rti.ReflectedAttributes;
+import hla.rti1516.InteractionClassNotSubscribed;
+import hla.rti1516.SpecifiedSaveLabelDoesNotExist;
+import hla.rti1516e.AttributeHandle;
+import hla.rti1516e.AttributeHandleFactory;
+import hla.rti1516e.AttributeHandleSet;
+import hla.rti1516e.AttributeHandleSetFactory;
+import hla.rti1516e.AttributeHandleValueMap;
+import hla.rti1516e.AttributeHandleValueMapFactory;
+import hla.rti1516e.AttributeSetRegionSetPairList;
+import hla.rti1516e.AttributeSetRegionSetPairListFactory;
+import hla.rti1516e.CallbackModel;
+import hla.rti1516e.DimensionHandle;
+import hla.rti1516e.DimensionHandleFactory;
+import hla.rti1516e.DimensionHandleSet;
+import hla.rti1516e.DimensionHandleSetFactory;
+import hla.rti1516e.FederateAmbassador;
+import hla.rti1516e.FederateHandle;
+import hla.rti1516e.FederateHandleFactory;
+import hla.rti1516e.FederateHandleSet;
+import hla.rti1516e.FederateHandleSetFactory;
+import hla.rti1516e.InteractionClassHandle;
+import hla.rti1516e.InteractionClassHandleFactory;
+import hla.rti1516e.LogicalTime;
+import hla.rti1516e.LogicalTimeFactory;
+import hla.rti1516e.LogicalTimeInterval;
+import hla.rti1516e.MessageRetractionHandle;
+import hla.rti1516e.MessageRetractionReturn;
+import hla.rti1516e.ObjectClassHandle;
+import hla.rti1516e.ObjectClassHandleFactory;
+import hla.rti1516e.ObjectInstanceHandle;
+import hla.rti1516e.ObjectInstanceHandleFactory;
+import hla.rti1516e.OrderType;
+import hla.rti1516e.ParameterHandle;
+import hla.rti1516e.ParameterHandleFactory;
+import hla.rti1516e.ParameterHandleValueMap;
+import hla.rti1516e.ParameterHandleValueMapFactory;
+import hla.rti1516e.RTIambassador;
+import hla.rti1516e.RangeBounds;
+import hla.rti1516e.RegionHandle;
+import hla.rti1516e.RegionHandleSet;
+import hla.rti1516e.RegionHandleSetFactory;
+import hla.rti1516e.ResignAction;
+import hla.rti1516e.ServiceGroup;
+import hla.rti1516e.TimeQueryReturn;
+import hla.rti1516e.TransportationTypeHandle;
+import hla.rti1516e.TransportationTypeHandleFactory;
+import hla.rti1516e.exceptions.*;
+import hla.rti1516e.impl.CertiAttributeHandleSetFactory;
+import hla.rti1516e.impl.CertiAttributeHandleValueMap;
+import hla.rti1516e.impl.CertiAttributeHandleValueMapFactory;
+import hla.rti1516e.impl.CertiObjectHandle;
 
 
 /**
@@ -564,7 +676,7 @@ public class CertiRtiAmbassador implements RTIambassador {
 
     @Override
     public void listFederationExecutions() throws NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -1103,7 +1215,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public void requestFederationSave(String label)
             throws SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
 
@@ -1111,76 +1223,76 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void requestFederationSave(String label, LogicalTime theTime)
             throws LogicalTimeAlreadyPassed, InvalidLogicalTime, FederateUnableToUseTime, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void federateSaveBegun()
             throws SaveNotInitiated, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void federateSaveComplete() throws FederateHasNotBegunSave, RestoreInProgress, FederateNotExecutionMember,
             NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void federateSaveNotComplete() throws FederateHasNotBegunSave, RestoreInProgress, FederateNotExecutionMember,
             NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void abortFederationSave()
             throws SaveNotInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void queryFederationSaveStatus()
             throws RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void requestFederationRestore(String label)
             throws SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void federateRestoreComplete()
             throws RestoreNotRequested, SaveInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void federateRestoreNotComplete()
             throws RestoreNotRequested, SaveInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void abortFederationRestore()
             throws RestoreNotInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void queryFederationRestoreStatus()
             throws SaveInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -1286,7 +1398,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void unpublishObjectClassAttributes(ObjectClassHandle theClass, AttributeHandleSet attributeList)
             throws OwnershipAcquisitionPending, AttributeNotDefined, ObjectClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -1454,14 +1566,14 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void subscribeObjectClassAttributesPassively(ObjectClassHandle theClass, AttributeHandleSet attributeList)
             throws AttributeNotDefined, ObjectClassNotDefined, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void subscribeObjectClassAttributesPassively(ObjectClassHandle theClass, AttributeHandleSet attributeList,
                                                         String updateRateDesignator) throws AttributeNotDefined, ObjectClassNotDefined, InvalidUpdateRateDesignator,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -1516,7 +1628,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void unsubscribeObjectClassAttributes(ObjectClassHandle theClass, AttributeHandleSet attributeList)
             throws AttributeNotDefined, ObjectClassNotDefined, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -1553,7 +1665,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void subscribeInteractionClassPassively(InteractionClassHandle theClass)
             throws FederateServiceInvocationsAreBeingReportedViaMOM, InteractionClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -1593,25 +1705,25 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public void reserveObjectInstanceName(String theObjectName) throws IllegalName, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void releaseObjectInstanceName(String theObjectInstanceName) throws ObjectInstanceNameNotReserved,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void reserveMultipleObjectInstanceName(Set<String> theObjectNames) throws IllegalName, NameSetWasEmpty,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void releaseMultipleObjectInstanceName(Set<String> theObjectNames) throws ObjectInstanceNameNotReserved,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -2068,7 +2180,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public MessageRetractionReturn deleteObjectInstance(ObjectInstanceHandle objectHandle, byte[] userSuppliedTag,
                                                         LogicalTime theTime) throws InvalidLogicalTime, DeletePrivilegeNotHeld, ObjectInstanceNotKnown,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -2238,14 +2350,14 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                          AttributeHandleSet theAttributes, TransportationTypeHandle theType) throws AttributeAlreadyBeingChanged,
             AttributeNotOwned, AttributeNotDefined, ObjectInstanceNotKnown, InvalidTransportationType, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void queryAttributeTransportationType(ObjectInstanceHandle theObject, AttributeHandle theAttribute)
             throws AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2253,21 +2365,21 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                            TransportationTypeHandle theType) throws InteractionClassAlreadyBeingChanged, InteractionClassNotPublished,
             InteractionClassNotDefined, InvalidTransportationType, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void queryInteractionTransportationType(FederateHandle theFederate, InteractionClassHandle theInteraction)
             throws InteractionClassNotDefined, SaveInProgress, RestoreInProgress, FederateNotExecutionMember,
             NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void unconditionalAttributeOwnershipDivestiture(ObjectInstanceHandle theObject,
                                                            AttributeHandleSet theAttributes) throws AttributeNotOwned, AttributeNotDefined, ObjectInstanceNotKnown,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2275,7 +2387,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                         AttributeHandleSet theAttributes, byte[] userSuppliedTag)
             throws AttributeAlreadyBeingDivested, AttributeNotOwned, AttributeNotDefined, ObjectInstanceNotKnown,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2283,7 +2395,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                    byte[] userSuppliedTag) throws NoAcquisitionPending, AttributeDivestitureWasNotRequested, AttributeNotOwned,
             AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress, RestoreInProgress, FederateNotExecutionMember,
             NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2291,7 +2403,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                               byte[] userSuppliedTag) throws AttributeNotPublished, ObjectClassNotPublished, FederateOwnsAttributes,
             AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress, RestoreInProgress, FederateNotExecutionMember,
             NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2299,21 +2411,21 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                          AttributeHandleSet desiredAttributes) throws AttributeAlreadyBeingAcquired, AttributeNotPublished,
             ObjectClassNotPublished, FederateOwnsAttributes, AttributeNotDefined, ObjectInstanceNotKnown,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void attributeOwnershipReleaseDenied(ObjectInstanceHandle theObject, AttributeHandleSet theAttributes)
             throws AttributeNotOwned, AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public AttributeHandleSet attributeOwnershipDivestitureIfWanted(ObjectInstanceHandle theObject,
                                                                     AttributeHandleSet theAttributes) throws AttributeNotOwned, AttributeNotDefined, ObjectInstanceNotKnown,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2321,7 +2433,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                               AttributeHandleSet theAttributes)
             throws AttributeDivestitureWasNotRequested, AttributeNotOwned, AttributeNotDefined, ObjectInstanceNotKnown,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2329,21 +2441,21 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws AttributeAcquisitionWasNotRequested, AttributeAlreadyOwned, AttributeNotDefined,
             ObjectInstanceNotKnown, SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected,
             RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void queryAttributeOwnership(ObjectInstanceHandle theObject, AttributeHandle theAttribute)
             throws AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean isAttributeOwnedByFederate(ObjectInstanceHandle theObject, AttributeHandle theAttribute)
             throws AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -2725,7 +2837,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void flushQueueRequest(LogicalTime theTime) throws LogicalTimeAlreadyPassed, InvalidLogicalTime,
             InTimeAdvancingState, RequestForTimeRegulationPending, RequestForTimeConstrainedPending, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2795,20 +2907,20 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public TimeQueryReturn queryGALT()
             throws SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public LogicalTime queryLogicalTime()
             throws SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public TimeQueryReturn queryLITS()
             throws SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2816,14 +2928,14 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void modifyLookahead(LogicalTimeInterval theLookahead)
             throws InvalidLookahead, InTimeAdvancingState, TimeRegulationIsNotEnabled, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public LogicalTimeInterval queryLookahead() throws TimeRegulationIsNotEnabled, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2831,7 +2943,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void retract(MessageRetractionHandle theHandle)
             throws MessageCanNoLongerBeRetracted, InvalidMessageRetractionHandle, TimeRegulationIsNotEnabled,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2839,7 +2951,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void changeAttributeOrderType(ObjectInstanceHandle theObject, AttributeHandleSet theAttributes,
                                          OrderType theType) throws AttributeNotOwned, AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2847,21 +2959,21 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void changeInteractionOrderType(InteractionClassHandle theClass, OrderType theType)
             throws InteractionClassNotPublished, InteractionClassNotDefined, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public RegionHandle createRegion(DimensionHandleSet dimensions) throws InvalidDimensionHandle, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void commitRegionModifications(RegionHandleSet regions) throws RegionNotCreatedByThisFederate, InvalidRegion,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2869,7 +2981,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void deleteRegion(RegionHandle theRegion)
             throws RegionInUseForUpdateOrSubscription, RegionNotCreatedByThisFederate, InvalidRegion, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2879,7 +2991,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws InvalidRegionContext, RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotPublished,
             ObjectClassNotPublished, AttributeNotDefined, ObjectClassNotDefined, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2888,7 +3000,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             ObjectInstanceNameNotReserved, InvalidRegionContext, RegionNotCreatedByThisFederate, InvalidRegion,
             AttributeNotPublished, ObjectClassNotPublished, AttributeNotDefined, ObjectClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -2896,7 +3008,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                            AttributeSetRegionSetPairList attributesAndRegions) throws InvalidRegionContext,
             RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined, ObjectInstanceNotKnown, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2905,7 +3017,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                              AttributeSetRegionSetPairList attributesAndRegions)
             throws RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined, ObjectInstanceNotKnown,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2914,7 +3026,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                           AttributeSetRegionSetPairList attributesAndRegions) throws InvalidRegionContext,
             RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined, ObjectClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2924,7 +3036,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws InvalidRegionContext, RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined,
             ObjectClassNotDefined, InvalidUpdateRateDesignator, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2933,7 +3045,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                                    AttributeSetRegionSetPairList attributesAndRegions) throws InvalidRegionContext,
             RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined, ObjectClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2943,7 +3055,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws InvalidRegionContext, RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined,
             ObjectClassNotDefined, InvalidUpdateRateDesignator, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2952,7 +3064,7 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                             AttributeSetRegionSetPairList attributesAndRegions)
             throws RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined, ObjectClassNotDefined,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2961,7 +3073,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws FederateServiceInvocationsAreBeingReportedViaMOM, InvalidRegionContext,
             RegionNotCreatedByThisFederate, InvalidRegion, InteractionClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2970,7 +3082,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws FederateServiceInvocationsAreBeingReportedViaMOM, InvalidRegionContext,
             RegionNotCreatedByThisFederate, InvalidRegion, InteractionClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2978,7 +3090,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public void unsubscribeInteractionClassWithRegions(InteractionClassHandle theClass, RegionHandleSet regions)
             throws RegionNotCreatedByThisFederate, InvalidRegion, InteractionClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2988,7 +3100,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws InvalidRegionContext, RegionNotCreatedByThisFederate, InvalidRegion, InteractionClassNotPublished,
             InteractionParameterNotDefined, InteractionClassNotDefined, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -2998,7 +3110,7 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws InvalidLogicalTime, InvalidRegionContext, RegionNotCreatedByThisFederate, InvalidRegion,
             InteractionClassNotPublished, InteractionParameterNotDefined, InteractionClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -3006,33 +3118,33 @@ public class CertiRtiAmbassador implements RTIambassador {
                                                        AttributeSetRegionSetPairList attributesAndRegions, byte[] userSuppliedTag) throws InvalidRegionContext,
             RegionNotCreatedByThisFederate, InvalidRegion, AttributeNotDefined, ObjectClassNotDefined, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public ResignAction getAutomaticResignDirective()
             throws FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setAutomaticResignDirective(ResignAction resignAction)
             throws InvalidResignAction, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public FederateHandle getFederateHandle(String theName)
             throws NameNotFound, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public String getFederateName(FederateHandle theHandle) throws InvalidFederateHandle, FederateHandleNotKnown,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -3110,7 +3222,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public ObjectClassHandle getKnownObjectClassHandle(ObjectInstanceHandle theObject)
             throws ObjectInstanceNotKnown, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -3258,7 +3370,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public double getUpdateRateValue(String updateRateDesignator)
             throws InvalidUpdateRateDesignator, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -3266,7 +3378,7 @@ public class CertiRtiAmbassador implements RTIambassador {
     public double getUpdateRateValueForAttribute(ObjectInstanceHandle theObject, AttributeHandle theAttribute)
             throws ObjectInstanceNotKnown, AttributeNotDefined, FederateNotExecutionMember, NotConnected,
             RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -3402,27 +3514,27 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public OrderType getOrderType(String theName)
             throws InvalidOrderName, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public String getOrderName(OrderType theType)
             throws InvalidOrderType, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public TransportationTypeHandle getTransportationTypeHandle(String theName)
             throws InvalidTransportationName, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public String getTransportationTypeName(TransportationTypeHandle theHandle)
             throws InvalidTransportationType, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -3430,46 +3542,46 @@ public class CertiRtiAmbassador implements RTIambassador {
     public DimensionHandleSet getAvailableDimensionsForClassAttribute(ObjectClassHandle whichClass,
                                                                       AttributeHandle theHandle) throws AttributeNotDefined, InvalidAttributeHandle, InvalidObjectClassHandle,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public DimensionHandleSet getAvailableDimensionsForInteractionClass(InteractionClassHandle theHandle)
             throws InvalidInteractionClassHandle, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public DimensionHandle getDimensionHandle(String theName)
             throws NameNotFound, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public String getDimensionName(DimensionHandle theHandle)
             throws InvalidDimensionHandle, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long getDimensionUpperBound(DimensionHandle theHandle)
             throws InvalidDimensionHandle, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public DimensionHandleSet getDimensionHandleSet(RegionHandle region) throws InvalidRegion, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public RangeBounds getRangeBounds(RegionHandle region, DimensionHandle dimension)
             throws RegionDoesNotContainSpecifiedDimension, InvalidRegion, SaveInProgress, RestoreInProgress,
             FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -3477,27 +3589,27 @@ public class CertiRtiAmbassador implements RTIambassador {
             throws InvalidRangeBound, RegionDoesNotContainSpecifiedDimension, RegionNotCreatedByThisFederate,
             InvalidRegion, SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected,
             RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long normalizeFederateHandle(FederateHandle federateHandle)
             throws InvalidFederateHandle, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public long normalizeServiceGroup(ServiceGroup group)
             throws InvalidServiceGroup, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void enableObjectClassRelevanceAdvisorySwitch() throws ObjectClassRelevanceAdvisorySwitchIsOn,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
 
     }
@@ -3505,49 +3617,49 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public void disableObjectClassRelevanceAdvisorySwitch() throws ObjectClassRelevanceAdvisorySwitchIsOff,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void enableAttributeRelevanceAdvisorySwitch() throws AttributeRelevanceAdvisorySwitchIsOn, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void disableAttributeRelevanceAdvisorySwitch() throws AttributeRelevanceAdvisorySwitchIsOff, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void enableAttributeScopeAdvisorySwitch() throws AttributeScopeAdvisorySwitchIsOn, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void disableAttributeScopeAdvisorySwitch() throws AttributeScopeAdvisorySwitchIsOff, SaveInProgress,
             RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void enableInteractionRelevanceAdvisorySwitch() throws InteractionRelevanceAdvisorySwitchIsOn,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void disableInteractionRelevanceAdvisorySwitch() throws InteractionRelevanceAdvisorySwitchIsOff,
             SaveInProgress, RestoreInProgress, FederateNotExecutionMember, NotConnected, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -3597,19 +3709,19 @@ public class CertiRtiAmbassador implements RTIambassador {
 
     @Override
     public void enableCallbacks() throws SaveInProgress, RestoreInProgress, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void disableCallbacks() throws SaveInProgress, RestoreInProgress, RTIinternalError {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public AttributeHandleFactory getAttributeHandleFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -3626,88 +3738,88 @@ public class CertiRtiAmbassador implements RTIambassador {
     @Override
     public AttributeSetRegionSetPairListFactory getAttributeSetRegionSetPairListFactory()
             throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public DimensionHandleFactory getDimensionHandleFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public DimensionHandleSetFactory getDimensionHandleSetFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public FederateHandleFactory getFederateHandleFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public FederateHandleSetFactory getFederateHandleSetFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public InteractionClassHandleFactory getInteractionClassHandleFactory()
             throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public ObjectClassHandleFactory getObjectClassHandleFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public ObjectInstanceHandleFactory getObjectInstanceHandleFactory()
             throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public ParameterHandleFactory getParameterHandleFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public ParameterHandleValueMapFactory getParameterHandleValueMapFactory()
             throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public RegionHandleSetFactory getRegionHandleSetFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public TransportationTypeHandleFactory getTransportationTypeHandleFactory()
             throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public String getHLAversion() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public LogicalTimeFactory getTimeFactory() throws FederateNotExecutionMember, NotConnected {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
 
     }
 

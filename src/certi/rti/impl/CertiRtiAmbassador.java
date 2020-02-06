@@ -49,6 +49,7 @@ import java.util.logging.SimpleFormatter;
 public class CertiRtiAmbassador implements RTIambassadorEx {
 
     private final static Logger LOGGER = Logger.getLogger(CertiRtiAmbassador.class.getName());
+    private final static int SOCKET_TIMEOUT = 60000; // Socket timeout in milliseconds.
     private FederateAmbassador federateAmbassador;
     private Socket socket;
     private MessageBuffer messageBuffer;
@@ -133,6 +134,10 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(0, 1);
+            // Reads to this socket block, possibly forever.
+            // Set a timeout of one minute. When this expires, java.net.SocketTimeoutException
+            // will be thrown.
+            serverSocket.setSoTimeout(SOCKET_TIMEOUT);
         } catch (IOException exception) {
             throw new RTIinternalError("Creating server socket failed. " + exception.getLocalizedMessage());
         }
@@ -174,6 +179,10 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
 
         try {
             socket = serverSocket.accept();
+            // Reads to this socket block, possibly forever.
+            // Set a timeout of one minute. When this expires, java.net.SocketTimeoutException
+            // will be thrown.
+            socket.setSoTimeout(SOCKET_TIMEOUT);
             messageBuffer = new MessageBuffer(socket.getInputStream(), socket.getOutputStream());
         } catch (IOException exception) {
             throw new RTIinternalError("Connection to RTIA failed. " + exception.getLocalizedMessage());

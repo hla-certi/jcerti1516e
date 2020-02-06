@@ -19,16 +19,6 @@
 // ----------------------------------------------------------------------------
 package certi.rti.impl;
 
-import certi.communication.CertiException;
-import certi.communication.CertiMessage;
-import certi.communication.CertiMessageType;
-import certi.communication.MessageBuffer;
-import certi.communication.MessageFactory;
-import certi.communication.messages.*;
-import certi.logging.HtmlFormatter;
-import certi.logging.StreamListener;
-import hla.rti.*;
-import hla.rti.jlc.RTIambassadorEx;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,11 +30,104 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import certi.communication.CertiException;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import certi.communication.MessageFactory;
+import certi.communication.messages.*;
+import certi.logging.HtmlFormatter;
+import certi.logging.StreamListener;
+import hla.rti.ArrayIndexOutOfBounds;
+import hla.rti.AsynchronousDeliveryAlreadyDisabled;
+import hla.rti.AsynchronousDeliveryAlreadyEnabled;
+import hla.rti.AttributeAcquisitionWasNotRequested;
+import hla.rti.AttributeAlreadyBeingAcquired;
+import hla.rti.AttributeAlreadyBeingDivested;
+import hla.rti.AttributeAlreadyOwned;
+import hla.rti.AttributeDivestitureWasNotRequested;
+import hla.rti.AttributeHandleSet;
+import hla.rti.AttributeNotDefined;
+import hla.rti.AttributeNotKnown;
+import hla.rti.AttributeNotOwned;
+import hla.rti.AttributeNotPublished;
+import hla.rti.ConcurrentAccessAttempted;
+import hla.rti.CouldNotDiscover;
+import hla.rti.CouldNotOpenFED;
+import hla.rti.CouldNotRestore;
+import hla.rti.DeletePrivilegeNotHeld;
+import hla.rti.DimensionNotDefined;
+import hla.rti.EnableTimeConstrainedPending;
+import hla.rti.EnableTimeRegulationPending;
+import hla.rti.ErrorReadingFED;
+import hla.rti.EventNotKnown;
+import hla.rti.EventRetractionHandle;
+import hla.rti.FederateAlreadyExecutionMember;
+import hla.rti.FederateAmbassador;
+import hla.rti.FederateHandleSet;
+import hla.rti.FederateInternalError;
+import hla.rti.FederateLoggingServiceCalls;
+import hla.rti.FederateNotExecutionMember;
+import hla.rti.FederateNotSubscribed;
+import hla.rti.FederateOwnsAttributes;
+import hla.rti.FederateWasNotAskedToReleaseAttribute;
+import hla.rti.FederatesCurrentlyJoined;
+import hla.rti.FederationExecutionAlreadyExists;
+import hla.rti.FederationExecutionDoesNotExist;
+import hla.rti.FederationTimeAlreadyPassed;
+import hla.rti.InteractionClassNotDefined;
+import hla.rti.InteractionClassNotKnown;
+import hla.rti.InteractionClassNotPublished;
+import hla.rti.InteractionClassNotSubscribed;
+import hla.rti.InteractionParameterNotDefined;
+import hla.rti.InteractionParameterNotKnown;
+import hla.rti.InvalidExtents;
+import hla.rti.InvalidFederationTime;
+import hla.rti.InvalidLookahead;
+import hla.rti.InvalidOrderingHandle;
+import hla.rti.InvalidRegionContext;
+import hla.rti.InvalidResignAction;
+import hla.rti.InvalidRetractionHandle;
+import hla.rti.InvalidTransportationHandle;
+import hla.rti.LogicalTime;
+import hla.rti.LogicalTimeInterval;
+import hla.rti.MobileFederateServices;
+import hla.rti.NameNotFound;
+import hla.rti.ObjectAlreadyRegistered;
+import hla.rti.ObjectClassNotDefined;
+import hla.rti.ObjectClassNotKnown;
+import hla.rti.ObjectClassNotPublished;
+import hla.rti.ObjectClassNotSubscribed;
+import hla.rti.ObjectNotKnown;
+import hla.rti.OwnershipAcquisitionPending;
+import hla.rti.RTIinternalError;
+import hla.rti.Region;
+import hla.rti.RegionInUse;
+import hla.rti.RegionNotKnown;
+import hla.rti.RestoreInProgress;
+import hla.rti.RestoreNotRequested;
+import hla.rti.SaveInProgress;
+import hla.rti.SaveNotInitiated;
+import hla.rti.SpaceNotDefined;
+import hla.rti.SpecifiedSaveLabelDoesNotExist;
+import hla.rti.SuppliedAttributes;
+import hla.rti.SuppliedParameters;
+import hla.rti.SynchronizationLabelNotAnnounced;
+import hla.rti.TimeAdvanceAlreadyInProgress;
+import hla.rti.TimeAdvanceWasNotInProgress;
+import hla.rti.TimeConstrainedAlreadyEnabled;
+import hla.rti.TimeConstrainedWasNotEnabled;
+import hla.rti.TimeRegulationAlreadyEnabled;
+import hla.rti.TimeRegulationWasNotEnabled;
+import hla.rti.UnableToPerformSave;
+import hla.rti.jlc.RTIambassadorEx;
 
 public class CertiRtiAmbassador implements RTIambassadorEx {
 
@@ -419,7 +502,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
         request.setFederationName(executionName);
 
         try {
-            CertiMessage response = processRequest(request);
+            processRequest(request);
         } catch (FederatesCurrentlyJoined ex) {
             throw ex;
         } catch (FederationExecutionDoesNotExist ex) {
@@ -428,6 +511,9 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
             throw ex;
         } catch (ConcurrentAccessAttempted ex) {
             throw ex;
+        } catch (NoSuchElementException ex) {
+            // Incomplete response was received.
+            // Assume that the federation has been destroyed and ignore.
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {

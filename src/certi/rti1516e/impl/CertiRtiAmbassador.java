@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.FileHandler;
@@ -675,6 +676,9 @@ public class CertiRtiAmbassador implements RTIambassador {
             throw ex;
         } catch (RTIinternalError ex) {
             throw ex;
+        } catch (NoSuchElementException ex) {
+            // Incomplete response was received.
+            // Assume that the federation has been destroyed and ignore.
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {

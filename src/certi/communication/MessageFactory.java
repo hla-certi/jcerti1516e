@@ -298,8 +298,8 @@ public class MessageFactory {
     }
 
     /**
-     * Receives the message
-     * The buffer is reseted after returning the message.
+     * Receives the message and then parse it.
+     * The buffer is reset after returning the message.
      * @param messageBuffer
      * @return
      * @throws IOException

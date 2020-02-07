@@ -3925,7 +3925,7 @@ public class CertiRtiAmbassador implements RTIambassadorEx {
                 }
             } catch (IOException ex) {
                 LOGGER.severe("libRTI: exception: NetworkError (read)");
-                throw new RTIinternalError("libRTI: Network Read Error");
+                throw new RTIinternalError("libRTI: Network Read Error: " + ex);
             } catch (CertiException ex) {
                 translateException(ex);
             }

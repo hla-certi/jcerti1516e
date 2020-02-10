@@ -73,8 +73,9 @@ public class ResignFederation {
      * Lauch the RTIG
      */
     public void executeRTIG() {
+        RTIExecutor rtiExecutor = new RTIExecutor();
         try {
-            RTIExecutor.ExecuteRTIG();
+            rtiExecutor.executeRTIG();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -134,10 +135,11 @@ public class ResignFederation {
      * End correctly the rtia and rtig
      */
     public void killConnectionAndKillRTIG(){
+        RTIExecutor rtiExecutor = new RTIExecutor();
         try {
             rtia.destroyFederationExecution("uav_ResignFederation");
             rtia.disconnect();
-            RTIExecutor.killRTIG();
+            rtiExecutor.killRTIG();
         } catch (Exception e){
             e.printStackTrace();
         }

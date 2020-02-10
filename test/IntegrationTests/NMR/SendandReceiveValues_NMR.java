@@ -40,8 +40,9 @@ public class SendandReceiveValues_NMR {
      */
     @Test
     public void test() {
+        RTIExecutor rtiExecutor = new RTIExecutor();
         try {
-            RTIExecutor.ExecuteRTIG();
+            rtiExecutor.executeRTIG();
         } catch (RTIinternalError rtIinternalError) {
             rtIinternalError.printStackTrace();
         }
@@ -98,13 +99,7 @@ public class SendandReceiveValues_NMR {
             Assert.fail();
         } finally {
             //Disconnect and destroy federation and RTIG
-            try {
-                RTIExecutor.killRTIG();
-            } catch (RTIinternalError rtIinternalError) {
-                rtIinternalError.printStackTrace();
-            }
+                rtiExecutor.killRTIG();
         }
     }
-
-
 }

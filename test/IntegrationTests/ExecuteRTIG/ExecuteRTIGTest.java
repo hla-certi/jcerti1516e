@@ -10,14 +10,15 @@ public class ExecuteRTIGTest {
 
     @Test
     public void ExecuteRTIG() throws RTIinternalError {
+        RTIExecutor rtiExecutor = new RTIExecutor();
         try {
-            RTIExecutor.ExecuteRTIG();
+            rtiExecutor.executeRTIG();
             Assert.assertTrue(true);
         } catch (Exception e){
             e.printStackTrace();
             Assert.fail();
         } finally {
-            RTIExecutor.killRTIG();
+            rtiExecutor.killRTIG();
         }
     }
 

@@ -46,8 +46,9 @@ public class Connect {
      * Lauch the RTIG
      */
    public void executeRTIG() {
+       RTIExecutor rtiExecutor = new RTIExecutor();
         try {
-            RTIExecutor.ExecuteRTIG();
+            rtiExecutor.executeRTIG();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -57,9 +58,10 @@ public class Connect {
      * End correctly the rtia and rtig
      */
    public void killConnectionAndKillRTIG(){
+       RTIExecutor rtiExecutor = new RTIExecutor();
        try{
            rtia.disconnect();
-           RTIExecutor.killRTIG();
+           rtiExecutor.killRTIG();
        } catch (Exception e){
            e.printStackTrace();
        }

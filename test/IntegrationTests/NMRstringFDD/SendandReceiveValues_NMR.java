@@ -1,7 +1,10 @@
 package IntegrationTests.NMRstringFDD;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
+import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.LogicalTime;
+import hla.rti1516e.exceptions.RTIinternalError;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,12 +33,12 @@ public class SendandReceiveValues_NMR {
     @Test
     public void test() {
 
+//        RTIExecutor rtiExecutor = new RTIExecutor();
 //        try {
-//            RTIExecutor.ExecuteRTIG();
+//            rtiExecutor.executeRTIG();
 //        } catch (RTIinternalError rtIinternalError) {
-//            System.out.println(rtIinternalError.getMessage());
+//            rtIinternalError.printStackTrace();
 //        }
-
         try {
             Sender sender = new Sender();
             Receiver receiver = new Receiver();
@@ -88,13 +91,8 @@ public class SendandReceiveValues_NMR {
             Assert.fail();
         } finally {
             //Disconnect and destroy federation and RTIG
-//            try {
-//                RTIExecutor.killRTIG();
-//            } catch (RTIinternalError rtIinternalError) {
-//                System.out.println(rtIinternalError.getMessage());
-//            }
-        }
+    //        rtiExecutor.killRTIG();
     }
-
-
 }
+}
+

@@ -48,8 +48,9 @@ public class SendandReceiveValues_TAR {
      */
     @Test
     public void test() {
+        RTIExecutor rtiExecutor = new RTIExecutor();
         try {
-            RTIExecutor.ExecuteRTIG();
+            rtiExecutor.executeRTIG();
         } catch (RTIinternalError rtIinternalError) {
             rtIinternalError.printStackTrace();
         }
@@ -98,11 +99,8 @@ public class SendandReceiveValues_TAR {
             e.printStackTrace();
             Assert.fail();
         } finally {
-            try {
-                RTIExecutor.killRTIG();
-            } catch (RTIinternalError rtIinternalError) {
-                rtIinternalError.printStackTrace();
-            }
+                rtiExecutor.killRTIG();
+            
         }
     }
 

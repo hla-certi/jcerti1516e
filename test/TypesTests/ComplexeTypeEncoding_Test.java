@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-class ComplexeTypeEncoding_Test {
+public class ComplexeTypeEncoding_Test {
 	
 	private EncoderFactory encoderFactory;
 	DataElementFactory<HLAinteger64BE> integer64BE_Factory;
@@ -314,7 +314,7 @@ class ComplexeTypeEncoding_Test {
 	
 	
 	@Test
-	void VariantRecordTest_1value() {
+	public void VariantRecordTest_1value() {
 		try {
 			HLAoctet discriminantEncoder_1 = new BasicHLAoctetImpl((byte)1);
 			HLAinteger32BE valueEncoder_1 = new BasicHLAinteger32BEImpl((byte)-5);
@@ -346,7 +346,7 @@ class ComplexeTypeEncoding_Test {
 	}
 	
 	@Test
-	void VariantRecordTest_2values() {
+	public void VariantRecordTest_2values() {
 		try {
 			HLAoctet discriminantEncoder_1 = new BasicHLAoctetImpl((byte)1);
 			HLAinteger32BE valueEncoder_1 = new BasicHLAinteger32BEImpl((byte)-5);

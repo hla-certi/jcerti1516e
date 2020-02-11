@@ -1,7 +1,7 @@
-package IntegrationTests.NMRstringFDD;
+package IntegrationTestsJunit.NMRstringFDD;
 
-import IntegrationTests.NMR.SendandReceiveValues_NMR;
-import IntegrationTests.NMR.SenderFederateAmbassador;
+import IntegrationTestsJunit.NMR.SendandReceiveValues_NMR;
+import IntegrationTestsJunit.NMR.SenderFederateAmbassador;
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiRtiAmbassador;
 import hla.rti1516e.*;

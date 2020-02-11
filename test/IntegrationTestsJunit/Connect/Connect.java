@@ -1,6 +1,6 @@
-package IntegrationTests.Connect;
+package IntegrationTestsJunit.Connect;
 
-import IntegrationTests.MyFederateAmbassador;
+import IntegrationTestsJunit.MyFederateAmbassador;
 import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.CallbackModel;
 import hla.rti1516e.RTIambassador;

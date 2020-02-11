@@ -1,6 +1,6 @@
-package IntegrationTests.JoinFederation;
+package IntegrationTestsJunit.JoinFederation;
 
-import IntegrationTests.MyFederateAmbassador;
+import IntegrationTestsJunit.MyFederateAmbassador;
 import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.*;
 import hla.rti1516e.exceptions.FederateAlreadyExecutionMember;

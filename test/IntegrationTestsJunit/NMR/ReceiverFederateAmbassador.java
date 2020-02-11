@@ -1,4 +1,4 @@
-package IntegrationTests.NMR;
+package IntegrationTestsJunit.NMR;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;

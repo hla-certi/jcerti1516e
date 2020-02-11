@@ -1,4 +1,4 @@
-package IntegrationTests.ExecuteRTIG;
+package IntegrationTestsJunit.ExecuteRTIG;
 
 import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.exceptions.RTIinternalError;

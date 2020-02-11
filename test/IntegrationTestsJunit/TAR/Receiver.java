@@ -1,4 +1,4 @@
-package IntegrationTests.TAR;
+package IntegrationTestsJunit.TAR;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import hla.rti1516e.*;

@@ -1,4 +1,4 @@
-package IntegrationTests;
+package IntegrationTestsJunit;
 
 import certi.rti1516e.impl.*;
 import hla.rti1516e.*;

@@ -322,7 +322,7 @@ public class FlexUavReceiveString {
             double updateTimeArg = Double.valueOf(args[3]);
             double lookahead = Double.valueOf(args[4]);
             new FlexUavReceiveString().runFederate(timeStepArg, updateTimeArg, lookahead);
-        } catch(NumberFormatException exception) {
+        } catch(NumberFormatException| ArrayIndexOutOfBoundsException exception) {
             //Default values
             new FlexUavReceiveString().runFederate(10.0, 0.2, 0.1);
         }

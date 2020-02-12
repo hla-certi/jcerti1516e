@@ -260,7 +260,7 @@ public class UavSend {
             double updateTimeArg = Double.valueOf(args[3]);
             double lookahead = Double.valueOf(args[4]);
             new UavSend().runFederate(timeStepArg, updateTimeArg, lookahead);
-        } catch(NumberFormatException exception) {
+        } catch(NumberFormatException | ArrayIndexOutOfBoundsException exception) {
             new UavSend().runFederate(10.0, 0.2, 0.1);
         }
 

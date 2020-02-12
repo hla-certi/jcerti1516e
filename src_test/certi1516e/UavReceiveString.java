@@ -254,7 +254,7 @@ public class UavReceiveString {
             double updateTimeArg = Double.valueOf(args[3]);
             double lookahead = Double.valueOf(args[4]);
             new UavReceiveString().runFederate(timeStepArg, updateTimeArg, lookahead);
-        } catch(NumberFormatException exception) {
+        } catch(NumberFormatException | ArrayIndexOutOfBoundsException exception) {
             new UavReceiveString().runFederate(10.0, 0.2, 0.1);
         }
     }

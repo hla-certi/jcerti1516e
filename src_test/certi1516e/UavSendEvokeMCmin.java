@@ -248,7 +248,7 @@ public class UavSendEvokeMCmin {
             double updateTimeArg = Double.valueOf(args[3]);
             double lookahead = Double.valueOf(args[4]);
             new UavSendEvokeMCmin().runFederate(timeStepArg, updateTimeArg, lookahead);
-        } catch(NumberFormatException exception) {
+        } catch(NumberFormatException | ArrayIndexOutOfBoundsException exception) {
             new UavSendEvokeMCmin().runFederate(10.0, 0.2, 0.1);
         }
 

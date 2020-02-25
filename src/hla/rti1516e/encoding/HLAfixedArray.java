@@ -16,26 +16,27 @@ import java.util.Iterator;
  */
 public interface HLAfixedArray<T extends DataElement> extends DataElement, Iterable<T> {
 
-   /**
-    * Returns the number of elements in this fixed array.
-    *
-    * @return the number of elements in this fixed array
-    */
-   int size();
+	/**
+	 * Returns the number of elements in this fixed array.
+	 *
+	 * @return the number of elements in this fixed array
+	 */
+	int size();
 
-   /**
-    * Returns the element at the specified <code>index</code>.
-    *
-    * @param index index of element to get
-    *
-    * @return the element at the specified <code>index</code>
-    */
-   T get(int index);
+	/**
+	 * Returns the element at the specified <code>index</code>.
+	 *
+	 * @param index index of element to get
+	 *
+	 * @return the element at the specified <code>index</code>
+	 */
+	T get(int index);
 
-   /**
-    * Returns an iterator for the elements in this fixed array.
-    *
-    * @return an iterator for the elements in this fixed array
-    */
-   Iterator<T> iterator();
+	/**
+	 * Returns an iterator for the elements in this fixed array.
+	 *
+	 * @return an iterator for the elements in this fixed array
+	 */
+	@Override
+	Iterator<T> iterator();
 }

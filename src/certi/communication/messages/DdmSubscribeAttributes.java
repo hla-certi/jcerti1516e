@@ -19,77 +19,78 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.AttributeHandleSet;
 
 public class DdmSubscribeAttributes extends CertiMessage {
-   private int objectClass;
-   private int region;
-   private boolean passive;
-   private AttributeHandleSet attributes;
+	private int objectClass;
+	private int region;
+	private boolean passive;
+	private AttributeHandleSet attributes;
 
-   public DdmSubscribeAttributes() {
-      super(CertiMessageType.DDM_SUBSCRIBE_ATTRIBUTES);
-   }
+	public DdmSubscribeAttributes() {
+		super(CertiMessageType.DDM_SUBSCRIBE_ATTRIBUTES);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(region);
-      messageBuffer.write(passive);
-      messageBuffer.write(attributes);
-   }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(region);
+		messageBuffer.write(passive);
+		messageBuffer.write(attributes);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-      region = messageBuffer.readInt();
-      passive = messageBuffer.readBoolean();
-      attributes = messageBuffer.readAttributeHandleSet();
-   }
+		objectClass = messageBuffer.readInt();
+		region = messageBuffer.readInt();
+		passive = messageBuffer.readBoolean();
+		attributes = messageBuffer.readAttributeHandleSet();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", region: " + region + ", passive: " + passive + ", attributes: " + attributes);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", region: " + region + ", passive: " + passive
+				+ ", attributes: " + attributes);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public int getRegion() {
-      return region;
-   }
+	public int getRegion() {
+		return region;
+	}
 
-   public boolean getPassive() {
-      return passive;
-   }
+	public boolean getPassive() {
+		return passive;
+	}
 
-   public AttributeHandleSet getAttributes() {
-      return attributes;
-   }
+	public AttributeHandleSet getAttributes() {
+		return attributes;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-   public void setRegion(int newRegion) {
-      this.region = newRegion;
-   }
+	public void setRegion(int newRegion) {
+		this.region = newRegion;
+	}
 
-   public void setPassive(boolean newPassive) {
-      this.passive = newPassive;
-   }
+	public void setPassive(boolean newPassive) {
+		this.passive = newPassive;
+	}
 
-   public void setAttributes(AttributeHandleSet newAttributes) {
-      this.attributes = newAttributes;
-   }
+	public void setAttributes(AttributeHandleSet newAttributes) {
+		this.attributes = newAttributes;
+	}
 
 }
-

@@ -14,17 +14,17 @@ package hla.rti1516e.encoding;
  */
 public interface HLAinteger32BE extends DataElement {
 
-   /**
-    * Returns the int value of this element.
-    *
-    * @return int value
-    */
-   int getValue();
+	/**
+	 * Returns the int value of this element.
+	 *
+	 * @return int value
+	 */
+	int getValue();
 
-   /**
-    * Sets the int value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(int value);
+	/**
+	 * Sets the int value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(int value);
 }

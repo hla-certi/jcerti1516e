@@ -19,85 +19,86 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.AttributeHandleSet;
 
 public class DdmRegisterObject extends CertiMessage {
-   private int objectClass;
-   private int object;
-   private String objectInstanceName;
-   private AttributeHandleSet attributes;
+	private int objectClass;
+	private int object;
+	private String objectInstanceName;
+	private AttributeHandleSet attributes;
 
-   public DdmRegisterObject() {
-      super(CertiMessageType.DDM_REGISTER_OBJECT);
-   }
+	public DdmRegisterObject() {
+		super(CertiMessageType.DDM_REGISTER_OBJECT);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(object);
-      if(objectInstanceName != null){
-         messageBuffer.write(true);
-         messageBuffer.write(objectInstanceName);
-      } else {
-         messageBuffer.write(false);
-      }
-      messageBuffer.write(attributes);
-   }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(object);
+		if (objectInstanceName != null) {
+			messageBuffer.write(true);
+			messageBuffer.write(objectInstanceName);
+		} else {
+			messageBuffer.write(false);
+		}
+		messageBuffer.write(attributes);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-      object = messageBuffer.readInt();
-      boolean hasObjectInstanceName = messageBuffer.readBoolean();
-      if(hasObjectInstanceName){
-         objectInstanceName = messageBuffer.readString();
-      }
-      attributes = messageBuffer.readAttributeHandleSet();
-   }
+		objectClass = messageBuffer.readInt();
+		object = messageBuffer.readInt();
+		boolean hasObjectInstanceName = messageBuffer.readBoolean();
+		if (hasObjectInstanceName) {
+			objectInstanceName = messageBuffer.readString();
+		}
+		attributes = messageBuffer.readAttributeHandleSet();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectInstanceName: " + objectInstanceName + ", attributes: " + attributes);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectInstanceName: "
+				+ objectInstanceName + ", attributes: " + attributes);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public String getObjectInstanceName() {
-      return objectInstanceName;
-   }
+	public String getObjectInstanceName() {
+		return objectInstanceName;
+	}
 
-   public AttributeHandleSet getAttributes() {
-      return attributes;
-   }
+	public AttributeHandleSet getAttributes() {
+		return attributes;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setObjectInstanceName(String newObjectInstanceName) {
-      this.objectInstanceName = newObjectInstanceName;
-   }
+	public void setObjectInstanceName(String newObjectInstanceName) {
+		this.objectInstanceName = newObjectInstanceName;
+	}
 
-   public void setAttributes(AttributeHandleSet newAttributes) {
-      this.attributes = newAttributes;
-   }
+	public void setAttributes(AttributeHandleSet newAttributes) {
+		this.attributes = newAttributes;
+	}
 
 }
-

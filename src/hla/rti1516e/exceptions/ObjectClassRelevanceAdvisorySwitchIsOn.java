@@ -10,18 +10,15 @@
 //File: ObjectClassRelevanceAdvisorySwitchIsOn.java
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class ObjectClassRelevanceAdvisorySwitchIsOn
  */
 public final class ObjectClassRelevanceAdvisorySwitchIsOn extends RTIexception {
-   public ObjectClassRelevanceAdvisorySwitchIsOn(String msg)
-   {
-      super(msg);
-   }
+	public ObjectClassRelevanceAdvisorySwitchIsOn(String msg) {
+		super(msg);
+	}
 
-   public ObjectClassRelevanceAdvisorySwitchIsOn(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public ObjectClassRelevanceAdvisorySwitchIsOn(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

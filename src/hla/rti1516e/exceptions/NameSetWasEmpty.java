@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class NameSetWasEmpty
  */
 public final class NameSetWasEmpty extends RTIexception {
-   public NameSetWasEmpty(String msg)
-   {
-      super(msg);
-   }
+	public NameSetWasEmpty(String msg) {
+		super(msg);
+	}
 
-   public NameSetWasEmpty(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public NameSetWasEmpty(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -6,8 +6,8 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Type-safe handle for an object instance. Generally these are created by the
@@ -16,26 +16,27 @@
 
 public interface ObjectInstanceHandle extends java.io.Serializable {
 
-  /**
-   * @return true if this refers to the same instance as other handle
-   */
-  public boolean equals(Object otherObjectInstanceHandle);
+	/**
+	 * @return true if this refers to the same instance as other handle
+	 */
+	@Override
+	boolean equals(Object otherObjectInstanceHandle);
 
-  /**
-   * @return int. All instances that refer to the same instance should return the
-   * same hascode.
-   */
-  public int hashCode();
+	/**
+	 * @return int. All instances that refer to the same instance should return the
+	 *         same hascode.
+	 */
+	@Override
+	int hashCode();
 
-   public int encodedLength();
-   public void encode(byte[] buffer, int offset);
+	int encodedLength();
 
-   public String toString();
+	void encode(byte[] buffer, int offset);
+
+	@Override
+	String toString();
 
 }
 //end ObjectInstanceHandle
 
-
-
 //File: ObjectInstanceHandleFactory.java
-

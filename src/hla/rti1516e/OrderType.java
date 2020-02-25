@@ -18,36 +18,31 @@ import hla.rti1516e.exceptions.CouldNotDecode;
  * @see RTIambassador#changeInteractionOrderType(InteractionClassHandle,OrderType)
  */
 public enum OrderType {
-   RECEIVE(1),
-   TIMESTAMP(2);
-   private final int _value;
+	RECEIVE(1), TIMESTAMP(2);
 
-   OrderType(int value)
-   {
-      _value = value;
-   }
+	private final int _value;
 
-   public int encodedLength()
-   {
-      return 1;
-   }
+	OrderType(int value) {
+		_value = value;
+	}
 
-   public void encode(byte[] buffer, int offset)
-   {
-      buffer[offset] = (byte) _value;
-   }
+	public int encodedLength() {
+		return 1;
+	}
 
-   public static OrderType decode(byte[] buffer, int offset)
-      throws CouldNotDecode
-   {
-      int value = buffer[offset];
-      switch (value) {
-         case 1:
-            return RECEIVE;
-         case 2:
-            return TIMESTAMP;
-         default:
-            throw new CouldNotDecode("Cannot decode OrderType");
-      }
-   }
+	public void encode(byte[] buffer, int offset) {
+		buffer[offset] = (byte) _value;
+	}
+
+	public static OrderType decode(byte[] buffer, int offset) throws CouldNotDecode {
+		int value = buffer[offset];
+		switch (value) {
+		case 1:
+			return RECEIVE;
+		case 2:
+			return TIMESTAMP;
+		default:
+			throw new CouldNotDecode("Cannot decode OrderType");
+		}
+	}
 }

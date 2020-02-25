@@ -6,29 +6,29 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
+
+package hla.rti1516.jlc;
 
 /**
  * Interface for the HLA data type HLAunicodeString.
  */
-public interface HLAASCIIstring extends DataElement
-{
-   void encode(ByteWrapper byteWrapper);
+public interface HLAASCIIstring extends DataElement {
+	@Override
+	void encode(ByteWrapper byteWrapper);
 
-   void decode(ByteWrapper byteWrapper);
+	@Override
+	void decode(ByteWrapper byteWrapper);
 
-   int getEncodedLength();
+	@Override
+	int getEncodedLength();
 
-   int getOctetBoundary();
+	@Override
+	int getOctetBoundary();
 
-   /**
-    * Returns the string value of this element.
-    *
-    * @return string value
-    */
-   String getValue();
+	/**
+	 * Returns the string value of this element.
+	 *
+	 * @return string value
+	 */
+	String getValue();
 }
-
-
-

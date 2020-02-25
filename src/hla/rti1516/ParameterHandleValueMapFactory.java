@@ -6,21 +6,20 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Factory for ParameterHandleValueMap instances.
  */
 public interface ParameterHandleValueMapFactory extends java.io.Serializable {
 
-  /**
-   * Creates a new ParameterHandleValueMap instance with specified initial capacity.
-   */
-  public ParameterHandleValueMap create ( int capacity);
+	/**
+	 * Creates a new ParameterHandleValueMap instance with specified initial
+	 * capacity.
+	 */
+	ParameterHandleValueMap create(int capacity);
 }
 //end ParameterHandleValueMapFactory
 
-
 //File: RTIambassador.java
-

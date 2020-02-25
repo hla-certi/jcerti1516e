@@ -27,25 +27,27 @@ import hla.rti.LogicalTimeFactory;
  *
  * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
-public class CertiLogicalTimeFactory implements LogicalTimeFactory{
+public class CertiLogicalTimeFactory implements LogicalTimeFactory {
 
-    /**
-     *
-     * @param buffer
-     * @param offset
-     * @return
-     * @throws CouldNotDecode
-     */
-    public LogicalTime decode(byte[] buffer, int offset) throws CouldNotDecode {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	/**
+	 *
+	 * @param buffer
+	 * @param offset
+	 * @return
+	 * @throws CouldNotDecode
+	 */
+	@Override
+	public LogicalTime decode(byte[] buffer, int offset) throws CouldNotDecode {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    /**
-     *
-     * @return
-     */
-    public LogicalTime makeInitial() {
-        return new CertiLogicalTime(CertiLogicalTime.INITIAL.getTime());
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public LogicalTime makeInitial() {
+		return new CertiLogicalTime(CertiLogicalTime.INITIAL.getTime());
+	}
 
 }

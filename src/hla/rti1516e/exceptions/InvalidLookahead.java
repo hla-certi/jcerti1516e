@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidLookahead
  */
 
 public final class InvalidLookahead extends RTIexception {
-   public InvalidLookahead(String msg)
-   {
-      super(msg);
-   }
+	public InvalidLookahead(String msg) {
+		super(msg);
+	}
 
-   public InvalidLookahead(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidLookahead(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

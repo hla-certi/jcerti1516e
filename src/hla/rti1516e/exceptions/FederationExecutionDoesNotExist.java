@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederationExecutionDoesNotExist
  */
 public final class FederationExecutionDoesNotExist extends RTIexception {
-   public FederationExecutionDoesNotExist(String msg)
-   {
-      super(msg);
-   }
+	public FederationExecutionDoesNotExist(String msg) {
+		super(msg);
+	}
 
-   public FederationExecutionDoesNotExist(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederationExecutionDoesNotExist(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

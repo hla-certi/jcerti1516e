@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateServiceInvocationsAreBeingReportedViaMOM
  */
 
 public final class FederateServiceInvocationsAreBeingReportedViaMOM extends RTIexception {
-   public FederateServiceInvocationsAreBeingReportedViaMOM(String msg)
-   {
-      super(msg);
-   }
+	public FederateServiceInvocationsAreBeingReportedViaMOM(String msg) {
+		super(msg);
+	}
 
-   public FederateServiceInvocationsAreBeingReportedViaMOM(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateServiceInvocationsAreBeingReportedViaMOM(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

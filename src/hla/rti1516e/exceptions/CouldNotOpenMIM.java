@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class CouldNotOpenMIM
  */
 public final class CouldNotOpenMIM extends RTIexception {
-   public CouldNotOpenMIM(String msg)
-   {
-      super(msg);
-   }
+	public CouldNotOpenMIM(String msg) {
+		super(msg);
+	}
 
-   public CouldNotOpenMIM(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public CouldNotOpenMIM(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -6,21 +6,19 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class UnableToPerformSave
-
-*/
+ * 
+ */
 
 public final class UnableToPerformSave extends RTIexception {
-  public UnableToPerformSave(String msg) {
-    super(msg);
-  }
+	public UnableToPerformSave(String msg) {
+		super(msg);
+	}
 }
-
-
 
 //File: UnknownName.java

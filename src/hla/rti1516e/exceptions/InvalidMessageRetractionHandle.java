@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidMessageRetractionHandle
  */
 
 public final class InvalidMessageRetractionHandle extends RTIexception {
-   public InvalidMessageRetractionHandle(String msg)
-   {
-      super(msg);
-   }
+	public InvalidMessageRetractionHandle(String msg) {
+		super(msg);
+	}
 
-   public InvalidMessageRetractionHandle(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidMessageRetractionHandle(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

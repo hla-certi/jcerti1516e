@@ -19,66 +19,65 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class ChangeInteractionOrderType1516E extends CertiMessage1516E {
-   private int interactionClass;
-   private short transport;
-   private short order;
+	private int interactionClass;
+	private short transport;
+	private short order;
 
-   public ChangeInteractionOrderType1516E() {
-      super(CertiMessageType.CHANGE_INTERACTION_ORDER_TYPE);
-   }
+	public ChangeInteractionOrderType1516E() {
+		super(CertiMessageType.CHANGE_INTERACTION_ORDER_TYPE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.write(transport);
-      messageBuffer.write(order);
-   }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(transport);
+		messageBuffer.write(order);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      interactionClass = messageBuffer.readInt();
-      transport = messageBuffer.readShort();
-      order = messageBuffer.readShort();
-   }
+		interactionClass = messageBuffer.readInt();
+		transport = messageBuffer.readShort();
+		order = messageBuffer.readShort();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", transport: " + transport + ", order: " + order);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", transport: " + transport + ", order: "
+				+ order);
+	}
 
-   public int getInteractionClass() {
-      return interactionClass;
-   }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-   public short getTransport() {
-      return transport;
-   }
+	public short getTransport() {
+		return transport;
+	}
 
-   public short getOrder() {
-      return order;
-   }
+	public short getOrder() {
+		return order;
+	}
 
-   public void setInteractionClass(int newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-   public void setTransport(short newTransport) {
-      this.transport = newTransport;
-   }
+	public void setTransport(short newTransport) {
+		this.transport = newTransport;
+	}
 
-   public void setOrder(short newOrder) {
-      this.order = newOrder;
-   }
+	public void setOrder(short newOrder) {
+		this.order = newOrder;
+	}
 
 }
-

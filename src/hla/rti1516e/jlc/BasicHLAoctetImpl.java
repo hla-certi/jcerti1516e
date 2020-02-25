@@ -23,86 +23,94 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.EncoderException;
 
-
 /**
- * Implementation of an BasicHLAoctet
- * The value of the HLAoctet is represented by a byte
+ * Implementation of an BasicHLAoctet The value of the HLAoctet is represented
+ * by a byte
  */
-public class BasicHLAoctetImpl extends DataElementBase implements
-        hla.rti1516e.encoding.HLAoctet {
-    private byte value;
-    
-    /**
-     * Constructor to create a BasicHLAoctet with a value b
-     * @param b : value of the BasicHLAoctet, in byte
-     */
-    public BasicHLAoctetImpl(byte b) {
-        this.value = b;
-    }
-    
-    /**
-     * Empty constructor to create a new BasicHLAoctetImpl
-     * Set the value to 0
-     */
-    public BasicHLAoctetImpl() {
-        value = 0;
-    }
-    
-    /**
-     * Returns the octet boundary of this element.
-     * BasicHLAoctet octet boundary is defined to 1 in the HLA standard
-     * @return the octet boundary of this element
-     */
-    public int getOctetBoundary() {
-        return 1;
-    }
+public class BasicHLAoctetImpl extends DataElementBase implements hla.rti1516e.encoding.HLAoctet {
+	private byte value;
 
-    /**
-     * Encodes this element into the specified ByteWrapper.
-     *
-     * @param byteWrapper destination for the encoded element
-     *
-     * @throws EncoderException if the element can not be encoded
-     */
-    public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        byteWrapper.align(getOctetBoundary());
-        byteWrapper.put(value);
-    }
+	/**
+	 * Constructor to create a BasicHLAoctet with a value b
+	 * 
+	 * @param b : value of the BasicHLAoctet, in byte
+	 */
+	public BasicHLAoctetImpl(byte b) {
+		this.value = b;
+	}
 
-    /**
-     * Returns the size in bytes of this element's encoding.
-     * BasicHLAoctet size is defined to 1 in the HLA standard
-     * @return the size in bytes of this element's encoding
-     */
-    public int getEncodedLength() {
-        return 1;
-    }
+	/**
+	 * Empty constructor to create a new BasicHLAoctetImpl Set the value to 0
+	 */
+	public BasicHLAoctetImpl() {
+		value = 0;
+	}
 
-    /**
-     * Decodes this element from the ByteWrapper.
-     *
-     * @param byteWrapper source for the decoding of this element
-     *
-     * @throws DecoderException if the element can not be decoded
-     */
-    public void decode(ByteWrapper byteWrapper) throws DecoderException {
-        byteWrapper.align(getOctetBoundary());
-        value = (byte)byteWrapper.get();
-    }
+	/**
+	 * Returns the octet boundary of this element. BasicHLAoctet octet boundary is
+	 * defined to 1 in the HLA standard
+	 * 
+	 * @return the octet boundary of this element
+	 */
+	@Override
+	public int getOctetBoundary() {
+		return 1;
+	}
 
-    /**
-     * Get the value in byte of the BasicHLAoctet
-     * @return value in byte of the BasicHLAoctet
-     */
-    public byte getValue() {
-        return value;
-    }
+	/**
+	 * Encodes this element into the specified ByteWrapper.
+	 *
+	 * @param byteWrapper destination for the encoded element
+	 *
+	 * @throws EncoderException if the element can not be encoded
+	 */
+	@Override
+	public void encode(ByteWrapper byteWrapper) throws EncoderException {
+		byteWrapper.align(getOctetBoundary());
+		byteWrapper.put(value);
+	}
 
-    /**
-     * Change the value of the BasicHLAoctet
-     * @param value : value to set
-     */
-    public void setValue(byte value) {
-        this.value = value;
-    }
+	/**
+	 * Returns the size in bytes of this element's encoding. BasicHLAoctet size is
+	 * defined to 1 in the HLA standard
+	 * 
+	 * @return the size in bytes of this element's encoding
+	 */
+	@Override
+	public int getEncodedLength() {
+		return 1;
+	}
+
+	/**
+	 * Decodes this element from the ByteWrapper.
+	 *
+	 * @param byteWrapper source for the decoding of this element
+	 *
+	 * @throws DecoderException if the element can not be decoded
+	 */
+	@Override
+	public void decode(ByteWrapper byteWrapper) throws DecoderException {
+		byteWrapper.align(getOctetBoundary());
+		value = (byte) byteWrapper.get();
+	}
+
+	/**
+	 * Get the value in byte of the BasicHLAoctet
+	 * 
+	 * @return value in byte of the BasicHLAoctet
+	 */
+	@Override
+	public byte getValue() {
+		return value;
+	}
+
+	/**
+	 * Change the value of the BasicHLAoctet
+	 * 
+	 * @param value : value to set
+	 */
+	@Override
+	public void setValue(byte value) {
+		this.value = value;
+	}
 }

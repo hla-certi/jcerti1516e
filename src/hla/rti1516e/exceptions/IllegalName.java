@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class IllegalName
  */
 
 public final class IllegalName extends RTIexception {
-   public IllegalName(String msg)
-   {
-      super(msg);
-   }
+	public IllegalName(String msg) {
+		super(msg);
+	}
 
-   public IllegalName(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public IllegalName(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

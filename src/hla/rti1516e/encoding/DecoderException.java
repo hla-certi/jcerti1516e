@@ -10,13 +10,11 @@
 package hla.rti1516e.encoding;
 
 public class DecoderException extends Exception {
-   public DecoderException(String message)
-   {
-      super(message);
-   }
+	public DecoderException(String message) {
+		super(message);
+	}
 
-   public DecoderException(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public DecoderException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

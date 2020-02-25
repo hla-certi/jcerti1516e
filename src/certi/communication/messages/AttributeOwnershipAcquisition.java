@@ -19,55 +19,55 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.AttributeHandleSet;
 
 public class AttributeOwnershipAcquisition extends CertiMessage {
-   private int object;
-   private AttributeHandleSet attributes;
+	private int object;
+	private AttributeHandleSet attributes;
 
-   public AttributeOwnershipAcquisition() {
-      super(CertiMessageType.ATTRIBUTE_OWNERSHIP_ACQUISITION);
-   }
+	public AttributeOwnershipAcquisition() {
+		super(CertiMessageType.ATTRIBUTE_OWNERSHIP_ACQUISITION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(object);
-      messageBuffer.write(attributes);
-   }
+		messageBuffer.write(object);
+		messageBuffer.write(attributes);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      object = messageBuffer.readInt();
-      attributes = messageBuffer.readAttributeHandleSet();
-   }
+		object = messageBuffer.readInt();
+		attributes = messageBuffer.readAttributeHandleSet();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", object: " + object + ", attributes: " + attributes);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", object: " + object + ", attributes: " + attributes);
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public AttributeHandleSet getAttributes() {
-      return attributes;
-   }
+	public AttributeHandleSet getAttributes() {
+		return attributes;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setAttributes(AttributeHandleSet newAttributes) {
-      this.attributes = newAttributes;
-   }
+	public void setAttributes(AttributeHandleSet newAttributes) {
+		this.attributes = newAttributes;
+	}
 
 }
-

@@ -16,40 +16,41 @@ import java.util.Iterator;
  */
 public interface HLAopaqueData extends DataElement, Iterable<Byte> {
 
-   /**
-    * Returns the number of bytes in this array.
-    *
-    * @return the number of bytes in this array.
-    */
-   int size();
+	/**
+	 * Returns the number of bytes in this array.
+	 *
+	 * @return the number of bytes in this array.
+	 */
+	int size();
 
-   /**
-    * Returns the <code>byte</code> at the specified position in this array.
-    *
-    * @param index index of <code>byte</code> to return
-    *
-    * @return <code>byte</code> at the specified index
-    */
-   byte get(int index);
+	/**
+	 * Returns the <code>byte</code> at the specified position in this array.
+	 *
+	 * @param index index of <code>byte</code> to return
+	 *
+	 * @return <code>byte</code> at the specified index
+	 */
+	byte get(int index);
 
-   /**
-    * Returns an iterator over the bytes in this array in a proper sequence.
-    *
-    * @return an iterator over the bytes in this array in a proper sequence
-    */
-   Iterator<Byte> iterator();
+	/**
+	 * Returns an iterator over the bytes in this array in a proper sequence.
+	 *
+	 * @return an iterator over the bytes in this array in a proper sequence
+	 */
+	@Override
+	Iterator<Byte> iterator();
 
-   /**
-    * Returns the byte[] value of this element.
-    *
-    * @return byte[] value
-    */
-   byte[] getValue();
+	/**
+	 * Returns the byte[] value of this element.
+	 *
+	 * @return byte[] value
+	 */
+	byte[] getValue();
 
-   /**
-    * Sets the byte[] value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(byte[] value);
+	/**
+	 * Sets the byte[] value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(byte[] value);
 }

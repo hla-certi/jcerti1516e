@@ -19,55 +19,53 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class QueryAttributeOwnership1516E extends CertiMessage1516E {
-   private int object;
-   private int attribute;
+	private int object;
+	private int attribute;
 
-   public QueryAttributeOwnership1516E() {
-      super(CertiMessageType.QUERY_ATTRIBUTE_OWNERSHIP);
-   }
+	public QueryAttributeOwnership1516E() {
+		super(CertiMessageType.QUERY_ATTRIBUTE_OWNERSHIP);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(object);
-      messageBuffer.write(attribute);
-   }
+		messageBuffer.write(object);
+		messageBuffer.write(attribute);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      object = messageBuffer.readInt();
-      attribute = messageBuffer.readInt();
-   }
+		object = messageBuffer.readInt();
+		attribute = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", object: " + object + ", attribute: " + attribute);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", object: " + object + ", attribute: " + attribute);
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public int getAttribute() {
-      return attribute;
-   }
+	public int getAttribute() {
+		return attribute;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setAttribute(int newAttribute) {
-      this.attribute = newAttribute;
-   }
+	public void setAttribute(int newAttribute) {
+		this.attribute = newAttribute;
+	}
 
 }
-

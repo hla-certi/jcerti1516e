@@ -14,13 +14,10 @@ import java.io.Serializable;
 
 public interface RegionHandleSetFactory extends Serializable {
 
-   /**
-    * return hla.rti1516.RegionHandleSet newly created
-    */
-   RegionHandleSet create();
+	/**
+	 * return hla.rti1516.RegionHandleSet newly created
+	 */
+	RegionHandleSet create();
 }
 
 //end RegionHandleSetFactory
-
-
-

@@ -19,55 +19,55 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.AttributeHandleSet;
 
 public class PublishObjectClass extends CertiMessage {
-   private int objectClass;
-   private AttributeHandleSet attributes;
+	private int objectClass;
+	private AttributeHandleSet attributes;
 
-   public PublishObjectClass() {
-      super(CertiMessageType.PUBLISH_OBJECT_CLASS);
-   }
+	public PublishObjectClass() {
+		super(CertiMessageType.PUBLISH_OBJECT_CLASS);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(attributes);
-   }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(attributes);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-      attributes = messageBuffer.readAttributeHandleSet();
-   }
+		objectClass = messageBuffer.readInt();
+		attributes = messageBuffer.readAttributeHandleSet();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", attributes: " + attributes);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", attributes: " + attributes);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public AttributeHandleSet getAttributes() {
-      return attributes;
-   }
+	public AttributeHandleSet getAttributes() {
+		return attributes;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-   public void setAttributes(AttributeHandleSet newAttributes) {
-      this.attributes = newAttributes;
-   }
+	public void setAttributes(AttributeHandleSet newAttributes) {
+		this.attributes = newAttributes;
+	}
 
 }
-

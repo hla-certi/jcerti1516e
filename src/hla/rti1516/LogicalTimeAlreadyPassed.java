@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class LogicalTimeAlreadyPassed
-
-*/
+ * 
+ */
 
 public final class LogicalTimeAlreadyPassed extends RTIexception {
-  public LogicalTimeAlreadyPassed(String msg) {
-    super(msg);
-  }
+	public LogicalTimeAlreadyPassed(String msg) {
+		super(msg);
+	}
 }
-
-
-

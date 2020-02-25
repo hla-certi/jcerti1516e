@@ -19,66 +19,64 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class InformAttributeOwnership1516E extends CertiMessage1516E {
-   private int object;
-   private int attribute;
-   private int federate;
+	private int object;
+	private int attribute;
+	private int federate;
 
-   public InformAttributeOwnership1516E() {
-      super(CertiMessageType.INFORM_ATTRIBUTE_OWNERSHIP);
-   }
+	public InformAttributeOwnership1516E() {
+		super(CertiMessageType.INFORM_ATTRIBUTE_OWNERSHIP);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(object);
-      messageBuffer.write(attribute);
-      messageBuffer.write(federate);
-   }
+		messageBuffer.write(object);
+		messageBuffer.write(attribute);
+		messageBuffer.write(federate);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      object = messageBuffer.readInt();
-      attribute = messageBuffer.readInt();
-      federate = messageBuffer.readInt();
-   }
+		object = messageBuffer.readInt();
+		attribute = messageBuffer.readInt();
+		federate = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", object: " + object + ", attribute: " + attribute + ", federate: " + federate);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", object: " + object + ", attribute: " + attribute + ", federate: " + federate);
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public int getAttribute() {
-      return attribute;
-   }
+	public int getAttribute() {
+		return attribute;
+	}
 
-   public int getFederate() {
-      return federate;
-   }
+	public int getFederate() {
+		return federate;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setAttribute(int newAttribute) {
-      this.attribute = newAttribute;
-   }
+	public void setAttribute(int newAttribute) {
+		this.attribute = newAttribute;
+	}
 
-   public void setFederate(int newFederate) {
-      this.federate = newFederate;
-   }
+	public void setFederate(int newFederate) {
+		this.federate = newFederate;
+	}
 
 }
-

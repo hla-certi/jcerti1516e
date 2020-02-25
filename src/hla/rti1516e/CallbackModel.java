@@ -15,6 +15,5 @@ package hla.rti1516e;
  * @see RTIambassador#connect
  */
 public enum CallbackModel {
-   HLA_IMMEDIATE,
-   HLA_EVOKED
+	HLA_IMMEDIATE, HLA_EVOKED
 }

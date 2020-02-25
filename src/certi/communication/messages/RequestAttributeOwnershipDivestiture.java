@@ -19,32 +19,32 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class RequestAttributeOwnershipDivestiture extends CertiMessage {
 
-   public RequestAttributeOwnershipDivestiture() {
-      super(CertiMessageType.REQUEST_ATTRIBUTE_OWNERSHIP_DIVESTITURE);
-   }
+	public RequestAttributeOwnershipDivestiture() {
+		super(CertiMessageType.REQUEST_ATTRIBUTE_OWNERSHIP_DIVESTITURE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString());
-   }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
 
 }
-

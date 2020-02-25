@@ -19,187 +19,199 @@
 // ----------------------------------------------------------------------------
 package certi.rti.impl;
 
-import hla.rti.ArrayIndexOutOfBounds;
-import hla.rti.SuppliedAttributes;
-import hla.rti.SuppliedParameters;
 import java.util.ArrayList;
 import java.util.List;
 
+import hla.rti.ArrayIndexOutOfBounds;
+import hla.rti.SuppliedAttributes;
+import hla.rti.SuppliedParameters;
+
 /**
- * Collection similar to standard array that holds handle-value pairs and has ability to dynamically grow.
+ * Collection similar to standard array that holds handle-value pairs and has
+ * ability to dynamically grow.
  *
  * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  * @version 3.3.3
  */
 public class CertiHandleValuePairCollection implements SuppliedAttributes, SuppliedParameters {
 
-    private List<HandleValuePair> pairs;
+	private List<HandleValuePair> pairs;
 
-    /**
-     * Constructs the handle-value pair collection
-     */
-    public CertiHandleValuePairCollection() {
-        pairs = new ArrayList<HandleValuePair>();
-    }
+	/**
+	 * Constructs the handle-value pair collection
+	 */
+	public CertiHandleValuePairCollection() {
+		pairs = new ArrayList<>();
+	}
 
-    /**
-     * Constructs the handle-value pair collection with specified initial capacity. This is prefered to default constructor because of better performance.
-     * 
-     * @param size starting initial capacity of collection
-     */
-    public CertiHandleValuePairCollection(int size) {
-        pairs = new ArrayList<HandleValuePair>(size);
-    }
+	/**
+	 * Constructs the handle-value pair collection with specified initial capacity.
+	 * This is prefered to default constructor because of better performance.
+	 * 
+	 * @param size starting initial capacity of collection
+	 */
+	public CertiHandleValuePairCollection(int size) {
+		pairs = new ArrayList<>(size);
+	}
 
-    /**
-     * Add pair beyond last index.
-     *
-     * @param handle int
-     * @param value byte[]
-     */
-    public void add(int handle, byte[] value) {
-        pairs.add(new HandleValuePair(handle, value));
-    }
+	/**
+	 * Add pair beyond last index.
+	 *
+	 * @param handle int
+	 * @param value  byte[]
+	 */
+	@Override
+	public void add(int handle, byte[] value) {
+		pairs.add(new HandleValuePair(handle, value));
+	}
 
-    /**
-     * Removes all handles & values.
-     */
-    public void empty() {
-        pairs.clear();
-    }
+	/**
+	 * Removes all handles & values.
+	 */
+	@Override
+	public void empty() {
+		pairs.clear();
+	}
 
-    /**
-     * Return handle at index position.
-     *
-     * @return int attribute handle
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public int getHandle(int index) throws ArrayIndexOutOfBounds {
-        return pairs.get(index).getHandle();
-    }
+	/**
+	 * Return handle at index position.
+	 *
+	 * @return int attribute handle
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public int getHandle(int index) throws ArrayIndexOutOfBounds {
+		return pairs.get(index).getHandle();
+	}
 
-    /**
-     * Return copy of value at index position.
-     *
-     * @return byte[] copy (clone) of value
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public byte[] getValue(int index) throws ArrayIndexOutOfBounds {
-        return this.getValueReference(index).clone();
-    }
+	/**
+	 * Return copy of value at index position.
+	 *
+	 * @return byte[] copy (clone) of value
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public byte[] getValue(int index) throws ArrayIndexOutOfBounds {
+		return this.getValueReference(index).clone();
+	}
 
-    /**
-     * Return length of value at index position.
-     *
-     * @return int value length
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public int getValueLength(int index) throws ArrayIndexOutOfBounds {
-        return this.getValueReference(index).length;
-    }
+	/**
+	 * Return length of value at index position.
+	 *
+	 * @return int value length
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public int getValueLength(int index) throws ArrayIndexOutOfBounds {
+		return this.getValueReference(index).length;
+	}
 
-    /**
-     * Get the reference of the value at position index (not a clone)
-     *
-     * @return byte[] the reference
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {
-        return pairs.get(index).getValue();
-    }
+	/**
+	 * Get the reference of the value at position index (not a clone)
+	 *
+	 * @return byte[] the reference
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {
+		return pairs.get(index).getValue();
+	}
 
-    /**
-     * Remove handle & value corresponding to handle. All other elements shifted down.
-     * Not safe during iteration.
-     *
-     * @param handle int
-     * @exception hla.rti.ArrayIndexOutOfBounds if handle not in set
-     */
-    public void remove(int handle) throws ArrayIndexOutOfBounds {
-        pairs.remove(new HandleValuePair(handle, null));
-    }
+	/**
+	 * Remove handle & value corresponding to handle. All other elements shifted
+	 * down. Not safe during iteration.
+	 *
+	 * @param handle int
+	 * @exception hla.rti.ArrayIndexOutOfBounds if handle not in set
+	 */
+	@Override
+	public void remove(int handle) throws ArrayIndexOutOfBounds {
+		pairs.remove(new HandleValuePair(handle, null));
+	}
 
-    /**
-     * Remove handle & value at index position. All other elements shifted down.
-     * Not safe during iteration.
-     *
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public void removeAt(int index) throws ArrayIndexOutOfBounds {
-        pairs.remove(index);
-    }
+	/**
+	 * Remove handle & value at index position. All other elements shifted down. Not
+	 * safe during iteration.
+	 *
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public void removeAt(int index) throws ArrayIndexOutOfBounds {
+		pairs.remove(index);
+	}
 
-    /**
-     * @return int Number of elements
-     */
-    public int size() {
-        return pairs.size();
-    }
+	/**
+	 * @return int Number of elements
+	 */
+	@Override
+	public int size() {
+		return pairs.size();
+	}
 
-    @Override
-    public String toString() {
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("{");
-        for (HandleValuePair pair : pairs) {
-            stringBuffer.append(pair.toString());
-        }
-        stringBuffer.append("}");
-        return stringBuffer.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append("{");
+		for (HandleValuePair pair : pairs) {
+			stringBuffer.append(pair.toString());
+		}
+		stringBuffer.append("}");
+		return stringBuffer.toString();
+	}
 
-    class HandleValuePair {
+	class HandleValuePair {
 
-        private int handle;
-        private byte[] value;
+		private int handle;
+		private byte[] value;
 
-        protected HandleValuePair(int handle, byte[] value) {
-            this.handle = handle;
-            this.value = value;
-        }
+		protected HandleValuePair(int handle, byte[] value) {
+			this.handle = handle;
+			this.value = value;
+		}
 
-        public int getHandle() {
-            return handle;
-        }
+		public int getHandle() {
+			return handle;
+		}
 
-        public void setHandle(int handle) {
-            this.handle = handle;
-        }
+		public void setHandle(int handle) {
+			this.handle = handle;
+		}
 
-        public byte[] getValue() {
-            return value;
-        }
+		public byte[] getValue() {
+			return value;
+		}
 
-        public void setValue(byte[] value) {
-            this.value = value;
-        }
+		public void setValue(byte[] value) {
+			this.value = value;
+		}
 
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final HandleValuePair other = (HandleValuePair) obj;
-            return this.handle == other.handle;
-        }
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			final HandleValuePair other = (HandleValuePair) obj;
+			return this.handle == other.handle;
+		}
 
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 31 * hash + this.handle;
-            return hash;
-        }
+		@Override
+		public int hashCode() {
+			int hash = 7;
+			hash = 31 * hash + this.handle;
+			return hash;
+		}
 
-        @Override
-        public String toString() {
-            return "(" + handle + ":" + value + ")";
-        }
-    }
+		@Override
+		public String toString() {
+			return "(" + handle + ":" + value + ")";
+		}
+	}
 }

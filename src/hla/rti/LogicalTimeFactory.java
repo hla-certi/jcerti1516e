@@ -4,13 +4,12 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
 
 package hla.rti;
 
 public interface LogicalTimeFactory {
 
-	public LogicalTime decode(byte[] buffer, int offset)
-	throws CouldNotDecode;
-	public LogicalTime makeInitial();
+	LogicalTime decode(byte[] buffer, int offset) throws CouldNotDecode;
+
+	LogicalTime makeInitial();
 }

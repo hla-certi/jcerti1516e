@@ -10,24 +10,17 @@
 //File: AttributeRelevanceAdvisorySwitchIsOn.java
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeRelevanceAdvisorySwitchIsOn
  */
 public final class AttributeRelevanceAdvisorySwitchIsOn extends RTIexception {
-   public AttributeRelevanceAdvisorySwitchIsOn(String msg)
-   {
-      super(msg);
-   }
+	public AttributeRelevanceAdvisorySwitchIsOn(String msg) {
+		super(msg);
+	}
 
-   public AttributeRelevanceAdvisorySwitchIsOn(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeRelevanceAdvisorySwitchIsOn(String message, Throwable cause) {
+		super(message, cause);
+	}
 }
 
 //end AttributeRelevanceAdvisorySwitchIsOn
-
-
-
-

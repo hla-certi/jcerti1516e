@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class MessageCanNoLongerBeRetracted
  */
 
 public final class MessageCanNoLongerBeRetracted extends RTIexception {
-   public MessageCanNoLongerBeRetracted(String msg)
-   {
-      super(msg);
-   }
+	public MessageCanNoLongerBeRetracted(String msg) {
+		super(msg);
+	}
 
-   public MessageCanNoLongerBeRetracted(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public MessageCanNoLongerBeRetracted(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

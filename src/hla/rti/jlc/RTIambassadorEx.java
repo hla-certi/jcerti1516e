@@ -4,14 +4,11 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
+
 package hla.rti.jlc;
 
-import hla.rti.*;
+import hla.rti.RTIambassador;
 
-public interface RTIambassadorEx extends RTIambassador
-{
-   public boolean tick( final double min, final double max )
-     throws hla.rti.RTIinternalError,
-              hla.rti.ConcurrentAccessAttempted;
+public interface RTIambassadorEx extends RTIambassador {
+	boolean tick(final double min, final double max) throws hla.rti.RTIinternalError, hla.rti.ConcurrentAccessAttempted;
 }

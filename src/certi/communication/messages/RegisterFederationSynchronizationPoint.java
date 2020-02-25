@@ -19,44 +19,44 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.FederateHandleSet;
 
 public class RegisterFederationSynchronizationPoint extends CertiMessage {
-   private FederateHandleSet federateSet;
+	private FederateHandleSet federateSet;
 
-   public RegisterFederationSynchronizationPoint() {
-      super(CertiMessageType.REGISTER_FEDERATION_SYNCHRONIZATION_POINT);
-   }
+	public RegisterFederationSynchronizationPoint() {
+		super(CertiMessageType.REGISTER_FEDERATION_SYNCHRONIZATION_POINT);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(federateSet);
-   }
+		messageBuffer.write(federateSet);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      federateSet = messageBuffer.readFederateHandleSet();
-   }
+		federateSet = messageBuffer.readFederateHandleSet();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", federateSet: " + federateSet);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", federateSet: " + federateSet);
+	}
 
-   public FederateHandleSet getFederateSet() {
-      return federateSet;
-   }
+	public FederateHandleSet getFederateSet() {
+		return federateSet;
+	}
 
-   public void setFederateSet(FederateHandleSet newFederateSet) {
-      this.federateSet = newFederateSet;
-   }
+	public void setFederateSet(FederateHandleSet newFederateSet) {
+		this.federateSet = newFederateSet;
+	}
 
 }
-

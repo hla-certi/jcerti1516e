@@ -6,24 +6,24 @@ import certi.communication.MessageBuffer;
 
 public class TimeAdvanceRequest1516E extends CertiMessage1516E {
 
-    public TimeAdvanceRequest1516E() {
-        super(CertiMessageType.TIME_ADVANCE_REQUEST);
-    }
+	public TimeAdvanceRequest1516E() {
+		super(CertiMessageType.TIME_ADVANCE_REQUEST);
+	}
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-    }
+	}
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-    }
+	}
 
-    @Override
-    public String toString() {
-        return (super.toString());
-    }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
 }

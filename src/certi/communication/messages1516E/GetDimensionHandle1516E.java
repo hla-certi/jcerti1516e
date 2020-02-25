@@ -19,66 +19,65 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class GetDimensionHandle1516E extends CertiMessage1516E {
-   private String dimensionName;
-   private int space;
-   private int dimension=0;
+	private String dimensionName;
+	private int space;
+	private int dimension = 0;
 
-   public GetDimensionHandle1516E() {
-      super(CertiMessageType.GET_DIMENSION_HANDLE);
-   }
+	public GetDimensionHandle1516E() {
+		super(CertiMessageType.GET_DIMENSION_HANDLE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(dimensionName);
-      messageBuffer.write(space);
-      messageBuffer.write(dimension);
-   }
+		messageBuffer.write(dimensionName);
+		messageBuffer.write(space);
+		messageBuffer.write(dimension);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      dimensionName = messageBuffer.readString();
-      space = messageBuffer.readInt();
-      dimension = messageBuffer.readInt();
-   }
+		dimensionName = messageBuffer.readString();
+		space = messageBuffer.readInt();
+		dimension = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", dimensionName: " + dimensionName + ", space: " + space + ", dimension: " + dimension);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", dimensionName: " + dimensionName + ", space: " + space + ", dimension: "
+				+ dimension);
+	}
 
-   public String getDimensionName() {
-      return dimensionName;
-   }
+	public String getDimensionName() {
+		return dimensionName;
+	}
 
-   public int getSpace() {
-      return space;
-   }
+	public int getSpace() {
+		return space;
+	}
 
-   public int getDimension() {
-      return dimension;
-   }
+	public int getDimension() {
+		return dimension;
+	}
 
-   public void setDimensionName(String newDimensionName) {
-      this.dimensionName = newDimensionName;
-   }
+	public void setDimensionName(String newDimensionName) {
+		this.dimensionName = newDimensionName;
+	}
 
-   public void setSpace(int newSpace) {
-      this.space = newSpace;
-   }
+	public void setSpace(int newSpace) {
+		this.space = newSpace;
+	}
 
-   public void setDimension(int newDimension) {
-      this.dimension = newDimension;
-   }
+	public void setDimension(int newDimension) {
+		this.dimension = newDimension;
+	}
 
 }
-

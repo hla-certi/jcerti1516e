@@ -6,22 +6,19 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class JoinedFederateIsNotInTimeAdvancingState
-
-*/
+ * 
+ */
 
 public final class JoinedFederateIsNotInTimeAdvancingState extends RTIexception {
-  public JoinedFederateIsNotInTimeAdvancingState(String msg) {
-    super(msg);
-  }
+	public JoinedFederateIsNotInTimeAdvancingState(String msg) {
+		super(msg);
+	}
 }
 
-
-
 //File: LogicalTime.java
-

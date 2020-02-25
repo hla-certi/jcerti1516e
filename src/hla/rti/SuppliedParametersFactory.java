@@ -4,7 +4,6 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
 
 package hla.rti;
 
@@ -13,10 +12,11 @@ package hla.rti;
  */
 public interface SuppliedParametersFactory {
 
-/**
- * Creates a new SuppliedParameters instance with specified initial capacity.
- * @return hla.rti.SuppliedParameters
- * @param capacity int
- */
-public SuppliedParameters create ( int capacity);
+	/**
+	 * Creates a new SuppliedParameters instance with specified initial capacity.
+	 * 
+	 * @return hla.rti.SuppliedParameters
+	 * @param capacity int
+	 */
+	SuppliedParameters create(int capacity);
 }

@@ -19,54 +19,54 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class GetObjectClassHandle extends CertiMessage {
-   private int objectClass;
-   private String className;
+	private int objectClass;
+	private String className;
 
-   public GetObjectClassHandle() {
-      super(CertiMessageType.GET_OBJECT_CLASS_HANDLE);
-   }
+	public GetObjectClassHandle() {
+		super(CertiMessageType.GET_OBJECT_CLASS_HANDLE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(className);
-   }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(className);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-      className = messageBuffer.readString();
-   }
+		objectClass = messageBuffer.readInt();
+		className = messageBuffer.readString();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", className: " + className);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", className: " + className);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public String getClassName() {
-      return className;
-   }
+	public String getClassName() {
+		return className;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-   public void setClassName(String newClassName) {
-      this.className = newClassName;
-   }
+	public void setClassName(String newClassName) {
+		this.className = newClassName;
+	}
 
 }
-

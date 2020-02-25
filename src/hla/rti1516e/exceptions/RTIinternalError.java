@@ -10,18 +10,15 @@
 package hla.rti1516e.exceptions;
 
 /**
- * Public error class RTIinternalError. This is deliberately
- * not a final class. RTI implementers may add implementation-specific
- * subclasses.
+ * Public error class RTIinternalError. This is deliberately not a final class.
+ * RTI implementers may add implementation-specific subclasses.
  */
 public class RTIinternalError extends RTIexception {
-   public RTIinternalError(String msg)
-   {
-      super(msg);
-   }
+	public RTIinternalError(String msg) {
+		super(msg);
+	}
 
-   public RTIinternalError(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public RTIinternalError(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

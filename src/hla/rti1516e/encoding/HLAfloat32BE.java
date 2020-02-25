@@ -14,17 +14,17 @@ package hla.rti1516e.encoding;
  */
 public interface HLAfloat32BE extends DataElement {
 
-   /**
-    * Returns the float value of this element.
-    *
-    * @return float value
-    */
-   float getValue();
+	/**
+	 * Returns the float value of this element.
+	 *
+	 * @return float value
+	 */
+	float getValue();
 
-   /**
-    * Sets the float value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(float value);
+	/**
+	 * Sets the float value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(float value);
 }

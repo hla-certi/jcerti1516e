@@ -12,26 +12,24 @@ package hla.rti1516e.encoding;
 /**
  * Interface used to populate arrays.
  * <p/>
- * This example decodes a variable array of HLAinteger32BE using
- * a factory.
+ * This example decodes a variable array of HLAinteger32BE using a factory.
+ * 
  * <pre>
- * DataElementFactory factory = new DataElementFactory()
- * {
- *    public DataElement createElement(int index)
- *    {
- *       return encoderFactory.createHLAinteger32BE();
- *    }
+ * DataElementFactory factory = new DataElementFactory() {
+ * 	public DataElement createElement(int index) {
+ * 		return encoderFactory.createHLAinteger32BE();
+ * 	}
  * };
  * HLAvariableArray post = encoderFactory.createHLAvariableArray(factory);
  * post.decode(bytes);
  * </pre>
  */
 public interface DataElementFactory<T extends DataElement> {
-   /**
-    * Creates an element appropriate for the specified index.
-    *
-    * @param index Position in array that this element will take.
-    * @return Element
-    */
-   T createElement(int index);
+	/**
+	 * Creates an element appropriate for the specified index.
+	 *
+	 * @param index Position in array that this element will take.
+	 * @return Element
+	 */
+	T createElement(int index);
 }

@@ -14,44 +14,42 @@ import java.io.Serializable;
 /**
  * Set of these records returned by (4.25) reportFederationExecutions
  */
-public final class FederationExecutionInformation
-   implements Serializable {
+public final class FederationExecutionInformation implements Serializable {
 
-   public FederationExecutionInformation(String federationExecutionName, String logicalTimeImplementationName)
-   {
-      this.federationExecutionName = federationExecutionName;
-      this.logicalTimeImplementationName = logicalTimeImplementationName;
-   }
+	public FederationExecutionInformation(String federationExecutionName, String logicalTimeImplementationName) {
+		this.federationExecutionName = federationExecutionName;
+		this.logicalTimeImplementationName = logicalTimeImplementationName;
+	}
 
-   public final String federationExecutionName;
-   public final String logicalTimeImplementationName;
+	public final String federationExecutionName;
+	public final String logicalTimeImplementationName;
 
-   public boolean equals(Object o)
-   {
-      if (this == o) {
-         return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-         return false;
-      }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-      FederationExecutionInformation that = (FederationExecutionInformation) o;
+		FederationExecutionInformation that = (FederationExecutionInformation) o;
 
-      if (!federationExecutionName.equals(that.federationExecutionName)) {
-         return false;
-      }
-      if (!logicalTimeImplementationName.equals(that.logicalTimeImplementationName)) {
-         return false;
-      }
+		if (!federationExecutionName.equals(that.federationExecutionName)) {
+			return false;
+		}
+		if (!logicalTimeImplementationName.equals(that.logicalTimeImplementationName)) {
+			return false;
+		}
 
-      return true;
-   }
+		return true;
+	}
 
-   public int hashCode()
-   {
-      int result;
-      result = federationExecutionName.hashCode();
-      result = 31 * result + logicalTimeImplementationName.hashCode();
-      return result;
-   }
+	@Override
+	public int hashCode() {
+		int result;
+		result = federationExecutionName.hashCode();
+		result = 31 * result + logicalTimeImplementationName.hashCode();
+		return result;
+	}
 }

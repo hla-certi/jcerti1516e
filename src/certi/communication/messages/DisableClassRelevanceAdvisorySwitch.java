@@ -19,32 +19,32 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class DisableClassRelevanceAdvisorySwitch extends CertiMessage {
 
-   public DisableClassRelevanceAdvisorySwitch() {
-      super(CertiMessageType.DISABLE_CLASS_RELEVANCE_ADVISORY_SWITCH);
-   }
+	public DisableClassRelevanceAdvisorySwitch() {
+		super(CertiMessageType.DISABLE_CLASS_RELEVANCE_ADVISORY_SWITCH);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString());
-   }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
 
 }
-

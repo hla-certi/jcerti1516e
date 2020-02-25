@@ -19,33 +19,31 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class FederateSaveBegun1516E extends CertiMessage1516E {
 
-   public FederateSaveBegun1516E() {
-      super(CertiMessageType.FEDERATE_SAVE_BEGUN);
-   }
+	public FederateSaveBegun1516E() {
+		super(CertiMessageType.FEDERATE_SAVE_BEGUN);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString());
-   }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
 
 }
-

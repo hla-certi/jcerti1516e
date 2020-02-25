@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class TimeConstrainedAlreadyEnabled
  */
 
 public final class TimeConstrainedAlreadyEnabled extends RTIexception {
-   public TimeConstrainedAlreadyEnabled(String msg)
-   {
-      super(msg);
-   }
+	public TimeConstrainedAlreadyEnabled(String msg) {
+		super(msg);
+	}
 
-   public TimeConstrainedAlreadyEnabled(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public TimeConstrainedAlreadyEnabled(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

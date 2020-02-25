@@ -6,18 +6,16 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class ObjectClassNotRecognized
-*/
+ */
 public final class ObjectClassNotRecognized extends RTIexception {
-  public ObjectClassNotRecognized(String msg) {
-    super(msg);
-  }
+	public ObjectClassNotRecognized(String msg) {
+		super(msg);
+	}
 }
-
-
 
 //File: ObjectClassRelevanceAdvisorySwitchIsOff.java

@@ -20,46 +20,47 @@
 package certi.communication;
 
 /**
- * Class that describes the exception received with <code>CertiMessage</code>. It contains the type and reason of exception.
+ * Class that describes the exception received with <code>CertiMessage</code>.
+ * It contains the type and reason of exception.
  *
  * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  * @version 3.3.3
  */
 public class CertiException extends Exception {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -982783725846269859L;
-    private CertiExceptionType exceptionType;
-    private String reason;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -982783725846269859L;
+	private CertiExceptionType exceptionType;
+	private String reason;
 
-    /**
-     * Constructs new <code>CertiException</code> based on supplied parameters
-     *
-     * @param exceptionType
-     * @param reason
-     */
-    public CertiException(CertiExceptionType exceptionType, String reason) {
-        this.exceptionType = exceptionType;
-        this.reason = reason;
-    }
+	/**
+	 * Constructs new <code>CertiException</code> based on supplied parameters
+	 *
+	 * @param exceptionType
+	 * @param reason
+	 */
+	public CertiException(CertiExceptionType exceptionType, String reason) {
+		this.exceptionType = exceptionType;
+		this.reason = reason;
+	}
 
-    /**
-     * Returns the type of the expection
-     *
-     * @return the type
-     */
-    public CertiExceptionType getExceptionType() {
-        return exceptionType;
-    }
+	/**
+	 * Returns the type of the expection
+	 *
+	 * @return the type
+	 */
+	public CertiExceptionType getExceptionType() {
+		return exceptionType;
+	}
 
-    /**
-     * Returns the reason of exception
-     *
-     * @return the reason
-     */
-    public String getReason() {
-        return reason;
-    }
+	/**
+	 * Returns the reason of exception
+	 *
+	 * @return the reason
+	 */
+	public String getReason() {
+		return reason;
+	}
 }

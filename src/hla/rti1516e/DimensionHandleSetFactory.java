@@ -14,13 +14,10 @@ import java.io.Serializable;
 
 public interface DimensionHandleSetFactory extends Serializable {
 
-   /**
-    * return hla.rti1516.DimensionHandleSet newly created
-    */
-   DimensionHandleSet create();
+	/**
+	 * return hla.rti1516.DimensionHandleSet newly created
+	 */
+	DimensionHandleSet create();
 }
 
 //end DimensionHandleSetFactory
-
-
-

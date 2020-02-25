@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class CouldNotOpenFDD
-*/
+ */
 public final class CouldNotOpenFDD extends RTIexception {
-  public CouldNotOpenFDD(String msg) {
-    super(msg);
-  }
+	public CouldNotOpenFDD(String msg) {
+		super(msg);
+	}
 }
-
-
-

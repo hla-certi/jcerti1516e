@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateNotExecutionMember
  */
 public final class FederateNotExecutionMember extends RTIexception {
-   public FederateNotExecutionMember(String msg)
-   {
-      super(msg);
-   }
+	public FederateNotExecutionMember(String msg) {
+		super(msg);
+	}
 
-   public FederateNotExecutionMember(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateNotExecutionMember(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

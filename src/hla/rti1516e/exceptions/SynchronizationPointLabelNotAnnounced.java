@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class SynchronizationPointLabelNotAnnounced
  */
 
 public final class SynchronizationPointLabelNotAnnounced extends RTIexception {
-   public SynchronizationPointLabelNotAnnounced(String msg)
-   {
-      super(msg);
-   }
+	public SynchronizationPointLabelNotAnnounced(String msg) {
+		super(msg);
+	}
 
-   public SynchronizationPointLabelNotAnnounced(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public SynchronizationPointLabelNotAnnounced(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

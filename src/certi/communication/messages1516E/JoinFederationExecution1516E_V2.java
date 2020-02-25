@@ -19,121 +19,114 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
+import java.util.ArrayList;
 
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-
 public class JoinFederationExecution1516E_V2 extends CertiMessage1516E {
-   private int federate;
-   private String federateType;
-   private String federationName;
-   private String federateName;
-   private ArrayList<String> additionalFomModules;
-   private byte rtiVersion = 3;
+	private int federate;
+	private String federateType;
+	private String federationName;
+	private String federateName;
+	private ArrayList<String> additionalFomModules;
+	private byte rtiVersion = 3;
 
-   public JoinFederationExecution1516E_V2() {
-      super(CertiMessageType.JOIN_FEDERATION_EXECUTION_V4);
-      additionalFomModules = new ArrayList<String>();
-   }
-
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
-
-      messageBuffer.write(this.federate);
-      if(federateName != null){
-         messageBuffer.write(true);
-         messageBuffer.write(this.federateName);
-      } else {
-         messageBuffer.write(false);
-      }
-      messageBuffer.write(this.federateType);
-      messageBuffer.write(this.rtiVersion);
-      messageBuffer.write(this.federationName);
-      messageBuffer.write(this.additionalFomModules.size());
-      for(String s : this.additionalFomModules) {
-         messageBuffer.write(s);
-      }
-   }
-
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
-
-      federate = messageBuffer.readInt();
-      boolean hasFederateName = messageBuffer.readBoolean();
-      if(hasFederateName)
-         this.federateName = messageBuffer.readString();
-      else
-         this.federateName = null;
-
-      this.federateType = messageBuffer.readString();
-      this.rtiVersion = messageBuffer.readByte();
-      this.federationName = messageBuffer.readString();
-      int additionalFomModulesSize = messageBuffer.readInt();
-      for(int i = 0; i < additionalFomModulesSize; i++){
-         this.additionalFomModules.add(messageBuffer.readString());
-      }
-   }
-
-   @Override
-   public String toString() {
-      String result =  (super.toString() + ", federate: " + federate + ", federationName: " + federationName + ", federateName: " + federateName);
-      for(String s : this.additionalFomModules)
-    	  result +=  s + ", ";
-      return result;
-   }
-
-   public int getFederate() {
-      return federate;
-   }
-
-   public String getFederationName() {
-      return federationName;
-   }
-   
-   public String getFederateType(){
-	   return this.federateType;
+	public JoinFederationExecution1516E_V2() {
+		super(CertiMessageType.JOIN_FEDERATION_EXECUTION_V4);
+		additionalFomModules = new ArrayList<>();
 	}
 
-   public String getFederateName() {
-      return federateName;
-   }
-   
-   public String[] getAdditionalFomModules() {
-	   return (String[]) this.additionalFomModules.toArray();
-   }
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-   public void setFederate(int newFederate) {
-      this.federate = newFederate;
-   }
+		messageBuffer.write(this.federate);
+		if (federateName != null) {
+			messageBuffer.write(true);
+			messageBuffer.write(this.federateName);
+		} else {
+			messageBuffer.write(false);
+		}
+		messageBuffer.write(this.federateType);
+		messageBuffer.write(this.rtiVersion);
+		messageBuffer.write(this.federationName);
+		messageBuffer.write(this.additionalFomModules.size());
+		for (String s : this.additionalFomModules) {
+			messageBuffer.write(s);
+		}
+	}
 
-   public void setFederationName(String newFederationName) {
-      this.federationName = newFederationName;
-   }
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-   public void setFederateName(String newFederateName) {
-      this.federateName = newFederateName;
-   }
+		federate = messageBuffer.readInt();
+		boolean hasFederateName = messageBuffer.readBoolean();
+		if (hasFederateName)
+			this.federateName = messageBuffer.readString();
+		else
+			this.federateName = null;
 
-   
-   public void setFederateType(String federateType) {
-	   this.federateType = federateType;
-   }
+		this.federateType = messageBuffer.readString();
+		this.rtiVersion = messageBuffer.readByte();
+		this.federationName = messageBuffer.readString();
+		int additionalFomModulesSize = messageBuffer.readInt();
+		for (int i = 0; i < additionalFomModulesSize; i++) {
+			this.additionalFomModules.add(messageBuffer.readString());
+		}
+	}
 
-   public void setAdditionalFomModules(String[] additionalFomModules) {
-      if(additionalFomModules != null)
-	   for(String s : additionalFomModules)
-		   this.additionalFomModules.add(s);
-   }
-   
-   
+	@Override
+	public String toString() {
+		String result = (super.toString() + ", federate: " + federate + ", federationName: " + federationName
+				+ ", federateName: " + federateName);
+		for (String s : this.additionalFomModules)
+			result += s + ", ";
+		return result;
+	}
+
+	public int getFederate() {
+		return federate;
+	}
+
+	public String getFederationName() {
+		return federationName;
+	}
+
+	public String getFederateType() {
+		return this.federateType;
+	}
+
+	public String getFederateName() {
+		return federateName;
+	}
+
+	public String[] getAdditionalFomModules() {
+		return (String[]) this.additionalFomModules.toArray();
+	}
+
+	public void setFederate(int newFederate) {
+		this.federate = newFederate;
+	}
+
+	public void setFederationName(String newFederationName) {
+		this.federationName = newFederationName;
+	}
+
+	public void setFederateName(String newFederateName) {
+		this.federateName = newFederateName;
+	}
+
+	public void setFederateType(String federateType) {
+		this.federateType = federateType;
+	}
+
+	public void setAdditionalFomModules(String[] additionalFomModules) {
+		if (additionalFomModules != null)
+			for (String s : additionalFomModules)
+				this.additionalFomModules.add(s);
+	}
+
 }
-

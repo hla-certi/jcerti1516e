@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class DesignatorIsHLAstandardMIM
  */
 public final class DesignatorIsHLAstandardMIM extends RTIexception {
-   public DesignatorIsHLAstandardMIM(String msg)
-   {
-      super(msg);
-   }
+	public DesignatorIsHLAstandardMIM(String msg) {
+		super(msg);
+	}
 
-   public DesignatorIsHLAstandardMIM(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public DesignatorIsHLAstandardMIM(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

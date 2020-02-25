@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederationExecutionAlreadyExists
  */
 public final class FederationExecutionAlreadyExists extends RTIexception {
-   public FederationExecutionAlreadyExists(String msg)
-   {
-      super(msg);
-   }
+	public FederationExecutionAlreadyExists(String msg) {
+		super(msg);
+	}
 
-   public FederationExecutionAlreadyExists(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederationExecutionAlreadyExists(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

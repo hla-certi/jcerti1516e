@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InteractionClassNotDefined
-
-*/
+ * 
+ */
 
 public final class InteractionClassNotDefined extends RTIexception {
-  public InteractionClassNotDefined(String msg) {
-    super(msg);
-  }
+	public InteractionClassNotDefined(String msg) {
+		super(msg);
+	}
 }
-
-
-

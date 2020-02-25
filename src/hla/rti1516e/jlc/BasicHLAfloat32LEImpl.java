@@ -25,94 +25,105 @@ import hla.rti1516e.encoding.EncoderException;
 import hla.rti1516e.encoding.HLAfloat32LE;
 
 /**
- *	Implementation of an HLAfloat on 32 bytes, encoded in Little Endian
- *	The value is represented by a float
+ * Implementation of an HLAfloat on 32 bytes, encoded in Little Endian The value
+ * is represented by a float
  */
 public class BasicHLAfloat32LEImpl extends DataElementBase implements HLAfloat32LE {
 
-    private float value;
-    
-    /**
-     * Empty constructor to create a new HLAfloat32LE
-     */
-    public BasicHLAfloat32LEImpl() {
-        value = 0.0f;
-    }
-    
-    /**
-     * Construcor to create a HLAfloat32LE with a value f
-     * @param f : value of the BasicHLAfloat32LE, in float
-     */
-    public BasicHLAfloat32LEImpl(float f) {
-        value = f;
-    }
+	private float value;
 
-    /**
-     * Returns the octet boundary of this element.
-     * float32LE octet boundary is defined to 4 in the HLA standard
-     * @return the octet boundary of this element
-     */
-    public int getOctetBoundary() {
-        return 4;
-    }
+	/**
+	 * Empty constructor to create a new HLAfloat32LE
+	 */
+	public BasicHLAfloat32LEImpl() {
+		value = 0.0f;
+	}
 
-    /**
-     * Encodes this element into the specified ByteWrapper.
-     *
-     * @param byteWrapper destination for the encoded element
-     *
-     * @throws EncoderException if the element can not be encoded
-     */
-    public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        byteWrapper.align(getOctetBoundary());
-        int f_as_i = Float.floatToIntBits(value);
-        byteWrapper.put((int)(f_as_i >>>  0) & 0xFF);
-        byteWrapper.put((int)(f_as_i >>>  8) & 0xFF);
-        byteWrapper.put((int)(f_as_i >>> 16) & 0xFF);
-        byteWrapper.put((int)(f_as_i >>> 24) & 0xFF);
-    }
+	/**
+	 * Construcor to create a HLAfloat32LE with a value f
+	 * 
+	 * @param f : value of the BasicHLAfloat32LE, in float
+	 */
+	public BasicHLAfloat32LEImpl(float f) {
+		value = f;
+	}
 
-    /**
-     * Returns the size in bytes of this element's encoding.
-     * float32LE size is defined to 4 in the HLA standard
-     * @return the size in bytes of this element's encoding
-     */
-    public int getEncodedLength() {
-        return 4;
-    }
-    
-    /**
-     * Decodes this element from the ByteWrapper.
-     *
-     * @param byteWrapper source for the decoding of this element
-     *
-     * @throws DecoderException if the element can not be decoded
-     */
-    public void decode(ByteWrapper byteWrapper) throws DecoderException {
-        byteWrapper.align(getOctetBoundary());
-        int f_as_i;
-        f_as_i  = 0;
-        f_as_i += (int)((byteWrapper.get() & 0xFF) <<  0);
-        f_as_i += (int)((byteWrapper.get() & 0xFF) <<  8);
-        f_as_i += (int)((byteWrapper.get() & 0xFF) << 16);
-        f_as_i += (int)((byteWrapper.get() & 0xFF) << 24);
-        value = Float.intBitsToFloat(f_as_i);
-    }
+	/**
+	 * Returns the octet boundary of this element. float32LE octet boundary is
+	 * defined to 4 in the HLA standard
+	 * 
+	 * @return the octet boundary of this element
+	 */
+	@Override
+	public int getOctetBoundary() {
+		return 4;
+	}
 
-    /**
-     * Get the value in byte of the BasicHLAfloat32LE
-     * @return value in byte of the BasicHLAfloat32LE
-     */
-    public float getValue() {
-        return value;
-    }
+	/**
+	 * Encodes this element into the specified ByteWrapper.
+	 *
+	 * @param byteWrapper destination for the encoded element
+	 *
+	 * @throws EncoderException if the element can not be encoded
+	 */
+	@Override
+	public void encode(ByteWrapper byteWrapper) throws EncoderException {
+		byteWrapper.align(getOctetBoundary());
+		int f_as_i = Float.floatToIntBits(value);
+		byteWrapper.put(f_as_i >>> 0 & 0xFF);
+		byteWrapper.put(f_as_i >>> 8 & 0xFF);
+		byteWrapper.put(f_as_i >>> 16 & 0xFF);
+		byteWrapper.put(f_as_i >>> 24 & 0xFF);
+	}
 
-    /**
-     * Change the value of the BasicHLAfloat32LE
-     * @param value : value to set
-     */
-    public void setValue(float value) {
-        this.value = value;
-    }
+	/**
+	 * Returns the size in bytes of this element's encoding. float32LE size is
+	 * defined to 4 in the HLA standard
+	 * 
+	 * @return the size in bytes of this element's encoding
+	 */
+	@Override
+	public int getEncodedLength() {
+		return 4;
+	}
+
+	/**
+	 * Decodes this element from the ByteWrapper.
+	 *
+	 * @param byteWrapper source for the decoding of this element
+	 *
+	 * @throws DecoderException if the element can not be decoded
+	 */
+	@Override
+	public void decode(ByteWrapper byteWrapper) throws DecoderException {
+		byteWrapper.align(getOctetBoundary());
+		int f_as_i;
+		f_as_i = 0;
+		f_as_i += (byteWrapper.get() & 0xFF) << 0;
+		f_as_i += (byteWrapper.get() & 0xFF) << 8;
+		f_as_i += (byteWrapper.get() & 0xFF) << 16;
+		f_as_i += (byteWrapper.get() & 0xFF) << 24;
+		value = Float.intBitsToFloat(f_as_i);
+	}
+
+	/**
+	 * Get the value in byte of the BasicHLAfloat32LE
+	 * 
+	 * @return value in byte of the BasicHLAfloat32LE
+	 */
+	@Override
+	public float getValue() {
+		return value;
+	}
+
+	/**
+	 * Change the value of the BasicHLAfloat32LE
+	 * 
+	 * @param value : value to set
+	 */
+	@Override
+	public void setValue(float value) {
+		this.value = value;
+	}
 
 }

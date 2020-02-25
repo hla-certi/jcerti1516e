@@ -17,11 +17,11 @@ import java.io.Serializable;
  */
 public interface AttributeHandleValueMapFactory extends Serializable {
 
-   /**
-    * Creates a new AttributeHandleValueMap instance with specified initial capacity.
-    */
-   AttributeHandleValueMap create(int capacity);
+	/**
+	 * Creates a new AttributeHandleValueMap instance with specified initial
+	 * capacity.
+	 */
+	AttributeHandleValueMap create(int capacity);
 }
 
 //end AttributeHandleValueMapFactory
-

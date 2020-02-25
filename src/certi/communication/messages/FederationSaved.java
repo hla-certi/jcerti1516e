@@ -19,32 +19,32 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class FederationSaved extends CertiMessage {
 
-   public FederationSaved() {
-      super(CertiMessageType.FEDERATION_SAVED);
-   }
+	public FederationSaved() {
+		super(CertiMessageType.FEDERATION_SAVED);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString());
-   }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
 
 }
-

@@ -10,24 +10,17 @@
 //File: InteractionRelevanceAdvisorySwitchIsOn.java
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InteractionRelevanceAdvisorySwitchIsOn
  */
 public final class InteractionRelevanceAdvisorySwitchIsOn extends RTIexception {
-   public InteractionRelevanceAdvisorySwitchIsOn(String msg)
-   {
-      super(msg);
-   }
+	public InteractionRelevanceAdvisorySwitchIsOn(String msg) {
+		super(msg);
+	}
 
-   public InteractionRelevanceAdvisorySwitchIsOn(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InteractionRelevanceAdvisorySwitchIsOn(String message, Throwable cause) {
+		super(message, cause);
+	}
 }
 
 //end InteractionRelevanceAdvisorySwitchIsOn
-
-
-
-

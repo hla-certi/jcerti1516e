@@ -19,54 +19,55 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class GetTransportationName extends CertiMessage {
-   private String transportationName;
-   private short transportation;
+	private String transportationName;
+	private short transportation;
 
-   public GetTransportationName() {
-      super(CertiMessageType.GET_TRANSPORTATION_NAME);
-   }
+	public GetTransportationName() {
+		super(CertiMessageType.GET_TRANSPORTATION_NAME);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(transportationName);
-      messageBuffer.write(transportation);
-   }
+		messageBuffer.write(transportationName);
+		messageBuffer.write(transportation);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      transportationName = messageBuffer.readString();
-      transportation = messageBuffer.readShort();
-   }
+		transportationName = messageBuffer.readString();
+		transportation = messageBuffer.readShort();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", transportationName: " + transportationName + ", transportation: " + transportation);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", transportationName: " + transportationName + ", transportation: "
+				+ transportation);
+	}
 
-   public String getTransportationName() {
-      return transportationName;
-   }
+	public String getTransportationName() {
+		return transportationName;
+	}
 
-   public short getTransportation() {
-      return transportation;
-   }
+	public short getTransportation() {
+		return transportation;
+	}
 
-   public void setTransportationName(String newTransportationName) {
-      this.transportationName = newTransportationName;
-   }
+	public void setTransportationName(String newTransportationName) {
+		this.transportationName = newTransportationName;
+	}
 
-   public void setTransportation(short newTransportation) {
-      this.transportation = newTransportation;
-   }
+	public void setTransportation(short newTransportation) {
+		this.transportation = newTransportation;
+	}
 
 }
-

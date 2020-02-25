@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class CouldNotCreateLogicalTimeFactory.
  */
 public final class CouldNotCreateLogicalTimeFactory extends RTIexception {
-   public CouldNotCreateLogicalTimeFactory(String msg)
-   {
-      super(msg);
-   }
+	public CouldNotCreateLogicalTimeFactory(String msg) {
+		super(msg);
+	}
 
-   public CouldNotCreateLogicalTimeFactory(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public CouldNotCreateLogicalTimeFactory(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

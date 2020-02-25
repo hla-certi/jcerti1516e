@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class NoRequestToEnableTimeConstrainedWasPending
-
-*/
+ * 
+ */
 
 public final class NoRequestToEnableTimeConstrainedWasPending extends RTIexception {
-  public NoRequestToEnableTimeConstrainedWasPending(String msg) {
-    super(msg);
-  }
+	public NoRequestToEnableTimeConstrainedWasPending(String msg) {
+		super(msg);
+	}
 }
-
-
-

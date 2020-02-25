@@ -14,17 +14,17 @@ package hla.rti1516e.encoding;
  */
 public interface HLAunicodeString extends DataElement {
 
-   /**
-    * Returns the string value of this element.
-    *
-    * @return string value
-    */
-   String getValue();
+	/**
+	 * Returns the string value of this element.
+	 *
+	 * @return string value
+	 */
+	String getValue();
 
-   /**
-    * Sets the string value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(String value);
+	/**
+	 * Sets the string value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(String value);
 }

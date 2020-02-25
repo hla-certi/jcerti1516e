@@ -17,45 +17,43 @@ package hla.rti1516e;
 
 import java.io.Serializable;
 
-public final class RangeBounds
-   implements Serializable {
-   public RangeBounds(long l, long u)
-   {
-      lower = l;
-      upper = u;
-   }
+public final class RangeBounds implements Serializable {
+	public RangeBounds(long l, long u) {
+		lower = l;
+		upper = u;
+	}
 
-   public final long lower;
-   public final long upper;
+	public final long lower;
+	public final long upper;
 
-   public boolean equals(Object o)
-   {
-      if (this == o) {
-         return true;
-      }
-      if (!(o instanceof RangeBounds)) {
-         return false;
-      }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof RangeBounds)) {
+			return false;
+		}
 
-      final RangeBounds rangeBounds = (RangeBounds) o;
+		final RangeBounds rangeBounds = (RangeBounds) o;
 
-      if (lower != rangeBounds.lower) {
-         return false;
-      }
-      if (upper != rangeBounds.upper) {
-         return false;
-      }
+		if (lower != rangeBounds.lower) {
+			return false;
+		}
+		if (upper != rangeBounds.upper) {
+			return false;
+		}
 
-      return true;
-   }
+		return true;
+	}
 
-   public int hashCode()
-   {
-      int result;
-      result = (int) (lower ^ (lower >>> 32));
-      result = 29 * result + (int) (upper ^ (upper >>> 32));
-      return result;
-   }
+	@Override
+	public int hashCode() {
+		int result;
+		result = (int) (lower ^ (lower >>> 32));
+		result = 29 * result + (int) (upper ^ (upper >>> 32));
+		return result;
+	}
 }
 
 //end RangeBounds

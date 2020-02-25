@@ -25,59 +25,59 @@ import certi.communication.MessageBuffer;
 
 public class GetParameterHandle1516E extends CertiMessage1516E {
 
-    private int interactionClass;
-    private String parameterName;
-    private int parameter = 0;
+	private int interactionClass;
+	private String parameterName;
+	private int parameter = 0;
 
-    public GetParameterHandle1516E() {
-        super(CertiMessageType.GET_PARAMETER_HANDLE);
-    }
+	public GetParameterHandle1516E() {
+		super(CertiMessageType.GET_PARAMETER_HANDLE);
+	}
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-        messageBuffer.write(interactionClass);
-        messageBuffer.write(parameterName);
-        messageBuffer.write(parameter);
-    }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(parameterName);
+		messageBuffer.write(parameter);
+	}
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-        interactionClass = messageBuffer.readInt();
-        parameterName = messageBuffer.readString();
-        parameter = messageBuffer.readInt();
-    }
+		interactionClass = messageBuffer.readInt();
+		parameterName = messageBuffer.readString();
+		parameter = messageBuffer.readInt();
+	}
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", interactionClass: " + interactionClass + ", parameterName: " + parameterName + ", parameter: " + parameter);
-    }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", parameterName: " + parameterName
+				+ ", parameter: " + parameter);
+	}
 
-    public int getInteractionClass() {
-        return interactionClass;
-    }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-    public String getParameterName() {
-        return parameterName;
-    }
+	public String getParameterName() {
+		return parameterName;
+	}
 
-    public int getParameter() {
-        return parameter;
-    }
+	public int getParameter() {
+		return parameter;
+	}
 
-    public void setInteractionClass(int newInteractionClass) {
-        this.interactionClass = newInteractionClass;
-    }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-    public void setParameterName(String newParameterName) {
-        this.parameterName = newParameterName;
-    }
+	public void setParameterName(String newParameterName) {
+		this.parameterName = newParameterName;
+	}
 
-    public void setParameter(int newParameter) {
-        this.parameter = newParameter;
-    }
+	public void setParameter(int newParameter) {
+		this.parameter = newParameter;
+	}
 }
-

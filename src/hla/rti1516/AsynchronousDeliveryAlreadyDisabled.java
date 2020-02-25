@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class AsynchronousDeliveryAlreadyDisabled
-*/
+ */
 public final class AsynchronousDeliveryAlreadyDisabled extends RTIexception {
-  public AsynchronousDeliveryAlreadyDisabled(String msg) {
-    super(msg);
-  }
+	public AsynchronousDeliveryAlreadyDisabled(String msg) {
+		super(msg);
+	}
 }
-
-
-

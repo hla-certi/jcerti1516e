@@ -8,9 +8,9 @@ import hla.rti1516e.RtiFactory;
 import hla.rti1516e.encoding.EncoderFactory;
 import hla.rti1516e.exceptions.RTIinternalError;
 
-public class CertiRtiFactory implements RtiFactory{
+public class CertiRtiFactory implements RtiFactory {
 	private final static Logger LOGGER = Logger.getLogger(CertiRtiFactory.class.getName());
-	
+
 	@Override
 	public RTIambassador getRtiAmbassador() throws RTIinternalError {
 		LOGGER.info("        getRtiAmbassador");

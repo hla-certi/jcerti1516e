@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidRegionContext
  */
 
 public final class InvalidRegionContext extends RTIexception {
-   public InvalidRegionContext(String msg)
-   {
-      super(msg);
-   }
+	public InvalidRegionContext(String msg) {
+		super(msg);
+	}
 
-   public InvalidRegionContext(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidRegionContext(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

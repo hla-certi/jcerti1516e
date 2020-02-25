@@ -6,16 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public final class ObjectClassRelevanceAdvisorySwitchIsOn extends RTIexception {
-  public ObjectClassRelevanceAdvisorySwitchIsOn(String msg) {
-    super(msg);
-  }
+	public ObjectClassRelevanceAdvisorySwitchIsOn(String msg) {
+		super(msg);
+	}
 }
 //end ObjectClassRelevanceAdvisorySwitchIsOn
 
-
 //File: ObjectInstanceHandle.java
-

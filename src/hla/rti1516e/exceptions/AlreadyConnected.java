@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AlreadyConnected.
  */
 public final class AlreadyConnected extends RTIexception {
-   public AlreadyConnected(String msg)
-   {
-      super(msg);
-   }
+	public AlreadyConnected(String msg) {
+		super(msg);
+	}
 
-   public AlreadyConnected(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AlreadyConnected(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

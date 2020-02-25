@@ -14,17 +14,17 @@ package hla.rti1516e.encoding;
  */
 public interface HLAoctet extends DataElement {
 
-   /**
-    * Returns the byte value of this element.
-    *
-    * @return value
-    */
-   byte getValue();
+	/**
+	 * Returns the byte value of this element.
+	 *
+	 * @return value
+	 */
+	byte getValue();
 
-   /**
-    * Sets the byte value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(byte value);
+	/**
+	 * Sets the byte value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(byte value);
 }

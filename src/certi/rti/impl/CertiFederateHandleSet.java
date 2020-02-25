@@ -19,10 +19,11 @@
 // ----------------------------------------------------------------------------
 package certi.rti.impl;
 
-import hla.rti.FederateHandleSet;
-import hla.rti.HandleIterator;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import hla.rti.FederateHandleSet;
+import hla.rti.HandleIterator;
 
 /**
  *
@@ -30,53 +31,61 @@ import java.util.Iterator;
  */
 public class CertiFederateHandleSet extends HashSet<Integer> implements FederateHandleSet {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3786442709781895872L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3786442709781895872L;
 
-    public void add(int handle) {
-        super.add(handle);
-    }
+	@Override
+	public void add(int handle) {
+		super.add(handle);
+	}
 
-    public void empty() {
-        clear();
-    }
+	@Override
+	public void empty() {
+		clear();
+	}
 
-    /**
-     *
-     * @return
-     */
-    public HandleIterator handles() {
-        return new AttributeHandleIterator();
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public HandleIterator handles() {
+		return new AttributeHandleIterator();
+	}
 
-    public boolean isMember(int handle) {
-        return contains(handle);
-    }
+	@Override
+	public boolean isMember(int handle) {
+		return contains(handle);
+	}
 
-    public void remove(int handle) {
-        super.remove(handle);
-    }
+	@Override
+	public void remove(int handle) {
+		super.remove(handle);
+	}
 
-    /**
-     *
-     */
-    public class AttributeHandleIterator implements HandleIterator {
+	/**
+	 *
+	 */
+	public class AttributeHandleIterator implements HandleIterator {
 
-        private Iterator iter = iterator();
+		private Iterator iter = iterator();
 
-        public int first() {
-            iter = iterator();
-            return next();
-        }
+		@Override
+		public int first() {
+			iter = iterator();
+			return next();
+		}
 
-        public boolean isValid() {
-            return iter.hasNext();
-        }
+		@Override
+		public boolean isValid() {
+			return iter.hasNext();
+		}
 
-        public int next() {
-            return (Integer) iter.next();
-        }
-    }
+		@Override
+		public int next() {
+			return (Integer) iter.next();
+		}
+	}
 }

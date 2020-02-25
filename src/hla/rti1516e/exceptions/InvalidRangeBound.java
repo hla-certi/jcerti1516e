@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidRangeBound
  */
 public final class InvalidRangeBound extends RTIexception {
-   public InvalidRangeBound(String msg)
-   {
-      super(msg);
-   }
+	public InvalidRangeBound(String msg) {
+		super(msg);
+	}
 
-   public InvalidRangeBound(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidRangeBound(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

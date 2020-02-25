@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class SaveInProgress
-*/
+ */
 public final class SaveInProgress extends RTIexception {
-  public SaveInProgress(String msg) {
-    super(msg);
-  }
+	public SaveInProgress(String msg) {
+		super(msg);
+	}
 }
-
-
-

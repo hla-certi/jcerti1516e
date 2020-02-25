@@ -19,77 +19,78 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.AttributeHandleSet;
 
 public class ChangeAttributeOrderType extends CertiMessage {
-   private short transport;
-   private short order;
-   private int object;
-   private AttributeHandleSet attributes;
+	private short transport;
+	private short order;
+	private int object;
+	private AttributeHandleSet attributes;
 
-   public ChangeAttributeOrderType() {
-      super(CertiMessageType.CHANGE_ATTRIBUTE_ORDER_TYPE);
-   }
+	public ChangeAttributeOrderType() {
+		super(CertiMessageType.CHANGE_ATTRIBUTE_ORDER_TYPE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(transport);
-      messageBuffer.write(order);
-      messageBuffer.write(object);
-      messageBuffer.write(attributes);
-   }
+		messageBuffer.write(transport);
+		messageBuffer.write(order);
+		messageBuffer.write(object);
+		messageBuffer.write(attributes);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      transport = messageBuffer.readShort();
-      order = messageBuffer.readShort();
-      object = messageBuffer.readInt();
-      attributes = messageBuffer.readAttributeHandleSet();
-   }
+		transport = messageBuffer.readShort();
+		order = messageBuffer.readShort();
+		object = messageBuffer.readInt();
+		attributes = messageBuffer.readAttributeHandleSet();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", transport: " + transport + ", order: " + order + ", object: " + object + ", attributes: " + attributes);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", transport: " + transport + ", order: " + order + ", object: " + object
+				+ ", attributes: " + attributes);
+	}
 
-   public short getTransport() {
-      return transport;
-   }
+	public short getTransport() {
+		return transport;
+	}
 
-   public short getOrder() {
-      return order;
-   }
+	public short getOrder() {
+		return order;
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public AttributeHandleSet getAttributes() {
-      return attributes;
-   }
+	public AttributeHandleSet getAttributes() {
+		return attributes;
+	}
 
-   public void setTransport(short newTransport) {
-      this.transport = newTransport;
-   }
+	public void setTransport(short newTransport) {
+		this.transport = newTransport;
+	}
 
-   public void setOrder(short newOrder) {
-      this.order = newOrder;
-   }
+	public void setOrder(short newOrder) {
+		this.order = newOrder;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setAttributes(AttributeHandleSet newAttributes) {
-      this.attributes = newAttributes;
-   }
+	public void setAttributes(AttributeHandleSet newAttributes) {
+		this.attributes = newAttributes;
+	}
 
 }
-

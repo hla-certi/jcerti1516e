@@ -17,46 +17,44 @@ package hla.rti1516e;
 
 import java.io.Serializable;
 
-public final class TimeQueryReturn
-   implements Serializable {
-   public TimeQueryReturn(boolean tiv, LogicalTime lt)
-   {
-      timeIsValid = tiv;
-      time = lt;
-   }
+public final class TimeQueryReturn implements Serializable {
+	public TimeQueryReturn(boolean tiv, LogicalTime lt) {
+		timeIsValid = tiv;
+		time = lt;
+	}
 
-   public final boolean timeIsValid;
-   public final LogicalTime time;
+	public final boolean timeIsValid;
+	public final LogicalTime time;
 
-   public boolean equals(Object other)
-   {
-      if (this == other) {
-         return true;
-      }
-      if (!(other instanceof TimeQueryReturn)) {
-         return false;
-      }
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof TimeQueryReturn)) {
+			return false;
+		}
 
-      final TimeQueryReturn timeQueryReturn = (TimeQueryReturn) other;
+		final TimeQueryReturn timeQueryReturn = (TimeQueryReturn) other;
 
-      if (timeIsValid == false && timeQueryReturn.timeIsValid == false) {
-         return true;
-      } else if (timeIsValid == true && timeQueryReturn.timeIsValid == true) {
-         return time.equals(timeQueryReturn.time);
-      } else {
-         return false;
-      }
-   }
+		if (timeIsValid == false && timeQueryReturn.timeIsValid == false) {
+			return true;
+		} else if (timeIsValid == true && timeQueryReturn.timeIsValid == true) {
+			return time.equals(timeQueryReturn.time);
+		} else {
+			return false;
+		}
+	}
 
-   public int hashCode()
-   {
-      return (timeIsValid ? time.hashCode() : 7);
-   }
+	@Override
+	public int hashCode() {
+		return (timeIsValid ? time.hashCode() : 7);
+	}
 
-   public String toString()
-   {
-      return "" + timeIsValid + " " + time;
-   }
+	@Override
+	public String toString() {
+		return "" + timeIsValid + " " + time;
+	}
 }
 
 //end TimeQueryReturn

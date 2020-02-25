@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidOrderName
  */
 
 public final class InvalidOrderName extends RTIexception {
-   public InvalidOrderName(String msg)
-   {
-      super(msg);
-   }
+	public InvalidOrderName(String msg) {
+		super(msg);
+	}
 
-   public InvalidOrderName(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidOrderName(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class ErrorReadingFDD
  */
 public final class ErrorReadingFDD extends RTIexception {
-   public ErrorReadingFDD(String msg)
-   {
-      super(msg);
-   }
+	public ErrorReadingFDD(String msg) {
+		super(msg);
+	}
 
-   public ErrorReadingFDD(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public ErrorReadingFDD(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -19,67 +19,68 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
+import java.util.List;
 
 import certi.communication.CertiException;
-import certi.communication.*;
-import java.util.List;
-import certi.rti.impl.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import certi.rti.impl.CertiExtent;
 
 public class DdmCreateRegion extends CertiMessage {
-   private int space;
-   private List<CertiExtent> extentSet;
-   private int region;
+	private int space;
+	private List<CertiExtent> extentSet;
+	private int region;
 
-   public DdmCreateRegion() {
-      super(CertiMessageType.DDM_CREATE_REGION);
-   }
+	public DdmCreateRegion() {
+		super(CertiMessageType.DDM_CREATE_REGION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(space);
-      messageBuffer.write(extentSet);
-      messageBuffer.write(region);
-   }
+		messageBuffer.write(space);
+		messageBuffer.write(extentSet);
+		messageBuffer.write(region);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      space = messageBuffer.readInt();
-      extentSet = messageBuffer.readExtents();
-      region = messageBuffer.readInt();
-   }
+		space = messageBuffer.readInt();
+		extentSet = messageBuffer.readExtents();
+		region = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", space: " + space + ", extentSet: " + extentSet + ", region: " + region);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", space: " + space + ", extentSet: " + extentSet + ", region: " + region);
+	}
 
-   public int getSpace() {
-      return space;
-   }
+	public int getSpace() {
+		return space;
+	}
 
-   public List<CertiExtent> getExtentSet() {
-      return extentSet;
-   }
+	public List<CertiExtent> getExtentSet() {
+		return extentSet;
+	}
 
-   public int getRegion() {
-      return region;
-   }
+	public int getRegion() {
+		return region;
+	}
 
-   public void setSpace(int newSpace) {
-      this.space = newSpace;
-   }
+	public void setSpace(int newSpace) {
+		this.space = newSpace;
+	}
 
-   public void setExtentSet(List<CertiExtent> newExtentSet) {
-      this.extentSet = newExtentSet;
-   }
+	public void setExtentSet(List<CertiExtent> newExtentSet) {
+		this.extentSet = newExtentSet;
+	}
 
-   public void setRegion(int newRegion) {
-      this.region = newRegion;
-   }
+	public void setRegion(int newRegion) {
+		this.region = newRegion;
+	}
 
 }
-

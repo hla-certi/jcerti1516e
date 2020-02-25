@@ -19,43 +19,43 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class SubscribeInteractionClass extends CertiMessage {
-   private int interactionClass;
+	private int interactionClass;
 
-   public SubscribeInteractionClass() {
-      super(CertiMessageType.SUBSCRIBE_INTERACTION_CLASS);
-   }
+	public SubscribeInteractionClass() {
+		super(CertiMessageType.SUBSCRIBE_INTERACTION_CLASS);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(interactionClass);
-   }
+		messageBuffer.write(interactionClass);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      interactionClass = messageBuffer.readInt();
-   }
+		interactionClass = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass);
+	}
 
-   public int getInteractionClass() {
-      return interactionClass;
-   }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-   public void setInteractionClass(int newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
 }
-

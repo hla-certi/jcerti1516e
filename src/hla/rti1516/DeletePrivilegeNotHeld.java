@@ -6,22 +6,19 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class DeletePrivilegeNotHeld
-
-*/
+ * 
+ */
 
 public final class DeletePrivilegeNotHeld extends RTIexception {
-  public DeletePrivilegeNotHeld(String msg) {
-    super(msg);
-  }
+	public DeletePrivilegeNotHeld(String msg) {
+		super(msg);
+	}
 }
 
-
-
 //File: DimensionHandle.java
-

@@ -19,73 +19,74 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class RegisterObjectInstance extends CertiMessage {
-   private int objectClass;
-   private int object;
-   private String objectName;
+	private int objectClass;
+	private int object;
+	private String objectName;
 
-   public RegisterObjectInstance() {
-      super(CertiMessageType.REGISTER_OBJECT_INSTANCE);
-   }
+	public RegisterObjectInstance() {
+		super(CertiMessageType.REGISTER_OBJECT_INSTANCE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(object);
-      if(objectName != null || objectName.length() == 0){
-         messageBuffer.write(true);
-         messageBuffer.write(objectName);
-      } else {
-         messageBuffer.write(false);
-      }
-   }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(object);
+		if (objectName != null || objectName.length() == 0) {
+			messageBuffer.write(true);
+			messageBuffer.write(objectName);
+		} else {
+			messageBuffer.write(false);
+		}
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-      object = messageBuffer.readInt();
-      boolean hasObjectName = messageBuffer.readBoolean();
-      if(hasObjectName){
-         objectName = messageBuffer.readString();
-      }
-   }
+		objectClass = messageBuffer.readInt();
+		object = messageBuffer.readInt();
+		boolean hasObjectName = messageBuffer.readBoolean();
+		if (hasObjectName) {
+			objectName = messageBuffer.readString();
+		}
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectName: " + objectName);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectName: "
+				+ objectName);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public String getObjectName() {
-      return objectName;
-   }
+	public String getObjectName() {
+		return objectName;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setObjectName(String newObjectName) {
-      this.objectName = newObjectName;
-   }
+	public void setObjectName(String newObjectName) {
+		this.objectName = newObjectName;
+	}
 
 }
-

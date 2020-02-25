@@ -19,9 +19,10 @@
 // ----------------------------------------------------------------------------
 package certi.rti.impl;
 
-import hla.rti.ArrayIndexOutOfBounds;
 import java.util.HashMap;
 import java.util.Map;
+
+import hla.rti.ArrayIndexOutOfBounds;
 
 /**
  *
@@ -29,90 +30,87 @@ import java.util.Map;
  */
 public class CertiExtent {
 
-    private Map<Integer, Bound> dimensions = new HashMap<Integer, Bound>();
+	private Map<Integer, Bound> dimensions = new HashMap<>();
 
-    /**
-     *
-     * @param dimensionHandle
-     * @return
-     * @throws ArrayIndexOutOfBounds
-     */
-    public long getRangeLowerBound(int dimensionHandle) throws ArrayIndexOutOfBounds {
-        if (dimensions.containsKey(dimensionHandle)) {
-            return dimensions.get(dimensionHandle).getLower();
-        } else {
-            throw new ArrayIndexOutOfBounds("Dimension index above limit");
-        }
-    }
+	/**
+	 *
+	 * @param dimensionHandle
+	 * @return
+	 * @throws ArrayIndexOutOfBounds
+	 */
+	public long getRangeLowerBound(int dimensionHandle) throws ArrayIndexOutOfBounds {
+		if (dimensions.containsKey(dimensionHandle)) {
+			return dimensions.get(dimensionHandle).getLower();
+		} else {
+			throw new ArrayIndexOutOfBounds("Dimension index above limit");
+		}
+	}
 
-    /**
-     *
-     * @param dimensionHandle
-     * @return
-     * @throws ArrayIndexOutOfBounds
-     */
-    public long getRangeUpperBound(int dimensionHandle) throws ArrayIndexOutOfBounds {
-        if (dimensions.containsKey(dimensionHandle)) {
-            return dimensions.get(dimensionHandle).getUpper();
-        } else {
-            throw new ArrayIndexOutOfBounds("Dimension index above limit");
-        }
-    }
+	/**
+	 *
+	 * @param dimensionHandle
+	 * @return
+	 * @throws ArrayIndexOutOfBounds
+	 */
+	public long getRangeUpperBound(int dimensionHandle) throws ArrayIndexOutOfBounds {
+		if (dimensions.containsKey(dimensionHandle)) {
+			return dimensions.get(dimensionHandle).getUpper();
+		} else {
+			throw new ArrayIndexOutOfBounds("Dimension index above limit");
+		}
+	}
 
-    /**
-     *
-     * @param dimensionHandle
-     * @param newLowerBound
-     */
-    public void setRangeLowerBound(int dimensionHandle, long newLowerBound) {
-        if(!dimensions.containsKey(dimensionHandle))
-        {
-            dimensions.put(dimensionHandle, new Bound());
-        }
-        dimensions.get(dimensionHandle).setLower(newLowerBound);
-    }
+	/**
+	 *
+	 * @param dimensionHandle
+	 * @param newLowerBound
+	 */
+	public void setRangeLowerBound(int dimensionHandle, long newLowerBound) {
+		if (!dimensions.containsKey(dimensionHandle)) {
+			dimensions.put(dimensionHandle, new Bound());
+		}
+		dimensions.get(dimensionHandle).setLower(newLowerBound);
+	}
 
-    /**
-     *
-     * @param dimensionHandle
-     * @param newUpperBound
-     */
-    public void setRangeUpperBound(int dimensionHandle, long newUpperBound) {
-        if(!dimensions.containsKey(dimensionHandle))
-        {
-            dimensions.put(dimensionHandle, new Bound());
-        }
-        dimensions.get(dimensionHandle).setUpper(newUpperBound);
-    }
+	/**
+	 *
+	 * @param dimensionHandle
+	 * @param newUpperBound
+	 */
+	public void setRangeUpperBound(int dimensionHandle, long newUpperBound) {
+		if (!dimensions.containsKey(dimensionHandle)) {
+			dimensions.put(dimensionHandle, new Bound());
+		}
+		dimensions.get(dimensionHandle).setUpper(newUpperBound);
+	}
 
-    /**
-     *
-     * @return
-     */
-    public int getNumberOfDimensions()
-    {
-        return dimensions.size();
-    }
+	/**
+	 *
+	 * @return
+	 */
+	public int getNumberOfDimensions() {
+		return dimensions.size();
+	}
 
-    private class Bound {
+	private class Bound {
 
-        private long lower;
-        private long upper;
+		private long lower;
+		private long upper;
 
-        public long getLower() {
-            return lower;
-        }
+		public long getLower() {
+			return lower;
+		}
 
-        public void setLower(long lower) {
-            this.lower = lower;
-        }
+		public void setLower(long lower) {
+			this.lower = lower;
+		}
 
-        public long getUpper() {
-            return upper;
-        }
+		public long getUpper() {
+			return upper;
+		}
 
-        public void setUpper(long upper) {
-            this.upper = upper;
-        }
-    }
+		public void setUpper(long upper) {
+			this.upper = upper;
+		}
+	}
 }

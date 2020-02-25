@@ -19,66 +19,65 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class ChangeInteractionTransportationType1516E extends CertiMessage1516E {
-   private int interactionClass;
-   private short transportationType;
-   private short orderType;
+	private int interactionClass;
+	private short transportationType;
+	private short orderType;
 
-   public ChangeInteractionTransportationType1516E() {
-      super(CertiMessageType.CHANGE_INTERACTION_TRANSPORTATION_TYPE);
-   }
+	public ChangeInteractionTransportationType1516E() {
+		super(CertiMessageType.CHANGE_INTERACTION_TRANSPORTATION_TYPE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.write(transportationType);
-      messageBuffer.write(orderType);
-   }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(transportationType);
+		messageBuffer.write(orderType);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      interactionClass = messageBuffer.readInt();
-      transportationType = messageBuffer.readShort();
-      orderType = messageBuffer.readShort();
-   }
+		interactionClass = messageBuffer.readInt();
+		transportationType = messageBuffer.readShort();
+		orderType = messageBuffer.readShort();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", transportationType: " + transportationType + ", orderType: " + orderType);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", transportationType: "
+				+ transportationType + ", orderType: " + orderType);
+	}
 
-   public int getInteractionClass() {
-      return interactionClass;
-   }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-   public short getTransportationType() {
-      return transportationType;
-   }
+	public short getTransportationType() {
+		return transportationType;
+	}
 
-   public short getOrderType() {
-      return orderType;
-   }
+	public short getOrderType() {
+		return orderType;
+	}
 
-   public void setInteractionClass(int newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-   public void setTransportationType(short newTransportationType) {
-      this.transportationType = newTransportationType;
-   }
+	public void setTransportationType(short newTransportationType) {
+		this.transportationType = newTransportationType;
+	}
 
-   public void setOrderType(short newOrderType) {
-      this.orderType = newOrderType;
-   }
+	public void setOrderType(short newOrderType) {
+		this.orderType = newOrderType;
+	}
 
 }
-

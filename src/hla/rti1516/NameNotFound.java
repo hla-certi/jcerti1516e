@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class NameNotFound
-
-*/
+ * 
+ */
 
 public final class NameNotFound extends RTIexception {
-  public NameNotFound(String msg) {
-    super(msg);
-  }
+	public NameNotFound(String msg) {
+		super(msg);
+	}
 }
-
-
-

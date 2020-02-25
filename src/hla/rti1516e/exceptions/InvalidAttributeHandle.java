@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidAttributeHandle
  */
 
 public final class InvalidAttributeHandle extends RTIexception {
-   public InvalidAttributeHandle(String msg)
-   {
-      super(msg);
-   }
+	public InvalidAttributeHandle(String msg) {
+		super(msg);
+	}
 
-   public InvalidAttributeHandle(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidAttributeHandle(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

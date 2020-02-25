@@ -16,33 +16,34 @@ import java.util.Iterator;
  */
 public interface HLAfixedRecord extends DataElement, Iterable<DataElement> {
 
-   /**
-    * Adds an element to this fixed record.
-    *
-    * @param dataElement element to add
-    */
-   void add(DataElement dataElement);
+	/**
+	 * Adds an element to this fixed record.
+	 *
+	 * @param dataElement element to add
+	 */
+	void add(DataElement dataElement);
 
-   /**
-    * Returns the number of elements in this fixed record.
-    *
-    * @return the number of elements in this fixed record
-    */
-   int size();
+	/**
+	 * Returns the number of elements in this fixed record.
+	 *
+	 * @return the number of elements in this fixed record
+	 */
+	int size();
 
-   /**
-    * Returns element at the specified index.
-    *
-    * @param index index of element to get
-    *
-    * @return the element at the specified <code>index</code>
-    */
-   DataElement get(int index);
+	/**
+	 * Returns element at the specified index.
+	 *
+	 * @param index index of element to get
+	 *
+	 * @return the element at the specified <code>index</code>
+	 */
+	DataElement get(int index);
 
-   /**
-    * Returns an iterator for the elements in this fixed record.
-    *
-    * @return an iterator for the elements in this fixed record.
-    */
-   Iterator<DataElement> iterator();
+	/**
+	 * Returns an iterator for the elements in this fixed record.
+	 *
+	 * @return an iterator for the elements in this fixed record.
+	 */
+	@Override
+	Iterator<DataElement> iterator();
 }

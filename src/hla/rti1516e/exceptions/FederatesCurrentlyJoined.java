@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederatesCurrentlyJoined
  */
 
 public final class FederatesCurrentlyJoined extends RTIexception {
-   public FederatesCurrentlyJoined(String msg)
-   {
-      super(msg);
-   }
+	public FederatesCurrentlyJoined(String msg) {
+		super(msg);
+	}
 
-   public FederatesCurrentlyJoined(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederatesCurrentlyJoined(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

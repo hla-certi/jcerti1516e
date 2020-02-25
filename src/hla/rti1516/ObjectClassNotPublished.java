@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class ObjectClassNotPublished
-
-*/
+ * 
+ */
 
 public final class ObjectClassNotPublished extends RTIexception {
-  public ObjectClassNotPublished(String msg) {
-    super(msg);
-  }
+	public ObjectClassNotPublished(String msg) {
+		super(msg);
+	}
 }
-
-
-

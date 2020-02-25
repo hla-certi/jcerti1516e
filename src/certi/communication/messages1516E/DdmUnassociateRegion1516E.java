@@ -19,55 +19,53 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class DdmUnassociateRegion1516E extends CertiMessage1516E {
-   private int object;
-   private int region;
+	private int object;
+	private int region;
 
-   public DdmUnassociateRegion1516E() {
-      super(CertiMessageType.DDM_UNASSOCIATE_REGION);
-   }
+	public DdmUnassociateRegion1516E() {
+		super(CertiMessageType.DDM_UNASSOCIATE_REGION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(object);
-      messageBuffer.write(region);
-   }
+		messageBuffer.write(object);
+		messageBuffer.write(region);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      object = messageBuffer.readInt();
-      region = messageBuffer.readInt();
-   }
+		object = messageBuffer.readInt();
+		region = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", object: " + object + ", region: " + region);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", object: " + object + ", region: " + region);
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public int getRegion() {
-      return region;
-   }
+	public int getRegion() {
+		return region;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setRegion(int newRegion) {
-      this.region = newRegion;
-   }
+	public void setRegion(int newRegion) {
+		this.region = newRegion;
+	}
 
 }
-

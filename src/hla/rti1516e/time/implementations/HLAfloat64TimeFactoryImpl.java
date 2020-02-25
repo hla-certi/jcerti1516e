@@ -6,16 +6,16 @@ import hla.rti1516e.time.HLAfloat64Time;
 import hla.rti1516e.time.HLAfloat64TimeFactory;
 
 /**
- * Implementation of HLAfloat64TimeFactory
- * Used to create HLAfloat64Time and HLAfloat64Interval
+ * Implementation of HLAfloat64TimeFactory Used to create HLAfloat64Time and
+ * HLAfloat64Interval
  */
 public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
-	
 	private static final long serialVersionUID = 6796806851371656159L;
 
 	/**
 	 * Decode an HLAfloat64Time object and create one with decoded informations
+	 * 
 	 * @param buffer : buffer witch contains encoded informations
 	 * @param offset : offset to start to decode at
 	 * @return a new HLAfloat64Time object with decoded informations
@@ -28,6 +28,7 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
 	/**
 	 * Decode an HLAfloat64Interval object and create one with decoded informations
+	 * 
 	 * @param buffer : buffer witch contains encoded informations
 	 * @param offset : offset to start to decode at
 	 * @return a new HLAfloat64Interval object with decoded informations
@@ -40,6 +41,7 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
 	/**
 	 * Create a new HLAfloat64Time with value 0
+	 * 
 	 * @return a new HLAfloat64Time with value 0
 	 */
 	@Override
@@ -49,6 +51,7 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
 	/**
 	 * Create a new HLAfloat64Time with value max
+	 * 
 	 * @return a new HLAfloat64Time with value max
 	 */
 	@Override
@@ -58,6 +61,7 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
 	/**
 	 * Create a new HLAfloat64Time with a specific value
+	 * 
 	 * @param value to set to the HLAfloat64Time
 	 * @return a new HLAfloat64Time with a specific value
 	 */
@@ -68,6 +72,7 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
 	/**
 	 * Create a new HLAfloat64Interval with value 0
+	 * 
 	 * @return a new HLAfloat64Interval with value 0
 	 */
 	@Override
@@ -76,8 +81,10 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 	}
 
 	/**
-	 * Create a new HLAfloat64Interval with value epsilon (resolution of an float, =1) 
-	 * @return a new HLAfloat64Interval with value epsilon 
+	 * Create a new HLAfloat64Interval with value epsilon (resolution of an float,
+	 * =1)
+	 * 
+	 * @return a new HLAfloat64Interval with value epsilon
 	 */
 	@Override
 	public HLAfloat64Interval makeEpsilon() {
@@ -86,6 +93,7 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
 	/**
 	 * Create a new HLAfloat64Interval with a specific value
+	 * 
 	 * @param value to set to the HLAfloat64Interval
 	 * @return a new HLAfloat64Interval with a specific value
 	 */
@@ -96,6 +104,7 @@ public class HLAfloat64TimeFactoryImpl implements HLAfloat64TimeFactory {
 
 	/**
 	 * Get the name of the class
+	 * 
 	 * @return a string with the name of the class
 	 */
 	@Override

@@ -19,51 +19,52 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class SynchronizationPointAchieved1516E extends CertiMessage1516E {
 
 	String Label;
 //	boolean successIndicator;
-	
-   public SynchronizationPointAchieved1516E() {
-      super(CertiMessageType.SYNCHRONIZATION_POINT_ACHIEVED);
-   }
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	public SynchronizationPointAchieved1516E() {
+		super(CertiMessageType.SYNCHRONIZATION_POINT_ACHIEVED);
+	}
+
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 //      messageBuffer.write(successIndicator);
-   }
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 //      this.successIndicator = messageBuffer.readBoolean();
-   }
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString());
-   }
-   
-   public void setLabel(String label) {
-	   this.label = label;
-   }
-   
-   public String getLabel() {
-	   return this.label;
-   }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	@Override
+	public String getLabel() {
+		return this.label;
+	}
 
 //   public void setSucessIndicator(boolean successIndicator) {
 //	   this.successIndicator = successIndicator;
 //   }
-   
+
 //   public boolean getsuccessIndicator() {
 //	   return this.successIndicator;
 //   }
 
 }
-

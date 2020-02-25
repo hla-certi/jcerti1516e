@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class InvalidRangeBound
-*/
+ */
 public final class InvalidRangeBound extends RTIexception {
-  public InvalidRangeBound(String msg) {
-    super(msg);
-  }
+	public InvalidRangeBound(String msg) {
+		super(msg);
+	}
 }
-
-
-

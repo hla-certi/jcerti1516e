@@ -6,84 +6,102 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
+
+package hla.rti1516.jlc;
 
 import hla.rti1516.LogicalTime;
 
 /**
  * Factory for the various HLA data types.
  */
-public interface EncoderFactory
-{
-   HLAASCIIchar createHLAASCIIchar();
-   HLAASCIIchar createHLAASCIIchar(byte b);
+public interface EncoderFactory {
+	HLAASCIIchar createHLAASCIIchar();
 
-   HLAASCIIstring createHLAASCIIstring();
-   HLAASCIIstring createHLAASCIIstring(String s);
+	HLAASCIIchar createHLAASCIIchar(byte b);
 
-   HLAboolean createHLAboolean();
-   HLAboolean createHLAboolean(boolean b);
+	HLAASCIIstring createHLAASCIIstring();
 
-   HLAbyte createHLAbyte();
-   HLAbyte createHLAbyte(byte b);
+	HLAASCIIstring createHLAASCIIstring(String s);
 
-   HLAfixedRecord createHLAfixedRecord();
+	HLAboolean createHLAboolean();
 
-   HLAfloat32BE createHLAfloat32BE();
-   HLAfloat32BE createHLAfloat32BE(float f);
+	HLAboolean createHLAboolean(boolean b);
 
-   HLAfloat32LE createHLAfloat32LE();
-   HLAfloat32LE createHLAfloat32LE(float f);
+	HLAbyte createHLAbyte();
 
-   HLAfloat64BE createHLAfloat64BE();
-   HLAfloat64BE createHLAfloat64BE(double d);
+	HLAbyte createHLAbyte(byte b);
 
-   HLAfloat64LE createHLAfloat64LE();
-   HLAfloat64LE createHLAfloat64LE(double d);
+	HLAfixedRecord createHLAfixedRecord();
 
-   HLAhandle createHLAhandle();
-   HLAhandle createHLAhandle(byte[] b);
+	HLAfloat32BE createHLAfloat32BE();
 
-   HLAinteger16BE createHLAinteger16BE();
-   HLAinteger16BE createHLAinteger16BE(short s);
+	HLAfloat32BE createHLAfloat32BE(float f);
 
-   HLAinteger16LE createHLAinteger16LE();
-   HLAinteger16LE createHLAinteger16LE(short s);
+	HLAfloat32LE createHLAfloat32LE();
 
-   HLAinteger32BE createHLAinteger32BE();
-   HLAinteger32BE createHLAinteger32BE(int i);
+	HLAfloat32LE createHLAfloat32LE(float f);
 
-   HLAinteger32LE createHLAinteger32LE();
-   HLAinteger32LE createHLAinteger32LE(int i);
+	HLAfloat64BE createHLAfloat64BE();
 
-   HLAinteger64BE createHLAinteger64BE();
-   HLAinteger64BE createHLAinteger64BE(long l);
+	HLAfloat64BE createHLAfloat64BE(double d);
 
-   HLAinteger64LE createHLAinteger64LE();
-   HLAinteger64LE createHLAinteger64LE(long l);
+	HLAfloat64LE createHLAfloat64LE();
 
-   HLAlogicalTime createHLAlogicalTime();
-   HLAlogicalTime createHLAlogicalTime(LogicalTime t);
+	HLAfloat64LE createHLAfloat64LE(double d);
 
-   HLAoctet createHLAoctet();
-   HLAoctet createHLAoctet(byte b);
+	HLAhandle createHLAhandle();
 
-   HLAoctetPairBE createHLAoctetPairBE();
-   HLAoctetPairBE createHLAoctetPairBE(short s);
+	HLAhandle createHLAhandle(byte[] b);
 
-   HLAoctetPairLE createHLAoctetPairLE();
-   HLAoctetPairLE createHLAoctetPairLE(short s);
+	HLAinteger16BE createHLAinteger16BE();
 
-   HLAopaqueData createHLAopaqueData();
-   HLAopaqueData createHLAopaqueData(byte[] b);
+	HLAinteger16BE createHLAinteger16BE(short s);
 
-   HLAunicodeString createHLAunicodeString();
-   HLAunicodeString createHLAunicodeString(String s);
+	HLAinteger16LE createHLAinteger16LE();
 
-   HLAvariableArray createHLAvariableArray();
-   HLAvariableArray createHLAvariableArray(DataElementFactory factory);
+	HLAinteger16LE createHLAinteger16LE(short s);
+
+	HLAinteger32BE createHLAinteger32BE();
+
+	HLAinteger32BE createHLAinteger32BE(int i);
+
+	HLAinteger32LE createHLAinteger32LE();
+
+	HLAinteger32LE createHLAinteger32LE(int i);
+
+	HLAinteger64BE createHLAinteger64BE();
+
+	HLAinteger64BE createHLAinteger64BE(long l);
+
+	HLAinteger64LE createHLAinteger64LE();
+
+	HLAinteger64LE createHLAinteger64LE(long l);
+
+	HLAlogicalTime createHLAlogicalTime();
+
+	HLAlogicalTime createHLAlogicalTime(LogicalTime t);
+
+	HLAoctet createHLAoctet();
+
+	HLAoctet createHLAoctet(byte b);
+
+	HLAoctetPairBE createHLAoctetPairBE();
+
+	HLAoctetPairBE createHLAoctetPairBE(short s);
+
+	HLAoctetPairLE createHLAoctetPairLE();
+
+	HLAoctetPairLE createHLAoctetPairLE(short s);
+
+	HLAopaqueData createHLAopaqueData();
+
+	HLAopaqueData createHLAopaqueData(byte[] b);
+
+	HLAunicodeString createHLAunicodeString();
+
+	HLAunicodeString createHLAunicodeString(String s);
+
+	HLAvariableArray createHLAvariableArray();
+
+	HLAvariableArray createHLAvariableArray(DataElementFactory factory);
 }
-
-
-

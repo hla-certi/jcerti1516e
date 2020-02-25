@@ -9,25 +9,24 @@
 
 package hla.rti1516e;
 
-import hla.rti1516e.exceptions.CouldNotDecode;
-
 import java.io.Serializable;
 
-public interface LogicalTimeFactory<T extends LogicalTime<T, U>, U extends LogicalTimeInterval<U>> extends Serializable {
+import hla.rti1516e.exceptions.CouldNotDecode;
 
-   T decodeTime(byte[] buffer, int offset)
-      throws CouldNotDecode;
+public interface LogicalTimeFactory<T extends LogicalTime<T, U>, U extends LogicalTimeInterval<U>>
+		extends Serializable {
 
-   U decodeInterval(byte[] buffer, int offset)
-      throws CouldNotDecode;
+	T decodeTime(byte[] buffer, int offset) throws CouldNotDecode;
 
-   T makeInitial();
+	U decodeInterval(byte[] buffer, int offset) throws CouldNotDecode;
 
-   T makeFinal();
+	T makeInitial();
 
-   U makeZero();
+	T makeFinal();
 
-   U makeEpsilon();
+	U makeZero();
 
-   String getName();
+	U makeEpsilon();
+
+	String getName();
 }

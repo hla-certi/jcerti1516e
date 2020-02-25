@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class LogicalTimeAlreadyPassed
  */
 
 public final class LogicalTimeAlreadyPassed extends RTIexception {
-   public LogicalTimeAlreadyPassed(String msg)
-   {
-      super(msg);
-   }
+	public LogicalTimeAlreadyPassed(String msg) {
+		super(msg);
+	}
 
-   public LogicalTimeAlreadyPassed(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public LogicalTimeAlreadyPassed(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class ObjectInstanceNameInUse
  */
 
 public final class ObjectInstanceNameInUse extends RTIexception {
-   public ObjectInstanceNameInUse(String msg)
-   {
-      super(msg);
-   }
+	public ObjectInstanceNameInUse(String msg) {
+		super(msg);
+	}
 
-   public ObjectInstanceNameInUse(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public ObjectInstanceNameInUse(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -17,11 +17,11 @@ import java.io.Serializable;
  */
 public interface AttributeSetRegionSetPairListFactory extends Serializable {
 
-   /**
-    * Creates a new AttributeHandleValuePairSet instance with specified initial capacity.
-    */
-   AttributeSetRegionSetPairList create(int capacity);
+	/**
+	 * Creates a new AttributeHandleValuePairSet instance with specified initial
+	 * capacity.
+	 */
+	AttributeSetRegionSetPairList create(int capacity);
 }
 
 //end AttributeSetRegionSetPairListFactory
-

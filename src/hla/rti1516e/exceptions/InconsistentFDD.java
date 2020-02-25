@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InconsistentFDD
  */
 public final class InconsistentFDD extends RTIexception {
-   public InconsistentFDD(String msg)
-   {
-      super(msg);
-   }
+	public InconsistentFDD(String msg) {
+		super(msg);
+	}
 
-   public InconsistentFDD(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InconsistentFDD(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

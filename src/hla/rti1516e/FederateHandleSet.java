@@ -11,20 +11,17 @@
 
 package hla.rti1516e;
 
-import java.util.Set;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
- * All Set operations are required, none are optional.
- * add() and remove() should throw IllegalArgumentException if the argument is not
- * a FederateHandleHandle.
- * addAll(), removeAll() and retainAll() should throw IllegalArgumentException if
- * the argument is not a FederateHandleSet
+ * All Set operations are required, none are optional. add() and remove() should
+ * throw IllegalArgumentException if the argument is not a FederateHandleHandle.
+ * addAll(), removeAll() and retainAll() should throw IllegalArgumentException
+ * if the argument is not a FederateHandleSet
  */
 
-public interface FederateHandleSet
-   extends Set<FederateHandle>, Serializable, Cloneable {
+public interface FederateHandleSet extends Set<FederateHandle>, Serializable, Cloneable {
 }
 
 //end FederateHandleSet
-

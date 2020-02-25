@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeAlreadyOwned
  */
 
 public final class AttributeAlreadyOwned extends RTIexception {
-   public AttributeAlreadyOwned(String msg)
-   {
-      super(msg);
-   }
+	public AttributeAlreadyOwned(String msg) {
+		super(msg);
+	}
 
-   public AttributeAlreadyOwned(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeAlreadyOwned(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

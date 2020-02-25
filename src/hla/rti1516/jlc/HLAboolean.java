@@ -6,29 +6,29 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
+
+package hla.rti1516.jlc;
 
 /**
  * Interface for the HLA data type HLAinteger32BE.
  */
-public interface HLAboolean extends DataElement
-{
-   int getOctetBoundary();
+public interface HLAboolean extends DataElement {
+	@Override
+	int getOctetBoundary();
 
-   void encode(ByteWrapper byteWrapper);
+	@Override
+	void encode(ByteWrapper byteWrapper);
 
-   int getEncodedLength();
+	@Override
+	int getEncodedLength();
 
-   void decode(ByteWrapper byteWrapper);
+	@Override
+	void decode(ByteWrapper byteWrapper);
 
-   /**
-    * Returns the boolean value of this element.
-    *
-    * @return value
-    */
-   boolean getValue();
+	/**
+	 * Returns the boolean value of this element.
+	 *
+	 * @return value
+	 */
+	boolean getValue();
 }
-
-
-

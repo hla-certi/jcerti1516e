@@ -6,19 +6,16 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class InTimeAdvancingState
-*/
+ */
 public final class InTimeAdvancingState extends RTIexception {
-  public InTimeAdvancingState(String msg) {
-    super(msg);
-  }
+	public InTimeAdvancingState(String msg) {
+		super(msg);
+	}
 }
 
-
-
 //File: InteractionClassHandle.java
-

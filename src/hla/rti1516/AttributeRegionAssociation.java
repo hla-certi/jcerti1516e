@@ -6,22 +6,18 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
 
-public final class AttributeRegionAssociation
-    implements java.io.Serializable
-{
-  public AttributeRegionAssociation(AttributeHandleSet ahs, RegionHandleSet rhs) {
-    ahset = ahs;
-    rhset = rhs;
-  }
+package hla.rti1516;
 
-  public AttributeHandleSet ahset;
-  public RegionHandleSet    rhset;
+public final class AttributeRegionAssociation implements java.io.Serializable {
+	public AttributeRegionAssociation(AttributeHandleSet ahs, RegionHandleSet rhs) {
+		ahset = ahs;
+		rhset = rhs;
+	}
+
+	public AttributeHandleSet ahset;
+	public RegionHandleSet rhset;
 }
 //end AttributeRegionAssociation
-
-
 
 //File: AttributeRelevanceAdvisorySwitchIsOff.java

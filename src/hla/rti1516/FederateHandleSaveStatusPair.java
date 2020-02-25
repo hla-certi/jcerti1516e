@@ -6,22 +6,18 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
 
-public final class FederateHandleSaveStatusPair
-    implements java.io.Serializable
-{
-  public FederateHandleSaveStatusPair(FederateHandle fh, SaveStatus ss) {
-    handle = fh;
-    status = ss;
-  }
-  public FederateHandle handle;
-  public SaveStatus     status;
+package hla.rti1516;
+
+public final class FederateHandleSaveStatusPair implements java.io.Serializable {
+	public FederateHandleSaveStatusPair(FederateHandle fh, SaveStatus ss) {
+		handle = fh;
+		status = ss;
+	}
+
+	public FederateHandle handle;
+	public SaveStatus status;
 }
 //end FederateHandleSaveStatusPair
 
-
-
 //File: FederateHandleSet.java
-

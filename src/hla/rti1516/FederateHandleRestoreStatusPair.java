@@ -6,27 +6,22 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
 
-public final class FederateHandleRestoreStatusPair
-    implements java.io.Serializable
-{
-  public FederateHandleRestoreStatusPair(FederateHandle fh, RestoreStatus rs) {
-    handle = fh;
-    status = rs;
-  }
+package hla.rti1516;
 
-  public FederateHandle handle;
-  public RestoreStatus  status;
+public final class FederateHandleRestoreStatusPair implements java.io.Serializable {
+	public FederateHandleRestoreStatusPair(FederateHandle fh, RestoreStatus rs) {
+		handle = fh;
+		status = rs;
+	}
+
+	public FederateHandle handle;
+	public RestoreStatus status;
 }
 //end FederateHandleRestoreStatusPair
-
-
 
 //File: FederateHandleSaveStatusPair.java
 
 /**
  * Array of these records returned by (4.17) federationSaveStatusResponse
  */
-

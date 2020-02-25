@@ -14,17 +14,17 @@ package hla.rti1516e.encoding;
  */
 public interface HLAinteger64BE extends DataElement {
 
-   /**
-    * Returns the long value of this element.
-    *
-    * @return long value
-    */
-   long getValue();
+	/**
+	 * Returns the long value of this element.
+	 *
+	 * @return long value
+	 */
+	long getValue();
 
-   /**
-    * Sets the long value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(long value);
+	/**
+	 * Sets the long value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(long value);
 }

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InteractionClassNotPublished
  */
 
 public final class InteractionClassNotPublished extends RTIexception {
-   public InteractionClassNotPublished(String msg)
-   {
-      super(msg);
-   }
+	public InteractionClassNotPublished(String msg) {
+		super(msg);
+	}
 
-   public InteractionClassNotPublished(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InteractionClassNotPublished(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

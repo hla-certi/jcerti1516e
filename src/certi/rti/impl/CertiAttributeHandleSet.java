@@ -19,11 +19,12 @@
 // ----------------------------------------------------------------------------
 package certi.rti.impl;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
 import hla.rti.AttributeHandleSet;
 import hla.rti.AttributeNotDefined;
 import hla.rti.HandleIterator;
-import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  *
@@ -31,53 +32,61 @@ import java.util.Iterator;
  */
 public class CertiAttributeHandleSet extends HashSet<Integer> implements AttributeHandleSet {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3162809907138071826L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3162809907138071826L;
 
-    public void add(int handle) throws AttributeNotDefined {
-        super.add(handle);
-    }
+	@Override
+	public void add(int handle) throws AttributeNotDefined {
+		super.add(handle);
+	}
 
-    public void empty() {
-        clear();
-    }
+	@Override
+	public void empty() {
+		clear();
+	}
 
-    /**
-     *
-     * @return
-     */
-    public HandleIterator handles() {
-        return new AttributeHandleIterator();
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public HandleIterator handles() {
+		return new AttributeHandleIterator();
+	}
 
-    public boolean isMember(int handle) throws AttributeNotDefined {
-        return contains(handle);
-    }
+	@Override
+	public boolean isMember(int handle) throws AttributeNotDefined {
+		return contains(handle);
+	}
 
-    public void remove(int handle) throws AttributeNotDefined {
-        super.remove(handle);
-    }
+	@Override
+	public void remove(int handle) throws AttributeNotDefined {
+		super.remove(handle);
+	}
 
-    /**
-     *
-     */
-    public class AttributeHandleIterator implements HandleIterator {
+	/**
+	 *
+	 */
+	public class AttributeHandleIterator implements HandleIterator {
 
-        private Iterator iter = iterator();
+		private Iterator iter = iterator();
 
-        public int first() {
-            iter = iterator();
-            return next();
-        }
+		@Override
+		public int first() {
+			iter = iterator();
+			return next();
+		}
 
-        public boolean isValid() {
-            return iter.hasNext();
-        }
+		@Override
+		public boolean isValid() {
+			return iter.hasNext();
+		}
 
-        public int next() {
-            return (Integer) iter.next();
-        }
-    }
+		@Override
+		public int next() {
+			return (Integer) iter.next();
+		}
+	}
 }

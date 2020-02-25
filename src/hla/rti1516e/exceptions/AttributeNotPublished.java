@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeNotPublished
  */
 
 public final class AttributeNotPublished extends RTIexception {
-   public AttributeNotPublished(String msg)
-   {
-      super(msg);
-   }
+	public AttributeNotPublished(String msg) {
+		super(msg);
+	}
 
-   public AttributeNotPublished(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeNotPublished(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

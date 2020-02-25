@@ -6,8 +6,8 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * The factory is used only (outside RTI) to create ObjectInstanceHandle
@@ -15,9 +15,5 @@
  */
 
 public interface ObjectInstanceHandleFactory extends java.io.Serializable {
-	public ObjectInstanceHandle decode(byte[] buffer, int offset)
-	  throws CouldNotDecode, FederateNotExecutionMember;
+	ObjectInstanceHandle decode(byte[] buffer, int offset) throws CouldNotDecode, FederateNotExecutionMember;
 }
-
-
-

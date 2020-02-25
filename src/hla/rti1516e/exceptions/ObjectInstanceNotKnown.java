@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class ObjectInstanceNotKnown
  */
 
 public final class ObjectInstanceNotKnown extends RTIexception {
-   public ObjectInstanceNotKnown(String msg)
-   {
-      super(msg);
-   }
+	public ObjectInstanceNotKnown(String msg) {
+		super(msg);
+	}
 
-   public ObjectInstanceNotKnown(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public ObjectInstanceNotKnown(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -19,54 +19,54 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class GetInteractionSpaceHandle extends CertiMessage {
-   private int interactionClass;
-   private int space=0;
+	private int interactionClass;
+	private int space = 0;
 
-   public GetInteractionSpaceHandle() {
-      super(CertiMessageType.GET_INTERACTION_SPACE_HANDLE);
-   }
+	public GetInteractionSpaceHandle() {
+		super(CertiMessageType.GET_INTERACTION_SPACE_HANDLE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.write(space);
-   }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(space);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      interactionClass = messageBuffer.readInt();
-      space = messageBuffer.readInt();
-   }
+		interactionClass = messageBuffer.readInt();
+		space = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", space: " + space);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", space: " + space);
+	}
 
-   public int getInteractionClass() {
-      return interactionClass;
-   }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-   public int getSpace() {
-      return space;
-   }
+	public int getSpace() {
+		return space;
+	}
 
-   public void setInteractionClass(int newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-   public void setSpace(int newSpace) {
-      this.space = newSpace;
-   }
+	public void setSpace(int newSpace) {
+		this.space = newSpace;
+	}
 
 }
-

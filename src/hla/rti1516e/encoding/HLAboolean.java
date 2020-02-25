@@ -14,17 +14,17 @@ package hla.rti1516e.encoding;
  */
 public interface HLAboolean extends DataElement {
 
-   /**
-    * Returns the boolean value of this element.
-    *
-    * @return value
-    */
-   boolean getValue();
+	/**
+	 * Returns the boolean value of this element.
+	 *
+	 * @return value
+	 */
+	boolean getValue();
 
-   /**
-    * Sets the boolean value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(boolean value);
+	/**
+	 * Sets the boolean value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(boolean value);
 }

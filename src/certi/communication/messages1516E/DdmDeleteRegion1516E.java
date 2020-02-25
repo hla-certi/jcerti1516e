@@ -19,44 +19,42 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class DdmDeleteRegion1516E extends CertiMessage1516E {
-   private int region;
+	private int region;
 
-   public DdmDeleteRegion1516E() {
-      super(CertiMessageType.DDM_DELETE_REGION);
-   }
+	public DdmDeleteRegion1516E() {
+		super(CertiMessageType.DDM_DELETE_REGION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(region);
-   }
+		messageBuffer.write(region);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      region = messageBuffer.readInt();
-   }
+		region = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", region: " + region);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", region: " + region);
+	}
 
-   public int getRegion() {
-      return region;
-   }
+	public int getRegion() {
+		return region;
+	}
 
-   public void setRegion(int newRegion) {
-      this.region = newRegion;
-   }
+	public void setRegion(int newRegion) {
+		this.region = newRegion;
+	}
 
 }
-

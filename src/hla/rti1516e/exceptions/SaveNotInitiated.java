@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class SaveNotInitiated
  */
 
 public final class SaveNotInitiated extends RTIexception {
-   public SaveNotInitiated(String msg)
-   {
-      super(msg);
-   }
+	public SaveNotInitiated(String msg) {
+		super(msg);
+	}
 
-   public SaveNotInitiated(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public SaveNotInitiated(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

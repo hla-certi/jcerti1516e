@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class SynchronizationPointLabelNotAnnounced
-
-*/
+ * 
+ */
 
 public final class SynchronizationPointLabelNotAnnounced extends RTIexception {
-  public SynchronizationPointLabelNotAnnounced(String msg) {
-    super(msg);
-  }
+	public SynchronizationPointLabelNotAnnounced(String msg) {
+		super(msg);
+	}
 }
-
-
-

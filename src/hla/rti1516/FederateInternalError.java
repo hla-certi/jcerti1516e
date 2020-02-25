@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class FederateInternalError
-*/
+ */
 public final class FederateInternalError extends RTIexception {
-  public FederateInternalError(String msg) {
-    super(msg);
-  }
+	public FederateInternalError(String msg) {
+		super(msg);
+	}
 }
-
-
-

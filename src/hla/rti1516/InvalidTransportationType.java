@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InvalidTransportationType
-
-*/
+ * 
+ */
 
 public final class InvalidTransportationType extends RTIexception {
-  public InvalidTransportationType(String msg) {
-    super(msg);
-  }
+	public InvalidTransportationType(String msg) {
+		super(msg);
+	}
 }
-
-
-

@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class RestoreInProgress
-*/
+ */
 public final class RestoreInProgress extends RTIexception {
-  public RestoreInProgress(String msg) {
-    super(msg);
-  }
+	public RestoreInProgress(String msg) {
+		super(msg);
+	}
 }
-
-
-

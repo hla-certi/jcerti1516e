@@ -19,65 +19,66 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class TickRequest extends CertiMessage {
-   private boolean multiple;
-   private double minTickTime;
-   private double maxTickTime;
+	private boolean multiple;
+	private double minTickTime;
+	private double maxTickTime;
 
-   public TickRequest() {
-      super(CertiMessageType.TICK_REQUEST);
-   }
+	public TickRequest() {
+		super(CertiMessageType.TICK_REQUEST);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(multiple);
-      messageBuffer.write(minTickTime);
-      messageBuffer.write(maxTickTime);
-   }
+		messageBuffer.write(multiple);
+		messageBuffer.write(minTickTime);
+		messageBuffer.write(maxTickTime);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      multiple = messageBuffer.readBoolean();
-      minTickTime = messageBuffer.readDouble();
-      maxTickTime = messageBuffer.readDouble();
-   }
+		multiple = messageBuffer.readBoolean();
+		minTickTime = messageBuffer.readDouble();
+		maxTickTime = messageBuffer.readDouble();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", multiple: " + multiple + ", minTickTime: " + minTickTime + ", maxTickTime: " + maxTickTime);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", multiple: " + multiple + ", minTickTime: " + minTickTime + ", maxTickTime: "
+				+ maxTickTime);
+	}
 
-   public boolean isMultiple() {
-      return multiple;
-   }
+	public boolean isMultiple() {
+		return multiple;
+	}
 
-   public double getMinTickTime() {
-      return minTickTime;
-   }
+	public double getMinTickTime() {
+		return minTickTime;
+	}
 
-   public double getMaxTickTime() {
-      return maxTickTime;
-   }
+	public double getMaxTickTime() {
+		return maxTickTime;
+	}
 
-   public void setMultiple(boolean newMultiple) {
-      this.multiple = newMultiple;
-   }
+	public void setMultiple(boolean newMultiple) {
+		this.multiple = newMultiple;
+	}
 
-   public void setMinTickTime(double newMinTickTime) {
-      this.minTickTime = newMinTickTime;
-   }
+	public void setMinTickTime(double newMinTickTime) {
+		this.minTickTime = newMinTickTime;
+	}
 
-   public void setMaxTickTime(double newMaxTickTime) {
-      this.maxTickTime = newMaxTickTime;
-   }
+	public void setMaxTickTime(double newMaxTickTime) {
+		this.maxTickTime = newMaxTickTime;
+	}
 
 }
-

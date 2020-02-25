@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class NoAcquisitionPending.
  */
 public final class NoAcquisitionPending extends RTIexception {
-   public NoAcquisitionPending(String msg)
-   {
-      super(msg);
-   }
+	public NoAcquisitionPending(String msg) {
+		super(msg);
+	}
 
-   public NoAcquisitionPending(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public NoAcquisitionPending(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

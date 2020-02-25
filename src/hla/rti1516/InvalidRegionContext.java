@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InvalidRegionContext
-
-*/
+ * 
+ */
 
 public final class InvalidRegionContext extends RTIexception {
-  public InvalidRegionContext(String msg) {
-    super(msg);
-  }
+	public InvalidRegionContext(String msg) {
+		super(msg);
+	}
 }
-
-
-

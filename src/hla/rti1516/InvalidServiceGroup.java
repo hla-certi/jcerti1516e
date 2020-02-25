@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InvalidFederateHandle
-
-*/
+ * 
+ */
 
 public final class InvalidServiceGroup extends RTIexception {
-  public InvalidServiceGroup(String msg) {
-    super(msg);
-  }
+	public InvalidServiceGroup(String msg) {
+		super(msg);
+	}
 }
-
-
-

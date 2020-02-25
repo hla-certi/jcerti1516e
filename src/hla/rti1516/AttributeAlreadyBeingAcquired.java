@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class AttributeAlreadyBeingAcquired
-
-*/
+ * 
+ */
 
 public final class AttributeAlreadyBeingAcquired extends RTIexception {
-  public AttributeAlreadyBeingAcquired(String msg) {
-    super(msg);
-  }
+	public AttributeAlreadyBeingAcquired(String msg) {
+		super(msg);
+	}
 }
-
-
-

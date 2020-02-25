@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class RegionDoesNotContainSpecifiedDimension
  */
 
 public final class RegionDoesNotContainSpecifiedDimension extends RTIexception {
-   public RegionDoesNotContainSpecifiedDimension(String msg)
-   {
-      super(msg);
-   }
+	public RegionDoesNotContainSpecifiedDimension(String msg) {
+		super(msg);
+	}
 
-   public RegionDoesNotContainSpecifiedDimension(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public RegionDoesNotContainSpecifiedDimension(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

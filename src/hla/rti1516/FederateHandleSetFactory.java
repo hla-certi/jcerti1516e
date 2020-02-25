@@ -6,17 +6,16 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public interface FederateHandleSetFactory extends java.io.Serializable {
 
-  /**
-   * return hla.rti1516.FederateHandleSet newly created
-   */
-  public FederateHandleSet create();	
+	/**
+	 * return hla.rti1516.FederateHandleSet newly created
+	 */
+	FederateHandleSet create();
 }
 //end FederateHandleSetFactory
-
 
 //File: FederateHasNotBegunSave.java

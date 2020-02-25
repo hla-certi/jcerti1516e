@@ -19,54 +19,54 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class GetObjectInstanceHandle extends CertiMessage {
-   private int object=0;
-   private String objectInstanceName;
+	private int object = 0;
+	private String objectInstanceName;
 
-   public GetObjectInstanceHandle() {
-      super(CertiMessageType.GET_OBJECT_INSTANCE_HANDLE);
-   }
+	public GetObjectInstanceHandle() {
+		super(CertiMessageType.GET_OBJECT_INSTANCE_HANDLE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(object);
-      messageBuffer.write(objectInstanceName);
-   }
+		messageBuffer.write(object);
+		messageBuffer.write(objectInstanceName);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      object = messageBuffer.readInt();
-      objectInstanceName = messageBuffer.readString();
-   }
+		object = messageBuffer.readInt();
+		objectInstanceName = messageBuffer.readString();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", object: " + object + ", objectInstanceName: " + objectInstanceName);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", object: " + object + ", objectInstanceName: " + objectInstanceName);
+	}
 
-   public int getObject() {
-      return object;
-   }
+	public int getObject() {
+		return object;
+	}
 
-   public String getObjectInstanceName() {
-      return objectInstanceName;
-   }
+	public String getObjectInstanceName() {
+		return objectInstanceName;
+	}
 
-   public void setObject(int newObject) {
-      this.object = newObject;
-   }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-   public void setObjectInstanceName(String newObjectInstanceName) {
-      this.objectInstanceName = newObjectInstanceName;
-   }
+	public void setObjectInstanceName(String newObjectInstanceName) {
+		this.objectInstanceName = newObjectInstanceName;
+	}
 
 }
-

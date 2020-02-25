@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidLogicalTimeInterval.
  */
 
 public final class InvalidLogicalTimeInterval extends RTIexception {
-   public InvalidLogicalTimeInterval(String msg)
-   {
-      super(msg);
-   }
+	public InvalidLogicalTimeInterval(String msg) {
+		super(msg);
+	}
 
-   public InvalidLogicalTimeInterval(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidLogicalTimeInterval(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

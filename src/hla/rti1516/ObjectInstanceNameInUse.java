@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class ObjectInstanceNameInUse
-
-*/
+ * 
+ */
 
 public final class ObjectInstanceNameInUse extends RTIexception {
-  public ObjectInstanceNameInUse(String msg) {
-    super(msg);
-  }
+	public ObjectInstanceNameInUse(String msg) {
+		super(msg);
+	}
 }
-
-
-

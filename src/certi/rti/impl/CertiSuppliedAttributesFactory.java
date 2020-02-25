@@ -26,10 +26,11 @@ import hla.rti.SuppliedAttributesFactory;
  *
  * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
-public class CertiSuppliedAttributesFactory implements SuppliedAttributesFactory{
+public class CertiSuppliedAttributesFactory implements SuppliedAttributesFactory {
 
-    public SuppliedAttributes create(int capacity) {
-        return new CertiHandleValuePairCollection(capacity);
-    }
+	@Override
+	public SuppliedAttributes create(int capacity) {
+		return new CertiHandleValuePairCollection(capacity);
+	}
 
 }

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeNotSubscribed
  */
 
 public final class AttributeRelevanceAdvisorySwitchIsOff extends RTIexception {
-   public AttributeRelevanceAdvisorySwitchIsOff(String msg)
-   {
-      super(msg);
-   }
+	public AttributeRelevanceAdvisorySwitchIsOff(String msg) {
+		super(msg);
+	}
 
-   public AttributeRelevanceAdvisorySwitchIsOff(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeRelevanceAdvisorySwitchIsOff(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

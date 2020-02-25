@@ -19,54 +19,54 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class CreateFederationExecution extends CertiMessage {
-   private String federationName;
-   private String FEDid;
+	private String federationName;
+	private String FEDid;
 
-   public CreateFederationExecution() {
-      super(CertiMessageType.CREATE_FEDERATION_EXECUTION);
-   }
+	public CreateFederationExecution() {
+		super(CertiMessageType.CREATE_FEDERATION_EXECUTION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(federationName);
-      messageBuffer.write(FEDid);
-   }
+		messageBuffer.write(federationName);
+		messageBuffer.write(FEDid);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      federationName = messageBuffer.readString();
-      FEDid = messageBuffer.readString();
-   }
+		federationName = messageBuffer.readString();
+		FEDid = messageBuffer.readString();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", federationName: " + federationName + ", FEDid: " + FEDid);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", federationName: " + federationName + ", FEDid: " + FEDid);
+	}
 
-   public String getFederationName() {
-      return federationName;
-   }
+	public String getFederationName() {
+		return federationName;
+	}
 
-   public String getFEDid() {
-      return FEDid;
-   }
+	public String getFEDid() {
+		return FEDid;
+	}
 
-   public void setFederationName(String newFederationName) {
-      this.federationName = newFederationName;
-   }
+	public void setFederationName(String newFederationName) {
+		this.federationName = newFederationName;
+	}
 
-   public void setFEDid(String newFEDid) {
-      this.FEDid = newFEDid;
-   }
+	public void setFEDid(String newFEDid) {
+		this.FEDid = newFEDid;
+	}
 
 }
-

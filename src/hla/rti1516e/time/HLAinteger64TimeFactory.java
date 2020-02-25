@@ -16,25 +16,30 @@ import hla.rti1516e.exceptions.CouldNotDecode;
  * Interface for the factory part of standardized time type HLAinteger64Time.
  */
 public interface HLAinteger64TimeFactory extends LogicalTimeFactory<HLAinteger64Time, HLAinteger64Interval> {
-   String NAME = "HLAinteger64Time";
+	String NAME = "HLAinteger64Time";
 
-   HLAinteger64Time decodeTime(byte[] buffer, int offset)
-      throws CouldNotDecode;
+	@Override
+	HLAinteger64Time decodeTime(byte[] buffer, int offset) throws CouldNotDecode;
 
-   HLAinteger64Interval decodeInterval(byte[] buffer, int offset)
-         throws CouldNotDecode;
+	@Override
+	HLAinteger64Interval decodeInterval(byte[] buffer, int offset) throws CouldNotDecode;
 
-   HLAinteger64Time makeInitial();
+	@Override
+	HLAinteger64Time makeInitial();
 
-   HLAinteger64Time makeFinal();
+	@Override
+	HLAinteger64Time makeFinal();
 
-   HLAinteger64Time makeTime(long value);
+	HLAinteger64Time makeTime(long value);
 
-   HLAinteger64Interval makeZero();
+	@Override
+	HLAinteger64Interval makeZero();
 
-   HLAinteger64Interval makeEpsilon();
+	@Override
+	HLAinteger64Interval makeEpsilon();
 
-   HLAinteger64Interval makeInterval(long value);
+	HLAinteger64Interval makeInterval(long value);
 
-   String getName();
+	@Override
+	String getName();
 }

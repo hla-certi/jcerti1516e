@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class SpecifiedSaveLabelDoesNotExist
-
-*/
+ * 
+ */
 
 public final class SpecifiedSaveLabelDoesNotExist extends RTIexception {
-  public SpecifiedSaveLabelDoesNotExist(String msg) {
-    super(msg);
-  }
+	public SpecifiedSaveLabelDoesNotExist(String msg) {
+		super(msg);
+	}
 }
-
-
-

@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidResignAction
  */
 public final class InvalidResignAction extends RTIexception {
-   public InvalidResignAction(String msg)
-   {
-      super(msg);
-   }
+	public InvalidResignAction(String msg) {
+		super(msg);
+	}
 
-   public InvalidResignAction(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidResignAction(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

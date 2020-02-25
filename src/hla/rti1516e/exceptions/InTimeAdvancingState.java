@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InTimeAdvancingState
  */
 public final class InTimeAdvancingState extends RTIexception {
-   public InTimeAdvancingState(String msg)
-   {
-      super(msg);
-   }
+	public InTimeAdvancingState(String msg) {
+		super(msg);
+	}
 
-   public InTimeAdvancingState(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InTimeAdvancingState(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

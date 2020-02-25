@@ -14,12 +14,10 @@ import java.io.Serializable;
 
 public interface FederateHandleSetFactory extends Serializable {
 
-   /**
-    * return hla.rti1516.FederateHandleSet newly created
-    */
-   FederateHandleSet create();
+	/**
+	 * return hla.rti1516.FederateHandleSet newly created
+	 */
+	FederateHandleSet create();
 }
 
 //end FederateHandleSetFactory
-
-

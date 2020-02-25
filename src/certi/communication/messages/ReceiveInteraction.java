@@ -19,75 +19,79 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiException;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.EventRetractionHandle;
+import hla.rti.ReceivedInteraction;
 
 public class ReceiveInteraction extends CertiMessage {
 
-    private int interactionClass;
-    private ReceivedInteraction receivedInteraction;
-    private int region;
-    private EventRetractionHandle EventRetractionHandle;
+	private int interactionClass;
+	private ReceivedInteraction receivedInteraction;
+	private int region;
+	private EventRetractionHandle EventRetractionHandle;
 
-    public ReceiveInteraction() {
-        super(CertiMessageType.RECEIVE_INTERACTION);
-    }
+	public ReceiveInteraction() {
+		super(CertiMessageType.RECEIVE_INTERACTION);
+	}
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-        messageBuffer.write(interactionClass);
-        messageBuffer.write(receivedInteraction);
-        messageBuffer.write(region);
-        if (EventRetractionHandle == null) {
-            messageBuffer.write(false);
-        } else {
-            messageBuffer.write(true);
-            messageBuffer.write(EventRetractionHandle);
-        }
-    }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(receivedInteraction);
+		messageBuffer.write(region);
+		if (EventRetractionHandle == null) {
+			messageBuffer.write(false);
+		} else {
+			messageBuffer.write(true);
+			messageBuffer.write(EventRetractionHandle);
+		}
+	}
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-        interactionClass = messageBuffer.readInt();
-        receivedInteraction = messageBuffer.readReceivedInteraction();
-        region = messageBuffer.readInt();
-        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
-        if (hasEventRetractionHandle) {
-            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
-        }
-    }
+		interactionClass = messageBuffer.readInt();
+		receivedInteraction = messageBuffer.readReceivedInteraction();
+		region = messageBuffer.readInt();
+		boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+		if (hasEventRetractionHandle) {
+			EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+		}
+	}
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", interactionClass: " + interactionClass + ", ParameterHandleValuePairSet: " + receivedInteraction + ", region: " + region + ", EventRetractionHandle: " + EventRetractionHandle);
-    }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", ParameterHandleValuePairSet: "
+				+ receivedInteraction + ", region: " + region + ", EventRetractionHandle: " + EventRetractionHandle);
+	}
 
-    public int getInteractionClass() {
-        return interactionClass;
-    }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-    public int getRegion() {
-        return region;
-    }
+	public int getRegion() {
+		return region;
+	}
 
-    public void setInteractionClass(int newInteractionClass) {
-        this.interactionClass = newInteractionClass;
-    }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-    public void setRegion(int newRegion) {
-        this.region = newRegion;
-    }
+	public void setRegion(int newRegion) {
+		this.region = newRegion;
+	}
 
-    public ReceivedInteraction getReceivedInteraction() {
-        return receivedInteraction;
-    }
+	public ReceivedInteraction getReceivedInteraction() {
+		return receivedInteraction;
+	}
 
-    public void setReceivedInteraction(ReceivedInteraction receivedInteraction) {
-        this.receivedInteraction = receivedInteraction;
-    }
+	public void setReceivedInteraction(ReceivedInteraction receivedInteraction) {
+		this.receivedInteraction = receivedInteraction;
+	}
 }
-

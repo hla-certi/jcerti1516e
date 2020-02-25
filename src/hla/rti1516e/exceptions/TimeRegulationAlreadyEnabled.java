@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class TimeRegulationAlreadyEnabled
  */
 
 public final class TimeRegulationAlreadyEnabled extends RTIexception {
-   public TimeRegulationAlreadyEnabled(String msg)
-   {
-      super(msg);
-   }
+	public TimeRegulationAlreadyEnabled(String msg) {
+		super(msg);
+	}
 
-   public TimeRegulationAlreadyEnabled(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public TimeRegulationAlreadyEnabled(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

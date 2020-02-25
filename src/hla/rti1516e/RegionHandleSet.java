@@ -11,20 +11,17 @@
 
 package hla.rti1516e;
 
-import java.util.Set;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
- * All Set operations are required, none are optional.
- * add() and remove() should throw IllegalArgumentException if the argument is not
- * a RegionHandle.
- * addAll(), removeAll() and retainAll() should throw IllegalArgumentException if
- * the argument is not a RegionHandleSet.
+ * All Set operations are required, none are optional. add() and remove() should
+ * throw IllegalArgumentException if the argument is not a RegionHandle.
+ * addAll(), removeAll() and retainAll() should throw IllegalArgumentException
+ * if the argument is not a RegionHandleSet.
  */
 
-public interface RegionHandleSet
-   extends Set<RegionHandle>, Cloneable, Serializable {
+public interface RegionHandleSet extends Set<RegionHandle>, Cloneable, Serializable {
 }
 
 //end RegionHandleSet
-

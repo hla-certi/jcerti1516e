@@ -17,16 +17,14 @@ package hla.rti1516e;
 
 import java.io.Serializable;
 
-public final class MessageRetractionReturn
-   implements Serializable {
-   public MessageRetractionReturn(boolean rhiv, MessageRetractionHandle mrh)
-   {
-      retractionHandleIsValid = rhiv;
-      handle = mrh;
-   }
+public final class MessageRetractionReturn implements Serializable {
+	public MessageRetractionReturn(boolean rhiv, MessageRetractionHandle mrh) {
+		retractionHandleIsValid = rhiv;
+		handle = mrh;
+	}
 
-   public final boolean retractionHandleIsValid;
-   public final MessageRetractionHandle handle;
+	public final boolean retractionHandleIsValid;
+	public final MessageRetractionHandle handle;
 }
 
 //end MessageRetractionReturn

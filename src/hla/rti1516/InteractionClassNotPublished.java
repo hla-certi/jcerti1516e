@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InteractionClassNotPublished
-
-*/
+ * 
+ */
 
 public final class InteractionClassNotPublished extends RTIexception {
-  public InteractionClassNotPublished(String msg) {
-    super(msg);
-  }
+	public InteractionClassNotPublished(String msg) {
+		super(msg);
+	}
 }
-
-
-

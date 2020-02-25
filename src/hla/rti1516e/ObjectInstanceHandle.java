@@ -20,22 +20,25 @@ import java.io.Serializable;
 
 public interface ObjectInstanceHandle extends Serializable {
 
-   /**
-    * @return true if this refers to the same instance as other handle
-    */
-   boolean equals(Object otherObjectInstanceHandle);
+	/**
+	 * @return true if this refers to the same instance as other handle
+	 */
+	@Override
+	boolean equals(Object otherObjectInstanceHandle);
 
-   /**
-    * @return int. All instances that refer to the same instance should return the
-    *         same hascode.
-    */
-   int hashCode();
+	/**
+	 * @return int. All instances that refer to the same instance should return the
+	 *         same hascode.
+	 */
+	@Override
+	int hashCode();
 
-   int encodedLength();
+	int encodedLength();
 
-   void encode(byte[] buffer, int offset);
+	void encode(byte[] buffer, int offset);
 
-   String toString();
+	@Override
+	String toString();
 
 }
 

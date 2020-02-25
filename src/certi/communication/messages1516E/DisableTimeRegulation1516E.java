@@ -19,37 +19,35 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 import hla.rti.LogicalTimeInterval;
 
 public class DisableTimeRegulation1516E extends CertiMessage1516E {
-   private LogicalTimeInterval LogicalTimeInterval;
+	private LogicalTimeInterval LogicalTimeInterval;
 
-   public DisableTimeRegulation1516E() {
-      super(CertiMessageType.DISABLE_TIME_REGULATION);
-   }
+	public DisableTimeRegulation1516E() {
+		super(CertiMessageType.DISABLE_TIME_REGULATION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(LogicalTimeInterval);
-   }
+		messageBuffer.write(LogicalTimeInterval);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      LogicalTimeInterval = messageBuffer.readLogicalTimeInterval();
-   }
+		LogicalTimeInterval = messageBuffer.readLogicalTimeInterval();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", LogicalTimeInterval: " + LogicalTimeInterval);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", LogicalTimeInterval: " + LogicalTimeInterval);
+	}
 
 }
-

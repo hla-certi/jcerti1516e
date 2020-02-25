@@ -10,18 +10,15 @@
 //File: UnsupportedCallbackModel.java
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class UnsupportedCallbackModel
  */
 public final class UnsupportedCallbackModel extends RTIexception {
-   public UnsupportedCallbackModel(String msg)
-   {
-      super(msg);
-   }
+	public UnsupportedCallbackModel(String msg) {
+		super(msg);
+	}
 
-   public UnsupportedCallbackModel(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public UnsupportedCallbackModel(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

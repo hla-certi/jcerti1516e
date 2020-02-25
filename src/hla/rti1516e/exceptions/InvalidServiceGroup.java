@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidServiceGroup
  */
 public final class InvalidServiceGroup extends RTIexception {
-   public InvalidServiceGroup(String msg)
-   {
-      super(msg);
-   }
+	public InvalidServiceGroup(String msg) {
+		super(msg);
+	}
 
-   public InvalidServiceGroup(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidServiceGroup(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

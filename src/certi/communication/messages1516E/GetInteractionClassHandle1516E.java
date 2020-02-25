@@ -19,55 +19,53 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class GetInteractionClassHandle1516E extends CertiMessage1516E {
-   private int interactionClass=0;
-   private String className;
+	private int interactionClass = 0;
+	private String className;
 
-   public GetInteractionClassHandle1516E() {
-      super(CertiMessageType.GET_INTERACTION_CLASS_HANDLE);
-   }
+	public GetInteractionClassHandle1516E() {
+		super(CertiMessageType.GET_INTERACTION_CLASS_HANDLE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.write(className);
-   }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(className);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      interactionClass = messageBuffer.readInt();
-      className = messageBuffer.readString();
-   }
+		interactionClass = messageBuffer.readInt();
+		className = messageBuffer.readString();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", className: " + className);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", className: " + className);
+	}
 
-   public int getInteractionClass() {
-      return interactionClass;
-   }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-   public String getClassName() {
-      return className;
-   }
+	public String getClassName() {
+		return className;
+	}
 
-   public void setInteractionClass(int newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-   public void setClassName(String newClassName) {
-      this.className = newClassName;
-   }
+	public void setClassName(String newClassName) {
+		this.className = newClassName;
+	}
 
 }
-

@@ -19,149 +19,159 @@
 // ----------------------------------------------------------------------------
 package certi.rti.impl;
 
-import hla.rti.ArrayIndexOutOfBounds;
-import hla.rti.Region;
 import java.util.ArrayList;
 import java.util.List;
 
+import hla.rti.ArrayIndexOutOfBounds;
+import hla.rti.Region;
+
 /**
  *
- * Represents a Region in federate's space.
- * A federate creates a Region by calling RTIambassador.createRegion.
- * The federate mdifies the Region by invoking Region methods
- * on it. The federate modifies a Region by first modifying
- * its local instance, then supplying the modified instance
- * to RTIambassador.notifyOfRegionModification.
+ * Represents a Region in federate's space. A federate creates a Region by
+ * calling RTIambassador.createRegion. The federate mdifies the Region by
+ * invoking Region methods on it. The federate modifies a Region by first
+ * modifying its local instance, then supplying the modified instance to
+ * RTIambassador.notifyOfRegionModification.
  *
- * The Region is conceptually an array, with the extents addressed
- * by index running from 0 to getNumberOfExtents()-1.
+ * The Region is conceptually an array, with the extents addressed by index
+ * running from 0 to getNumberOfExtents()-1.
  *
  * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  * @version 3.3.3
  */
 public class CertiRegion implements Region {
 
-    private int spaceHandle;
-    private int handle;
-    private List<CertiExtent> extents;
+	private int spaceHandle;
+	private int handle;
+	private List<CertiExtent> extents;
 
-    /**
-     *
-     * @param handle
-     * @param space
-     * @param numberOfExtends
-     */
-    public CertiRegion(int handle, int space, int numberOfExtends) {
-        this.handle = handle;
-        this.spaceHandle = space;
-        this.extents = new ArrayList<CertiExtent>(numberOfExtends);
-        
-        for (int i = 0; i < numberOfExtends; i++) {
-            extents.add(new CertiExtent());
-        }
-    }
+	/**
+	 *
+	 * @param handle
+	 * @param space
+	 * @param numberOfExtends
+	 */
+	public CertiRegion(int handle, int space, int numberOfExtends) {
+		this.handle = handle;
+		this.spaceHandle = space;
+		this.extents = new ArrayList<>(numberOfExtends);
 
-    /**
-     * @return long Number of extents in this Region
-     */
-    public long getNumberOfExtents() {
-        return extents.size();
-    }
+		for (int i = 0; i < numberOfExtends; i++) {
+			extents.add(new CertiExtent());
+		}
+	}
 
-    /**
-     * @return long Lower bound of extent along indicated dimension
-     * @param extentIndex int
-     * @param dimensionHandle int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public long getRangeLowerBound(int extentIndex, int dimensionHandle) throws ArrayIndexOutOfBounds {
-        if (extentIndex < extents.size()) {
-            return extents.get(extentIndex).getRangeLowerBound(dimensionHandle);
-        } else {
-            throw new ArrayIndexOutOfBounds("Extent index above limit");
-        }
-    }
+	/**
+	 * @return long Number of extents in this Region
+	 */
+	@Override
+	public long getNumberOfExtents() {
+		return extents.size();
+	}
 
-    /**
-     * @return long Upper bound of extent along indicated dimension
-     * @param extentIndex int
-     * @param dimensionHandle int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public long getRangeUpperBound(int extentIndex, int dimensionHandle) throws ArrayIndexOutOfBounds {
-        if (extentIndex < extents.size()) {
-            return extents.get(extentIndex).getRangeUpperBound(dimensionHandle);
-        } else {
-            throw new ArrayIndexOutOfBounds("Extent index above limit");
-        }
-    }
+	/**
+	 * @return long Lower bound of extent along indicated dimension
+	 * @param extentIndex     int
+	 * @param dimensionHandle int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public long getRangeLowerBound(int extentIndex, int dimensionHandle) throws ArrayIndexOutOfBounds {
+		if (extentIndex < extents.size()) {
+			return extents.get(extentIndex).getRangeLowerBound(dimensionHandle);
+		} else {
+			throw new ArrayIndexOutOfBounds("Extent index above limit");
+		}
+	}
 
-    /**
-     * @return int Handle of routing space of which this Region is a subset
-     */
-    public int getSpaceHandle() {
-        return spaceHandle;
-    }
+	/**
+	 * @return long Upper bound of extent along indicated dimension
+	 * @param extentIndex     int
+	 * @param dimensionHandle int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public long getRangeUpperBound(int extentIndex, int dimensionHandle) throws ArrayIndexOutOfBounds {
+		if (extentIndex < extents.size()) {
+			return extents.get(extentIndex).getRangeUpperBound(dimensionHandle);
+		} else {
+			throw new ArrayIndexOutOfBounds("Extent index above limit");
+		}
+	}
 
-    /**
-     * Modify lower bound of extent along indicated dimension.
-     * @param extentIndex int
-     * @param dimensionHandle int
-     * @param newLowerBound long
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public void setRangeLowerBound(int extentIndex, int dimensionHandle, long newLowerBound) throws ArrayIndexOutOfBounds {
-        if (extentIndex < extents.size()) {
-            extents.get(extentIndex).setRangeLowerBound(dimensionHandle, newLowerBound);
-        } else {
-            throw new ArrayIndexOutOfBounds("Extent index above limit");
-        }
-    }
+	/**
+	 * @return int Handle of routing space of which this Region is a subset
+	 */
+	@Override
+	public int getSpaceHandle() {
+		return spaceHandle;
+	}
 
-    /**
-     * Modify upper bound of extent along indicated dimension.
-     * @param extentIndex int
-     * @param dimensionHandle int
-     * @param newUpperBound long
-     * @exception hla.rti.ArrayIndexOutOfBounds The exception description.
-     */
-    public void setRangeUpperBound(int extentIndex, int dimensionHandle, long newUpperBound) throws ArrayIndexOutOfBounds {
-        if (extentIndex < extents.size()) {
-            extents.get(extentIndex).setRangeUpperBound(dimensionHandle, newUpperBound);
-        } else {
-            throw new ArrayIndexOutOfBounds("Extent index above limit");
-        }
-    }
+	/**
+	 * Modify lower bound of extent along indicated dimension.
+	 * 
+	 * @param extentIndex     int
+	 * @param dimensionHandle int
+	 * @param newLowerBound   long
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public void setRangeLowerBound(int extentIndex, int dimensionHandle, long newLowerBound)
+			throws ArrayIndexOutOfBounds {
+		if (extentIndex < extents.size()) {
+			extents.get(extentIndex).setRangeLowerBound(dimensionHandle, newLowerBound);
+		} else {
+			throw new ArrayIndexOutOfBounds("Extent index above limit");
+		}
+	}
 
-    /**
-     *
-     * @return
-     */
-    public int getHandle() {
-        return handle;
-    }
+	/**
+	 * Modify upper bound of extent along indicated dimension.
+	 * 
+	 * @param extentIndex     int
+	 * @param dimensionHandle int
+	 * @param newUpperBound   long
+	 * @exception hla.rti.ArrayIndexOutOfBounds The exception description.
+	 */
+	@Override
+	public void setRangeUpperBound(int extentIndex, int dimensionHandle, long newUpperBound)
+			throws ArrayIndexOutOfBounds {
+		if (extentIndex < extents.size()) {
+			extents.get(extentIndex).setRangeUpperBound(dimensionHandle, newUpperBound);
+		} else {
+			throw new ArrayIndexOutOfBounds("Extent index above limit");
+		}
+	}
 
-    /**
-     *
-     * @param handle
-     */
-    public void setHandle(int handle) {
-        this.handle = handle;
-    }
+	/**
+	 *
+	 * @return
+	 */
+	public int getHandle() {
+		return handle;
+	}
 
-    /**
-     *
-     * @return
-     */
-    public List<CertiExtent> getExtents() {
-        return extents;
-    }
+	/**
+	 *
+	 * @param handle
+	 */
+	public void setHandle(int handle) {
+		this.handle = handle;
+	}
 
-    /**
-     *
-     * @param extents
-     */
-    public void setExtents(List<CertiExtent> extents) {
-        this.extents = extents;
-    }
+	/**
+	 *
+	 * @return
+	 */
+	public List<CertiExtent> getExtents() {
+		return extents;
+	}
+
+	/**
+	 *
+	 * @param extents
+	 */
+	public void setExtents(List<CertiExtent> extents) {
+		this.extents = extents;
+	}
 }

@@ -6,15 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public final class AttributeScopeAdvisorySwitchIsOff extends RTIexception {
-  public AttributeScopeAdvisorySwitchIsOff(String msg) {
-    super(msg);
-  }
+	public AttributeScopeAdvisorySwitchIsOff(String msg) {
+		super(msg);
+	}
 }
 //end AttributeScopeAdvisorySwitchIsOff
-
 
 //File: AttributeScopeAdvisorySwitchIsOn.java

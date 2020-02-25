@@ -27,168 +27,182 @@ import hla.rti.LogicalTimeInterval;
  */
 public class CertiLogicalTimeInterval implements LogicalTimeInterval, Comparable<CertiLogicalTimeInterval> {
 
-    /**
-     *
-     */
-    public static final CertiLogicalTimeInterval POSITIVE_INFINITY = new CertiLogicalTimeInterval(Double.MAX_VALUE);
-    /**
-     *
-     */
-    public static final CertiLogicalTimeInterval EPSILON = new CertiLogicalTimeInterval(0.00001);
-    /**
-     *
-     */
-    public static final CertiLogicalTimeInterval ZERO = new CertiLogicalTimeInterval(0);
-    private double interval;
+	/**
+	 *
+	 */
+	public static final CertiLogicalTimeInterval POSITIVE_INFINITY = new CertiLogicalTimeInterval(Double.MAX_VALUE);
+	/**
+	 *
+	 */
+	public static final CertiLogicalTimeInterval EPSILON = new CertiLogicalTimeInterval(0.00001);
+	/**
+	 *
+	 */
+	public static final CertiLogicalTimeInterval ZERO = new CertiLogicalTimeInterval(0);
+	private double interval;
 
-    /**
-     *
-     * @param interval
-     */
-    public CertiLogicalTimeInterval(double interval) {
-        this.interval = interval;
-    }
+	/**
+	 *
+	 * @param interval
+	 */
+	public CertiLogicalTimeInterval(double interval) {
+		this.interval = interval;
+	}
 
-    /**
-     *
-     * @param buffer
-     * @param offset
-     */
-    public void encode(byte[] buffer, int offset) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	/**
+	 *
+	 * @param buffer
+	 * @param offset
+	 */
+	@Override
+	public void encode(byte[] buffer, int offset) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    /**
-     *
-     * @return
-     */
-    public int encodedLength() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public int encodedLength() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    /**
-     *
-     * @return
-     */
-    public boolean isEpsilon() {
-        return equals(EPSILON);
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public boolean isEpsilon() {
+		return equals(EPSILON);
+	}
 
-    /**
-     *
-     * @param value
-     * @return
-     */
-    public boolean isEqualTo(LogicalTimeInterval value) {
-        return equals(value);
-    }
+	/**
+	 *
+	 * @param value
+	 * @return
+	 */
+	@Override
+	public boolean isEqualTo(LogicalTimeInterval value) {
+		return equals(value);
+	}
 
-    /**
-     *
-     * @param value
-     * @return
-     */
-    public boolean isGreaterThan(LogicalTimeInterval value) {
-        return compareTo((CertiLogicalTimeInterval) value) > 0;
-    }
+	/**
+	 *
+	 * @param value
+	 * @return
+	 */
+	@Override
+	public boolean isGreaterThan(LogicalTimeInterval value) {
+		return compareTo((CertiLogicalTimeInterval) value) > 0;
+	}
 
-    /**
-     *
-     * @param value
-     * @return
-     */
-    public boolean isGreaterThanOrEqualTo(LogicalTimeInterval value) {
-        return compareTo((CertiLogicalTimeInterval) value) >= 0;
-    }
+	/**
+	 *
+	 * @param value
+	 * @return
+	 */
+	@Override
+	public boolean isGreaterThanOrEqualTo(LogicalTimeInterval value) {
+		return compareTo((CertiLogicalTimeInterval) value) >= 0;
+	}
 
-    /**
-     *
-     * @param value
-     * @return
-     */
-    public boolean isLessThan(LogicalTimeInterval value) {
-        return compareTo((CertiLogicalTimeInterval) value) < 0;
-    }
+	/**
+	 *
+	 * @param value
+	 * @return
+	 */
+	@Override
+	public boolean isLessThan(LogicalTimeInterval value) {
+		return compareTo((CertiLogicalTimeInterval) value) < 0;
+	}
 
-    /**
-     *
-     * @param value
-     * @return
-     */
-    public boolean isLessThanOrEqualTo(LogicalTimeInterval value) {
-        return compareTo((CertiLogicalTimeInterval) value) <= 0;
-    }
+	/**
+	 *
+	 * @param value
+	 * @return
+	 */
+	@Override
+	public boolean isLessThanOrEqualTo(LogicalTimeInterval value) {
+		return compareTo((CertiLogicalTimeInterval) value) <= 0;
+	}
 
-    /**
-     *
-     * @return
-     */
-    public boolean isZero() {
-        return equals(ZERO);
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public boolean isZero() {
+		return equals(ZERO);
+	}
 
-    /**
-     *
-     */
-    public void setEpsilon() {
-        setTo(EPSILON);
-    }
+	/**
+	 *
+	 */
+	@Override
+	public void setEpsilon() {
+		setTo(EPSILON);
+	}
 
-    /**
-     *
-     * @param value
-     */
-    public void setTo(LogicalTimeInterval value) {
-        if (getClass() != value.getClass()) {
-            throw new IllegalArgumentException("Different LogicalTimeInterval implementation supported");
-        }
+	/**
+	 *
+	 * @param value
+	 */
+	@Override
+	public void setTo(LogicalTimeInterval value) {
+		if (getClass() != value.getClass()) {
+			throw new IllegalArgumentException("Different LogicalTimeInterval implementation supported");
+		}
 
-        this.interval = ((CertiLogicalTimeInterval) value).getInterval();
-    }
+		this.interval = ((CertiLogicalTimeInterval) value).getInterval();
+	}
 
-    /**
-     *
-     */
-    public void setZero() {
-        setTo(ZERO);
-    }
+	/**
+	 *
+	 */
+	@Override
+	public void setZero() {
+		setTo(ZERO);
+	}
 
-    /**
-     *
-     * @return
-     */
-    public double getInterval() {
-        return interval;
-    }
+	/**
+	 *
+	 * @return
+	 */
+	public double getInterval() {
+		return interval;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CertiLogicalTimeInterval other = (CertiLogicalTimeInterval) obj;
-        return this.interval == other.interval;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CertiLogicalTimeInterval other = (CertiLogicalTimeInterval) obj;
+		return this.interval == other.interval;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + (int) (Double.doubleToLongBits(this.interval) ^ (Double.doubleToLongBits(this.interval) >>> 32));
-        return hash;
-    }
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 23 * hash
+				+ (int) (Double.doubleToLongBits(this.interval) ^ (Double.doubleToLongBits(this.interval) >>> 32));
+		return hash;
+	}
 
-    @Override
-    public String toString() {
-        return Double.toString(interval);
-    }
+	@Override
+	public String toString() {
+		return Double.toString(interval);
+	}
 
-    public int compareTo(CertiLogicalTimeInterval o) {
-        //double difference = interval - o.interval;
-        //return difference > 0 ? 1 : difference < 0 ? -1 : 0;
+	@Override
+	public int compareTo(CertiLogicalTimeInterval o) {
+		// double difference = interval - o.interval;
+		// return difference > 0 ? 1 : difference < 0 ? -1 : 0;
 
-        return Double.compare(interval, o.interval);
-    }
+		return Double.compare(interval, o.interval);
+	}
 }

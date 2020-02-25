@@ -6,19 +6,16 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public interface AttributeHandleSetFactory extends java.io.Serializable {
 
-  /**
-   * return hla.rti1516.AttributeHandleSet newly created
-   */
-  public AttributeHandleSet create();
+	/**
+	 * return hla.rti1516.AttributeHandleSet newly created
+	 */
+	AttributeHandleSet create();
 }
 //end AttributeHandleSetFactory
 
-
-
 //File: AttributeHandleValueMap.java
-

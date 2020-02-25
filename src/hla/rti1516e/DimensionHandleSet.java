@@ -11,19 +11,17 @@
 
 package hla.rti1516e;
 
-import java.io.Serializable;import java.util.Set;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
- * All Set operations are required, none are optional.
- * add() and remove() should throw IllegalArgumentException if the argument is not
- * a DimensionHandle.
- * addAll(), removeAll() and retainAll() should throw IllegalArgumentException if
- * the argument is not a DimensionHandleSet.
+ * All Set operations are required, none are optional. add() and remove() should
+ * throw IllegalArgumentException if the argument is not a DimensionHandle.
+ * addAll(), removeAll() and retainAll() should throw IllegalArgumentException
+ * if the argument is not a DimensionHandleSet.
  */
 
-public interface DimensionHandleSet
-   extends Set<DimensionHandle>, Cloneable, Serializable {
+public interface DimensionHandleSet extends Set<DimensionHandle>, Cloneable, Serializable {
 }
 
 //end DimensionHandleSet
-

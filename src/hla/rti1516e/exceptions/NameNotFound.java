@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class NameNotFound
  */
 
 public final class NameNotFound extends RTIexception {
-   public NameNotFound(String msg)
-   {
-      super(msg);
-   }
+	public NameNotFound(String msg) {
+		super(msg);
+	}
 
-   public NameNotFound(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public NameNotFound(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

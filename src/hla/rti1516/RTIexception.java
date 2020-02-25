@@ -6,18 +6,16 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
- * Superclass of all exceptions thrown by the RTI.
- * All RTI exceptions must be caught or specified.
-*/
+ * Superclass of all exceptions thrown by the RTI. All RTI exceptions must be
+ * caught or specified.
+ */
 public class RTIexception extends Exception {
-  public RTIexception(String msg) {
-    super(msg);
-  }
+	public RTIexception(String msg) {
+		super(msg);
+	}
 }
 //end RTIexception
-
-

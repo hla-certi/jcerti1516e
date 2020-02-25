@@ -19,55 +19,53 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class GetSpaceName1516E extends CertiMessage1516E {
-   private String spaceName;
-   private int space;
+	private String spaceName;
+	private int space;
 
-   public GetSpaceName1516E() {
-      super(CertiMessageType.GET_SPACE_NAME);
-   }
+	public GetSpaceName1516E() {
+		super(CertiMessageType.GET_SPACE_NAME);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(spaceName);
-      messageBuffer.write(space);
-   }
+		messageBuffer.write(spaceName);
+		messageBuffer.write(space);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      spaceName = messageBuffer.readString();
-      space = messageBuffer.readInt();
-   }
+		spaceName = messageBuffer.readString();
+		space = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", spaceName: " + spaceName + ", space: " + space);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", spaceName: " + spaceName + ", space: " + space);
+	}
 
-   public String getSpaceName() {
-      return spaceName;
-   }
+	public String getSpaceName() {
+		return spaceName;
+	}
 
-   public int getSpace() {
-      return space;
-   }
+	public int getSpace() {
+		return space;
+	}
 
-   public void setSpaceName(String newSpaceName) {
-      this.spaceName = newSpaceName;
-   }
+	public void setSpaceName(String newSpaceName) {
+		this.spaceName = newSpaceName;
+	}
 
-   public void setSpace(int newSpace) {
-      this.space = newSpace;
-   }
+	public void setSpace(int newSpace) {
+		this.space = newSpace;
+	}
 
 }
-

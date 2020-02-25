@@ -10,24 +10,17 @@
 //File: AttributeScopeAdvisorySwitchIsOff.java
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeScopeAdvisorySwitchIsOff
  */
 public final class AttributeScopeAdvisorySwitchIsOff extends RTIexception {
-   public AttributeScopeAdvisorySwitchIsOff(String msg)
-   {
-      super(msg);
-   }
+	public AttributeScopeAdvisorySwitchIsOff(String msg) {
+		super(msg);
+	}
 
-   public AttributeScopeAdvisorySwitchIsOff(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeScopeAdvisorySwitchIsOff(String message, Throwable cause) {
+		super(message, cause);
+	}
 }
 
 //end AttributeScopeAdvisorySwitchIsOff
-
-
-
-

@@ -19,77 +19,80 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiException;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.EventRetractionHandle;
 
 public class DeleteObjectInstance extends CertiMessage {
 
-    private int objectClass;
-    private int object;
-    private String objectName;
-    private EventRetractionHandle EventRetractionHandle;
+	private int objectClass;
+	private int object;
+	private String objectName;
+	private EventRetractionHandle EventRetractionHandle;
 
-    public DeleteObjectInstance() {
-        super(CertiMessageType.DELETE_OBJECT_INSTANCE);
-    }
+	public DeleteObjectInstance() {
+		super(CertiMessageType.DELETE_OBJECT_INSTANCE);
+	}
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-        messageBuffer.write(objectClass);
-        messageBuffer.write(object);
-        messageBuffer.write(objectName);
+		messageBuffer.write(objectClass);
+		messageBuffer.write(object);
+		messageBuffer.write(objectName);
 
-        if (EventRetractionHandle == null) {
-            messageBuffer.write(false);
-        } else {
-            messageBuffer.write(true);
-            messageBuffer.write(EventRetractionHandle);
-        }
-    }
+		if (EventRetractionHandle == null) {
+			messageBuffer.write(false);
+		} else {
+			messageBuffer.write(true);
+			messageBuffer.write(EventRetractionHandle);
+		}
+	}
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-        objectClass = messageBuffer.readInt();
-        object = messageBuffer.readInt();
-        objectName = messageBuffer.readString();
+		objectClass = messageBuffer.readInt();
+		object = messageBuffer.readInt();
+		objectName = messageBuffer.readString();
 
-        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
-        if (hasEventRetractionHandle) {
-            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
-        }
-    }
+		boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+		if (hasEventRetractionHandle) {
+			EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+		}
+	}
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectName: " + objectName + ", EventRetractionHandle: " + EventRetractionHandle);
-    }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", objectName: "
+				+ objectName + ", EventRetractionHandle: " + EventRetractionHandle);
+	}
 
-    public int getObjectClass() {
-        return objectClass;
-    }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-    public int getObject() {
-        return object;
-    }
+	public int getObject() {
+		return object;
+	}
 
-    public String getObjectName() {
-        return objectName;
-    }
+	public String getObjectName() {
+		return objectName;
+	}
 
-    public void setObjectClass(int newObjectClass) {
-        this.objectClass = newObjectClass;
-    }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-    public void setObject(int newObject) {
-        this.object = newObject;
-    }
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 
-    public void setObjectName(String newObjectName) {
-        this.objectName = newObjectName;
-    }
+	public void setObjectName(String newObjectName) {
+		this.objectName = newObjectName;
+	}
 }
-

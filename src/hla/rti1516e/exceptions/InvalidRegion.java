@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidRegion
  */
 public final class InvalidRegion extends RTIexception {
-   public InvalidRegion(String msg)
-   {
-      super(msg);
-   }
+	public InvalidRegion(String msg) {
+		super(msg);
+	}
 
-   public InvalidRegion(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidRegion(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InteractionClassNotSubscribed
-
-*/
+ * 
+ */
 
 public final class InteractionClassNotSubscribed extends RTIexception {
-  public InteractionClassNotSubscribed(String msg) {
-    super(msg);
-  }
+	public InteractionClassNotSubscribed(String msg) {
+		super(msg);
+	}
 }
-
-
-

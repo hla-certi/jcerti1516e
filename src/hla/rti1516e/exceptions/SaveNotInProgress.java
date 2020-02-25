@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class SaveNotInProgress
  */
 public final class SaveNotInProgress extends RTIexception {
-   public SaveNotInProgress(String msg)
-   {
-      super(msg);
-   }
+	public SaveNotInProgress(String msg) {
+		super(msg);
+	}
 
-   public SaveNotInProgress(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public SaveNotInProgress(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

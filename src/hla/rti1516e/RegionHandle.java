@@ -13,21 +13,23 @@ package hla.rti1516e;
 
 import java.io.Serializable;
 
-
 public interface RegionHandle extends Serializable {
 
-   /**
-    * @return true if this refers to the same Region as other handle
-    */
-   boolean equals(Object otherRegionHandle);
+	/**
+	 * @return true if this refers to the same Region as other handle
+	 */
+	@Override
+	boolean equals(Object otherRegionHandle);
 
-   /**
-    * @return int. All instances that refer to the same Region should return the
-    *         same hashcode.
-    */
-   int hashCode();
+	/**
+	 * @return int. All instances that refer to the same Region should return the
+	 *         same hashcode.
+	 */
+	@Override
+	int hashCode();
 
-   String toString();
+	@Override
+	String toString();
 
 }
 

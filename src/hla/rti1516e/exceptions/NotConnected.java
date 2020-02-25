@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class NotConnected.
  */
 public final class NotConnected extends RTIexception {
-   public NotConnected(String msg)
-   {
-      super(msg);
-   }
+	public NotConnected(String msg) {
+		super(msg);
+	}
 
-   public NotConnected(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public NotConnected(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

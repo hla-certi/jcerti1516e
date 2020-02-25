@@ -6,16 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public final class AttributeScopeAdvisorySwitchIsOn extends RTIexception {
-  public AttributeScopeAdvisorySwitchIsOn(String msg) {
-    super(msg);
-  }
+	public AttributeScopeAdvisorySwitchIsOn(String msg) {
+		super(msg);
+	}
 }
 //end AttributeScopeAdvisorySwitchIsOn
 
-
 //File: AttributeSetRegionSetPairList.java
-

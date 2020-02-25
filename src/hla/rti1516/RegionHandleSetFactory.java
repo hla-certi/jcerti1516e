@@ -6,16 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public interface RegionHandleSetFactory extends java.io.Serializable {
 
-  /**
-   * return hla.rti1516.RegionHandleSet newly created
-   */
-  public RegionHandleSet create();
+	/**
+	 * return hla.rti1516.RegionHandleSet newly created
+	 */
+	RegionHandleSet create();
 }
 //end RegionHandleSetFactory
-
-

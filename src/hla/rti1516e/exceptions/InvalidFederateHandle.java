@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidFederateHandle
  */
 
 public final class InvalidFederateHandle extends RTIexception {
-   public InvalidFederateHandle(String msg)
-   {
-      super(msg);
-   }
+	public InvalidFederateHandle(String msg) {
+		super(msg);
+	}
 
-   public InvalidFederateHandle(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidFederateHandle(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

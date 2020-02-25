@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class IllegalName
-
-*/
+ * 
+ */
 
 public final class IllegalName extends RTIexception {
-  public IllegalName(String msg) {
-    super(msg);
-  }
+	public IllegalName(String msg) {
+		super(msg);
+	}
 }
-
-
-

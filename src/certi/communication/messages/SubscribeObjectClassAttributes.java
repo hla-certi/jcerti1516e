@@ -19,64 +19,66 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiException;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.AttributeHandleSet;
 
 public class SubscribeObjectClassAttributes extends CertiMessage {
-   private int objectClass;
-   private AttributeHandleSet attributes;
-   private boolean active=true;
+	private int objectClass;
+	private AttributeHandleSet attributes;
+	private boolean active = true;
 
-   public SubscribeObjectClassAttributes() {
-      super(CertiMessageType.SUBSCRIBE_OBJECT_CLASS_ATTRIBUTES);
-   }
+	public SubscribeObjectClassAttributes() {
+		super(CertiMessageType.SUBSCRIBE_OBJECT_CLASS_ATTRIBUTES);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(attributes);
-      messageBuffer.write(active);
-   }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(attributes);
+		messageBuffer.write(active);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-      attributes = messageBuffer.readAttributeHandleSet();
-      active = messageBuffer.readBoolean();
-   }
+		objectClass = messageBuffer.readInt();
+		attributes = messageBuffer.readAttributeHandleSet();
+		active = messageBuffer.readBoolean();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", attributes: " + attributes + ", active: " + active);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", attributes: " + attributes + ", active: "
+				+ active);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public AttributeHandleSet getAttributes() {
-      return attributes;
-   }
+	public AttributeHandleSet getAttributes() {
+		return attributes;
+	}
 
-   public boolean getActive() {
-      return active;
-   }
+	public boolean getActive() {
+		return active;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-   public void setAttributes(AttributeHandleSet newAttributes) {
-      this.attributes = newAttributes;
-   }
+	public void setAttributes(AttributeHandleSet newAttributes) {
+		this.attributes = newAttributes;
+	}
 
-   public void setActive(boolean newActive) {
-      this.active = newActive;
-   }
+	public void setActive(boolean newActive) {
+		this.active = newActive;
+	}
 }
-

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidObjectClassHandle
  */
 
 public final class InvalidObjectClassHandle extends RTIexception {
-   public InvalidObjectClassHandle(String msg)
-   {
-      super(msg);
-   }
+	public InvalidObjectClassHandle(String msg) {
+		super(msg);
+	}
 
-   public InvalidObjectClassHandle(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidObjectClassHandle(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

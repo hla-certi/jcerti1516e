@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class TimeConstrainedAlreadyEnabled
-
-*/
+ * 
+ */
 
 public final class TimeConstrainedAlreadyEnabled extends RTIexception {
-  public TimeConstrainedAlreadyEnabled(String msg) {
-    super(msg);
-  }
+	public TimeConstrainedAlreadyEnabled(String msg) {
+		super(msg);
+	}
 }
-
-
-

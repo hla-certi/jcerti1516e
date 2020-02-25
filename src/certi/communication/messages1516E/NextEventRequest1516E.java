@@ -5,25 +5,25 @@ import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class NextEventRequest1516E extends CertiMessage1516E {
-    public NextEventRequest1516E() {
-        super(CertiMessageType.NEXT_EVENT_REQUEST);
-    }
+	public NextEventRequest1516E() {
+		super(CertiMessageType.NEXT_EVENT_REQUEST);
+	}
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-    }
+	}
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-    }
+	}
 
-    @Override
-    public String toString() {
-        return (super.toString());
-    }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
 
 }

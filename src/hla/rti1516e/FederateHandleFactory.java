@@ -11,19 +11,19 @@
 
 package hla.rti1516e;
 
+import java.io.Serializable;
+
 import hla.rti1516e.exceptions.CouldNotDecode;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.RTIinternalError;
 
-import java.io.Serializable;
-
 /**
- * The factory is used only (outside RTI) to create FederateHandle
- * received as an attribute value or parameter value.
+ * The factory is used only (outside RTI) to create FederateHandle received as
+ * an attribute value or parameter value.
  */
 
 public interface FederateHandleFactory extends Serializable {
-   FederateHandle decode(byte[] buffer, int offset)
-      throws CouldNotDecode, FederateNotExecutionMember, NotConnected, RTIinternalError;
+	FederateHandle decode(byte[] buffer, int offset)
+			throws CouldNotDecode, FederateNotExecutionMember, NotConnected, RTIinternalError;
 }

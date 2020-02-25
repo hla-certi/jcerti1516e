@@ -27,7 +27,8 @@ import hla.rti.AttributeHandleSet;
  */
 public class CertiAttributeHandleSetFactory implements hla.rti.AttributeHandleSetFactory {
 
-    public AttributeHandleSet create() {
-        return new CertiAttributeHandleSet();
-    }
+	@Override
+	public AttributeHandleSet create() {
+		return new CertiAttributeHandleSet();
+	}
 }

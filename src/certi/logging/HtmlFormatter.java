@@ -31,34 +31,36 @@ import java.util.logging.LogRecord;
  */
 public class HtmlFormatter extends Formatter {
 
-    public String format(LogRecord rec) {
-        StringBuffer stringBuffer = new StringBuffer();
+	@Override
+	public String format(LogRecord rec) {
+		StringBuffer stringBuffer = new StringBuffer();
 
-        stringBuffer.append("<TR><TD>");
+		stringBuffer.append("<TR><TD>");
 
-        if (rec.getLevel().intValue() > Level.INFO.intValue()) {
-            stringBuffer.append("<B>");
-            stringBuffer.append(rec.getLevel());
-            stringBuffer.append("</B>");
-        } else {
-            stringBuffer.append(rec.getLevel());
-        }
-        stringBuffer.append("</TD><TD>");
-        stringBuffer.append(new Date(rec.getMillis()));
-        stringBuffer.append("</TD><TD>");
-        stringBuffer.append(this.formatMessage(rec));
-        stringBuffer.append("<TD></TR>\n");
+		if (rec.getLevel().intValue() > Level.INFO.intValue()) {
+			stringBuffer.append("<B>");
+			stringBuffer.append(rec.getLevel());
+			stringBuffer.append("</B>");
+		} else {
+			stringBuffer.append(rec.getLevel());
+		}
+		stringBuffer.append("</TD><TD>");
+		stringBuffer.append(new Date(rec.getMillis()));
+		stringBuffer.append("</TD><TD>");
+		stringBuffer.append(this.formatMessage(rec));
+		stringBuffer.append("<TD></TR>\n");
 
-        return stringBuffer.toString();
-    }
+		return stringBuffer.toString();
+	}
 
-    @Override
-    public String getHead(Handler h) {
-        return "<HTML><HEAD><TITLE>CERTI LibRTI Java log</TITLE> CERTI simulation commenced on " + new Date() + "</HEAD><BODY><PRE><TABLE BORDER><TR><TH>Level</TH><TH>Time</TH><TH>Log Message</TH></TR>";
-    }
+	@Override
+	public String getHead(Handler h) {
+		return "<HTML><HEAD><TITLE>CERTI LibRTI Java log</TITLE> CERTI simulation commenced on " + new Date()
+				+ "</HEAD><BODY><PRE><TABLE BORDER><TR><TH>Level</TH><TH>Time</TH><TH>Log Message</TH></TR>";
+	}
 
-    @Override
-    public String getTail(Handler h) {
-        return "</TABLE>\n</PRE></BODY>\n</HTML>\n";
-    }
+	@Override
+	public String getTail(Handler h) {
+		return "</TABLE>\n</PRE></BODY>\n</HTML>\n";
+	}
 }

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeAlreadyBeingAcquired
  */
 
 public final class AttributeAlreadyBeingAcquired extends RTIexception {
-   public AttributeAlreadyBeingAcquired(String msg)
-   {
-      super(msg);
-   }
+	public AttributeAlreadyBeingAcquired(String msg) {
+		super(msg);
+	}
 
-   public AttributeAlreadyBeingAcquired(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeAlreadyBeingAcquired(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

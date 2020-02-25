@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidDimensionHandle
  */
 
 public final class InvalidDimensionHandle extends RTIexception {
-   public InvalidDimensionHandle(String msg)
-   {
-      super(msg);
-   }
+	public InvalidDimensionHandle(String msg) {
+		super(msg);
+	}
 
-   public InvalidDimensionHandle(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidDimensionHandle(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

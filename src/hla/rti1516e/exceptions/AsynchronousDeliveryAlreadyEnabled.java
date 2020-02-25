@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AsynchronousDeliveryAlreadyEnabled
  */
 public final class AsynchronousDeliveryAlreadyEnabled extends RTIexception {
-   public AsynchronousDeliveryAlreadyEnabled(String msg)
-   {
-      super(msg);
-   }
+	public AsynchronousDeliveryAlreadyEnabled(String msg) {
+		super(msg);
+	}
 
-   public AsynchronousDeliveryAlreadyEnabled(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AsynchronousDeliveryAlreadyEnabled(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

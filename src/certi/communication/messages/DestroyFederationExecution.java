@@ -19,43 +19,43 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class DestroyFederationExecution extends CertiMessage {
-   private String federationName;
+	private String federationName;
 
-   public DestroyFederationExecution() {
-      super(CertiMessageType.DESTROY_FEDERATION_EXECUTION);
-   }
+	public DestroyFederationExecution() {
+		super(CertiMessageType.DESTROY_FEDERATION_EXECUTION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(federationName);
-   }
+		messageBuffer.write(federationName);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      federationName = messageBuffer.readString();
-   }
+		federationName = messageBuffer.readString();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", federationName: " + federationName);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", federationName: " + federationName);
+	}
 
-   public String getFederationName() {
-      return federationName;
-   }
+	public String getFederationName() {
+		return federationName;
+	}
 
-   public void setFederationName(String newFederationName) {
-      this.federationName = newFederationName;
-   }
+	public void setFederationName(String newFederationName) {
+		this.federationName = newFederationName;
+	}
 
 }
-

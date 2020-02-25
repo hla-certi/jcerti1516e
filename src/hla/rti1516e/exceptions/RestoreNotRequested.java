@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class RestoreNotRequested
  */
 
 public final class RestoreNotRequested extends RTIexception {
-   public RestoreNotRequested(String msg)
-   {
-      super(msg);
-   }
+	public RestoreNotRequested(String msg) {
+		super(msg);
+	}
 
-   public RestoreNotRequested(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public RestoreNotRequested(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

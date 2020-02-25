@@ -19,55 +19,54 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
+import certi.communication.CertiMessage;
 import certi.communication.CertiMessageType;
-import certi.communication.*;
+import certi.communication.MessageBuffer;
 
 public class OpenConnexion extends CertiMessage {
-   private int versionMajor;
-   private int versionMinor;
+	private int versionMajor;
+	private int versionMinor;
 
-   public OpenConnexion() {
-      super(CertiMessageType.OPEN_CONNEXION);
-   }
+	public OpenConnexion() {
+		super(CertiMessageType.OPEN_CONNEXION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(versionMajor);
-      messageBuffer.write(versionMinor);
-   }
+		messageBuffer.write(versionMajor);
+		messageBuffer.write(versionMinor);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      versionMajor = messageBuffer.readInt();
-      versionMinor = messageBuffer.readInt();
-   }
+		versionMajor = messageBuffer.readInt();
+		versionMinor = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", versionMajor: " + versionMajor + ", versionMinor: " + versionMinor);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", versionMajor: " + versionMajor + ", versionMinor: " + versionMinor);
+	}
 
-   public int getVersionMajor() {
-      return versionMajor;
-   }
+	public int getVersionMajor() {
+		return versionMajor;
+	}
 
-   public int getVersionMinor() {
-      return versionMinor;
-   }
+	public int getVersionMinor() {
+		return versionMinor;
+	}
 
-   public void setVersionMajor(int newVersionMajor) {
-      this.versionMajor = newVersionMajor;
-   }
+	public void setVersionMajor(int newVersionMajor) {
+		this.versionMajor = newVersionMajor;
+	}
 
-   public void setVersionMinor(int newVersionMinor) {
-      this.versionMinor = newVersionMinor;
-   }
+	public void setVersionMinor(int newVersionMinor) {
+		this.versionMinor = newVersionMinor;
+	}
 
 }
-

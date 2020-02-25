@@ -23,30 +23,31 @@ import hla.rti.CouldNotDecode;
 import hla.rti.LogicalTimeInterval;
 import hla.rti.LogicalTimeIntervalFactory;
 
-
 /**
  *
  * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  */
-public class CertiLogicalTimeIntervalFactory implements LogicalTimeIntervalFactory{
+public class CertiLogicalTimeIntervalFactory implements LogicalTimeIntervalFactory {
 
-    /**
-     *
-     * @param buffer
-     * @param offset
-     * @return
-     * @throws CouldNotDecode
-     */
-    public LogicalTimeInterval decode(byte[] buffer, int offset) throws CouldNotDecode {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	/**
+	 *
+	 * @param buffer
+	 * @param offset
+	 * @return
+	 * @throws CouldNotDecode
+	 */
+	@Override
+	public LogicalTimeInterval decode(byte[] buffer, int offset) throws CouldNotDecode {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    /**
-     *
-     * @return
-     */
-    public LogicalTimeInterval makeZero() {
-        return new CertiLogicalTimeInterval(CertiLogicalTimeInterval.ZERO.getInterval());
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public LogicalTimeInterval makeZero() {
+		return new CertiLogicalTimeInterval(CertiLogicalTimeInterval.ZERO.getInterval());
+	}
 
 }

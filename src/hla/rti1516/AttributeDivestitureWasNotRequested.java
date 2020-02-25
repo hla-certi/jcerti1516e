@@ -6,22 +6,19 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class AttributeDivestitureWasNotRequested
-
-*/
+ * 
+ */
 
 public final class AttributeDivestitureWasNotRequested extends RTIexception {
-  public AttributeDivestitureWasNotRequested(String msg) {
-    super(msg);
-  }
+	public AttributeDivestitureWasNotRequested(String msg) {
+		super(msg);
+	}
 }
 
-
-
 //File: AttributeHandle.java
-

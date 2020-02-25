@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidOrderType
  */
 
 public final class InvalidOrderType extends RTIexception {
-   public InvalidOrderType(String msg)
-   {
-      super(msg);
-   }
+	public InvalidOrderType(String msg) {
+		super(msg);
+	}
 
-   public InvalidOrderType(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidOrderType(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

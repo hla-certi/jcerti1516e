@@ -6,26 +6,23 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class AttributeNotSubscribed
-
-*/
+ * 
+ */
 
 public final class AttributeNotSubscribed extends RTIexception {
-  public AttributeNotSubscribed(String msg) {
-    super(msg);
-  }
+	public AttributeNotSubscribed(String msg) {
+		super(msg);
+	}
 }
-
-
 
 //File: AttributeRegionAssociation.java
 
 /**
  * Record stored in AttributeSetRegionSetPairList
  */
-

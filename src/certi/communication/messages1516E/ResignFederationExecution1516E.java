@@ -25,37 +25,36 @@ import certi.communication.MessageBuffer;
 
 public class ResignFederationExecution1516E extends CertiMessage1516E {
 
-    private short resignAction;
+	private short resignAction;
 
-    public ResignFederationExecution1516E() {
-        super(CertiMessageType.RESIGN_FEDERATION_EXECUTION);
-    }
+	public ResignFederationExecution1516E() {
+		super(CertiMessageType.RESIGN_FEDERATION_EXECUTION);
+	}
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-        messageBuffer.write(resignAction);
-    }
+		messageBuffer.write(resignAction);
+	}
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-        resignAction = messageBuffer.readShort();
-    }
+		resignAction = messageBuffer.readShort();
+	}
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", resignAction: " + resignAction);
-    }
+	@Override
+	public String toString() {
+		return (super.toString() + ", resignAction: " + resignAction);
+	}
 
-    public short getResignAction() {
-        return resignAction;
-    }
+	public short getResignAction() {
+		return resignAction;
+	}
 
-    public void setResignAction(short newResignAction) {
-        this.resignAction = newResignAction;
-    }
+	public void setResignAction(short newResignAction) {
+		this.resignAction = newResignAction;
+	}
 }
-

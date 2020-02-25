@@ -17,16 +17,14 @@ package hla.rti1516e;
 
 import java.io.Serializable;
 
-public final class AttributeRegionAssociation
-   implements Serializable {
-   public AttributeRegionAssociation(AttributeHandleSet ahs, RegionHandleSet rhs)
-   {
-      ahset = ahs;
-      rhset = rhs;
-   }
+public final class AttributeRegionAssociation implements Serializable {
+	public AttributeRegionAssociation(AttributeHandleSet ahs, RegionHandleSet rhs) {
+		ahset = ahs;
+		rhset = rhs;
+	}
 
-   public final AttributeHandleSet ahset;
-   public final RegionHandleSet rhset;
+	public final AttributeHandleSet ahset;
+	public final RegionHandleSet rhset;
 }
 
 //end AttributeRegionAssociation

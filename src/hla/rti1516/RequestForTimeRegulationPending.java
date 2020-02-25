@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class RequestForTimeRegulationPending
-
-*/
+ * 
+ */
 
 public final class RequestForTimeRegulationPending extends RTIexception {
-  public RequestForTimeRegulationPending(String msg) {
-    super(msg);
-  }
+	public RequestForTimeRegulationPending(String msg) {
+		super(msg);
+	}
 }
-
-
-

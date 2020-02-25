@@ -6,22 +6,19 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class MessageCanNoLongerBeRetracted
-
-*/
+ * 
+ */
 
 public final class MessageCanNoLongerBeRetracted extends RTIexception {
-  public MessageCanNoLongerBeRetracted(String msg) {
-    super(msg);
-  }
+	public MessageCanNoLongerBeRetracted(String msg) {
+		super(msg);
+	}
 }
 
-
-
 //File: MessageRetractionHandle.java
-

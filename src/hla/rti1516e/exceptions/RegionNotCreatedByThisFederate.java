@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class RegionNotCreatedByThisFederate
  */
 
 public final class RegionNotCreatedByThisFederate extends RTIexception {
-   public RegionNotCreatedByThisFederate(String msg)
-   {
-      super(msg);
-   }
+	public RegionNotCreatedByThisFederate(String msg) {
+		super(msg);
+	}
 
-   public RegionNotCreatedByThisFederate(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public RegionNotCreatedByThisFederate(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

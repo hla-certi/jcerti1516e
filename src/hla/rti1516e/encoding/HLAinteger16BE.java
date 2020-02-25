@@ -13,17 +13,17 @@ package hla.rti1516e.encoding;
  * Interface for the HLA data type HLAinteger16BE.
  */
 public interface HLAinteger16BE extends DataElement {
-   /**
-    * Returns the short value of this element.
-    *
-    * @return short value
-    */
-   short getValue();
+	/**
+	 * Returns the short value of this element.
+	 *
+	 * @return short value
+	 */
+	short getValue();
 
-   /**
-    * Sets the short value of this element.
-    *
-    * @param value New value.
-    */
-   void setValue(short value);
+	/**
+	 * Sets the short value of this element.
+	 *
+	 * @param value New value.
+	 */
+	void setValue(short value);
 }

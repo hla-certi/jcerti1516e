@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class NoRequestToEnableTimeConstrainedWasPending
  */
 
 public final class NoRequestToEnableTimeConstrainedWasPending extends RTIexception {
-   public NoRequestToEnableTimeConstrainedWasPending(String msg)
-   {
-      super(msg);
-   }
+	public NoRequestToEnableTimeConstrainedWasPending(String msg) {
+		super(msg);
+	}
 
-   public NoRequestToEnableTimeConstrainedWasPending(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public NoRequestToEnableTimeConstrainedWasPending(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class ErrorReadingFDD
-*/
+ */
 public final class ErrorReadingFDD extends RTIexception {
-  public ErrorReadingFDD(String msg) {
-    super(msg);
-  }
+	public ErrorReadingFDD(String msg) {
+		super(msg);
+	}
 }
-
-
-

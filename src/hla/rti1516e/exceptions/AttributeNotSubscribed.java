@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeNotSubscribed
  */
 
 public final class AttributeNotSubscribed extends RTIexception {
-   public AttributeNotSubscribed(String msg)
-   {
-      super(msg);
-   }
+	public AttributeNotSubscribed(String msg) {
+		super(msg);
+	}
 
-   public AttributeNotSubscribed(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeNotSubscribed(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

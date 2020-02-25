@@ -11,41 +11,39 @@
 
 package hla.rti1516e;
 
-import hla.rti1516e.encoding.ByteWrapper;
-
 import java.io.Serializable;
 import java.util.Map;
 
+import hla.rti1516e.encoding.ByteWrapper;
+
 /**
- * Keys are AttributeHandles; values are byte[].
- * All operations are required, none optional.
- * Null mappings are not allowed.
- * put(), putAll(), and remove() should throw IllegalArgumentException to enforce
- * types of keys and mappings.
+ * Keys are AttributeHandles; values are byte[]. All operations are required,
+ * none optional. Null mappings are not allowed. put(), putAll(), and remove()
+ * should throw IllegalArgumentException to enforce types of keys and mappings.
  */
-public interface AttributeHandleValueMap
-   extends Map<AttributeHandle, byte[]>, Cloneable, Serializable {
+public interface AttributeHandleValueMap extends Map<AttributeHandle, byte[]>, Cloneable, Serializable {
 
-   /**
-    * Returns a reference to the value to which this map maps the specified key.
-    * Returns <tt>null</tt> if the map contains no mapping for this key.
+	/**
+	 * Returns a reference to the value to which this map maps the specified key.
+	 * Returns <tt>null</tt> if the map contains no mapping for this key.
+	 * 
+	 * @param key key whose associated value is to be returned.
+	 * @return a reference to the value to which this map maps the specified key, or
+	 *         <tt>null</tt> if the map contains no mapping for this key.
+	 */
+	ByteWrapper getValueReference(AttributeHandle key);
 
-    * @param key key whose associated value is to be returned.
-    * @return a reference to the value to which this map maps the specified key, or
-    *	       <tt>null</tt> if the map contains no mapping for this key.
-    */
-   ByteWrapper getValueReference(AttributeHandle key);
-
-   /**
-    * Returns the specified reference updated to the value to which this map
-    * maps the specified key.
-    * Returns <tt>null</tt> if the map contains no mapping for this key.
-
-    * @param key key whose associated value is to be returned.
-    * @return the specified reference updated to the value to which this map maps the
-    *         specified key, or <tt>null</tt> if the map contains no mapping for this key.
-    */
-   ByteWrapper getValueReference(AttributeHandle key, ByteWrapper byteWrapper);
+	/**
+	 * Returns the specified reference updated to the value to which this map maps
+	 * the specified key. Returns <tt>null</tt> if the map contains no mapping for
+	 * this key.
+	 * 
+	 * @param key key whose associated value is to be returned.
+	 * @return the specified reference updated to the value to which this map maps
+	 *         the specified key, or <tt>null</tt> if the map contains no mapping
+	 *         for this key.
+	 */
+	ByteWrapper getValueReference(AttributeHandle key, ByteWrapper byteWrapper);
 }
 
 //end AttributeHandleValueMap

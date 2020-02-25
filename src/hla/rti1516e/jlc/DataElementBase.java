@@ -26,14 +26,16 @@ import hla.rti1516e.encoding.EncoderException;
 
 public abstract class DataElementBase implements DataElement {
 
-    public byte[] toByteArray() throws EncoderException {
-        ByteWrapper bw = new ByteWrapper(getEncodedLength());
-        encode(bw);
-        return bw.array();
-    }
-    
-    public void decode(byte[] bytes) throws DecoderException {
-        ByteWrapper bw = new ByteWrapper(bytes);
-        decode(bw);
-    }
+	@Override
+	public byte[] toByteArray() throws EncoderException {
+		ByteWrapper bw = new ByteWrapper(getEncodedLength());
+		encode(bw);
+		return bw.array();
+	}
+
+	@Override
+	public void decode(byte[] bytes) throws DecoderException {
+		ByteWrapper bw = new ByteWrapper(bytes);
+		decode(bw);
+	}
 }

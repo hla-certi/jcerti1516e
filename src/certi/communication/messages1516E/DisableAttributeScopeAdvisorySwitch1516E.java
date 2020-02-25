@@ -19,33 +19,31 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class DisableAttributeScopeAdvisorySwitch1516E extends CertiMessage1516E {
 
-   public DisableAttributeScopeAdvisorySwitch1516E() {
-      super(CertiMessageType.DISABLE_ATTRIBUTE_SCOPE_ADVISORY_SWITCH);
-   }
+	public DisableAttributeScopeAdvisorySwitch1516E() {
+		super(CertiMessageType.DISABLE_ATTRIBUTE_SCOPE_ADVISORY_SWITCH);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-   }
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString());
-   }
+	@Override
+	public String toString() {
+		return (super.toString());
+	}
 
 }
-

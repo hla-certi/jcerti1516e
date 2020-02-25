@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InteractionClassAlreadyBeingChanged
  */
 
 public final class InteractionClassAlreadyBeingChanged extends RTIexception {
-   public InteractionClassAlreadyBeingChanged(String msg)
-   {
-      super(msg);
-   }
+	public InteractionClassAlreadyBeingChanged(String msg) {
+		super(msg);
+	}
 
-   public InteractionClassAlreadyBeingChanged(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InteractionClassAlreadyBeingChanged(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

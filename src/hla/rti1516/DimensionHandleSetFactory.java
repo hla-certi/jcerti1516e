@@ -6,16 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public interface DimensionHandleSetFactory extends java.io.Serializable {
 
-  /**
-   * return hla.rti1516.DimensionHandleSet newly created
-   */
-  public DimensionHandleSet create();
+	/**
+	 * return hla.rti1516.DimensionHandleSet newly created
+	 */
+	DimensionHandleSet create();
 }
 //end DimensionHandleSetFactory
-
-

@@ -30,19 +30,19 @@ import certi.rti.impl.CertiRtiAmbassador;
 public class StreamListener extends Thread {
 	private InputStream is;
 	private final static Logger LOGGER = Logger.getLogger(CertiRtiAmbassador.class.getName());
-	
 
 	public StreamListener(InputStream is) {
 		this.is = is;
 	}
-	
+
+	@Override
 	public void run() {
 		try {
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
 			String line = null;
 			while ((line = br.readLine()) != null) {
-			    LOGGER.info(line);
+				LOGGER.info(line);
 			}
 			br.close();
 			isr.close();

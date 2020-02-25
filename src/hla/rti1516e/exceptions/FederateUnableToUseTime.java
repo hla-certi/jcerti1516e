@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateUnableToUseTime
  */
 
 public final class FederateUnableToUseTime extends RTIexception {
-   public FederateUnableToUseTime(String msg)
-   {
-      super(msg);
-   }
+	public FederateUnableToUseTime(String msg) {
+		super(msg);
+	}
 
-   public FederateUnableToUseTime(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateUnableToUseTime(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

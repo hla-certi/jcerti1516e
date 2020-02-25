@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class CouldNotDecode
  */
 public final class CouldNotDecode extends RTIexception {
-   public CouldNotDecode(String msg)
-   {
-      super(msg);
-   }
+	public CouldNotDecode(String msg) {
+		super(msg);
+	}
 
-   public CouldNotDecode(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public CouldNotDecode(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

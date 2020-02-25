@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateNameAlreadyInUse
  */
 public final class FederateNameAlreadyInUse extends RTIexception {
-   public FederateNameAlreadyInUse(String msg)
-   {
-      super(msg);
-   }
+	public FederateNameAlreadyInUse(String msg) {
+		super(msg);
+	}
 
-   public FederateNameAlreadyInUse(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateNameAlreadyInUse(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

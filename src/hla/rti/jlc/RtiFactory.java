@@ -4,24 +4,30 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
+
 package hla.rti.jlc;
 
-import hla.rti.*;
+import hla.rti.AttributeHandleSet;
+import hla.rti.FederateHandleSet;
+import hla.rti.SuppliedAttributes;
+import hla.rti.SuppliedParameters;
 
-public interface RtiFactory
-{
-   RTIambassadorEx createRtiAmbassador()
-     throws hla.rti.RTIinternalError;
+public interface RtiFactory {
+	RTIambassadorEx createRtiAmbassador() throws hla.rti.RTIinternalError;
 
-   AttributeHandleSet createAttributeHandleSet();
-   FederateHandleSet createFederateHandleSet();
-   SuppliedAttributes createSuppliedAttributes();
-   SuppliedParameters createSuppliedParameters();
+	AttributeHandleSet createAttributeHandleSet();
 
-   String RtiName();
-   String RtiVersion();
+	FederateHandleSet createFederateHandleSet();
 
-   long getMinExtent();
-   long getMaxExtent();
+	SuppliedAttributes createSuppliedAttributes();
+
+	SuppliedParameters createSuppliedParameters();
+
+	String RtiName();
+
+	String RtiVersion();
+
+	long getMinExtent();
+
+	long getMaxExtent();
 }

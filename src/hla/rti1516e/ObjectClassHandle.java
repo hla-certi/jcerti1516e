@@ -14,28 +14,31 @@ package hla.rti1516e;
 import java.io.Serializable;
 
 /**
- * Type-safe handle for an object class. Generally these are created by the
- * RTI and passed to the user.
+ * Type-safe handle for an object class. Generally these are created by the RTI
+ * and passed to the user.
  */
 
 public interface ObjectClassHandle extends Serializable {
 
-   /**
-    * @return true if this refers to the same object class as other handle
-    */
-   boolean equals(Object otherObjectClassHandle);
+	/**
+	 * @return true if this refers to the same object class as other handle
+	 */
+	@Override
+	boolean equals(Object otherObjectClassHandle);
 
-   /**
-    * @return int. All instances that refer to the same object class should return the
-    *         same hashcode.
-    */
-   int hashCode();
+	/**
+	 * @return int. All instances that refer to the same object class should return
+	 *         the same hashcode.
+	 */
+	@Override
+	int hashCode();
 
-   int encodedLength();
+	int encodedLength();
 
-   void encode(byte[] buffer, int offset);
+	void encode(byte[] buffer, int offset);
 
-   String toString();
+	@Override
+	String toString();
 
 }
 

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class RequestForTimeConstrainedPending
  */
 
 public final class RequestForTimeConstrainedPending extends RTIexception {
-   public RequestForTimeConstrainedPending(String msg)
-   {
-      super(msg);
-   }
+	public RequestForTimeConstrainedPending(String msg) {
+		super(msg);
+	}
 
-   public RequestForTimeConstrainedPending(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public RequestForTimeConstrainedPending(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

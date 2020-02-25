@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InvalidInteractionClassHandle
-
-*/
+ * 
+ */
 
 public final class InvalidInteractionClassHandle extends RTIexception {
-  public InvalidInteractionClassHandle(String msg) {
-    super(msg);
-  }
+	public InvalidInteractionClassHandle(String msg) {
+		super(msg);
+	}
 }
-
-
-

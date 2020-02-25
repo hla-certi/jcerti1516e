@@ -10,34 +10,36 @@
 package hla.rti1516e.time;
 
 import hla.rti1516e.LogicalTimeInterval;
+import hla.rti1516e.exceptions.CouldNotEncode;
 import hla.rti1516e.exceptions.IllegalTimeArithmetic;
 import hla.rti1516e.exceptions.InvalidLogicalTimeInterval;
-import hla.rti1516e.exceptions.CouldNotEncode;
 
 /**
- * Interface for the interval part of the standardized time type HLAinteger64Time.
+ * Interface for the interval part of the standardized time type
+ * HLAinteger64Time.
  */
 public interface HLAinteger64Interval extends LogicalTimeInterval<HLAinteger64Interval> {
-   boolean isZero();
+	@Override
+	boolean isZero();
 
-   boolean isEpsilon();
+	@Override
+	boolean isEpsilon();
 
-   HLAinteger64Interval add(HLAinteger64Interval addend)
-      throws
-      IllegalTimeArithmetic,
-      InvalidLogicalTimeInterval;
+	@Override
+	HLAinteger64Interval add(HLAinteger64Interval addend) throws IllegalTimeArithmetic, InvalidLogicalTimeInterval;
 
-   HLAinteger64Interval subtract(HLAinteger64Interval subtrahend)
-      throws
-      IllegalTimeArithmetic,
-      InvalidLogicalTimeInterval;
+	@Override
+	HLAinteger64Interval subtract(HLAinteger64Interval subtrahend)
+			throws IllegalTimeArithmetic, InvalidLogicalTimeInterval;
 
-   int compareTo(HLAinteger64Interval other);
+	@Override
+	int compareTo(HLAinteger64Interval other);
 
-   int encodedLength();
+	@Override
+	int encodedLength();
 
-   void encode(byte[] buffer, int offset)
-      throws CouldNotEncode;
+	@Override
+	void encode(byte[] buffer, int offset) throws CouldNotEncode;
 
-   long getValue();
+	long getValue();
 }

@@ -19,54 +19,54 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class GetOrderingHandle extends CertiMessage {
-   private String orderingName;
-   private short ordering=0;
+	private String orderingName;
+	private short ordering = 0;
 
-   public GetOrderingHandle() {
-      super(CertiMessageType.GET_ORDERING_HANDLE);
-   }
+	public GetOrderingHandle() {
+		super(CertiMessageType.GET_ORDERING_HANDLE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(orderingName);
-      messageBuffer.write(ordering);
-   }
+		messageBuffer.write(orderingName);
+		messageBuffer.write(ordering);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      orderingName = messageBuffer.readString();
-      ordering = messageBuffer.readShort();
-   }
+		orderingName = messageBuffer.readString();
+		ordering = messageBuffer.readShort();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", orderingName: " + orderingName + ", ordering: " + ordering);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", orderingName: " + orderingName + ", ordering: " + ordering);
+	}
 
-   public String getOrderingName() {
-      return orderingName;
-   }
+	public String getOrderingName() {
+		return orderingName;
+	}
 
-   public short getOrdering() {
-      return ordering;
-   }
+	public short getOrdering() {
+		return ordering;
+	}
 
-   public void setOrderingName(String newOrderingName) {
-      this.orderingName = newOrderingName;
-   }
+	public void setOrderingName(String newOrderingName) {
+		this.orderingName = newOrderingName;
+	}
 
-   public void setOrdering(short newOrdering) {
-      this.ordering = newOrdering;
-   }
+	public void setOrdering(short newOrdering) {
+		this.ordering = newOrdering;
+	}
 
 }
-

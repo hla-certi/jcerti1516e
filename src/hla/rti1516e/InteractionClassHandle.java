@@ -20,22 +20,25 @@ import java.io.Serializable;
 
 public interface InteractionClassHandle extends Serializable {
 
-   /**
-    * @return true if this refers to the same interaction class as other handle
-    */
-   boolean equals(Object otherInteractionClassHandle);
+	/**
+	 * @return true if this refers to the same interaction class as other handle
+	 */
+	@Override
+	boolean equals(Object otherInteractionClassHandle);
 
-   /**
-    * @return int. All instances that refer to the same interaction class should
-    *         return the same hashcode.
-    */
-   int hashCode();
+	/**
+	 * @return int. All instances that refer to the same interaction class should
+	 *         return the same hashcode.
+	 */
+	@Override
+	int hashCode();
 
-   int encodedLength();
+	int encodedLength();
 
-   void encode(byte[] buffer, int offset);
+	void encode(byte[] buffer, int offset);
 
-   String toString();
+	@Override
+	String toString();
 
 }
 

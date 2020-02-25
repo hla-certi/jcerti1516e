@@ -19,44 +19,42 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class UnsubscribeObjectClass1516E extends CertiMessage1516E {
-   private int objectClass;
+	private int objectClass;
 
-   public UnsubscribeObjectClass1516E() {
-      super(CertiMessageType.UNSUBSCRIBE_OBJECT_CLASS);
-   }
+	public UnsubscribeObjectClass1516E() {
+		super(CertiMessageType.UNSUBSCRIBE_OBJECT_CLASS);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-   }
+		messageBuffer.write(objectClass);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-   }
+		objectClass = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
 }
-

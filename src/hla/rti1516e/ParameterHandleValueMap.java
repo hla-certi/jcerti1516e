@@ -10,41 +10,39 @@
 //File: ParameterHandleValueMap.java
 package hla.rti1516e;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import hla.rti1516e.encoding.ByteWrapper;
 
-import java.util.Map;
-import java.io.Serializable;
-
 /**
- * Keys are ParameterHandles; values are byte[].
- * All operations are required, none optional.
- * Null mappings are not allowed.
- * put(), putAll(), and remove() should throw IllegalArgumentException to enforce
- * types of keys and mappings.
+ * Keys are ParameterHandles; values are byte[]. All operations are required,
+ * none optional. Null mappings are not allowed. put(), putAll(), and remove()
+ * should throw IllegalArgumentException to enforce types of keys and mappings.
  */
-public interface ParameterHandleValueMap
-   extends Map<ParameterHandle, byte[]>, Cloneable, Serializable {
+public interface ParameterHandleValueMap extends Map<ParameterHandle, byte[]>, Cloneable, Serializable {
 
-   /**
-    * Returns a reference to the value to which this map maps the specified key.
-    * Returns <tt>null</tt> if the map contains no mapping for this key.
-    *
-    * @param key key whose associated value is to be returned.
-    * @return a reference to the value to which this map maps the specified key, or
-    *         <tt>null</tt> if the map contains no mapping for this key.
-    */
-   ByteWrapper getValueReference(ParameterHandle key);
+	/**
+	 * Returns a reference to the value to which this map maps the specified key.
+	 * Returns <tt>null</tt> if the map contains no mapping for this key.
+	 *
+	 * @param key key whose associated value is to be returned.
+	 * @return a reference to the value to which this map maps the specified key, or
+	 *         <tt>null</tt> if the map contains no mapping for this key.
+	 */
+	ByteWrapper getValueReference(ParameterHandle key);
 
-   /**
-    * Returns the specified reference updated to the value to which this map
-    * maps the specified key.
-    * Returns <tt>null</tt> if the map contains no mapping for this key.
-    *
-    * @param key key whose associated value is to be returned.
-    * @return the specified reference updated to the value to which this map maps the
-    *         specified key, or <tt>null</tt> if the map contains no mapping for this key.
-    */
-   ByteWrapper getValueReference(ParameterHandle key, ByteWrapper byteWrapper);
+	/**
+	 * Returns the specified reference updated to the value to which this map maps
+	 * the specified key. Returns <tt>null</tt> if the map contains no mapping for
+	 * this key.
+	 *
+	 * @param key key whose associated value is to be returned.
+	 * @return the specified reference updated to the value to which this map maps
+	 *         the specified key, or <tt>null</tt> if the map contains no mapping
+	 *         for this key.
+	 */
+	ByteWrapper getValueReference(ParameterHandle key, ByteWrapper byteWrapper);
 }
 
 //end ParameterHandleValueMap

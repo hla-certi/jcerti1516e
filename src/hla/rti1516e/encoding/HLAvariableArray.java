@@ -16,41 +16,42 @@ import java.util.Iterator;
  */
 public interface HLAvariableArray<T extends DataElement> extends DataElement, Iterable<T> {
 
-   /**
-    * Adds an element to this variable array.
-    *
-    * @param dataElement element to add
-    */
-   void addElement(T dataElement);
+	/**
+	 * Adds an element to this variable array.
+	 *
+	 * @param dataElement element to add
+	 */
+	void addElement(T dataElement);
 
-   /**
-    * Returns the number of elements in this variable array.
-    *
-    * @return the number of elements in this variable array
-    */
-   int size();
+	/**
+	 * Returns the number of elements in this variable array.
+	 *
+	 * @return the number of elements in this variable array
+	 */
+	int size();
 
-   /**
-    * Returns the element at the specified <code>index</code>.
-    *
-    * @param index index of element to get
-    *
-    * @return the element at the specified <code>index</code>
-    */
-   T get(int index);
+	/**
+	 * Returns the element at the specified <code>index</code>.
+	 *
+	 * @param index index of element to get
+	 *
+	 * @return the element at the specified <code>index</code>
+	 */
+	T get(int index);
 
-   /**
-    * Returns an iterator for the elements in this variable array.
-    *
-    * @return an iterator for the elements in this variable array
-    */
-   Iterator<T> iterator();
+	/**
+	 * Returns an iterator for the elements in this variable array.
+	 *
+	 * @return an iterator for the elements in this variable array
+	 */
+	@Override
+	Iterator<T> iterator();
 
-   /**
-    * Resize the variable array to the <code>newSize</code>.
-    * Uses the <code>DataElementFactory</code> if new elements needs to be added.
-    *
-    * @param newSize the new size
-    */
-   void resize(int newSize);
+	/**
+	 * Resize the variable array to the <code>newSize</code>. Uses the
+	 * <code>DataElementFactory</code> if new elements needs to be added.
+	 *
+	 * @param newSize the new size
+	 */
+	void resize(int newSize);
 }

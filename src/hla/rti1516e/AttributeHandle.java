@@ -10,31 +10,35 @@
 //File: AttributeHandle.java
 
 package hla.rti1516e;
+
 import java.io.Serializable;
 
 /**
- * Type-safe handle for an attribute. Generally these are created by the
- * RTI and passed to the user.
+ * Type-safe handle for an attribute. Generally these are created by the RTI and
+ * passed to the user.
  */
 
 public interface AttributeHandle extends Serializable {
 
-   /**
-    * @return true if this refers to the same attribute as other handle
-    */
-   boolean equals(Object otherAttributeHandle);
+	/**
+	 * @return true if this refers to the same attribute as other handle
+	 */
+	@Override
+	boolean equals(Object otherAttributeHandle);
 
-   /**
-    * @return int. All instances that refer to the same attribute should return the
-    *         same hashcode.
-    */
-   int hashCode();
+	/**
+	 * @return int. All instances that refer to the same attribute should return the
+	 *         same hashcode.
+	 */
+	@Override
+	int hashCode();
 
-   int encodedLength();
+	int encodedLength();
 
-   void encode(byte[] buffer, int offset);
+	void encode(byte[] buffer, int offset);
 
-   String toString();
+	@Override
+	String toString();
 
 }
 

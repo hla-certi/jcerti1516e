@@ -6,14 +6,12 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public final class InteractionRelevanceAdvisorySwitchIsOn extends RTIexception {
-  public InteractionRelevanceAdvisorySwitchIsOn(String msg) {
-    super(msg);
-  }
+	public InteractionRelevanceAdvisorySwitchIsOn(String msg) {
+		super(msg);
+	}
 }
 //end InteractionRelevanceAdvisorySwitchIsOn
-
-

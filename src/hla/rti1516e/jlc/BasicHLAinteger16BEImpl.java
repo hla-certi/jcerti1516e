@@ -25,88 +25,98 @@ import hla.rti1516e.encoding.EncoderException;
 import hla.rti1516e.encoding.HLAinteger16BE;
 
 /**
- *	Implementation of an HLAinteger on 16 bytes, encoded in Big Endian
- *	The value is represented by a short
+ * Implementation of an HLAinteger on 16 bytes, encoded in Big Endian The value
+ * is represented by a short
  */
-public class BasicHLAinteger16BEImpl extends DataElementBase implements
-        HLAinteger16BE {
+public class BasicHLAinteger16BEImpl extends DataElementBase implements HLAinteger16BE {
 
-    private short value;
-    
-    /**
-     * Empty constructor to create a new BasicHLAinteger16BE
-     */
-    public BasicHLAinteger16BEImpl() {
-        value = 0;
-    }
-    
-    /**
-     * Constructor to create a HLAinteger16BE with a value s
-     * @param value : value of the HLAinteger16BE, in short
-     */
-    public BasicHLAinteger16BEImpl(short s) {
-        this.value = s;
-    }
-    
-    /**
-     * Returns the octet boundary of this element.
-     * HLAinteger16BE octet boundary is defined to 2 in the HLA standard
-     * @return the octet boundary of this element
-     */
-    public int getOctetBoundary() {
-        return 2;
-    }
+	private short value;
 
-    /**
-     * Encodes this element into the specified ByteWrapper.
-     *
-     * @param byteWrapper destination for the encoded element
-     *
-     * @throws EncoderException if the element can not be encoded
-     */
-    public void encode(ByteWrapper byteWrapper) throws EncoderException {
-        byteWrapper.align(getOctetBoundary());
-        byteWrapper.put((int)(value >>>  8) & 0xFF);
-        byteWrapper.put((int)(value >>>  0) & 0xFF);
-    }
+	/**
+	 * Empty constructor to create a new BasicHLAinteger16BE
+	 */
+	public BasicHLAinteger16BEImpl() {
+		value = 0;
+	}
 
-    /**
-     * Returns the size in bytes of this element's encoding.
-     * float32BE size is defined to 2 in the HLA standard
-     * @return the size in bytes of this element's encoding
-     */
-    public int getEncodedLength() {
-        return 2;
-    }
+	/**
+	 * Constructor to create a HLAinteger16BE with a value s
+	 * 
+	 * @param value : value of the HLAinteger16BE, in short
+	 */
+	public BasicHLAinteger16BEImpl(short s) {
+		this.value = s;
+	}
 
-    /**
-     * Decodes this element from the ByteWrapper.
-     *
-     * @param byteWrapper source for the decoding of this element
-     *
-     * @throws DecoderException if the element can not be decoded
-     */
-    public void decode(ByteWrapper byteWrapper) throws DecoderException {
-        byteWrapper.align(getOctetBoundary());
-        value  = 0;
-        value += (short)((byteWrapper.get() & 0xFF) <<  8);
-        value += (short)((byteWrapper.get() & 0xFF) <<  0);
-    }
+	/**
+	 * Returns the octet boundary of this element. HLAinteger16BE octet boundary is
+	 * defined to 2 in the HLA standard
+	 * 
+	 * @return the octet boundary of this element
+	 */
+	@Override
+	public int getOctetBoundary() {
+		return 2;
+	}
 
-    /**
-     * Get the value in byte of the HLAinteger16BE
-     * @return value in byte of the HLAinteger16BE
-     */
-    public short getValue() {
-        return value;
-    }
+	/**
+	 * Encodes this element into the specified ByteWrapper.
+	 *
+	 * @param byteWrapper destination for the encoded element
+	 *
+	 * @throws EncoderException if the element can not be encoded
+	 */
+	@Override
+	public void encode(ByteWrapper byteWrapper) throws EncoderException {
+		byteWrapper.align(getOctetBoundary());
+		byteWrapper.put(value >>> 8 & 0xFF);
+		byteWrapper.put(value >>> 0 & 0xFF);
+	}
 
-    /**
-     * Change the value of the HLAinteger16BE
-     * @param value : value to set
-     */
-    public void setValue(short value) {
-        this.value = value;
-    }
+	/**
+	 * Returns the size in bytes of this element's encoding. float32BE size is
+	 * defined to 2 in the HLA standard
+	 * 
+	 * @return the size in bytes of this element's encoding
+	 */
+	@Override
+	public int getEncodedLength() {
+		return 2;
+	}
+
+	/**
+	 * Decodes this element from the ByteWrapper.
+	 *
+	 * @param byteWrapper source for the decoding of this element
+	 *
+	 * @throws DecoderException if the element can not be decoded
+	 */
+	@Override
+	public void decode(ByteWrapper byteWrapper) throws DecoderException {
+		byteWrapper.align(getOctetBoundary());
+		value = 0;
+		value += (short) ((byteWrapper.get() & 0xFF) << 8);
+		value += (short) ((byteWrapper.get() & 0xFF) << 0);
+	}
+
+	/**
+	 * Get the value in byte of the HLAinteger16BE
+	 * 
+	 * @return value in byte of the HLAinteger16BE
+	 */
+	@Override
+	public short getValue() {
+		return value;
+	}
+
+	/**
+	 * Change the value of the HLAinteger16BE
+	 * 
+	 * @param value : value to set
+	 */
+	@Override
+	public void setValue(short value) {
+		this.value = value;
+	}
 
 }

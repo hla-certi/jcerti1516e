@@ -19,77 +19,82 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiException;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.EventRetractionHandle;
+import hla.rti.ReflectedAttributes;
 
 public class ReflectAttributeValues extends CertiMessage {
 
-    private int objectClass;
-    private int object;
-    private ReflectedAttributes reflectedAttributes;
-    private EventRetractionHandle EventRetractionHandle;
+	private int objectClass;
+	private int object;
+	private ReflectedAttributes reflectedAttributes;
+	private EventRetractionHandle EventRetractionHandle;
 
-    public ReflectAttributeValues() {
-        super(CertiMessageType.REFLECT_ATTRIBUTE_VALUES);
-    }
+	public ReflectAttributeValues() {
+		super(CertiMessageType.REFLECT_ATTRIBUTE_VALUES);
+	}
 
-    public ReflectedAttributes getReflectedAttributes() {
-        return reflectedAttributes;
-    }
+	public ReflectedAttributes getReflectedAttributes() {
+		return reflectedAttributes;
+	}
 
-    public void setReflectedAttributes(ReflectedAttributes reflectedAttributes) {
-        this.reflectedAttributes = reflectedAttributes;
-    }
+	public void setReflectedAttributes(ReflectedAttributes reflectedAttributes) {
+		this.reflectedAttributes = reflectedAttributes;
+	}
 
-    @Override
-    public void writeMessage(MessageBuffer messageBuffer) {
-        super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-        messageBuffer.write(objectClass);
-        messageBuffer.write(object);
-        messageBuffer.write(reflectedAttributes);
-        
-        if (EventRetractionHandle == null) {
-            messageBuffer.write(false);
-        } else {
-            messageBuffer.write(true);
-            messageBuffer.write(EventRetractionHandle);
-        }
-    }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(object);
+		messageBuffer.write(reflectedAttributes);
 
-    @Override
-    public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-        super.readMessage(messageBuffer); //Header
+		if (EventRetractionHandle == null) {
+			messageBuffer.write(false);
+		} else {
+			messageBuffer.write(true);
+			messageBuffer.write(EventRetractionHandle);
+		}
+	}
 
-        objectClass = messageBuffer.readInt();
-        object = messageBuffer.readInt();
-        reflectedAttributes = messageBuffer.readReflectedAttributes();
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-        boolean hasEventRetractionHandle = messageBuffer.readBoolean();
-        if (hasEventRetractionHandle) {
-            EventRetractionHandle = messageBuffer.readEventRetractionHandle();
-        }
-    }
+		objectClass = messageBuffer.readInt();
+		object = messageBuffer.readInt();
+		reflectedAttributes = messageBuffer.readReflectedAttributes();
 
-    @Override
-    public String toString() {
-        return (super.toString() + ", objectClass: " + objectClass + ", object: " + object + ", AttributeHandleValuePairSet: " + reflectedAttributes + ", EventRetractionHandle: " + EventRetractionHandle);
-    }
+		boolean hasEventRetractionHandle = messageBuffer.readBoolean();
+		if (hasEventRetractionHandle) {
+			EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+		}
+	}
 
-    public int getObjectClass() {
-        return objectClass;
-    }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", object: " + object
+				+ ", AttributeHandleValuePairSet: " + reflectedAttributes + ", EventRetractionHandle: "
+				+ EventRetractionHandle);
+	}
 
-    public int getObject() {
-        return object;
-    }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-    public void setObjectClass(int newObjectClass) {
-        this.objectClass = newObjectClass;
-    }
+	public int getObject() {
+		return object;
+	}
 
-    public void setObject(int newObject) {
-        this.object = newObject;
-    }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
+
+	public void setObject(int newObject) {
+		this.object = newObject;
+	}
 }
-

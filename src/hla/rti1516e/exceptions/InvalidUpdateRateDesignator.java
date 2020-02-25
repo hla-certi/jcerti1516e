@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidUpdateRateDesignator
  */
 public final class InvalidUpdateRateDesignator extends RTIexception {
-   public InvalidUpdateRateDesignator(String msg)
-   {
-      super(msg);
-   }
+	public InvalidUpdateRateDesignator(String msg) {
+		super(msg);
+	}
 
-   public InvalidUpdateRateDesignator(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidUpdateRateDesignator(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

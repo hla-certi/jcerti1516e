@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidTransportationType
  */
 public final class InvalidTransportationType extends RTIexception {
-   public InvalidTransportationType(String msg)
-   {
-      super(msg);
-   }
+	public InvalidTransportationType(String msg) {
+		super(msg);
+	}
 
-   public InvalidTransportationType(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidTransportationType(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

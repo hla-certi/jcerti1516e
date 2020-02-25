@@ -6,8 +6,8 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * The factory is used only (outside RTI) to create InteractionClassHandle
@@ -15,9 +15,5 @@
  */
 
 public interface InteractionClassHandleFactory extends java.io.Serializable {
-	public InteractionClassHandle decode(byte[] buffer, int offset)
-	  throws CouldNotDecode, FederateNotExecutionMember;
+	InteractionClassHandle decode(byte[] buffer, int offset) throws CouldNotDecode, FederateNotExecutionMember;
 }
-
-
-

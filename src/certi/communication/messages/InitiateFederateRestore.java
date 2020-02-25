@@ -19,43 +19,43 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class InitiateFederateRestore extends CertiMessage {
-   private int federate;
+	private int federate;
 
-   public InitiateFederateRestore() {
-      super(CertiMessageType.INITIATE_FEDERATE_RESTORE);
-   }
+	public InitiateFederateRestore() {
+		super(CertiMessageType.INITIATE_FEDERATE_RESTORE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(federate);
-   }
+		messageBuffer.write(federate);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      federate = messageBuffer.readInt();
-   }
+		federate = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", federate: " + federate);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", federate: " + federate);
+	}
 
-   public int getFederate() {
-      return federate;
-   }
+	public int getFederate() {
+		return federate;
+	}
 
-   public void setFederate(int newFederate) {
-      this.federate = newFederate;
-   }
+	public void setFederate(int newFederate) {
+		this.federate = newFederate;
+	}
 
 }
-

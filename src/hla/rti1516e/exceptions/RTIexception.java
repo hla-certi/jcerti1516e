@@ -11,17 +11,15 @@
 package hla.rti1516e.exceptions;
 
 /**
- * Superclass of all exceptions thrown by the RTI.
- * All RTI exceptions must be caught or specified.
+ * Superclass of all exceptions thrown by the RTI. All RTI exceptions must be
+ * caught or specified.
  */
 public class RTIexception extends Exception {
-   public RTIexception(String msg)
-   {
-      super(msg);
-   }
+	public RTIexception(String msg) {
+		super(msg);
+	}
 
-   public RTIexception(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public RTIexception(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

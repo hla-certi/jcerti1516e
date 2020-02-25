@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class ObjectClassNotPublished
  */
 
 public final class ObjectClassNotPublished extends RTIexception {
-   public ObjectClassNotPublished(String msg)
-   {
-      super(msg);
-   }
+	public ObjectClassNotPublished(String msg) {
+		super(msg);
+	}
 
-   public ObjectClassNotPublished(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public ObjectClassNotPublished(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

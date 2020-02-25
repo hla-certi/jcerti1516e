@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class UnableToPerformSave
  */
 
 public final class UnableToPerformSave extends RTIexception {
-   public UnableToPerformSave(String msg)
-   {
-      super(msg);
-   }
+	public UnableToPerformSave(String msg) {
+		super(msg);
+	}
 
-   public UnableToPerformSave(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public UnableToPerformSave(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

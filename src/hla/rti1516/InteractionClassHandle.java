@@ -6,8 +6,8 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Type-safe handle for an interaction class. Generally these are created by the
@@ -16,26 +16,27 @@
 
 public interface InteractionClassHandle extends java.io.Serializable {
 
-  /**
-   * @return true if this refers to the same interaction class as other handle
-   */
-  public boolean equals(Object otherInteractionClassHandle);
+	/**
+	 * @return true if this refers to the same interaction class as other handle
+	 */
+	@Override
+	boolean equals(Object otherInteractionClassHandle);
 
-  /**
-   * @return int. All instances that refer to the same interaction class should
-   * return the same hashcode.
-   */
-  public int hashCode();
+	/**
+	 * @return int. All instances that refer to the same interaction class should
+	 *         return the same hashcode.
+	 */
+	@Override
+	int hashCode();
 
-   public int encodedLength();
-   public void encode(byte[] buffer, int offset);
+	int encodedLength();
 
-   public String toString();
+	void encode(byte[] buffer, int offset);
+
+	@Override
+	String toString();
 
 }
 //end InteractionClassHandle
 
-
-
 //File: InteractionClassHandleFactory.java
-

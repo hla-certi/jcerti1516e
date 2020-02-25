@@ -6,29 +6,29 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
+
+package hla.rti1516.jlc;
 
 /**
  * Interface for the HLA data type HLAinteger32BE.
  */
-public interface HLAfloat32BE extends DataElement
-{
-   int getOctetBoundary();
+public interface HLAfloat32BE extends DataElement {
+	@Override
+	int getOctetBoundary();
 
-   void encode(ByteWrapper byteWrapper);
+	@Override
+	void encode(ByteWrapper byteWrapper);
 
-   int getEncodedLength();
+	@Override
+	int getEncodedLength();
 
-   void decode(ByteWrapper byteWrapper);
+	@Override
+	void decode(ByteWrapper byteWrapper);
 
-   /**
-    * Returns the float value of this element.
-    *
-    * @return float value
-    */
-   float getValue();
+	/**
+	 * Returns the float value of this element.
+	 *
+	 * @return float value
+	 */
+	float getValue();
 }
-
-
-

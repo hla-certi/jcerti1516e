@@ -13,32 +13,32 @@ package hla.rti1516e.encoding;
  * Interface for the HLA data type HLAvariantRecord.
  */
 public interface HLAvariantRecord<T extends DataElement> extends DataElement {
-   /**
-    * Associates the data element for a specified discriminant.
-    *
-    * @param discriminant discriminant to associate data element with
-    * @param dataElement  data element to associate the discriminant with
-    */
-   void setVariant(T discriminant, DataElement dataElement);
+	/**
+	 * Associates the data element for a specified discriminant.
+	 *
+	 * @param discriminant discriminant to associate data element with
+	 * @param dataElement  data element to associate the discriminant with
+	 */
+	void setVariant(T discriminant, DataElement dataElement);
 
-   /**
-    * Sets the active discriminant.
-    *
-    * @param discriminant active discriminant
-    */
-   void setDiscriminant(T discriminant);
+	/**
+	 * Sets the active discriminant.
+	 *
+	 * @param discriminant active discriminant
+	 */
+	void setDiscriminant(T discriminant);
 
-   /**
-    * Returns the active discriminant.
-    *
-    * @return the active discriminant
-    */
-   T getDiscriminant();
+	/**
+	 * Returns the active discriminant.
+	 *
+	 * @return the active discriminant
+	 */
+	T getDiscriminant();
 
-   /**
-    * Returns element associated with the active discriminant.
-    *
-    * @return value
-    */
-   DataElement getValue();
+	/**
+	 * Returns element associated with the active discriminant.
+	 *
+	 * @return value
+	 */
+	DataElement getValue();
 }

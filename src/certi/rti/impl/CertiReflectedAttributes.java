@@ -26,110 +26,126 @@ import hla.rti.SuppliedAttributes;
 
 /**
  * This packages the attributes supplied to the federate for
- * reflectAttributeValues. This is conceptually an array
- * with an initial capacity and the ability to grow.
- * You enumerate by stepping index from 0 to size()-1.
+ * reflectAttributeValues. This is conceptually an array with an initial
+ * capacity and the ability to grow. You enumerate by stepping index from 0 to
+ * size()-1.
  *
  * @author <a href = "mailto:apancik@gmail.com">Andrej Pancik</a>
  * @version 3.3.3
  */
 public class CertiReflectedAttributes implements ReflectedAttributes {
 
-    private int orderType;
-    private int transportationType;
-    private Region region;
-    private SuppliedAttributes attributes;
+	private int orderType;
+	private int transportationType;
+	private Region region;
+	private SuppliedAttributes attributes;
 
-    /**
-     *
-     * @param orderType
-     * @param transportationType
-     * @param region
-     * @param attributes
-     */
-    public CertiReflectedAttributes(int orderType, int transportationType, Region region, SuppliedAttributes attributes) {
-        this.orderType = orderType;
-        this.transportationType = transportationType;
-        this.region = region;
-        this.attributes = attributes;
-    }
+	/**
+	 *
+	 * @param orderType
+	 * @param transportationType
+	 * @param region
+	 * @param attributes
+	 */
+	public CertiReflectedAttributes(int orderType, int transportationType, Region region,
+			SuppliedAttributes attributes) {
+		this.orderType = orderType;
+		this.transportationType = transportationType;
+		this.region = region;
+		this.attributes = attributes;
+	}
 
-    /**
-     * Return attribute handle at index position.
-     * @return int attribute handle
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public int getAttributeHandle(int index) throws ArrayIndexOutOfBounds {
-        return attributes.getHandle(index);
-    }
+	/**
+	 * Return attribute handle at index position.
+	 * 
+	 * @return int attribute handle
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public int getAttributeHandle(int index) throws ArrayIndexOutOfBounds {
+		return attributes.getHandle(index);
+	}
 
-    /**
-     * Return order handle at index position.
-     * @return int order type
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public int getOrderType(int index) throws ArrayIndexOutOfBounds {
-        return orderType;
-    }
+	/**
+	 * Return order handle at index position.
+	 * 
+	 * @return int order type
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public int getOrderType(int index) throws ArrayIndexOutOfBounds {
+		return orderType;
+	}
 
-    /**
-     * Return Region handle at index position.
-     * @return int region handle
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public Region getRegion(int index) throws ArrayIndexOutOfBounds {
-        //TODO CHECK!
-        return region;
-    }
+	/**
+	 * Return Region handle at index position.
+	 * 
+	 * @return int region handle
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public Region getRegion(int index) throws ArrayIndexOutOfBounds {
+		// TODO CHECK!
+		return region;
+	}
 
-    /**
-     * Return transport handle at index position.
-     * @return int transport type
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public int getTransportType(int index) throws ArrayIndexOutOfBounds {
-        //TODO CHECK!
-        return transportationType;
-    }
+	/**
+	 * Return transport handle at index position.
+	 * 
+	 * @return int transport type
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public int getTransportType(int index) throws ArrayIndexOutOfBounds {
+		// TODO CHECK!
+		return transportationType;
+	}
 
-    /**
-     * Return copy of value at index position.
-     * @return byte[] copy (clone) of value
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public byte[] getValue(int index) throws ArrayIndexOutOfBounds {
-        return attributes.getValue(index);
-    }
+	/**
+	 * Return copy of value at index position.
+	 * 
+	 * @return byte[] copy (clone) of value
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public byte[] getValue(int index) throws ArrayIndexOutOfBounds {
+		return attributes.getValue(index);
+	}
 
-    /**
-     * Return length of value at index position.
-     * @return int value length
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public int getValueLength(int index) throws ArrayIndexOutOfBounds {
-        return attributes.getValueLength(index);
-    }
+	/**
+	 * Return length of value at index position.
+	 * 
+	 * @return int value length
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public int getValueLength(int index) throws ArrayIndexOutOfBounds {
+		return attributes.getValueLength(index);
+	}
 
-    /**
-     * Get the reference of the value at position index (not a clone)
-     * @return byte[] the reference
-     * @param index int
-     * @exception hla.rti.ArrayIndexOutOfBounds
-     */
-    public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {
-        return attributes.getValueReference(index);
-    }
+	/**
+	 * Get the reference of the value at position index (not a clone)
+	 * 
+	 * @return byte[] the reference
+	 * @param index int
+	 * @exception hla.rti.ArrayIndexOutOfBounds
+	 */
+	@Override
+	public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {
+		return attributes.getValueReference(index);
+	}
 
-    /**
-     * @return int Number of attribute handle-value pairs
-     */
-    public int size() {
-        return attributes.size();
-    }
+	/**
+	 * @return int Number of attribute handle-value pairs
+	 */
+	@Override
+	public int size() {
+		return attributes.size();
+	}
 }

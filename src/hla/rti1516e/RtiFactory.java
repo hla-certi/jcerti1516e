@@ -9,16 +9,15 @@
 
 package hla.rti1516e;
 
-import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.encoding.EncoderFactory;
+import hla.rti1516e.exceptions.RTIinternalError;
 
 public interface RtiFactory {
-   RTIambassador getRtiAmbassador() throws RTIinternalError;
+	RTIambassador getRtiAmbassador() throws RTIinternalError;
 
-   EncoderFactory getEncoderFactory()
-      throws RTIinternalError;
+	EncoderFactory getEncoderFactory() throws RTIinternalError;
 
-   String rtiName();
+	String rtiName();
 
-   String rtiVersion();
+	String rtiVersion();
 }

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class ObjectClassNotDefined
  */
 
 public final class ObjectClassNotDefined extends RTIexception {
-   public ObjectClassNotDefined(String msg)
-   {
-      super(msg);
-   }
+	public ObjectClassNotDefined(String msg) {
+		super(msg);
+	}
 
-   public ObjectClassNotDefined(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public ObjectClassNotDefined(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -9,12 +9,12 @@
 
 package hla.rti1516e;
 
+import java.io.Serializable;
+
 import hla.rti1516e.exceptions.CouldNotDecode;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.RTIinternalError;
-
-import java.io.Serializable;
 
 /**
  * The factory is used only (outside RTI) to create TransportationTypeHandle
@@ -22,13 +22,11 @@ import java.io.Serializable;
  */
 
 public interface TransportationTypeHandleFactory extends Serializable {
-   TransportationTypeHandle decode(byte[] buffer, int offset)
-      throws CouldNotDecode, FederateNotExecutionMember, NotConnected, RTIinternalError;
+	TransportationTypeHandle decode(byte[] buffer, int offset)
+			throws CouldNotDecode, FederateNotExecutionMember, NotConnected, RTIinternalError;
 
-   TransportationTypeHandle getHLAdefaultReliable()
-      throws RTIinternalError;
+	TransportationTypeHandle getHLAdefaultReliable() throws RTIinternalError;
 
-   TransportationTypeHandle getHLAdefaultBestEffort()
-      throws RTIinternalError;
-   
+	TransportationTypeHandle getHLAdefaultBestEffort() throws RTIinternalError;
+
 }

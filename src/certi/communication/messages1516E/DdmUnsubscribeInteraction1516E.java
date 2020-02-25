@@ -19,66 +19,65 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class DdmUnsubscribeInteraction1516E extends CertiMessage1516E {
-   private int interactionClass;
-   private int region;
-   private boolean passive;
+	private int interactionClass;
+	private int region;
+	private boolean passive;
 
-   public DdmUnsubscribeInteraction1516E() {
-      super(CertiMessageType.DDM_UNSUBSCRIBE_INTERACTION);
-   }
+	public DdmUnsubscribeInteraction1516E() {
+		super(CertiMessageType.DDM_UNSUBSCRIBE_INTERACTION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.write(region);
-      messageBuffer.write(passive);
-   }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(region);
+		messageBuffer.write(passive);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      interactionClass = messageBuffer.readInt();
-      region = messageBuffer.readInt();
-      passive = messageBuffer.readBoolean();
-   }
+		interactionClass = messageBuffer.readInt();
+		region = messageBuffer.readInt();
+		passive = messageBuffer.readBoolean();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", region: " + region + ", passive: " + passive);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", region: " + region + ", passive: "
+				+ passive);
+	}
 
-   public int getInteractionClass() {
-      return interactionClass;
-   }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-   public int getRegion() {
-      return region;
-   }
+	public int getRegion() {
+		return region;
+	}
 
-   public boolean getPassive() {
-      return passive;
-   }
+	public boolean getPassive() {
+		return passive;
+	}
 
-   public void setInteractionClass(int newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-   public void setRegion(int newRegion) {
-      this.region = newRegion;
-   }
+	public void setRegion(int newRegion) {
+		this.region = newRegion;
+	}
 
-   public void setPassive(boolean newPassive) {
-      this.passive = newPassive;
-   }
+	public void setPassive(boolean newPassive) {
+		this.passive = newPassive;
+	}
 
 }
-

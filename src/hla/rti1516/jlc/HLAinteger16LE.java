@@ -6,21 +6,21 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
 
-public interface HLAinteger16LE extends DataElement
-{
-   int getOctetBoundary();
+package hla.rti1516.jlc;
 
-   void encode(ByteWrapper byteWrapper);
+public interface HLAinteger16LE extends DataElement {
+	@Override
+	int getOctetBoundary();
 
-   int getEncodedLength();
+	@Override
+	void encode(ByteWrapper byteWrapper);
 
-   void decode(ByteWrapper byteWrapper);
+	@Override
+	int getEncodedLength();
 
-   short getValue();
+	@Override
+	void decode(ByteWrapper byteWrapper);
+
+	short getValue();
 }
-
-
-

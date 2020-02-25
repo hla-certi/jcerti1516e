@@ -11,12 +11,12 @@
 
 package hla.rti1516e;
 
+import java.io.Serializable;
+
 import hla.rti1516e.exceptions.CouldNotDecode;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.RTIinternalError;
-
-import java.io.Serializable;
 
 /**
  * The factory is used only (outside RTI) to create ObjectInstanceHandle
@@ -24,6 +24,6 @@ import java.io.Serializable;
  */
 
 public interface ObjectInstanceHandleFactory extends Serializable {
-   ObjectInstanceHandle decode(byte[] buffer, int offset)
-      throws CouldNotDecode, FederateNotExecutionMember, NotConnected, RTIinternalError;
+	ObjectInstanceHandle decode(byte[] buffer, int offset)
+			throws CouldNotDecode, FederateNotExecutionMember, NotConnected, RTIinternalError;
 }

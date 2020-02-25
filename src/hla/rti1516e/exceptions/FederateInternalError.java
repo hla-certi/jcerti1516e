@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateInternalError.
  */
 public final class FederateInternalError extends RTIexception {
-   public FederateInternalError(String msg)
-   {
-      super(msg);
-   }
+	public FederateInternalError(String msg) {
+		super(msg);
+	}
 
-   public FederateInternalError(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateInternalError(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

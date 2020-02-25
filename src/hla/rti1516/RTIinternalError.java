@@ -6,24 +6,21 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
- * Public exception class RTIinternalError. This is deliberately
- * not a final class.
-*/
+ * Public exception class RTIinternalError. This is deliberately not a final
+ * class.
+ */
 public class RTIinternalError extends RTIexception {
-  public RTIinternalError(String msg) {
-    super(msg);
-  }
+	public RTIinternalError(String msg) {
+		super(msg);
+	}
 }
-
-
 
 //File: RangeBounds.java
 
 /**
  * Record returned by (10.31) getRangeBounds
  */
-

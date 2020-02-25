@@ -13,17 +13,17 @@ package hla.rti1516e.encoding;
  * Interface for the HLA data type HLAASCIIchar.
  */
 public interface HLAASCIIchar extends DataElement {
-   /**
-    * Returns the byte value of this element.
-    *
-    * @return value current value
-    */
-   byte getValue();
+	/**
+	 * Returns the byte value of this element.
+	 *
+	 * @return value current value
+	 */
+	byte getValue();
 
-   /**
-    * Sets the byte value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(byte value);
+	/**
+	 * Sets the byte value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(byte value);
 }

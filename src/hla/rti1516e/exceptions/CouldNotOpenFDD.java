@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class CouldNotOpenFDD
  */
 public final class CouldNotOpenFDD extends RTIexception {
-   public CouldNotOpenFDD(String msg)
-   {
-      super(msg);
-   }
+	public CouldNotOpenFDD(String msg) {
+		super(msg);
+	}
 
-   public CouldNotOpenFDD(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public CouldNotOpenFDD(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

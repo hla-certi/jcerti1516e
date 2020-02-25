@@ -14,13 +14,11 @@ package hla.rti1516e.exceptions;
  */
 
 public final class AttributeNotDefined extends RTIexception {
-   public AttributeNotDefined(String msg)
-   {
-      super(msg);
-   }
+	public AttributeNotDefined(String msg) {
+		super(msg);
+	}
 
-   public AttributeNotDefined(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeNotDefined(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class OwnershipAcquisitionPending
  */
 public final class OwnershipAcquisitionPending extends RTIexception {
-   public OwnershipAcquisitionPending(String msg)
-   {
-      super(msg);
-   }
+	public OwnershipAcquisitionPending(String msg) {
+		super(msg);
+	}
 
-   public OwnershipAcquisitionPending(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public OwnershipAcquisitionPending(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

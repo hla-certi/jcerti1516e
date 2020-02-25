@@ -6,22 +6,19 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class NoRequestToEnableTimeRequestWasPending
-
-*/
+ * 
+ */
 
 public final class NoRequestToEnableTimeRegulationWasPending extends RTIexception {
-  public NoRequestToEnableTimeRegulationWasPending(String msg) {
-    super(msg);
-  }
+	public NoRequestToEnableTimeRegulationWasPending(String msg) {
+		super(msg);
+	}
 }
 
-
-
 //File: ObjectClassHandle.java
-

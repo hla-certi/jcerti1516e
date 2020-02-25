@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class FederationExecutionAlreadyExists
-*/
+ */
 public final class FederationExecutionAlreadyExists extends RTIexception {
-  public FederationExecutionAlreadyExists(String msg) {
-    super(msg);
-  }
+	public FederationExecutionAlreadyExists(String msg) {
+		super(msg);
+	}
 }
-
-
-

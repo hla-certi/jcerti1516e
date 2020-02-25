@@ -19,44 +19,42 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class DestroyFederationExecution1516E extends CertiMessage1516E {
-   private String federationName;
+	private String federationName;
 
-   public DestroyFederationExecution1516E() {
-      super(CertiMessageType.DESTROY_FEDERATION_EXECUTION);
-   }
+	public DestroyFederationExecution1516E() {
+		super(CertiMessageType.DESTROY_FEDERATION_EXECUTION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(federationName);
-   }
+		messageBuffer.write(federationName);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      federationName = messageBuffer.readString();
-   }
+		federationName = messageBuffer.readString();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", federationName: " + federationName);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", federationName: " + federationName);
+	}
 
-   public String getFederationName() {
-      return federationName;
-   }
+	public String getFederationName() {
+		return federationName;
+	}
 
-   public void setFederationName(String newFederationName) {
-      this.federationName = newFederationName;
-   }
+	public void setFederationName(String newFederationName) {
+		this.federationName = newFederationName;
+	}
 
 }
-

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeNotRecognized
  */
 
 public final class AttributeNotRecognized extends RTIexception {
-   public AttributeNotRecognized(String msg)
-   {
-      super(msg);
-   }
+	public AttributeNotRecognized(String msg) {
+		super(msg);
+	}
 
-   public AttributeNotRecognized(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeNotRecognized(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

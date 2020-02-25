@@ -19,65 +19,66 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class GetParameterName extends CertiMessage {
-   private int interactionClass;
-   private String parameterName;
-   private short parameter=0;
+	private int interactionClass;
+	private String parameterName;
+	private short parameter = 0;
 
-   public GetParameterName() {
-      super(CertiMessageType.GET_PARAMETER_NAME);
-   }
+	public GetParameterName() {
+		super(CertiMessageType.GET_PARAMETER_NAME);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(interactionClass);
-      messageBuffer.write(parameterName);
-      messageBuffer.write(parameter);
-   }
+		messageBuffer.write(interactionClass);
+		messageBuffer.write(parameterName);
+		messageBuffer.write(parameter);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      interactionClass = messageBuffer.readInt();
-      parameterName = messageBuffer.readString();
-      parameter = messageBuffer.readShort();
-   }
+		interactionClass = messageBuffer.readInt();
+		parameterName = messageBuffer.readString();
+		parameter = messageBuffer.readShort();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", interactionClass: " + interactionClass + ", parameterName: " + parameterName + ", parameter: " + parameter);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", interactionClass: " + interactionClass + ", parameterName: " + parameterName
+				+ ", parameter: " + parameter);
+	}
 
-   public int getInteractionClass() {
-      return interactionClass;
-   }
+	public int getInteractionClass() {
+		return interactionClass;
+	}
 
-   public String getParameterName() {
-      return parameterName;
-   }
+	public String getParameterName() {
+		return parameterName;
+	}
 
-   public short getParameter() {
-      return parameter;
-   }
+	public short getParameter() {
+		return parameter;
+	}
 
-   public void setInteractionClass(int newInteractionClass) {
-      this.interactionClass = newInteractionClass;
-   }
+	public void setInteractionClass(int newInteractionClass) {
+		this.interactionClass = newInteractionClass;
+	}
 
-   public void setParameterName(String newParameterName) {
-      this.parameterName = newParameterName;
-   }
+	public void setParameterName(String newParameterName) {
+		this.parameterName = newParameterName;
+	}
 
-   public void setParameter(short newParameter) {
-      this.parameter = newParameter;
-   }
+	public void setParameter(short newParameter) {
+		this.parameter = newParameter;
+	}
 
 }
-

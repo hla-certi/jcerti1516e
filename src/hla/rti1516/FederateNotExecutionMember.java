@@ -6,17 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class FederateNotExecutionMember
-*/
+ */
 public final class FederateNotExecutionMember extends RTIexception {
-  public FederateNotExecutionMember(String msg) {
-    super(msg);
-  }
+	public FederateNotExecutionMember(String msg) {
+		super(msg);
+	}
 }
-
-
-

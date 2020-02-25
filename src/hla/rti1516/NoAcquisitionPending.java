@@ -6,18 +6,15 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
- * Public exception class NoAcquisitionPending. This is deliberately
- * not a final class.
-*/
+ * Public exception class NoAcquisitionPending. This is deliberately not a final
+ * class.
+ */
 public class NoAcquisitionPending extends RTIexception {
-  public NoAcquisitionPending(String msg) {
-    super(msg);
-  }
+	public NoAcquisitionPending(String msg) {
+		super(msg);
+	}
 }
-
-
-

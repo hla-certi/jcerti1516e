@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class AttributeAlreadyOwned
-
-*/
+ * 
+ */
 
 public final class AttributeAlreadyOwned extends RTIexception {
-  public AttributeAlreadyOwned(String msg) {
-    super(msg);
-  }
+	public AttributeAlreadyOwned(String msg) {
+		super(msg);
+	}
 }
-
-
-

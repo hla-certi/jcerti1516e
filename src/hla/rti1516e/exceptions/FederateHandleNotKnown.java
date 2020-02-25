@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateHandleNotKnown
  */
 public final class FederateHandleNotKnown extends RTIexception {
-   public FederateHandleNotKnown(String msg)
-   {
-      super(msg);
-   }
+	public FederateHandleNotKnown(String msg) {
+		super(msg);
+	}
 
-   public FederateHandleNotKnown(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateHandleNotKnown(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

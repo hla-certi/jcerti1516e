@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class FederateUnableToUseTime
-
-*/
+ * 
+ */
 
 public final class FederateUnableToUseTime extends RTIexception {
-  public FederateUnableToUseTime(String msg) {
-    super(msg);
-  }
+	public FederateUnableToUseTime(String msg) {
+		super(msg);
+	}
 }
-
-
-

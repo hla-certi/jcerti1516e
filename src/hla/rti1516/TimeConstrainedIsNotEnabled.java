@@ -6,26 +6,23 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class TimeConstrainedIsNotEnabled
-
-*/
+ * 
+ */
 
 public final class TimeConstrainedIsNotEnabled extends RTIexception {
-  public TimeConstrainedIsNotEnabled(String msg) {
-    super(msg);
-  }
+	public TimeConstrainedIsNotEnabled(String msg) {
+		super(msg);
+	}
 }
-
-
 
 //File: TimeQueryReturn.java
 
 /**
  * Record returned by (8.16) queryLBTS and (8.18) queryMinimumNextEventTime
  */
-

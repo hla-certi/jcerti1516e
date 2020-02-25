@@ -19,46 +19,44 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
-import hla.rti.LogicalTimeInterval;
+import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
+import hla.rti1516e.LogicalTimeInterval;
 
 public class EnableTimeRegulation1516E extends CertiMessage1516E {
-   private LogicalTimeInterval lookAhead;
+	private CertiLogicalTimeInterval1516E lookAhead;
 
-   public EnableTimeRegulation1516E() {
-      super(CertiMessageType.ENABLE_TIME_REGULATION);
-   }
+	public EnableTimeRegulation1516E() {
+		super(CertiMessageType.ENABLE_TIME_REGULATION);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(lookAhead);
-   }
+		messageBuffer.write(lookAhead.getInterval());
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      lookAhead = messageBuffer.readLogicalTimeInterval();
-   }
+		lookAhead = new CertiLogicalTimeInterval1516E(messageBuffer.readDouble());
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", LogicalTimeInterval: " + lookAhead);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", LogicalTimeInterval: " + lookAhead);
+	}
 
-    public LogicalTimeInterval getLookAhead() {
-        return lookAhead;
-    }
+	public CertiLogicalTimeInterval1516E getLookAhead() {
+		return lookAhead;
+	}
 
-    public void setLookAhead(LogicalTimeInterval lookAhead) {
-        this.lookAhead = lookAhead;
-    }
+	public void setLookAhead(CertiLogicalTimeInterval1516E lookAhead) {
+		this.lookAhead = lookAhead;
+	}
 
-   
 }
-

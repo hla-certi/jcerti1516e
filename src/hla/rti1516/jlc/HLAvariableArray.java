@@ -6,50 +6,50 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
+
+package hla.rti1516.jlc;
 
 import java.util.Iterator;
 
-public interface HLAvariableArray extends DataElement
-{
-   void encode(ByteWrapper byteWrapper);
+public interface HLAvariableArray extends DataElement {
+	@Override
+	void encode(ByteWrapper byteWrapper);
 
-   void decode(ByteWrapper byteWrapper);
+	@Override
+	void decode(ByteWrapper byteWrapper);
 
-   int getEncodedLength();
+	@Override
+	int getEncodedLength();
 
-   int getOctetBoundary();
+	@Override
+	int getOctetBoundary();
 
-   /**
-    * Adds an element to this variable array.
-    *
-    * @param dataElement
-    */
-   void addElement(DataElement dataElement);
+	/**
+	 * Adds an element to this variable array.
+	 *
+	 * @param dataElement
+	 */
+	void addElement(DataElement dataElement);
 
-   /**
-    * Returns the number of elements in this variable array.
-    *
-    * @return
-    */
-   int size();
+	/**
+	 * Returns the number of elements in this variable array.
+	 *
+	 * @return
+	 */
+	int size();
 
-   /**
-    * Returns element at the specified index.
-    *
-    * @param index
-    * @return
-    */
-   DataElement get(int index);
+	/**
+	 * Returns element at the specified index.
+	 *
+	 * @param index
+	 * @return
+	 */
+	DataElement get(int index);
 
-   /**
-    * Returns an iterator for the elements in this variable array.
-    *
-    * @return
-    */
-   Iterator iterator();
+	/**
+	 * Returns an iterator for the elements in this variable array.
+	 *
+	 * @return
+	 */
+	Iterator iterator();
 }
-
-
-

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InteractionClassNotDefined
  */
 
 public final class InteractionClassNotDefined extends RTIexception {
-   public InteractionClassNotDefined(String msg)
-   {
-      super(msg);
-   }
+	public InteractionClassNotDefined(String msg) {
+		super(msg);
+	}
 
-   public InteractionClassNotDefined(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InteractionClassNotDefined(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

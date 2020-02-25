@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidTransportationName
  */
 public final class InvalidTransportationName extends RTIexception {
-   public InvalidTransportationName(String msg)
-   {
-      super(msg);
-   }
+	public InvalidTransportationName(String msg) {
+		super(msg);
+	}
 
-   public InvalidTransportationName(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidTransportationName(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

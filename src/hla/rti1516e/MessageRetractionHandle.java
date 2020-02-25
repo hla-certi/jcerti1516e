@@ -14,26 +14,27 @@ package hla.rti1516e;
 import java.io.Serializable;
 
 /**
- * The user can do nothing with these but employ them as keys.
- * Implementers should provide equals, hashCode and toString
- * rather than settling for the defaults.
+ * The user can do nothing with these but employ them as keys. Implementers
+ * should provide equals, hashCode and toString rather than settling for the
+ * defaults.
  */
 public interface MessageRetractionHandle extends Serializable {
 
-   /**
-    * @return true if this refers to the same Message as other handle
-    */
-   boolean equals(Object otherMRHandle);
+	/**
+	 * @return true if this refers to the same Message as other handle
+	 */
+	@Override
+	boolean equals(Object otherMRHandle);
 
-   /**
-    * @return int. All instances that refer to the same Message should return the
-    *         same hashcode.
-    */
-   int hashCode();
+	/**
+	 * @return int. All instances that refer to the same Message should return the
+	 *         same hashcode.
+	 */
+	@Override
+	int hashCode();
 
-   String toString();
+	@Override
+	String toString();
 }
 
 //end MessageRetractionHandle
-
-

@@ -17,16 +17,14 @@ package hla.rti1516e;
 
 import java.io.Serializable;
 
-public final class FederateHandleSaveStatusPair
-   implements Serializable {
-   public FederateHandleSaveStatusPair(FederateHandle fh, SaveStatus ss)
-   {
-      handle = fh;
-      status = ss;
-   }
+public final class FederateHandleSaveStatusPair implements Serializable {
+	public FederateHandleSaveStatusPair(FederateHandle fh, SaveStatus ss) {
+		handle = fh;
+		status = ss;
+	}
 
-   public final FederateHandle handle;
-   public final SaveStatus status;
+	public final FederateHandle handle;
+	public final SaveStatus status;
 }
 
 //end FederateHandleSaveStatusPair

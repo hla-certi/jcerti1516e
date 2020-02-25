@@ -30,54 +30,63 @@ import hla.rti.SuppliedAttributes;
  */
 public class CertiReceivedInteraction implements ReceivedInteraction {
 
-    private int orderType;
-    private int transportationType;
-    private Region region;
-    private SuppliedAttributes parameters;
+	private int orderType;
+	private int transportationType;
+	private Region region;
+	private SuppliedAttributes parameters;
 
-    /**
-     *
-     * @param orderType
-     * @param transportationType
-     * @param region
-     * @param attributes
-     */
-    public CertiReceivedInteraction(int orderType, int transportationType, Region region, SuppliedAttributes attributes) {
-        this.orderType = orderType;
-        this.transportationType = transportationType;
-        this.region = region;
-        this.parameters = attributes;
-    }
+	/**
+	 *
+	 * @param orderType
+	 * @param transportationType
+	 * @param region
+	 * @param attributes
+	 */
+	public CertiReceivedInteraction(int orderType, int transportationType, Region region,
+			SuppliedAttributes attributes) {
+		this.orderType = orderType;
+		this.transportationType = transportationType;
+		this.region = region;
+		this.parameters = attributes;
+	}
 
-    public int getOrderType() {
-        return orderType;
-    }
+	@Override
+	public int getOrderType() {
+		return orderType;
+	}
 
-    public int getParameterHandle(int index) throws ArrayIndexOutOfBounds {
-        return parameters.getHandle(index);
-    }
+	@Override
+	public int getParameterHandle(int index) throws ArrayIndexOutOfBounds {
+		return parameters.getHandle(index);
+	}
 
-    public Region getRegion() {
-        return region;
-    }
+	@Override
+	public Region getRegion() {
+		return region;
+	}
 
-    public int getTransportType() {
-        return transportationType;
-    }
+	@Override
+	public int getTransportType() {
+		return transportationType;
+	}
 
-    public byte[] getValue(int index) throws ArrayIndexOutOfBounds {
-        return parameters.getValue(index);
-    }
+	@Override
+	public byte[] getValue(int index) throws ArrayIndexOutOfBounds {
+		return parameters.getValue(index);
+	}
 
-    public int getValueLength(int index) throws ArrayIndexOutOfBounds {
-        return parameters.getValueLength(index);
-    }
+	@Override
+	public int getValueLength(int index) throws ArrayIndexOutOfBounds {
+		return parameters.getValueLength(index);
+	}
 
-    public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {
-        return parameters.getValueReference(index);
-    }
+	@Override
+	public byte[] getValueReference(int index) throws ArrayIndexOutOfBounds {
+		return parameters.getValueReference(index);
+	}
 
-    public int size() {
-        return parameters.size();
-    }
+	@Override
+	public int size() {
+		return parameters.size();
+	}
 }

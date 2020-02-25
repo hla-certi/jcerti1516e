@@ -19,43 +19,43 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
 
 public class RequestFederationRestoreFailed extends CertiMessage {
-   private String reason;
+	private String reason;
 
-   public RequestFederationRestoreFailed() {
-      super(CertiMessageType.REQUEST_FEDERATION_RESTORE_FAILED);
-   }
+	public RequestFederationRestoreFailed() {
+		super(CertiMessageType.REQUEST_FEDERATION_RESTORE_FAILED);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(reason);
-   }
+		messageBuffer.write(reason);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      reason = messageBuffer.readString();
-   }
+		reason = messageBuffer.readString();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", reason: " + reason);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", reason: " + reason);
+	}
 
-   public String getReason() {
-      return reason;
-   }
+	public String getReason() {
+		return reason;
+	}
 
-   public void setReason(String newReason) {
-      this.reason = newReason;
-   }
+	public void setReason(String newReason) {
+		this.reason = newReason;
+	}
 
 }
-

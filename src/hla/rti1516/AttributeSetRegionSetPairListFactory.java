@@ -6,19 +6,18 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
 
-  /**
-   * Factory for AttributeHandleValuePairSet instances.
-   */
-  public interface AttributeSetRegionSetPairListFactory extends java.io.Serializable {
+package hla.rti1516;
 
-  /**
-   * Creates a new AttributeHandleValuePairSet instance with specified initial capacity.
-   */
-  public AttributeSetRegionSetPairList create ( int capacity);
+/**
+ * Factory for AttributeHandleValuePairSet instances.
+ */
+public interface AttributeSetRegionSetPairListFactory extends java.io.Serializable {
+
+	/**
+	 * Creates a new AttributeHandleValuePairSet instance with specified initial
+	 * capacity.
+	 */
+	AttributeSetRegionSetPairList create(int capacity);
 }
 //end AttributeSetRegionSetPairListFactory
-
-

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidParameterHandle
  */
 
 public final class InvalidParameterHandle extends RTIexception {
-   public InvalidParameterHandle(String msg)
-   {
-      super(msg);
-   }
+	public InvalidParameterHandle(String msg) {
+		super(msg);
+	}
 
-   public InvalidParameterHandle(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidParameterHandle(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

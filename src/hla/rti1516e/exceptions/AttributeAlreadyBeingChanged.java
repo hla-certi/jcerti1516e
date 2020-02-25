@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeAlreadyBeingChanged
  */
 
 public final class AttributeAlreadyBeingChanged extends RTIexception {
-   public AttributeAlreadyBeingChanged(String msg)
-   {
-      super(msg);
-   }
+	public AttributeAlreadyBeingChanged(String msg) {
+		super(msg);
+	}
 
-   public AttributeAlreadyBeingChanged(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeAlreadyBeingChanged(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

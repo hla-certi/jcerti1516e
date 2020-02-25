@@ -6,23 +6,18 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
 
-public final class MessageRetractionReturn
-    implements java.io.Serializable
-{
-  public MessageRetractionReturn(boolean rhiv, MessageRetractionHandle mrh) {
-    retractionHandleIsValid = rhiv;
-    handle = mrh;
-  }
+package hla.rti1516;
 
-  public boolean                 retractionHandleIsValid;
-  public MessageRetractionHandle handle;
+public final class MessageRetractionReturn implements java.io.Serializable {
+	public MessageRetractionReturn(boolean rhiv, MessageRetractionHandle mrh) {
+		retractionHandleIsValid = rhiv;
+		handle = mrh;
+	}
+
+	public boolean retractionHandleIsValid;
+	public MessageRetractionHandle handle;
 }
 //end MessageRetractionReturn
 
-
-
 //File: MobileFederateServices.java
-

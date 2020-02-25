@@ -6,16 +6,16 @@ import hla.rti1516e.time.HLAinteger64Time;
 import hla.rti1516e.time.HLAinteger64TimeFactory;
 
 /**
- * Implementation of HLAinteger64TimeFactory
- * Used to create HLAinteger64Time and HLAinteger64Interval
+ * Implementation of HLAinteger64TimeFactory Used to create HLAinteger64Time and
+ * HLAinteger64Interval
  */
 public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 
-	
 	private static final long serialVersionUID = 909206047485485047L;
-		
+
 	/**
 	 * Decode an HLAinteger64Time object and create one with decoded informations
+	 * 
 	 * @param buffer : buffer witch contains encoded informations
 	 * @param offset : offset to start to decode at
 	 * @return a new HLAinteger64Time object with decoded informations
@@ -27,7 +27,9 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 	}
 
 	/**
-	 * Decode an HLAinteger64Interval object and create one with decoded informations
+	 * Decode an HLAinteger64Interval object and create one with decoded
+	 * informations
+	 * 
 	 * @param buffer : buffer witch contains encoded informations
 	 * @param offset : offset to start to decode at
 	 * @return a new HLAinteger64Interval object with decoded informations
@@ -40,6 +42,7 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 
 	/**
 	 * Create a new HLAinteger64Time with value 0
+	 * 
 	 * @return a new HLAinteger64Time with value 0
 	 */
 	@Override
@@ -49,6 +52,7 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 
 	/**
 	 * Create a new HLAinteger64Time with value max
+	 * 
 	 * @return a new HLAinteger64Time with value max
 	 */
 	@Override
@@ -58,6 +62,7 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 
 	/**
 	 * Create a new HLAinteger64Time with a specific value
+	 * 
 	 * @param value to set to the HLAinteger64Time
 	 * @return a new HLAinteger64Time with a specific value
 	 */
@@ -68,6 +73,7 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 
 	/**
 	 * Create a new HLAinteger64Interval with value 0
+	 * 
 	 * @return a new HLAinteger64Interval with value 0
 	 */
 	@Override
@@ -76,8 +82,10 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 	}
 
 	/**
-	 * Create a new HLAinteger64Interval with value epsilon (resolution of an integer, =1) 
-	 * @return a new HLAinteger64Interval with value epsilon 
+	 * Create a new HLAinteger64Interval with value epsilon (resolution of an
+	 * integer, =1)
+	 * 
+	 * @return a new HLAinteger64Interval with value epsilon
 	 */
 	@Override
 	public HLAinteger64Interval makeEpsilon() {
@@ -86,6 +94,7 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 
 	/**
 	 * Create a new HLAinteger64Interval with a specific value
+	 * 
 	 * @param value to set to the HLAinteger64Interval
 	 * @return a new HLAinteger64Interval with a specific value
 	 */
@@ -96,6 +105,7 @@ public class HLAinteger64TimeFactoryImpl implements HLAinteger64TimeFactory {
 
 	/**
 	 * Get the name of the class
+	 * 
 	 * @return a string with the name of the class
 	 */
 	@Override

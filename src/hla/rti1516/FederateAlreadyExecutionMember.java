@@ -6,19 +6,16 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
  * Public exception class FederateAlreadyExecutionMember
-*/
+ */
 public final class FederateAlreadyExecutionMember extends RTIexception {
-  public FederateAlreadyExecutionMember(String msg) {
-    super(msg);
-  }
+	public FederateAlreadyExecutionMember(String msg) {
+		super(msg);
+	}
 }
 
-
-
 //File: FederateAmbassador.java
-

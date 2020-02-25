@@ -19,36 +19,36 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages;
 
-
 import certi.communication.CertiException;
-import certi.communication.*;
-import hla.rti.*;
+import certi.communication.CertiMessage;
+import certi.communication.CertiMessageType;
+import certi.communication.MessageBuffer;
+import hla.rti.EventRetractionHandle;
 
 public class Retract extends CertiMessage {
-   private EventRetractionHandle EventRetractionHandle;
+	private EventRetractionHandle EventRetractionHandle;
 
-   public Retract() {
-      super(CertiMessageType.RETRACT);
-   }
+	public Retract() {
+		super(CertiMessageType.RETRACT);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(EventRetractionHandle);
-   }
+		messageBuffer.write(EventRetractionHandle);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      EventRetractionHandle = messageBuffer.readEventRetractionHandle();
-   }
+		EventRetractionHandle = messageBuffer.readEventRetractionHandle();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", EventRetractionHandle: " + EventRetractionHandle);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", EventRetractionHandle: " + EventRetractionHandle);
+	}
 
 }
-

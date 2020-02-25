@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeDivestitureWasNotRequested
  */
 
 public final class AttributeDivestitureWasNotRequested extends RTIexception {
-   public AttributeDivestitureWasNotRequested(String msg)
-   {
-      super(msg);
-   }
+	public AttributeDivestitureWasNotRequested(String msg) {
+		super(msg);
+	}
 
-   public AttributeDivestitureWasNotRequested(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeDivestitureWasNotRequested(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class ObjectInstanceNameNotReserved
  */
 
 public final class ObjectInstanceNameNotReserved extends RTIexception {
-   public ObjectInstanceNameNotReserved(String msg)
-   {
-      super(msg);
-   }
+	public ObjectInstanceNameNotReserved(String msg) {
+		super(msg);
+	}
 
-   public ObjectInstanceNameNotReserved(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public ObjectInstanceNameNotReserved(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

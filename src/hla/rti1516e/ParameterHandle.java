@@ -14,28 +14,31 @@ package hla.rti1516e;
 import java.io.Serializable;
 
 /**
- * Type-safe handle for a parameter. Generally these are created by the
- * RTI and passed to the user.
+ * Type-safe handle for a parameter. Generally these are created by the RTI and
+ * passed to the user.
  */
 
 public interface ParameterHandle extends Serializable {
 
-   /**
-    * @return true if this refers to the same parameter as other handle
-    */
-   boolean equals(Object otherParameterHandle);
+	/**
+	 * @return true if this refers to the same parameter as other handle
+	 */
+	@Override
+	boolean equals(Object otherParameterHandle);
 
-   /**
-    * @return int. All instances that refer to the same parameter should return the
-    *         same hascode.
-    */
-   int hashCode();
+	/**
+	 * @return int. All instances that refer to the same parameter should return the
+	 *         same hascode.
+	 */
+	@Override
+	int hashCode();
 
-   int encodedLength();
+	int encodedLength();
 
-   void encode(byte[] buffer, int offset);
+	void encode(byte[] buffer, int offset);
 
-   String toString();
+	@Override
+	String toString();
 
 }
 

@@ -6,46 +6,42 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
 
-public interface DataElement
-{
-   /**
-    * Returns the octet boundary of this element.
-    *
-    * @return
-    */
-   int getOctetBoundary();
+package hla.rti1516.jlc;
 
-   /**
-    * Encodes this element into the specified ByteWrapper.
-    *
-    * @param byteWrapper
-    */
-   void encode(ByteWrapper byteWrapper);
+public interface DataElement {
+	/**
+	 * Returns the octet boundary of this element.
+	 *
+	 * @return
+	 */
+	int getOctetBoundary();
 
-   /**
-    * Returns the size in bytes of this element's encoding.
-    *
-    * @return size
-    */
-   int getEncodedLength();
+	/**
+	 * Encodes this element into the specified ByteWrapper.
+	 *
+	 * @param byteWrapper
+	 */
+	void encode(ByteWrapper byteWrapper);
 
-   /**
-    * Returns a byte array with this element encoded.
-    *
-    * @return byte array with encoded element
-    */
-   byte[] toByteArray();
+	/**
+	 * Returns the size in bytes of this element's encoding.
+	 *
+	 * @return size
+	 */
+	int getEncodedLength();
 
-   /**
-    * Decodes this element from the ByteWrapper.
-    *
-    * @param byteWrapper
-    */
-   void decode(ByteWrapper byteWrapper);
+	/**
+	 * Returns a byte array with this element encoded.
+	 *
+	 * @return byte array with encoded element
+	 */
+	byte[] toByteArray();
+
+	/**
+	 * Decodes this element from the ByteWrapper.
+	 *
+	 * @param byteWrapper
+	 */
+	void decode(ByteWrapper byteWrapper);
 }
-
-
-

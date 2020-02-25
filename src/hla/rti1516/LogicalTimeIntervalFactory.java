@@ -6,16 +6,14 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 public interface LogicalTimeIntervalFactory extends java.io.Serializable {
 
-	public LogicalTimeInterval decode(byte[] buffer, int offset)
-	  throws CouldNotDecode;
-	public LogicalTimeInterval makeZero();
-	public LogicalTimeInterval makeEpsilon();
+	LogicalTimeInterval decode(byte[] buffer, int offset) throws CouldNotDecode;
+
+	LogicalTimeInterval makeZero();
+
+	LogicalTimeInterval makeEpsilon();
 }
-
-
-

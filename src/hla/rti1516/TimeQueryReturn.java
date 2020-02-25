@@ -6,47 +6,42 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
 
-public final class TimeQueryReturn
-    implements java.io.Serializable
-{
-  public TimeQueryReturn (boolean tiv, LogicalTime lt) {
-    timeIsValid = tiv;
-    time = lt;
-  }
+package hla.rti1516;
 
-  public boolean     timeIsValid;
-  public LogicalTime time;
-  
-  public boolean equals(Object other)
-  {
-     if (other instanceof TimeQueryReturn) {
-        TimeQueryReturn tqrOther = (TimeQueryReturn)other;
-        if (timeIsValid == false && tqrOther.timeIsValid == false) {
-           return true;
-        } else if (timeIsValid == true && tqrOther.timeIsValid == true) {
-           return time.equals(tqrOther.time);
-        } else {
-           return false;
-        }
-     } else {
-        return false;
-     }
-  }
+public final class TimeQueryReturn implements java.io.Serializable {
+	public TimeQueryReturn(boolean tiv, LogicalTime lt) {
+		timeIsValid = tiv;
+		time = lt;
+	}
 
-   public int hashCode()
-   {
-      return (timeIsValid ? time.hashCode() : 7);
-   }
+	public boolean timeIsValid;
+	public LogicalTime time;
 
-   public String toString()
-  {
-     return "" + timeIsValid + " " + time;
-  }
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof TimeQueryReturn) {
+			TimeQueryReturn tqrOther = (TimeQueryReturn) other;
+			if (timeIsValid == false && tqrOther.timeIsValid == false) {
+				return true;
+			} else if (timeIsValid == true && tqrOther.timeIsValid == true) {
+				return time.equals(tqrOther.time);
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return (timeIsValid ? time.hashCode() : 7);
+	}
+
+	@Override
+	public String toString() {
+		return "" + timeIsValid + " " + time;
+	}
 }
 //end TimeQueryReturn
-
-
-

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class TimeConstrainedIsNotEnabled
  */
 
 public final class TimeConstrainedIsNotEnabled extends RTIexception {
-   public TimeConstrainedIsNotEnabled(String msg)
-   {
-      super(msg);
-   }
+	public TimeConstrainedIsNotEnabled(String msg) {
+		super(msg);
+	}
 
-   public TimeConstrainedIsNotEnabled(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public TimeConstrainedIsNotEnabled(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InteractionParameterNotDefined
  */
 
 public final class InteractionParameterNotDefined extends RTIexception {
-   public InteractionParameterNotDefined(String msg)
-   {
-      super(msg);
-   }
+	public InteractionParameterNotDefined(String msg) {
+		super(msg);
+	}
 
-   public InteractionParameterNotDefined(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InteractionParameterNotDefined(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

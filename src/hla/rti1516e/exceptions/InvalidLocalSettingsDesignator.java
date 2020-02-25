@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class InvalidLocalSettingsDesignator.
  */
 public final class InvalidLocalSettingsDesignator extends RTIexception {
-   public InvalidLocalSettingsDesignator(String msg)
-   {
-      super(msg);
-   }
+	public InvalidLocalSettingsDesignator(String msg) {
+		super(msg);
+	}
 
-   public InvalidLocalSettingsDesignator(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public InvalidLocalSettingsDesignator(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

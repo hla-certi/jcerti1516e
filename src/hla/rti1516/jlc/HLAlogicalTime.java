@@ -6,29 +6,29 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516.jlc;
+
+package hla.rti1516.jlc;
 
 import java.util.Iterator;
 
-public interface HLAlogicalTime extends DataElement
-{
-   int size();
+public interface HLAlogicalTime extends DataElement {
+	int size();
 
-   byte get(int index);
+	byte get(int index);
 
-   Iterator iterator();
+	Iterator iterator();
 
-   void encode(ByteWrapper byteWrapper);
+	@Override
+	void encode(ByteWrapper byteWrapper);
 
-   void decode(ByteWrapper byteWrapper);
+	@Override
+	void decode(ByteWrapper byteWrapper);
 
-   int getEncodedLength();
+	@Override
+	int getEncodedLength();
 
-   int getOctetBoundary();
+	@Override
+	int getOctetBoundary();
 
-   byte[] getValue();
+	byte[] getValue();
 }
-
-
-

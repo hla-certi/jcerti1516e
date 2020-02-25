@@ -14,13 +14,10 @@ import java.io.Serializable;
 
 public interface AttributeHandleSetFactory extends Serializable {
 
-   /**
-    * return hla.rti1516.AttributeHandleSet newly created
-    */
-   AttributeHandleSet create();
+	/**
+	 * return hla.rti1516.AttributeHandleSet newly created
+	 */
+	AttributeHandleSet create();
 }
 
 //end AttributeHandleSetFactory
-
-
-

@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateOwnsAttributes
  */
 public final class FederateOwnsAttributes extends RTIexception {
-   public FederateOwnsAttributes(String msg)
-   {
-      super(msg);
-   }
+	public FederateOwnsAttributes(String msg) {
+		super(msg);
+	}
 
-   public FederateOwnsAttributes(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateOwnsAttributes(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

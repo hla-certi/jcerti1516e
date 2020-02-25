@@ -19,66 +19,64 @@
 // ----------------------------------------------------------------------------
 package certi.communication.messages1516E;
 
-
 import certi.communication.CertiException;
 import certi.communication.CertiMessageType;
 import certi.communication.MessageBuffer;
 
 public class GetAttributeSpaceHandle1516E extends CertiMessage1516E {
-   private int objectClass;
-   private int attribute;
-   private int space=0;
+	private int objectClass;
+	private int attribute;
+	private int space = 0;
 
-   public GetAttributeSpaceHandle1516E() {
-      super(CertiMessageType.GET_ATTRIBUTE_SPACE_HANDLE);
-   }
+	public GetAttributeSpaceHandle1516E() {
+		super(CertiMessageType.GET_ATTRIBUTE_SPACE_HANDLE);
+	}
 
-   @Override
-   public void writeMessage(MessageBuffer messageBuffer) {
-      super.writeMessage(messageBuffer); //Header
+	@Override
+	public void writeMessage(MessageBuffer messageBuffer) {
+		super.writeMessage(messageBuffer); // Header
 
-      messageBuffer.write(objectClass);
-      messageBuffer.write(attribute);
-      messageBuffer.write(space);
-   }
+		messageBuffer.write(objectClass);
+		messageBuffer.write(attribute);
+		messageBuffer.write(space);
+	}
 
-   @Override
-   public void readMessage(MessageBuffer messageBuffer) throws CertiException {
-      super.readMessage(messageBuffer); //Header 
+	@Override
+	public void readMessage(MessageBuffer messageBuffer) throws CertiException {
+		super.readMessage(messageBuffer); // Header
 
-      objectClass = messageBuffer.readInt();
-      attribute = messageBuffer.readInt();
-      space = messageBuffer.readInt();
-   }
+		objectClass = messageBuffer.readInt();
+		attribute = messageBuffer.readInt();
+		space = messageBuffer.readInt();
+	}
 
-   @Override
-   public String toString() {
-      return (super.toString() + ", objectClass: " + objectClass + ", attribute: " + attribute + ", space: " + space);
-   }
+	@Override
+	public String toString() {
+		return (super.toString() + ", objectClass: " + objectClass + ", attribute: " + attribute + ", space: " + space);
+	}
 
-   public int getObjectClass() {
-      return objectClass;
-   }
+	public int getObjectClass() {
+		return objectClass;
+	}
 
-   public int getAttribute() {
-      return attribute;
-   }
+	public int getAttribute() {
+		return attribute;
+	}
 
-   public int getSpace() {
-      return space;
-   }
+	public int getSpace() {
+		return space;
+	}
 
-   public void setObjectClass(int newObjectClass) {
-      this.objectClass = newObjectClass;
-   }
+	public void setObjectClass(int newObjectClass) {
+		this.objectClass = newObjectClass;
+	}
 
-   public void setAttribute(int newAttribute) {
-      this.attribute = newAttribute;
-   }
+	public void setAttribute(int newAttribute) {
+		this.attribute = newAttribute;
+	}
 
-   public void setSpace(int newSpace) {
-      this.space = newSpace;
-   }
+	public void setSpace(int newSpace) {
+		this.space = newSpace;
+	}
 
 }
-

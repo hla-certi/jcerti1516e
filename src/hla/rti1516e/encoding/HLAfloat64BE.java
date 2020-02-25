@@ -14,17 +14,17 @@ package hla.rti1516e.encoding;
  */
 public interface HLAfloat64BE extends DataElement {
 
-   /**
-    * Returns the double value of this element.
-    *
-    * @return double value
-    */
-   double getValue();
+	/**
+	 * Returns the double value of this element.
+	 *
+	 * @return double value
+	 */
+	double getValue();
 
-   /**
-    * Sets the double value of this element.
-    *
-    * @param value new value
-    */
-   void setValue(double value);
+	/**
+	 * Sets the double value of this element.
+	 *
+	 * @param value new value
+	 */
+	void setValue(double value);
 }

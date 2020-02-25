@@ -10,18 +10,15 @@
 //File: FederateHasNotBegunSave.java
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class FederateHasNotBegunSave
  */
 public final class FederateHasNotBegunSave extends RTIexception {
-   public FederateHasNotBegunSave(String msg)
-   {
-      super(msg);
-   }
+	public FederateHasNotBegunSave(String msg) {
+		super(msg);
+	}
 
-   public FederateHasNotBegunSave(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public FederateHasNotBegunSave(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -10,18 +10,15 @@
 //File: UnknownName.java
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class UnknownName
  */
 public final class UnknownName extends RTIexception {
-   public UnknownName(String msg)
-   {
-      super(msg);
-   }
+	public UnknownName(String msg) {
+		super(msg);
+	}
 
-   public UnknownName(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public UnknownName(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

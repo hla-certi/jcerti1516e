@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InvalidObjectClassHandle
-
-*/
+ * 
+ */
 
 public final class InvalidObjectClassHandle extends RTIexception {
-  public InvalidObjectClassHandle(String msg) {
-    super(msg);
-  }
+	public InvalidObjectClassHandle(String msg) {
+		super(msg);
+	}
 }
-
-
-

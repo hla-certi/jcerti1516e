@@ -9,18 +9,15 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class RestoreInProgress
  */
 public final class RestoreInProgress extends RTIexception {
-   public RestoreInProgress(String msg)
-   {
-      super(msg);
-   }
+	public RestoreInProgress(String msg) {
+		super(msg);
+	}
 
-   public RestoreInProgress(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public RestoreInProgress(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

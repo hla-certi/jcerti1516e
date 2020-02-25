@@ -19,8 +19,8 @@
 // ----------------------------------------------------------------------------
 package hla.rti1516e.impl;
 
-
 import java.util.HashSet;
+
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.exceptions.AttributeNotDefined;
@@ -31,29 +31,30 @@ import hla.rti1516e.exceptions.AttributeNotDefined;
  */
 public class CertiAttributeHandleSet extends HashSet<AttributeHandle> implements AttributeHandleSet {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3162809907138071826L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3162809907138071826L;
 
-    public boolean add(AttributeHandle handle) {
-        return super.add(handle);
-    }
+	@Override
+	public boolean add(AttributeHandle handle) {
+		return super.add(handle);
+	}
 
-    public void empty() {
-        clear();
-    }
-    
-    @Override
-    public AttributeHandleSet clone() {
-        return (AttributeHandleSet) super.clone();
-    }
+	public void empty() {
+		clear();
+	}
 
-    public boolean isMember(AttributeHandle handle) throws AttributeNotDefined {
-        return contains(handle);
-    }
+	@Override
+	public AttributeHandleSet clone() {
+		return (AttributeHandleSet) super.clone();
+	}
 
-    public void remove(AttributeHandle handle) throws AttributeNotDefined {
-        super.remove(handle);
-    }
+	public boolean isMember(AttributeHandle handle) throws AttributeNotDefined {
+		return contains(handle);
+	}
+
+	public void remove(AttributeHandle handle) throws AttributeNotDefined {
+		super.remove(handle);
+	}
 }

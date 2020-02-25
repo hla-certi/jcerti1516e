@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class AttributeNotOwned
  */
 
 public final class AttributeNotOwned extends RTIexception {
-   public AttributeNotOwned(String msg)
-   {
-      super(msg);
-   }
+	public AttributeNotOwned(String msg) {
+		super(msg);
+	}
 
-   public AttributeNotOwned(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public AttributeNotOwned(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

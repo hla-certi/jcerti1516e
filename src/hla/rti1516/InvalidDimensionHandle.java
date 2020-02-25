@@ -6,20 +6,17 @@
  *
  * It is provided as-is by CERTI project.
  */
- 
- package hla.rti1516;
+
+package hla.rti1516;
 
 /**
-
+ * 
  * Public exception class InvalidDimensionHandle
-
-*/
+ * 
+ */
 
 public final class InvalidDimensionHandle extends RTIexception {
-  public InvalidDimensionHandle(String msg) {
-    super(msg);
-  }
+	public InvalidDimensionHandle(String msg) {
+		super(msg);
+	}
 }
-
-
-

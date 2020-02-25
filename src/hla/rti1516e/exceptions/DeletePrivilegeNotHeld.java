@@ -9,19 +9,16 @@
 
 package hla.rti1516e.exceptions;
 
-
 /**
  * Public exception class DeletePrivilegeNotHeld
  */
 
 public final class DeletePrivilegeNotHeld extends RTIexception {
-   public DeletePrivilegeNotHeld(String msg)
-   {
-      super(msg);
-   }
+	public DeletePrivilegeNotHeld(String msg) {
+		super(msg);
+	}
 
-   public DeletePrivilegeNotHeld(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
+	public DeletePrivilegeNotHeld(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

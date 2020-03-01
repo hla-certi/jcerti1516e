@@ -268,6 +268,30 @@ JAR List :
 		</java>
 	</target>
 
+	<target name="UAVarraySend1516e-run" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+	        <java classname="certi1516e.UavSendArray" fork="true" dir="${test.work.dir}">
+				<classpath refid="jcerti.classpath" />
+				<classpath refid="jcerti.test.classpath" />
+				<arg value="${jcerti.opt}" />
+				<arg value="1" />
+				<arg value="${timeStep}"/>
+				<arg value="${updateTime}"/>
+				<arg value="${lookahead}"/>
+			</java>
+		</target>
+
+		<target name="UAVarrayReceive1516e-run" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+			<java classname="certi1516e.UavReceiveArray" fork="true" dir="${test.work.dir}">
+				<classpath refid="jcerti.classpath" />
+				<classpath refid="jcerti.test.classpath" />
+				<arg value="${jcerti.opt}" />
+				<arg value="1" />
+				<arg value="${timeStep}"/>
+				<arg value="${updateTime}"/>
+				<arg value="${lookahead}"/>
+			</java>
+		</target>
+	
 	<target name="UAVSend1516e-run" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
         <java classname="certi1516e.UavSend" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />

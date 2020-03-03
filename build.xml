@@ -152,7 +152,7 @@ JAR List :
 		
 	</target>
 
-    <!-- Test Federate launchers-->
+    <!-- Integration tests -->
     <property name="jcerti.opt" value=""/>
 
 	<target name="ExecuteRTIG" depends="prepare-test" description="run Execute RTIG test">
@@ -281,27 +281,7 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="oneTAR_RTI-run" depends="prepare-test" description="Launches the rtig, advances its time and kill the rtig.">
-		<java classname="certi1516e.OneFederateTARrti" fork="true" dir="${test.work.dir}">
-			<classpath refid="jcerti.classpath" />
-			<classpath refid="jcerti.test.classpath" />
-			<arg value="${jcerti.opt}" />
-			<arg value="1" />
-		</java>
-	</target>
-
-
-	<target name="oneTAR-run" depends="prepare-test" description="reates the federation and advances its time using TAR">
-		<java classname="certi1516e.OneFederateTAR" fork="true" dir="${test.work.dir}">
-			<classpath refid="jcerti.classpath" />
-			<classpath refid="jcerti.test.classpath" />
-			<arg value="${jcerti.opt}" />
-			<arg value="1" />
-			<arg value="${timeStep}"/>
-			<arg value="${updateTime}"/>
-			<arg value="${lookahead}"/>
-		</java>
-	</target>
+    <!-- Examples in src_test/certi (HLA1.3)-->
 
     <target name="UAVSend-run" depends="prepare-test" description="o run the jcerti UAV Send example">
         <java classname="certi.UavSend" fork="true" dir="${test.work.dir}">
@@ -321,32 +301,20 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="UAVarraySend1516e-run" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
-	        <java classname="certi1516e.UavSendArray" fork="true" dir="${test.work.dir}">
-				<classpath refid="jcerti.classpath" />
-				<classpath refid="jcerti.test.classpath" />
-				<arg value="${jcerti.opt}" />
-				<arg value="1" />
-				<arg value="${timeStep}"/>
-				<arg value="${updateTime}"/>
-				<arg value="${lookahead}"/>
-			</java>
-		</target>
+    <!-- Examples in src_test/certi1516e (HLA1516e)-->
 
-		<target name="UAVarrayReceive1516e-run" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
-			<java classname="certi1516e.UavReceiveArray" fork="true" dir="${test.work.dir}">
-				<classpath refid="jcerti.classpath" />
-				<classpath refid="jcerti.test.classpath" />
-				<arg value="${jcerti.opt}" />
-				<arg value="1" />
-				<arg value="${timeStep}"/>
-				<arg value="${updateTime}"/>
-				<arg value="${lookahead}"/>
-			</java>
-		</target>
-	
-	<target name="UAVSend1516e-run" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
-        <java classname="certi1516e.UavSend" fork="true" dir="${test.work.dir}">
+	<target name="oneTAR_RTI" depends="prepare-test" description="Launches the rtig, advances its time and kill the rtig.">
+		<java classname="certi1516e.OneFederateTAR.OneFederateTARrti" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+		</java>
+	</target>
+
+
+	<target name="oneTAR-run" depends="prepare-test" description="Creates the federation and advances its time using TAR">
+		<java classname="certi1516e.OneFederateTAR.OneFederateTAR" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -357,8 +325,8 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="UAVReceive1516e-run" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
-		<java classname="certi1516e.UavReceive" fork="true" dir="${test.work.dir}">
+	<target name="UAVSend_1516e_StringFddName" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+        <java classname="certi1516e.StringFddName.UavSend" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -369,32 +337,8 @@ JAR List :
 		</java>
 	</target>
 
-<target name="FlexUAVSend1516eString-run" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
-    <java classname="certi1516e.FlexUavSendString" fork="true" dir="${test.work.dir}">
-        <classpath refid="jcerti.classpath" />
-        <classpath refid="jcerti.test.classpath" />
-        <arg value="${jcerti.opt}" />
-        <arg value="1" />
-        <arg value="${timeStep}"/>
-        <arg value="${updateTime}"/>
-        <arg value="${lookahead}"/>
-    </java>
-</target>
-
-<target name="FlexUAVReceive1516eString-run" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
-    <java classname="certi1516e.FlexUavReceiveString" fork="true" dir="${test.work.dir}">
-        <classpath refid="jcerti.classpath" />
-        <classpath refid="jcerti.test.classpath" />
-        <arg value="${jcerti.opt}" />
-        <arg value="1" />
-        <arg value="${timeStep}"/>
-        <arg value="${updateTime}"/>
-        <arg value="${lookahead}"/>
-    </java>
-</target>
-
-	<target name="UAVSend1516eString-run" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
-		<java classname="certi1516e.UavSendString" fork="true" dir="${test.work.dir}">
+	<target name="UAVReceive_1516e_StringFddName" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+		<java classname="certi1516e.StringFddName.UavReceive" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -405,8 +349,8 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="UAVReceive1516eString-run" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
-		<java classname="certi1516e.UavReceiveString" fork="true" dir="${test.work.dir}">
+	<target name="UAVSend_1516e_UrlFddName" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+	   <java classname="certi1516e.UrlFddName.UavSend" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -416,9 +360,96 @@ JAR List :
 			<arg value="${lookahead}"/>
 		</java>
 	</target>
+
+	<target name="UAVReceive_1516e_UrlFddName" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+		<java classname="certi1516e.UrlFddName.UavReceive" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+
+
+	<target name="UAVSend_1516e_FixedArray" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+		<java classname="certi1516e.FixedArray.UavSend" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+
+	<target name="UAVReceive_1516e_FixedArray" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+		<java classname="certi1516e.FixedArray.UavReceive" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+
+	<target name="UAVSend_1516e_FixedRecord" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+		<java classname="certi1516e.FixedRecord.UavSend" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+
+	<target name="UAVReceive_1516e_FixedRecord" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+		<java classname="certi1516e.FixedRecord.UavReceive" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+
+
+	<target name="UAVSend_1516e_Flex" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+	    <java classname="certi1516e.Flex.UavSend" fork="true" dir="${test.work.dir}">
+	        <classpath refid="jcerti.classpath" />
+	        <classpath refid="jcerti.test.classpath" />
+	        <arg value="${jcerti.opt}" />
+	        <arg value="1" />
+	        <arg value="${timeStep}"/>
+	        <arg value="${updateTime}"/>
+	        <arg value="${lookahead}"/>
+	    </java>
+	</target>
+
+	<target name="UAVReceive_1516e_Flex" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+	    <java classname="certi1516e.Flex.UavReceive" fork="true" dir="${test.work.dir}">
+	        <classpath refid="jcerti.classpath" />
+	        <classpath refid="jcerti.test.classpath" />
+	        <arg value="${jcerti.opt}" />
+	        <arg value="1" />
+	        <arg value="${timeStep}"/>
+	        <arg value="${updateTime}"/>
+	        <arg value="${lookahead}"/>
+	    </java>
+	</target>
+
     
-    <target name="MinEvokeMCUAVSend1516e-run" depends="prepare-test" description="o run the jcerti UAV Send example with EvokeMultipleCallbacks">
-        <java classname="certi1516e.UavSendEvokeMCmin" fork="true" dir="${test.work.dir}">
+    <target name="UAVSend_1516e_MinEvokeMCUAV" depends="prepare-test" description="o run the jcerti UAV Send example with EvokeMultipleCallbacks">
+        <java classname="certi1516e.EvokeMCmin.UavSend" fork="true" dir="${test.work.dir}">
             <classpath refid="jcerti.classpath" />
             <classpath refid="jcerti.test.classpath" />
             <arg value="${jcerti.opt}" />
@@ -429,8 +460,8 @@ JAR List :
         </java>
     </target>
     
-    <target name="MinEvokeMCUAVReceive1516e-run" depends="prepare-test" description="o run the jcerti UAV Receive example with EvokeMultipleCallbacks">
-        <java classname="certi1516e.UavReceiveEvokeMCmin" fork="true" dir="${test.work.dir}">
+    <target name="UAVReceive_1516e_MinEvokeMCUAV" depends="prepare-test" description="o run the jcerti UAV Receive example with EvokeMultipleCallbacks">
+        <java classname="certi1516e.EvokeMCmin.UavReceive" fork="true" dir="${test.work.dir}">
             <classpath refid="jcerti.classpath" />
             <classpath refid="jcerti.test.classpath" />
             <arg value="${jcerti.opt}" />

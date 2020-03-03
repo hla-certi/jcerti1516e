@@ -1,13 +1,13 @@
-package certi1516e;
+package certi1516e.OneFederateTAR;
 
 import java.util.logging.Logger;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
 import certi.rti1516e.impl.CertiRtiAmbassador;
+import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
-import hla.rti1516e.AttributeHandleValueMap;
 import hla.rti1516e.CallbackModel;
 import hla.rti1516e.FederateHandle;
 import hla.rti1516e.FederateHandleSet;
@@ -22,9 +22,9 @@ import hla.rti1516e.RtiFactoryFactory;
 import hla.rti1516e.SynchronizationPointFailureReason;
 import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.HLAASCIIstring;
-import hla.rti1516e.encoding.HLAfloat32BE;
 import hla.rti1516e.exceptions.AsynchronousDeliveryAlreadyEnabled;
 import hla.rti1516e.exceptions.AttributeNotDefined;
+import hla.rti1516e.exceptions.ConnectionFailed;
 import hla.rti1516e.exceptions.FederateInternalError;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.FederatesCurrentlyJoined;
@@ -41,33 +41,30 @@ import hla.rti1516e.exceptions.OwnershipAcquisitionPending;
 import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
-import hla.rti1516e.impl.CertiAttributeHandleSet;
-import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
 import hla.rti1516e.jlc.NullFederateAmbassador;
 
-//////////////
-// UAV-SEND //
-//////////////
+///////////////////////////////
+// OneFederateTAR //
+///////////////////////////////
 
 /**
- * This class implements a HLA federate. It is based on the JCERTI demo
- * compliant to HLA 1.3. It extends that class for be compliant with HLA
- * 1516-2010 Extended (HLA 1516e), and introduces some parameters. It creates
- * (if launched first) and joins a federation called federationExecutionName,
- * advances its logical time with other federates and updates attributes of an
- * instance of a class.
+ * This class implements a HLA time-stepped federate named 'fedTAR'. A time-step
+ * federate uses the service Time Advance Request (TAR) for advancing its time.
+ * This federate only advances its time up to the stopTime and terminate. It
+ * creates and joins a federation called TimeAdvanceTAR. It is based on the
+ * JCERTI demo UavSend.java.
  * </p>
  * <p>
  * The synchronization point 'InitSync' is registered by the first launched
- * federate. After launching the second federate, the user must press 'Enter' in
- * the terminal where the first one was launched. The first federate then sends
- * synchronizationPointAchieved() and the RTI provides the callback
- * federationSynchronized() for both federates.
+ * federate. The user must press 'Enter', and 'fedTAR' sends
+ * synchronizationPointAchieved() and the RTI provides immediately the callback
+ * federationSynchronized() since there is no other federate.
  * </p>
  * <p>
  * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend1516e-run
+ * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 oneTAR-run <CR> Or when using the
+ * default values: ant oneTAR-run <CR>
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -77,79 +74,98 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * <li>updateTime: the federate will update attributes with timestamp t = (h +
  * updateTime), 'h' is the current logical time. For a correct execution,
  * updateTime > lookahead. Otherwise the exception INVALID_FEDERATION_TIME is
- * raised.
+ * raised. This parameter is not used in this federate.
  * </ul>
  * </p>
  * <p>
  * The time advance phase in HLA is a two-step process: 1) a federate sends a
  * time advance request service and 2) waits for the time to be granted by the
- * timeAdvanceGrant (TAG) service. Federates using TAR are called time- stepped
- * federates. If TAR is being used, the time returned always equals the asked
- * time h'.
+ * timeAdvanceGrant (TAG) service. When TAR is used, the time returned always
+ * equals the asked time h'.
+ * 
+ * @author J. Cardoso (based on JCERTI federate UavSend.java).
  */
-//Execute the RTIG, create and join a federation and send various values
-//FIXME: this class does not execute the RTIG: the RTIG must be launched by the first
-//launched federate
 
-public class UavSendString {
+//WARNING: this class does not execute the RTIG. The RTIG have to be lauched before running the test
+public class OneFederateTAR {
 
-	private final static Logger LOGGER = Logger.getLogger(UavSendString.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(OneFederateTAR.class.getName());
 
 	/** The sync point all federates will sync up on before starting */
 	public static final String READY_TO_RUN = "ReadyToRun";
 
-	// private static final double stopTime = 50.0; //If used in "Uav Loop".
-	private ObjectInstanceHandle myObject;
-	AttributeHandle textAttributeHandle;
-	AttributeHandle fomAttributeHandle;
+	// The federate advances while logical time is smaller than 'stopTime'
+	private static final double stopTime = 30.0;
+
+	// EvokeCallback waits until BLOCKING_TIME for delivering a callback (if any).
+	private static double BLOCKING_TIME = 0.1;
 
 	/**
-	 * Run a federate since its creation to its destruction Updates values of two
-	 * attributes (float and string) to a federation
+	 * Run a federate since its creation to its destruction
 	 */
 	public void runFederate(double timeStepArg, double uptdateTimeArg, double lookaheadArg) throws Exception {
-
-		LOGGER.info("        UAV-SEND");
-		LOGGER.info("     1. Get a link to the RTI");
-
-		RtiFactory factory = RtiFactoryFactory.getRtiFactory();
-		CertiRtiAmbassador rtia = (CertiRtiAmbassador) factory.getRtiAmbassador();
-		MyFederateAmbassador mya = new MyFederateAmbassador();
-		rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
+		// Set by the first federate that launches the federation
 		boolean flagCreator;
-		String federationExecutionName = "uav";
-		System.out.println();
-		LOGGER.info("     2. Create federation - nofail");
-		// The first launched federate creates the federation execution
+		String federationExecutionName = "TimeAdvanceTAR";
+		String federateName = "fedTAR";
+		String federateType = "whatIsFedType"; // FIXME: What is the goal of this parameter?
+		String fomName = "uav.xml";
+
+		LOGGER.info("        OneFederateTAR");
+		LOGGER.info("     1. Get a link to the RTI");
+		RtiFactory factory = RtiFactoryFactory.getRtiFactory();
+		// RTIambassador rtia = factory.getRtiAmbassador(); using toURI.toURL
+		CertiRtiAmbassador rtia = (CertiRtiAmbassador) factory.getRtiAmbassador(); // It can be done like this all the
+																					// time, also when we use URL
+		MyFederateAmbassador mya = new MyFederateAmbassador();
 		try {
-			String fomName = "uav.xml";
+			rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
+		} catch (Exception e) {
+			if (!RTIExecutor.checkLocalHost())
+				throw new ConnectionFailed(
+						"Connection to the RTIG failed. You are trying to connect to a RTIG of an other machine, but no RTIG was found");
+			else
+				throw new ConnectionFailed("Connection to the RTIG failed. There is probably no RTIG running.");
+		}
+
+		System.out.println();
+		LOGGER.info(
+				"     2. Federate " + federateName + " creates federation " + federationExecutionName + " - nofail");
+
+		// The first launched federate creates the federation execution
+		// File fom = new File(fomName);
+
+		try {
+			// rtia.createFederationExecution(federationExecutionName, fom.toURI().toURL());
 			rtia.createFederationExecution(federationExecutionName, fomName);
 			flagCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
 			LOGGER.warning("Can't create federation. It already exists.");
 			flagCreator = false;
 		}
-		System.out.println();
-		LOGGER.info("     3. Join federation");
-		String[] joinModules = { "uav.xml" };
-		String federateName = "uav-send";
-		String federateType = "uav";
-		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
-		mya.isCreator = flagCreator;
 
 		System.out.println();
-		LOGGER.info("     4. Initialize Federate Ambassador");
+		LOGGER.info("     3. Federate " + federateName + " join federation " + federationExecutionName);
+//        URL[] joinModules = new URL[]{
+//                fom.toURI().toURL()
+//            };
+//        rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		String[] joinModules = { "uav.xml" };
+		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		mya.isCreator = flagCreator; //
+		System.out.println();
+		LOGGER.info("     4. Initialize Federate Ambassador for federate " + federateName);
 		mya.initialize(rtia, timeStepArg, uptdateTimeArg, lookaheadArg);
 
 		System.out.println();
 		// The first launched federate also registers the synchronization point.
-		// It waits the user launches the second federate, come back and press
-		// 'Enter'.
 		if (mya.isCreator) {
-			LOGGER.info(
-					"     5. After launch the other federate, press 'Enter' so this federate can register the Synchronization Point ");
-			System.in.read();
-			HLAASCIIstring s = new HLAASCIIstringImpl("InitSync");
+			// Uncomment the two lines bellow if the user wants to presses 'Enter'
+			// for starting the simulation.
+			// LOGGER.info(" 5. Press 'Enter' so this federate can register the
+			// Synchronization Point ");
+			// System.in.read();
+			HLAASCIIstring s = new HLAASCIIstringImpl(mya.synchronizationPointName);
 			byte[] tagsyns = new byte[s.getEncodedLength()];
 			ByteWrapper bw = new ByteWrapper(tagsyns);
 			s.encode(bw);
@@ -160,7 +176,7 @@ public class UavSendString {
 				rtia.evokeCallback(BLOCKING_TIME);
 			}
 		} else {
-			LOGGER.info("     5S. Waiting for the creator of the Federation to register the Sync Point ");
+			LOGGER.info("     5. Waiting for the creator of the Federation to register the Sync Point ");
 		}
 
 		// Wait synchronization point announcement (announceSynchronizationPoint
@@ -178,51 +194,13 @@ public class UavSendString {
 		}
 
 		System.out.println();
-		// According to the relation between the timeStep of both
-		// federates, UAVReceive can have a lot of "FEDERATES_CURRENTLY_JOINED"
-		// messages, before the federation is destroyed by UavSend. The results
-		// are almost the same using while(i-- > 0) or while (... < stopTime).
-		// For example, for UavSend-timeStep=10 and UavReceive-timeStep=X, if
-		// X>14, there are a few messages. But there are hundred of messages if X<13.
-		// It depends on the value of "i" in 'Uav loop' and in 'Rav loop'.
-		// FIXME: may be this can be minimized.
+		LOGGER.info("     6 TAR Loop");
+		// int i = 10; while (i-- > 0) { // Loop with number of TARs instead of stopTime
+		while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {// i++;
 
-		int i = 10; // 0 with stopTime 4
-		LOGGER.info("     6 Uav Loop");
-		while (i-- > 0) {
-			// while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {i++;
-			// Text attribute
-			HLAASCIIstring text = new HLAASCIIstringImpl("text " + i);
-			byte[] textAttribute = new byte[text.getEncodedLength()];
-			ByteWrapper textWrapper = new ByteWrapper(textAttribute);
-			text.encode(textWrapper);
-
-			// Float attribute
-			HLAfloat32BE fom = new BasicHLAfloat32BEImpl((float) 3.14);
-			byte[] fomAttribute = new byte[fom.getEncodedLength()];
-			ByteWrapper fomWrapper = new ByteWrapper(fomAttribute);
-			fom.encode(fomWrapper);
-
-			AttributeHandleValueMap attr = rtia.getAttributeHandleValueMapFactory().create(2);
-			attr.put(textAttributeHandle, textAttribute);
-			attr.put(fomAttributeHandle, fomAttribute);
-
-			// Tag
-			HLAASCIIstring tag = new HLAASCIIstringImpl("update");
-			byte[] tagBuffer = new byte[tag.getEncodedLength()];
-			ByteWrapper tagWrapper = new ByteWrapper(tagBuffer);
-			text.encode(tagWrapper);
-
-			// The UAV must be executed outside an advance time loop. The
-			// timestamp 'updateTime' is updated when a TAG is received.
-			LOGGER.info("     6.1 UAV with time = " + ((CertiLogicalTime1516E) mya.updateTime).getTime());
-			try {
-				rtia.updateAttributeValues(myObject, attr, tagBuffer, mya.updateTime);
-			} catch (Exception e) {
-				LOGGER.info("Timestamp must be bigger than (localHlaTime + lookahead)");
-			}
-			// The federate ask to advance to (current logical time + timeStep)
-			LOGGER.info("     6.2 TAR with time = " + ((CertiLogicalTime1516E) mya.timeAdvance).getTime());
+			// The federate asks to advance to (current logical time + timeStep)
+			// and waits for the TAG.
+			LOGGER.info("     6.1 TAR with time = " + ((CertiLogicalTime1516E) mya.timeAdvance).getTime());
 			rtia.timeAdvanceRequest(mya.timeAdvance);
 			while (!mya.timeAdvanceGranted) {
 				try {
@@ -240,12 +218,8 @@ public class UavSendString {
 		LOGGER.info("     7 Resign federation execution");
 		rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS);
 
-		// FIXME: any federate can destroy the federation if there is no other
-		// joined federate. The following loop would be the same in both federates?
-
 		LOGGER.info("     8 Destroy federation execution - nofail");
-		// Uses a loop for destroying the federation (with a delay if
-		// there are other federates that did not resign yet).
+		// Uses a loop for destroying the federation.
 		boolean federationIsActive = true;
 		try {
 			while (federationIsActive) {
@@ -267,6 +241,7 @@ public class UavSendString {
 			LOGGER.info("     9 Disconect from the rti");
 			rtia.disconnect();
 		}
+
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -274,18 +249,16 @@ public class UavSendString {
 			double timeStepArg = Double.valueOf(args[2]);
 			double updateTimeArg = Double.valueOf(args[3]);
 			double lookahead = Double.valueOf(args[4]);
-			new UavSendString().runFederate(timeStepArg, updateTimeArg, lookahead);
+			new OneFederateTAR().runFederate(timeStepArg, updateTimeArg, lookahead);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException exception) {
-			new UavSendString().runFederate(10.0, 0.2, 0.1);
+			// Default values
+			new OneFederateTAR().runFederate(10.0, 0.2, 0.1);
 		}
-
 	}
 
 	/**
 	 * Implementation of a FederateAmbassador
 	 */
-
-	private static double BLOCKING_TIME = 0.1;
 
 	public class MyFederateAmbassador extends NullFederateAmbassador {
 		public boolean isCreator;
@@ -335,30 +308,12 @@ public class UavSendString {
 				AttributeNotDefined, OwnershipAcquisitionPending, SaveInProgress, RestoreInProgress,
 				ObjectClassNotPublished, NotConnected, InvalidObjectClassHandle, ObjectInstanceNameInUse,
 				ObjectInstanceNameNotReserved {
-			LOGGER.info("     4.1 Get object class handle");
-			// The uav.xml has a class 'SampleClass' and attributes
-			// TextAttribute and FOMAttribute
-			ObjectClassHandle classHandle = rtia.getObjectClassHandle("SampleClass");
-
-			LOGGER.info("     4.2 Get atribute handles");
-			textAttributeHandle = rtia.getAttributeHandle(classHandle, "TextAttribute");
-			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "FOMAttribute");
-
-			AttributeHandleSet attributes = new CertiAttributeHandleSet();
-			attributes.add(textAttributeHandle);
-			attributes.add(fomAttributeHandle);
 
 			try {
 				rtia.enableAsynchronousDelivery();
 			} catch (AsynchronousDeliveryAlreadyEnabled asynchronousDeliveryAlreadyEnabled) {
 				asynchronousDeliveryAlreadyEnabled.printStackTrace();
 			}
-
-			LOGGER.info("     4.3 Publish object");
-			rtia.publishObjectClassAttributes(classHandle, attributes);
-
-			LOGGER.info("     4.4 Register object instance");
-			myObject = rtia.registerObjectInstance(classHandle, "HAF");
 
 			LOGGER.info("     4.5. Set time management configuration (Regulator with lookahed and Constrained)");
 
@@ -509,8 +464,8 @@ public class UavSendString {
 		@Override
 		public void discoverObjectInstance(ObjectInstanceHandle theObject, ObjectClassHandle theObjectClass,
 				String objectName) throws FederateInternalError {
-			LOGGER.info("Discover Object Instance : " + "Object = " + theObject.toString() + ", Object class = "
-					+ theObjectClass.toString() + ", Object name = " + objectName);
+			LOGGER.info("Discover Object Instance : " + "Object = " + theObject.hashCode() + ", Object class = "
+					+ theObjectClass.hashCode() + ", Object name = " + objectName);
 		}
 
 		/**
@@ -561,7 +516,7 @@ public class UavSendString {
 			timeAdvance = new CertiLogicalTime1516E(
 					((CertiLogicalTime1516E) localHlaTime).getTime() + ((CertiLogicalTime1516E) timeStep).getTime());
 			updateTime = new CertiLogicalTime1516E(((CertiLogicalTime1516E) localHlaTime).getTime() + updateTime1);
-			LOGGER.info("     6.3 TAG with time = " + ((CertiLogicalTime1516E) theTime).getTime());
+			LOGGER.info("     6.2 TAG with time = " + ((CertiLogicalTime1516E) theTime).getTime());
 			timeAdvanceGranted = true;
 			System.out.println();
 

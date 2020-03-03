@@ -15,24 +15,19 @@
 			<objectClass>
 				<name>SampleClass</name>
 				<attribute>
-					<name>TextAttribute</name>
-					<dataType>HLAfloat64LE</dataType>
+					<name>FixedArrayAttribute</name>
+					<dataType>HLAfixedArray</dataType>
 					<transportation>HLAreliable</transportation>
 					<order>TimeStamp</order>
 				</attribute>
 				<attribute>
-					<name>StructAttribute</name>
-					<dataType>HLAfloat64LE</dataType>
-					<transportation>HLAreliable</transportation>
-					<order>TimeStamp</order>
-				</attribute>
-				<attribute>
-					<name>FOMAttribute</name>
-					<dataType>HLAfloat64LE</dataType>
+					<name>IntegerAttribute</name>
+					<dataType>HLAInteger64BE</dataType>
 					<transportation>HLAreliable</transportation>
 					<order>TimeStamp</order>
 				</attribute>
 			</objectClass>
 		</objectClass>
 	</objects>
+
 </objectModel>

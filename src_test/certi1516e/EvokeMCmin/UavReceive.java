@@ -1,15 +1,14 @@
-package certi1516e;
+package certi1516e.EvokeMCmin;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
-import certi.rti1516e.impl.CertiRtiAmbassador;
-import certi.rti1516e.impl.RTIExecutor;
-//import certi1516e.UavSendString.MyFederateAmbassador;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
@@ -17,6 +16,7 @@ import hla.rti1516e.CallbackModel;
 import hla.rti1516e.FederateHandleSet;
 import hla.rti1516e.LogicalTime;
 import hla.rti1516e.LogicalTimeInterval;
+import hla.rti1516e.NullFederateAmbassador;
 import hla.rti1516e.ObjectClassHandle;
 import hla.rti1516e.ObjectInstanceHandle;
 import hla.rti1516e.OrderType;
@@ -40,6 +40,7 @@ import hla.rti1516e.exceptions.CouldNotOpenFDD;
 import hla.rti1516e.exceptions.ErrorReadingFDD;
 import hla.rti1516e.exceptions.FederateAlreadyExecutionMember;
 import hla.rti1516e.exceptions.FederateInternalError;
+import hla.rti1516e.exceptions.FederateIsExecutionMember;
 import hla.rti1516e.exceptions.FederateNameAlreadyInUse;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.FederateOwnsAttributes;
@@ -67,21 +68,17 @@ import hla.rti1516e.exceptions.UnsupportedCallbackModel;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
-import hla.rti1516e.jlc.NullFederateAmbassador;
 
-///////////////////////
-// FlexUAV-RECEIVEstring //
-///////////////////////
-
+/////////////////
+// UAV-RECEIVE //
+/////////////////
 /**
  * This class implements a HLA federate. It is based on the JCERTI demo
  * compliant to HLA 1.3. It extends that class for be compliant with HLA
- * 1516-2010 Extended (HLA 1516e), and introduces some parameters. If there is
- * no RTIG running, it launches the RTIG (if launched first), otherwise it uses
- * the existent one (on the machine specified by $CERTI_HOST. It creates a
- * federation called federationExecutionName (if launched first), then joins
- * this federation, advances its logical time with other federates and updates
- * attributes of an instance of a class.
+ * 1516-2010 Extended (HLA 1516e), and introduces some parameters. It creates
+ * (if launched first) and joins a federation called federationExecutionName,
+ * advances its logical time with other federates and reflects attributes of an
+ * instance of a class (updated by UavSend).
  * </p>
  * <p>
  * The synchronization point 'InitSync' is registered by the first launched
@@ -92,41 +89,34 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * </p>
  * <p>
  * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend1516eString-run The
- * parameter DupdateTime is not used in this federate.
+ * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVReceiver1516e-run
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
  * time.
  * <li>timeStep: the federate will ask to advance its time by steps with this
  * value, TAR(h + timeStep), 'h' is the current logical time.
- * <li>updateTime: the federate will update attributes with timestamp t = (h +
- * updateTime), 'h' is the current logical time. For a correct execution,
- * updateTime > lookahead. Otherwise the exception INVALID_FEDERATION_TIME is
- * raised.
+ * <li>updateTime: it is not used in this federate (it does not update
+ * attributes).
  * </ul>
  * </p>
  * <p>
  * The time advance phase in HLA is a two-step process: 1) a federate sends a
  * time advance request service and 2) waits for the time to be granted by the
  * timeAdvanceGrant (TAG) service. Federates using TAR are called time- stepped
- * federates. If TAR is being used, the time returned always equals the asked
+ * federates. While this method is blocked waiting for the TAG, some attribute
+ * may be reflected with a time stamp less than the asked time h' = h +
+ * timeStep. If TAR is being used, the time returned always equals the asked
  * time h'.
  */
 
-public class FlexUavReceiveString {
+//FIXME: this class does not execute the RTIG: the RTIG must be launched by the first
+// launched federate
 
-	private final static Logger LOGGER = Logger.getLogger(FlexUavReceiveString.class.getName());
+public class UavReceive {
+
+	private final static Logger LOGGER = Logger.getLogger(UavReceive.class.getName());
 	// private static final double stopTime = 50; //If used in "RAV loop"
-
-	// If it is the first launched federate it launches the RTIG, otherwise it
-	// connects to
-	// the running one (according to $CERTI_HOST).
-	RTIExecutor rtiExecutor;
-
-	/** The sync point all federates will sync up on before starting */
-	public static final String READY_TO_RUN = "ReadyToRun";
-
 	private AttributeHandle textAttributeHandle;
 	private AttributeHandle fomAttributeHandle;
 
@@ -143,60 +133,37 @@ public class FlexUavReceiveString {
 			OwnershipAcquisitionPending, ObjectClassNotPublished, InvalidObjectClassHandle, ObjectInstanceNameInUse,
 			ObjectInstanceNameNotReserved, InvalidResignAction, FederateOwnsAttributes {
 
-		LOGGER.info("        UAV-RECEIVEstring");
-
-		LOGGER.info("     0. Launches the RTI if no one is running and CERTI_HOST=localhost");
-		executeRTIG();
-
+		LOGGER.info("        UAV-RECEIVE");
 		LOGGER.info("     1. Get a link to the RTI");
-
 		RtiFactory factory = RtiFactoryFactory.getRtiFactory();
-		CertiRtiAmbassador rtia = (CertiRtiAmbassador) factory.getRtiAmbassador();
+		RTIambassador rtia = factory.getRtiAmbassador();
 		MyFederateAmbassador mya = new MyFederateAmbassador();
-
-		try {
-			rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
-		} catch (Exception e) {
-			if (!(RTIExecutor.checkLocalHost()))
-				throw new ConnectionFailed(
-						"Connection to the RTIG failed. You are trying to connect to a RTIG on a remote machine, but no RTIG was found.");
-			else
-				throw new ConnectionFailed("Connection to the RTIG failed. There is probably no RTIG running.");
-		}
-
+		rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
 		boolean flagCreator;
 		String federationExecutionName = "uav";
-		String federateName = "uav-receiveString";
-		String federateType = "uav";
 
-		System.out.println();
-		LOGGER.info(
-				"     2. Federate " + federateName + " creates federation " + federationExecutionName + " - nofail");
-
+		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
 		try {
-			String fomName = "uav.xml";
-			rtia.createFederationExecution(federationExecutionName, fomName);
+			File fom = new File("uav.xml");
+
+			rtia.createFederationExecution(federationExecutionName, fom.toURI().toURL());
 			flagCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
 			LOGGER.warning("Can't create federation. It already exists.");
 			flagCreator = false;
 		}
-		System.out.println();
 
-		LOGGER.info("     3. Federate " + federateName + " joins federation " + federationExecutionName);
-		// FIXME Does not work with joinModules
-		// rtia.joinFederationExecution(federateName, federateType,
-		// federationExecutionName, joinModules);
-		rtia.joinFederationExecution(federateName, federateType, federationExecutionName);
-		// rtia_receive.joinFederationExecution(federateName, federateType,
-		// federationExecutionName);
+		LOGGER.info("     3. Join federation");
+		URL[] joinModules = new URL[] { (new File("uav.xml")).toURI().toURL() };
+		String federateName = "uav-receive";
+		String federateType = "uav";
 
+		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		mya.isCreator = flagCreator;
-		System.out.println();
-		LOGGER.info("     4. Initialize Federate Ambassador for federate " + federateName);
+
+		LOGGER.info("     4. Initialize Federate Ambassador");
 		mya.initialize(rtia, timeStepArg, updateTimeArg, lookaheadArg);
-		System.out.println();
 
 		// The first launched federate also registers the synchronization point.
 		// It waits the user launches the second federate, come back and press
@@ -206,25 +173,27 @@ public class FlexUavReceiveString {
 					"     5 After launch the other federate, press 'Enter' so this federate can register the Synchronization Point ");
 			System.in.read(); // This method blocks until input data is available.
 
-			HLAASCIIstring s = new HLAASCIIstringImpl(mya.synchronizationPointName);
+			HLAASCIIstring tagSync = new HLAASCIIstringImpl("InitSync");
+			byte[] tagBuffer = new byte[tagSync.getEncodedLength()];
+			ByteWrapper tagWrapper = new ByteWrapper(tagBuffer);
+			tagSync.encode(tagWrapper);
 
-			byte[] tagsyns = new byte[s.getEncodedLength()];
-			ByteWrapper bw = new ByteWrapper(tagsyns);
-			s.encode(bw);
-			rtia.registerFederationSynchronizationPoint(mya.synchronizationPointName, tagsyns);
+			rtia.registerFederationSynchronizationPoint(mya.synchronizationPointName, tagBuffer);
 
 			// Wait synchronization point succeeded callback
 			while (!mya.synchronizationSuccess && !mya.synchronizationFailed) {
-				rtia.evokeCallback(BLOCKING_TIME);
+				LOGGER.info(" SyncSuccess    evokeCallback(" + BLOCKING_TIME + ")");
+				rtia.evokeCallback(BLOCKING_TIME);// rtia.evokeCallback(0.1);
 			}
 		} else {
-			LOGGER.info("     5.1  Waiting for the creator of the Federation to register the Sync Point ");
+			LOGGER.info("     5  Waiting for the creator of the Federation to register the Sync Point ");
 		}
 
 		// Wait synchronization point announcement (announceSynchronizationPoint
 		// callback)
 		while (!mya.inPause) {
-			rtia.evokeCallback(BLOCKING_TIME);
+			LOGGER.info("SP announce  evokeCallback(" + BLOCKING_TIME + ")");
+			rtia.evokeCallback(BLOCKING_TIME); // rtia.evokeCallback(0.1);
 		}
 
 		// Informs the RTIG it is aware of the synchronization point
@@ -237,7 +206,8 @@ public class FlexUavReceiveString {
 
 		// Wait the callback federationSynchronized()
 		while (mya.inPause) {
-			rtia.evokeCallback(BLOCKING_TIME);
+			LOGGER.info(" Fed Synchro evokeCallback(" + BLOCKING_TIME + ")");
+			rtia.evokeCallback(BLOCKING_TIME); // rtia.evokeCallback(0.1);
 		}
 
 		LOGGER.info("     6 RAV Loop");
@@ -252,19 +222,15 @@ public class FlexUavReceiveString {
 		// The federate ask to advance to (current logical time + timeStep).
 		// The RAV are received in the TAR-TAG loop.
 
-		int i = 5; // 3
+		int i = 5;
 		while (i-- > 0) {
 			// while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {
 			LOGGER.info("     6.1 TAR with time=" + ((CertiLogicalTime1516E) mya.timeAdvance).getTime());
 			try {
 				rtia.timeAdvanceRequest(mya.timeAdvance);
 				while (!mya.timeAdvanceGranted) {
-					LOGGER.info(" TAR evokecallback");
-					try {
-						rtia.evokeCallback(BLOCKING_TIME);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					LOGGER.info(" TAR evokeMultipleCallbacks(" + MIN_BLOCKING_TIME + "," + MAX_BLOCKING_TIME + ")");
+					rtia.evokeMultipleCallbacks(MIN_BLOCKING_TIME, MAX_BLOCKING_TIME); // rtia.evokeCallback(0.1);
 				}
 				mya.timeAdvanceGranted = false;
 			} catch (LogicalTimeAlreadyPassed logicalTimeAlreadyPassed) {
@@ -277,14 +243,11 @@ public class FlexUavReceiveString {
 		// FIXME: need to unsubscribeObjectClass to and unpublishObjectClass HLA?
 		// Or DELETE_OBJECTS_THEN_DIVEST do also this?
 
-		System.out.println();
-
 		LOGGER.info("     7 Resign federation execution");
-		// FIXME do we need DELETE_OBJECTS_THEN_DIVEST or DELETE_OBJECTS
 		rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_THEN_DIVEST);
 
-		// Any federate can destroy the federation if there is no other
-		// joined federate.
+		// FIXME: any federate can destroy the federation if there is no other
+		// joined federate. The following loop would be the same in both federates?
 
 		LOGGER.info("     8 Try to destroy federation execution - nofail");
 		// Uses a loop with for destroying the federation (with a delay if
@@ -311,44 +274,21 @@ public class FlexUavReceiveString {
 				} catch (FederatesCurrentlyJoined e) {
 					LOGGER.warning(
 							"Federates currently joined - can't destroy the execution. Wait some time and try again to destroy the federation.");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e2) {
+						//Just ignore sleeping if there is a problem
+					}
 				}
 			}
 		} finally {
-			LOGGER.info("    9.1 Disconnect from the rti.");
 			try {
-				// FIXME may be put a catch for disconnect?
+				LOGGER.info("     9 Disconect from the rti");
 				rtia.disconnect();
-				// rtiExecutor.killRTIG();
-				if (mya.isCreator) {
-					LOGGER.info("   9.2 Kill the RTIG (isCreator=" + mya.isCreator
-							+ ") only if RTIG was not launched before by hand on localhost or remote.");
-					Thread.sleep(1); // Let time to other federate to disconnect from the rti
-					rtiExecutor.killRTIG();
-				} else {
-					LOGGER.info("  9.2. Cannot kill the RTIG (isCreator=" + mya.isCreator + ").");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (FederateIsExecutionMember federateIsExecutionMember) {
+				LOGGER.info("Disconnecting failed");
+				federateIsExecutionMember.printStackTrace();
 			}
-		}
-	}
-//            try {
-//                LOGGER.info("     9 Disconnect from the rti");
-//                rtia.disconnect();
-//            } catch (FederateIsExecutionMember federateIsExecutionMember) {
-//                LOGGER.info( "Disconnecting failed" );
-//                federateIsExecutionMember.printStackTrace();
-//            } 
-
-	/**
-	 * Lauch the RTIG
-	 */
-	public void executeRTIG() {
-		rtiExecutor = new RTIExecutor();
-		try {
-			rtiExecutor.executeRTIG();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -357,10 +297,9 @@ public class FlexUavReceiveString {
 			double timeStepArg = Double.valueOf(args[2]);
 			double updateTimeArg = Double.valueOf(args[3]);
 			double lookahead = Double.valueOf(args[4]);
-			new FlexUavReceiveString().runFederate(timeStepArg, updateTimeArg, lookahead);
+			new UavReceive().runFederate(timeStepArg, updateTimeArg, lookahead);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException exception) {
-			// Default values
-			new FlexUavReceiveString().runFederate(10.0, 0.2, 0.1);
+			new UavReceive().runFederate(10.0, 0.2, 0.1);
 		}
 	}
 
@@ -368,6 +307,16 @@ public class FlexUavReceiveString {
 	 * Implementation of a FederateAmbassador
 	 */
 
+	// When using evokeMultipleCallbacks(MIN_BLOCKING_TIME,MAX_BLOCKING_TIME) with
+	// CERTI 4.0.0 (master@1c57199231f81 or branch dev-scalian/alaine),
+	// MIN_BLOCKING_TIME must be bigger than MAX_BLOCKING_TIME. See ticket
+	// https://savannah.nongnu.org/bugs/?56284 and branch br_bug_56284@e03d8ba9
+	// For the scenario: UavSend (lookahead=0.5, timeStep=2,updateTime=1) and
+	// UavReceive (lookahead=1, timeStep=13,updateTime=5), with Min=0.2 and
+	// Max=0.05, there are 11 callbacks in UavReceive. But with Min=0.05 and
+	// Max=0.2, there are 198 callbacks.
+	private static double MAX_BLOCKING_TIME = 0.05;
+	private static double MIN_BLOCKING_TIME = 0.2;
 	private static double BLOCKING_TIME = 0.1;
 
 	private class MyFederateAmbassador extends NullFederateAmbassador {

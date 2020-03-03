@@ -1,10 +1,11 @@
-package certi1516e;
+package certi1516e.StringFddName;
 
 import java.util.logging.Logger;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
 import certi.rti1516e.impl.CertiRtiAmbassador;
+import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
@@ -21,11 +22,8 @@ import hla.rti1516e.RtiFactory;
 import hla.rti1516e.RtiFactoryFactory;
 import hla.rti1516e.SynchronizationPointFailureReason;
 import hla.rti1516e.encoding.ByteWrapper;
-import hla.rti1516e.encoding.DataElementFactory;
 import hla.rti1516e.encoding.HLAASCIIstring;
-import hla.rti1516e.encoding.HLAfixedArray;
 import hla.rti1516e.encoding.HLAfloat32BE;
-import hla.rti1516e.encoding.HLAinteger64BE;
 import hla.rti1516e.exceptions.AsynchronousDeliveryAlreadyEnabled;
 import hla.rti1516e.exceptions.AttributeNotDefined;
 import hla.rti1516e.exceptions.FederateInternalError;
@@ -46,10 +44,7 @@ import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
-import hla.rti1516e.jlc.BasicHLAinteger64BEImpl;
-import hla.rti1516e.jlc.EncoderFactory;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
-import hla.rti1516e.jlc.HLAfixedArrayImpl;
 import hla.rti1516e.jlc.NullFederateAmbassador;
 
 //////////////
@@ -93,13 +88,12 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federates. If TAR is being used, the time returned always equals the asked
  * time h'.
  */
-//Execute the RTIG, create and join a federation and send various values
-//FIXME: this class does not execute the RTIG: the RTIG must be launched by the first
-//launched federate
 
-public class UavSendArray {
 
-	private final static Logger LOGGER = Logger.getLogger(UavSendArray.class.getName());
+public class UavSend {
+
+	private final static Logger LOGGER = Logger.getLogger(UavSend.class.getName());
+	RTIExecutor rtiExecutor;
 
 	/** The sync point all federates will sync up on before starting */
 	public static final String READY_TO_RUN = "ReadyToRun";
@@ -116,6 +110,14 @@ public class UavSendArray {
 	public void runFederate(double timeStepArg, double uptdateTimeArg, double lookaheadArg) throws Exception {
 
 		LOGGER.info("        UAV-SEND");
+
+		LOGGER.info("     0. Launches the RTI");
+		rtiExecutor = new RTIExecutor();
+		try {
+			rtiExecutor.executeRTIG();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		LOGGER.info("     1. Get a link to the RTI");
 
 		RtiFactory factory = RtiFactoryFactory.getRtiFactory();
@@ -128,7 +130,7 @@ public class UavSendArray {
 		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
 		try {
-			String fomName = "uav_array.xml";
+			String fomName = "uav.xml";
 			rtia.createFederationExecution(federationExecutionName, fomName);
 			flagCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
@@ -137,10 +139,10 @@ public class UavSendArray {
 		}
 		System.out.println();
 		LOGGER.info("     3. Join federation");
-		String[] joinModules = { "uav_array.xml" };
+		//String[] joinModules = { "uav.xml" };
 		String federateName = "uav-send";
 		String federateType = "uav";
-		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		rtia.joinFederationExecution(federateName, federateType, federationExecutionName);
 		mya.isCreator = flagCreator;
 
 		System.out.println();
@@ -197,40 +199,11 @@ public class UavSendArray {
 		LOGGER.info("     6 Uav Loop");
 		while (i-- > 0) {
 			// while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {i++;
-			// Array : fixed array -> array with a fixed length, all the elements have the
-			// same time, here integers
-			// See the FixedArray documentation or HLA documentation to know more about the
-			// type
-			// We have to create a new factory for the type in the array : here a factory of
-			// integer
-			DataElementFactory<HLAinteger64BE> integer64BE_Factory = new DataElementFactory<HLAinteger64BE>() {
-				@Override
-				public HLAinteger64BE createElement(int index) {
-					// Class encoreFactory it used to create a specified factory. Like an Integer
-					// factory or a String factory
-					return EncoderFactory.getInstance().createHLAinteger64BE();
-				}
-			};
-
-			// We declared here the variables to put in the array, with the right type
-			HLAinteger64BE x = new BasicHLAinteger64BEImpl(1);
-			HLAinteger64BE y = new BasicHLAinteger64BEImpl(2);
-
-			// Declaration of the array
-			HLAfixedArray<HLAinteger64BE> fixedArray = new HLAfixedArrayImpl<>(integer64BE_Factory, 2);
-			// We add our 2 elements in the array
-			((HLAfixedArrayImpl<HLAinteger64BE>) fixedArray).addElement(x);
-			((HLAfixedArrayImpl<HLAinteger64BE>) fixedArray).addElement(y);
-
-			// We create a byte[] to get and send encode result
-			// Function getEncodedLength return array encoded length
-			byte[] arrayAttribute = new byte[fixedArray.getEncodedLength()];
-			// ByteWrapper is the object used to encode a Type
-			// We link the byteWrapper to the arrayAttribute to get the result from the
-			// byte[]
-			ByteWrapper byteWrapper = new ByteWrapper(arrayAttribute);
-			// We encode the array
-			fixedArray.encode(byteWrapper);
+			// Text attribute
+			HLAASCIIstring text = new HLAASCIIstringImpl("text " + i);
+			byte[] textAttribute = new byte[text.getEncodedLength()];
+			ByteWrapper textWrapper = new ByteWrapper(textAttribute);
+			text.encode(textWrapper);
 
 			// Float attribute
 			HLAfloat32BE fom = new BasicHLAfloat32BEImpl((float) 3.14);
@@ -239,14 +212,14 @@ public class UavSendArray {
 			fom.encode(fomWrapper);
 
 			AttributeHandleValueMap attr = rtia.getAttributeHandleValueMapFactory().create(2);
-			attr.put(textAttributeHandle, arrayAttribute);
+			attr.put(textAttributeHandle, textAttribute);
 			attr.put(fomAttributeHandle, fomAttribute);
 
 			// Tag
 			HLAASCIIstring tag = new HLAASCIIstringImpl("update");
 			byte[] tagBuffer = new byte[tag.getEncodedLength()];
 			ByteWrapper tagWrapper = new ByteWrapper(tagBuffer);
-			tag.encode(tagWrapper);
+			text.encode(tagWrapper);
 
 			// The UAV must be executed outside an advance time loop. The
 			// timestamp 'updateTime' is updated when a TAG is received.
@@ -293,7 +266,13 @@ public class UavSendArray {
 							"Federation execution doesn't exist.  May be the Federation was destroyed by some other federate.");
 					federationIsActive = false;
 				} catch (FederatesCurrentlyJoined e) {
-					LOGGER.info("Couldn't destroy federation");
+					LOGGER.warning(
+							"Federates currently joined - can't destroy the execution. Wait some time and try again to destroy the federation.");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e2) {
+						//Just ignore sleeping if there is a problem
+					}
 				} catch (RTIinternalError e) {
 					LOGGER.info("RTIinternalError: " + e.getMessage());
 				}
@@ -301,6 +280,7 @@ public class UavSendArray {
 		} finally {
 			LOGGER.info("     9 Disconect from the rti");
 			rtia.disconnect();
+			rtiExecutor.killRTIG();
 		}
 	}
 
@@ -309,9 +289,9 @@ public class UavSendArray {
 			double timeStepArg = Double.valueOf(args[2]);
 			double updateTimeArg = Double.valueOf(args[3]);
 			double lookahead = Double.valueOf(args[4]);
-			new UavSendArray().runFederate(timeStepArg, updateTimeArg, lookahead);
+			new UavSend().runFederate(timeStepArg, updateTimeArg, lookahead);
 		} catch (NumberFormatException | ArrayIndexOutOfBoundsException exception) {
-			new UavSendArray().runFederate(10.0, 0.2, 0.1);
+			new UavSend().runFederate(10.0, 0.2, 0.1);
 		}
 
 	}
@@ -376,8 +356,8 @@ public class UavSendArray {
 			ObjectClassHandle classHandle = rtia.getObjectClassHandle("SampleClass");
 
 			LOGGER.info("     4.2 Get atribute handles");
-			textAttributeHandle = rtia.getAttributeHandle(classHandle, "FixedArrayAttribute");
-			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "IntegerAttribute");
+			textAttributeHandle = rtia.getAttributeHandle(classHandle, "TextAttribute");
+			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "FOMAttribute");
 
 			AttributeHandleSet attributes = new CertiAttributeHandleSet();
 			attributes.add(textAttributeHandle);

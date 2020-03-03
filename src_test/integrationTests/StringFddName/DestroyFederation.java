@@ -1,4 +1,4 @@
-package integrationTests.JoinFederation;
+package integrationTests.StringFddName;
 
 import java.util.logging.Logger;
 
@@ -9,15 +9,15 @@ import hla.rti1516e.ResignAction;
 import hla.rti1516e.RtiFactory;
 import hla.rti1516e.RtiFactoryFactory;
 import hla.rti1516e.exceptions.ConnectionFailed;
-import hla.rti1516e.exceptions.FederateAlreadyExecutionMember;
+import hla.rti1516e.exceptions.FederatesCurrentlyJoined;
 import hla.rti1516e.exceptions.FederationExecutionDoesNotExist;
 import hla.rti1516e.exceptions.NotConnected;
 import integrationTests.MyFederateAmbassador;
 
-public class JoinFederation {
+public class DestroyFederation {
 	CertiRtiAmbassador rtia;
 	MyFederateAmbassador mya;
-	private final static Logger LOGGER = Logger.getLogger(JoinFederation.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(DestroyFederation.class.getName());
 	RTIExecutor rtiExecutor;
 
 	/**
@@ -25,42 +25,43 @@ public class JoinFederation {
 	 * error occurs
 	 */
 	public static void main(String[] args) {
-		JoinFederation test = new JoinFederation();
+		DestroyFederation test = new DestroyFederation();
 		try {
 			test.executeRTIG();
 			test.init();
-			String[] joinModules = { "uav.xml" };
 
-			// Try to join a federation without being connected
+			// Try to destroy a federation without beeig connected
 			try {
-				test.rtia.joinFederationExecution("uav_notConnectedError", "uav", "uav_JoinFederation", joinModules);
+				test.rtia.destroyFederationExecution("uav_destroy");
 			} catch (NotConnected eX1) {
 				LOGGER.info("1. Exception NotConnected correctly caught. ");
 			}
 			test.connection();
 			test.createFederation();
+			test.joinFederation();
 
-			// Try to join a federation that doesn't exist
+			// Try to destroy a federation with have a federate connected
 			try {
-				test.rtia.joinFederationExecution("uav", "uav", "uav_JoinFederation_2", joinModules);
-			} catch (FederationExecutionDoesNotExist eX1) {
-				LOGGER.info("2. Exception FederationExecutionDoesNotExist correctly caught. ");
+				test.rtia.destroyFederationExecution("uav_destroy");
+			} catch (FederatesCurrentlyJoined e) {
+				LOGGER.info("2. Exception FederationExecutionDoesNotExist correctly caught.");
 			}
 
-			// Join federation without error
-			test.rtia.joinFederationExecution("uav", "uav", "uav_JoinFederation", joinModules);
-			LOGGER.info("3. Join federation execution worked fine.");
+			// Resign a federation executio without error
+			test.rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS);
+			test.rtia.destroyFederationExecution("uav_destroy");
+			LOGGER.info("3. Destroy federation execution worked fine.");
 
-			// Try to join a federation with a federate name already used
+			// Try to destroy a federation that doesn't exist
 			try {
-				test.rtia.joinFederationExecution("uav", "uav", "uav_JoinFederation", joinModules);
-			} catch (FederateAlreadyExecutionMember eX1) {
-				LOGGER.info("4. Exception FederateAlreadyExecutionMember correctly caught. ");
+				test.rtia.destroyFederationExecution("uav_destroy");
+			} catch (FederationExecutionDoesNotExist e) {
+				LOGGER.info("4. Exception FederationExecutionDoesNotExist correctly caught.");
 			}
-			System.out.println("*********** TEST SUCCEED ************");
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			test.rtia.disconnect();
+			LOGGER.info("*********** TEST SUCCEED ************");
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			LOGGER.severe("*********** TEST FAILED ************");
 		} finally {
 			test.killConnectionAndKillRTIG();
@@ -116,8 +117,20 @@ public class JoinFederation {
 	 */
 	public void createFederation() {
 		try {
-			String fom = "uav.xml";
-			rtia.createFederationExecution("uav_JoinFederation", fom);
+			String fddName = "uav.xml";
+			rtia.createFederationExecution("uav_destroy", fddName);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	/**
+	 * Join Federation service
+	 */
+	public void joinFederation() {
+		try {
+			String[] joinModules = { "uav.xml" };
+			rtia.joinFederationExecution("uav-send", "uav", "uav_destroy", joinModules);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -128,9 +141,6 @@ public class JoinFederation {
 	 */
 	public void killConnectionAndKillRTIG() {
 		try {
-			rtia.resignFederationExecution(ResignAction.NO_ACTION);
-			rtia.destroyFederationExecution("uav_JoinFederation");
-			rtia.disconnect();
 			rtiExecutor.killRTIG();
 		} catch (Exception e) {
 			e.printStackTrace();

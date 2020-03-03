@@ -1,4 +1,4 @@
-package integrationTests.NMR;
+package integrationTests.UrlFddName.TAR;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -8,22 +8,32 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
+import certi.rti1516e.impl.CertiRtiAmbassador;
 import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.LogicalTime;
 import hla.rti1516e.exceptions.RTIinternalError;
 
-public class SendandReceiveValues_NMR {
+public class SendandReceiveValues_TAR {
 
-	public final static Logger LOGGER = Logger.getLogger(SendandReceiveValues_NMR.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(SendandReceiveValues_TAR.class.getName());
 
+	// Set expected values in test
 	private static final float expectedFloat = 21;
 	private static final String expectedString = "Test";
-	private static final LogicalTime updateTimeNMRSender = new CertiLogicalTime1516E(0.2);
+	/**
+	 * updateTimeTARSender is used to set update time of the sender, but also to
+	 * make the UAV, so we have to set it here to check test result in the sender
+	 */
+	private static final LogicalTime updateTimeTARSender = new CertiLogicalTime1516E(5.3);
+
+	CertiRtiAmbassador rtia_send;
+	SenderFederateAmbassador mya_send;
+	boolean senderIsCreator;
 
 	public static AtomicBoolean syncroPoint = new AtomicBoolean(false);
 
 	/**
-	 * NMR test Create 2 thread, one to create a Sender and this other one a
+	 * TAR test Create 2 thread, one to create a Sender and this other one a
 	 * Receiver Sender will send value Receiver receive this value and check if time
 	 * and value are corrects
 	 */
@@ -32,63 +42,52 @@ public class SendandReceiveValues_NMR {
 		try {
 			rtiExecutor.executeRTIG();
 		} catch (RTIinternalError rtIinternalError) {
-			System.out.println(rtIinternalError.getMessage());
+			rtIinternalError.printStackTrace();
 		}
 
 		try {
 			Sender sender = new Sender();
 			Receiver receiver = new Receiver();
 
-			// Creation of thread for the Sender
 			Callable<Boolean> callableSender = new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return sender.send(expectedFloat, expectedString, updateTimeNMRSender);
+					return sender.send(expectedFloat, expectedString, updateTimeTARSender);
 				}
 			};
 			FutureTask<Boolean> ftSender = new FutureTask<>(callableSender);
 
-			// Creation of thread for the Receiver
 			Callable<Boolean> callableReceiver = new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					// Send updateTimeNMRSender value to receiver because it use for the UAV
-					// And we need to check RAV time to validate the test
-					return receiver.receive(expectedFloat, expectedString, updateTimeNMRSender);
+					return receiver.receive(expectedFloat, expectedString, updateTimeTARSender);
 				}
 			};
 			FutureTask<Boolean> ftReceiver = new FutureTask<>(callableReceiver);
 
-			// Execution of the two threads in the same time
 			ExecutorService executor = Executors.newFixedThreadPool(2);
 			executor.execute(ftSender);
 			executor.execute(ftReceiver);
 
 			while (true) {
 				if (ftSender.isDone() && ftReceiver.isDone()) {
-					System.out.println("Done");
 					if (ftSender.get() && ftReceiver.get()) {
 						// shut down executor service
 						executor.shutdown();
 						LOGGER.info("*********** TEST SUCCEED ************");
 						return;
 					}
-
-				} else if (ftReceiver.isDone() && !ftSender.isDone()) {
-					// If only receiver stopped (because of an error)
-					// We also kill Sender
+				} else if (ftReceiver.isDone() && !ftSender.isDone()) {// If only receiver stopped
 					if (ftReceiver.get() == false) {
 						LOGGER.severe("*********** TEST FAILED ************");
 						executor.shutdown();
 					}
 				}
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOGGER.severe("*********** TEST FAILED ************");
 		} finally {
-			// Disconnect and destroy federation and RTIG
 			rtiExecutor.killRTIG();
 		}
 	}

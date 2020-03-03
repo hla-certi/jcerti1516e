@@ -1,4 +1,4 @@
-package integrationTests.Connect;
+package integrationTests.WhithoutFederationCreation;
 
 import java.util.logging.Logger;
 

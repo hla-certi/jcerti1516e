@@ -1,4 +1,4 @@
-package integrationTests.TAR;
+package integrationTests.StringFddName.TAR;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;

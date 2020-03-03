@@ -1,66 +1,66 @@
-package integrationTests.CreateFederation;
+package integrationTests.StringFddName;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import certi.rti1516e.impl.CertiRtiAmbassador;
 import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.CallbackModel;
+import hla.rti1516e.ResignAction;
 import hla.rti1516e.RtiFactory;
 import hla.rti1516e.RtiFactoryFactory;
 import hla.rti1516e.exceptions.ConnectionFailed;
-import hla.rti1516e.exceptions.CouldNotOpenFDD;
-import hla.rti1516e.exceptions.FederationExecutionAlreadyExists;
+import hla.rti1516e.exceptions.FederateAlreadyExecutionMember;
+import hla.rti1516e.exceptions.FederationExecutionDoesNotExist;
 import hla.rti1516e.exceptions.NotConnected;
 import integrationTests.MyFederateAmbassador;
 
-public class CreateFederation {
+public class JoinFederation {
 	CertiRtiAmbassador rtia;
 	MyFederateAmbassador mya;
-	private final static Logger LOGGER = Logger.getLogger(CreateFederation.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(JoinFederation.class.getName());
 	RTIExecutor rtiExecutor;
 
 	/**
-	 * Test the create federation service 
-	 * Succeed if connection went well 
-	 * Fail if an error occurs
-	 * This test use URL to find the fdd
+	 * Test the create federation service Succeed if connection went well Fail if an
+	 * error occurs
 	 */
 	public static void main(String[] args) {
-		CreateFederation test = new CreateFederation();
+		JoinFederation test = new JoinFederation();
 		try {
 			test.executeRTIG();
 			test.init();
-			// Try to create a federation before being connected to the rtig
+			String[] joinModules = {"uav.xml"};
+
+			// Try to join a federation without being connected
 			try {
-				File fom = new File("uav.xml");
-				test.rtia.createFederationExecution("uav_CreateFederation", fom.toURI().toURL());
+				test.rtia.joinFederationExecution("uav_notConnectedError", "uav", "uav_JoinFederation", joinModules);
 			} catch (NotConnected eX1) {
 				LOGGER.info("1. Exception NotConnected correctly caught. ");
 			}
 			test.connection();
-			// Create a federation without error
-			File fom = new File("uav.xml");
-			test.rtia.createFederationExecution("uav_CreateFederation", fom.toURI().toURL());
-			LOGGER.info("2. Federation creation worked fine.");
+			test.createFederation();
 
+			// Try to join a federation that doesn't exist
 			try {
-				// Try to create a federation with the same name that a existing federation
-				test.rtia.createFederationExecution("uav_CreateFederation", fom.toURI().toURL());
-			} catch (FederationExecutionAlreadyExists eX1) {
-				LOGGER.info("3. Exception FederationExecutionAlreadyExists correctly caught.");
+				test.rtia.joinFederationExecution("uav", "uav", "uav_JoinFederation_2", joinModules);
+			} catch (FederationExecutionDoesNotExist eX1) {
+				LOGGER.info("2. Exception FederationExecutionDoesNotExist correctly caught. ");
 			}
 
+			// Join federation without error
+			test.rtia.joinFederationExecution("uav", "uav", "uav_JoinFederation", joinModules);
+			LOGGER.info("3. Join federation execution worked fine.");
+
+			// Try to join a federation with a federate name already used
 			try {
-				// Try to create a federation with a bad FOM
-				File errorFom = new File("error.xml");
-				test.rtia.createFederationExecution("uav_CreateFederation_fomError", errorFom.toURI().toURL());
-			} catch (CouldNotOpenFDD eX2) {
-				LOGGER.info("4. Exception CouldNotOpenFDD correctly caught");
+				test.rtia.joinFederationExecution("uav", "uav", "uav_JoinFederation", joinModules);
+			} catch (FederateAlreadyExecutionMember eX1) {
+				LOGGER.info("4. Exception FederateAlreadyExecutionMember correctly caught. ");
 			}
 			LOGGER.info("*********** TEST SUCCEED ************");
-		} catch (Exception ex) {
-			ex.printStackTrace();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 			LOGGER.severe("*********** TEST FAILED ************");
 		} finally {
 			test.killConnectionAndKillRTIG();
@@ -112,17 +112,29 @@ public class CreateFederation {
 	}
 
 	/**
+	 * Create federation service
+	 */
+	public void createFederation() {
+		try {
+			String fddName = "uav.xml";
+			rtia.createFederationExecution("uav_JoinFederation", fddName);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	/**
 	 * End correctly the rtia and rtig
 	 */
 	public void killConnectionAndKillRTIG() {
 		try {
-			rtia.destroyFederationExecution("uav_CreateFederation");
-			// No need to destroy federation "uav_CreateFederation_fomError", not created
-			// beaucause of the CouldNotOpenFDD exception
+			rtia.resignFederationExecution(ResignAction.NO_ACTION);
+			rtia.destroyFederationExecution("uav_JoinFederation");
 			rtia.disconnect();
 			rtiExecutor.killRTIG();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 }

@@ -1,4 +1,4 @@
-package integrationTests.ExecuteRTIG;
+package integrationTests.WhithoutFederationCreation;
 
 import java.util.logging.Logger;
 

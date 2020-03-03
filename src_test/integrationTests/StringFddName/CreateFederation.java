@@ -1,4 +1,4 @@
-package integrationTests.CreateFederationFDDstring;
+package integrationTests.StringFddName;
 
 import java.util.logging.Logger;
 
@@ -12,10 +12,10 @@ import hla.rti1516e.exceptions.FederationExecutionAlreadyExists;
 import hla.rti1516e.exceptions.NotConnected;
 import integrationTests.MyFederateAmbassador;
 
-public class CreateFederationFDDstring {
+public class CreateFederation {
 	CertiRtiAmbassador rtia;
 	MyFederateAmbassador mya;
-	private final static Logger LOGGER = Logger.getLogger(CreateFederationFDDstring.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(CreateFederation.class.getName());
 	RTIExecutor rtiExecutor;
 
 	/**
@@ -23,35 +23,34 @@ public class CreateFederationFDDstring {
 	 * error occurs
 	 */
 	public static void main(String[] args) {
-		CreateFederationFDDstring test = new CreateFederationFDDstring();
+		CreateFederation test = new CreateFederation();
 		try {
 			test.executeRTIG();
 			test.init();
+			String fddName = "uav.xml";
 			// Try to create a federation before being connected to the rtig
 			try {
-				String fomName = "uav.xml";
-				test.rtia.createFederationExecution("uav_CreateFederation", fomName);
+				test.rtia.createFederationExecution("uav_CreateFederation", fddName);
 			} catch (NotConnected eX1) {
 				LOGGER.info("1. Exception NotConnected correctly caught. ");
 				// LOGGER.log(Level.SEVERE, "Exception:", eX1);
 			}
 			test.connection();
 			// Create a federation without error
-			String fomName = "uav.xml";
-			test.rtia.createFederationExecution("uav_CreateFederation", fomName);
+			test.rtia.createFederationExecution("uav_CreateFederation", fddName);
 			LOGGER.info("2. Federation creation worked fine.");
 
 			try {
 				// Try to create a federation with the same name that a existing federation
-				test.rtia.createFederationExecution("uav_CreateFederation", fomName);
+				test.rtia.createFederationExecution("uav_CreateFederation", fddName);
 			} catch (FederationExecutionAlreadyExists eX1) {
 				LOGGER.info("3. Exception FederationExecutionAlreadyExists correctly caught.");
 			}
 
 			try {
 				// Try to create a federation with a bad FOM
-				String fomName1 = "error.xml";
-				test.rtia.createFederationExecution("uav_CreateFederation_fomError", fomName1);
+				String fomName_error = "error.xml";
+				test.rtia.createFederationExecution("uav_CreateFederation_fomError", fomName_error);
 			} catch (CouldNotOpenFDD eX2) {
 				LOGGER.info("4. Exception CouldNotOpenFDD correctly caught");
 			}

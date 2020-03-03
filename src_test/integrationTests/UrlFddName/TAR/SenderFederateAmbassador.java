@@ -1,4 +1,4 @@
-package integrationTests.TAR;
+package integrationTests.UrlFddName.TAR;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;

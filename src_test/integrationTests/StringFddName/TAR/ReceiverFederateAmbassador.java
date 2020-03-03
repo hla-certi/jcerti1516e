@@ -1,4 +1,4 @@
-package integrationTests.NMR;
+package integrationTests.StringFddName.TAR;
 
 import java.util.Set;
 
@@ -28,6 +28,10 @@ import hla.rti1516e.exceptions.InvalidObjectClassHandle;
 import hla.rti1516e.exceptions.NameNotFound;
 import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.ObjectClassNotDefined;
+import hla.rti1516e.exceptions.ObjectClassNotPublished;
+import hla.rti1516e.exceptions.ObjectInstanceNameInUse;
+import hla.rti1516e.exceptions.ObjectInstanceNameNotReserved;
+import hla.rti1516e.exceptions.OwnershipAcquisitionPending;
 import hla.rti1516e.exceptions.RTIinternalError;
 import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
@@ -48,7 +52,9 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	public LogicalTime timeAdvance;
 	public LogicalTime updateTime;
 	public double updateTime1;
+	public boolean timeConstrained;
 	public boolean timeAdvanceGranted;
+	public boolean timeRegulator;
 	public boolean synchronizationSuccess;
 	public boolean synchronizationFailed;
 	public boolean inPause;
@@ -57,6 +63,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	public RTIambassador rtia;
 	public AttributeHandleSet attributes;
 
+	public ObjectInstanceHandle myObject;
 	public AttributeHandle textAttributeHandle;
 	public AttributeHandle fomAttributeHandle;
 
@@ -67,12 +74,17 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	/**
 	 * Initialization of all attributs, publish and register objects Enable time
 	 * regulation
-	 * 
+	 *
 	 * @param rtia : RTI ambassador
 	 */
 	public void initialize(RTIambassador rtia, double timeStepArg, double updateTimeArg, double lookaheadArg)
 			throws NameNotFound, FederateNotExecutionMember, RTIinternalError, ObjectClassNotDefined,
-			AttributeNotDefined, SaveInProgress, RestoreInProgress, NotConnected, InvalidObjectClassHandle {
+			AttributeNotDefined, OwnershipAcquisitionPending, SaveInProgress, RestoreInProgress,
+			// ConcurrentAccessAttempted,
+			ObjectClassNotPublished, NotConnected, InvalidObjectClassHandle, ObjectInstanceNameInUse,
+			ObjectInstanceNameNotReserved
+	// ObjectAlreadyRegistered
+	{
 		this.rtia = rtia;
 		try {
 			rtia.enableAsynchronousDelivery();
@@ -100,6 +112,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 
 		// The time is advanced by adding localHlaTime + timeStep; starts with
 		// (0.0+timeStepArg)
+		// timeAdvance = new CertiLogicalTime1516E(timeStepArg);
 		timeAdvance = new CertiLogicalTime1516E(((CertiLogicalTime1516E) timeStep).getTime());
 
 		timeAdvanceGranted = false;
@@ -140,7 +153,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	 * user-supplied tag supplied by the Announce Synchronization Point † service
 	 * shall be the tag that was supplied to the corresponding Register Federation
 	 * Synchronization Point service invocation.
-	 * 
+	 *
 	 * @param synchronizationPointLabel : Synchronization point label.
 	 * @param userSuppliedTag           : User-supplied tag.
 	 */
@@ -164,7 +177,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	 * indicates which federates in the synchronization set invoked the
 	 * Synchronization Point Achieved service with an indication of an unsuccessful
 	 * synchronization (via the synchronization-success indicator).
-	 * 
+	 *
 	 * @param synchronizationPointLabel : Synchronization point label.
 	 * @param failedToSyncSet           : Set of joined federate designators.
 	 */
@@ -188,7 +201,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	 * member is not a joined federate. A registration attempt that ends with a
 	 * negative success indicator shall have no other effect on the federation
 	 * execution.
-	 * 
+	 *
 	 * @param synchronizationPointLabel : Synchronization point label.
 	 */
 	@Override
@@ -211,7 +224,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	 * member is not a joined federate. A registration attempt that ends with a
 	 * negative success indicator shall have no other effect on the federation
 	 * execution.
-	 * 
+	 *
 	 * @param synchronizationPointLabel : Synchronization point label.
 	 * @param reason                    : Optional failure reason.
 	 */
@@ -231,7 +244,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	 * that registered the object instance. This producing joined federate may not
 	 * own instance attributes that caused the discovery, and, in fact, it may be no
 	 * longer joined to the federation execution.
-	 * 
+	 *
 	 * @param theObject      : Object instance handle.
 	 * @param theObjectClass : Object class designator.
 	 * @param objectName     : Object instance name.
@@ -241,7 +254,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	public void discoverObjectInstance(ObjectInstanceHandle theObject, ObjectClassHandle theObjectClass,
 			String objectName) throws FederateInternalError {
 		try {
-			SendandReceiveValues_NMR.LOGGER.info("Discover: " + objectName);
+			SendandReceiveValues_TAR.LOGGER.info("Discover: " + objectName);
 			rtia.requestAttributeValueUpdate(theObject, attributes, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -256,44 +269,44 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 			OrderType receivedOrdering, SupplementalReflectInfo reflectInfo) throws FederateInternalError {
 		try {
 			Set<AttributeHandle> attributeHandleSet = theAttributes.keySet();
-			SendandReceiveValues_NMR.LOGGER.info(" RAV with time= " + ((CertiLogicalTime1516E) theTime).getTime());
+			SendandReceiveValues_TAR.LOGGER.info(" RAV with time= " + ((CertiLogicalTime1516E) theTime).getTime());
 			for (AttributeHandle attributeHandle : attributeHandleSet) {
 				if (attributeHandle.hashCode() == textAttributeHandle.hashCode()) {
 					HLAASCIIstring value = new HLAASCIIstringImpl();
 					ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 					value.decode(bw);
-					SendandReceiveValues_NMR.LOGGER.info("     --> Attribute text : " + value.getValue());
+					SendandReceiveValues_TAR.LOGGER.info("     --> Attribute text : " + value.getValue());
 					if (!value.getValue().equals(expectedString)) {
-						SendandReceiveValues_NMR.LOGGER
+						SendandReceiveValues_TAR.LOGGER
 								.severe("******* TEST FAILED - String value is not expected value: received value = "
 										+ value.getValue() + " but expected value was: " + expectedString);
 						throw new FederateInternalError("TEST FAILED, string value is not expected value");
 					} else if (((CertiLogicalTime1516E) theTime).getTime() != expectedTime) {
-						SendandReceiveValues_NMR.LOGGER
+						SendandReceiveValues_TAR.LOGGER
 								.severe("******* TEST FAILED - RAV Receive at wrong time, expected at  " + expectedTime
 										+ " but received at: " + ((CertiLogicalTime1516E) theTime).getTime());
 						throw new FederateInternalError("TEST FAILED, RAV time wasn't time expected");
 					} else {
-						SendandReceiveValues_NMR.LOGGER.info("******* TEST String PASSED");
+						SendandReceiveValues_TAR.LOGGER.info("******* TEST String PASSED");
 					}
 				}
 				if (attributeHandle.hashCode() == fomAttributeHandle.hashCode()) {
 					HLAfloat32BE value = new BasicHLAfloat32BEImpl();
 					ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 					value.decode(bw);
-					SendandReceiveValues_NMR.LOGGER.info("     --> Attribute fom : " + value.getValue());
+					SendandReceiveValues_TAR.LOGGER.info("     --> Attribute fom : " + value.getValue());
 					if (value.getValue() != expectedFloat) {
-						SendandReceiveValues_NMR.LOGGER
+						SendandReceiveValues_TAR.LOGGER
 								.severe("******* TEST FAILED - Float value is not expected value: received value = "
 										+ value.getValue() + " but expected value was: " + expectedFloat);
 						throw new FederateInternalError("TEST FAILED, float value is not expected value");
 					} else if (((CertiLogicalTime1516E) theTime).getTime() != expectedTime) {
-						SendandReceiveValues_NMR.LOGGER
+						SendandReceiveValues_TAR.LOGGER
 								.severe("******* TEST FAILED - RAV Receive at wrong time, expected at  " + expectedTime
 										+ " but received at: " + ((CertiLogicalTime1516E) theTime).getTime());
 						throw new FederateInternalError("TEST FAILED, RAV time wasn't time expected");
 					} else {
-						SendandReceiveValues_NMR.LOGGER.info("******* TEST Float PASSED");
+						SendandReceiveValues_TAR.LOGGER.info("******* TEST Float PASSED");
 					}
 
 				}
@@ -315,7 +328,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	 * Request Available, or Flush Queue Request service, the RTI shall guarantee
 	 * that no additional TSO messages shall be delivered in the future with
 	 * timestamps less than the value of the grant.
-	 * 
+	 *
 	 * @param theTime : Logical time.
 	 */
 	@Override
@@ -324,7 +337,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 		timeAdvance = new CertiLogicalTime1516E(
 				((CertiLogicalTime1516E) localHlaTime).getTime() + ((CertiLogicalTime1516E) timeStep).getTime());
 		updateTime = new CertiLogicalTime1516E(((CertiLogicalTime1516E) localHlaTime).getTime() + updateTime1);
-		SendandReceiveValues_NMR.LOGGER
+		SendandReceiveValues_TAR.LOGGER
 				.info("Receiver .........6.2 TAG with time=" + ((CertiLogicalTime1516E) theTime).getTime());
 		timeAdvanceGranted = true;
 	}
@@ -339,7 +352,7 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	 * argument supplied to the corresponding Request Attribute Value Update service
 	 * invocation shall be provided with all corresponding Provide Attribute Value
 	 * Update † service invocations.
-	 * 
+	 *
 	 * @param theObject       : Object instance designator.
 	 * @param theAttributes   : Set of attribute designators.
 	 * @param userSuppliedTag : User-supplied tag.
@@ -347,16 +360,16 @@ public class ReceiverFederateAmbassador extends NullFederateAmbassador {
 	@Override
 	public void provideAttributeValueUpdate(ObjectInstanceHandle theObject, AttributeHandleSet theAttributes,
 			byte[] userSuppliedTag) throws FederateInternalError {
-		SendandReceiveValues_NMR.LOGGER.info("Object handle : " + theObject);
-		SendandReceiveValues_NMR.LOGGER.info("Attributes : ");
+		SendandReceiveValues_TAR.LOGGER.info("Object handle : " + theObject);
+		SendandReceiveValues_TAR.LOGGER.info("Attributes : ");
 		for (AttributeHandle attributeHandle : theAttributes) {
-			SendandReceiveValues_NMR.LOGGER.info(attributeHandle.toString());
+			SendandReceiveValues_TAR.LOGGER.info(attributeHandle.toString());
 		}
 	}
 
 	/**
 	 * Function to set the expected values, called by the Receiver
-	 * 
+	 *
 	 * @param expectedFloat  : float value expected to received by the RAV
 	 * @param expectedString : String value expected to received by the RAV
 	 * @param expectedTime   : time we expect for the RAV

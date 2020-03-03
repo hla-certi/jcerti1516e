@@ -1,0 +1,285 @@
+date	fed-o	fed	type	level	status	comment
+1583243905	0	0	128	10	0
+1583243938	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244073	0	0	128	10	0
+1583244078	0	0	3	9	0	Federation Name : uav_CreateFederation, Handle : 1 created - OK
+1583244078	0	0	3	10	36	Federation Name : uav_CreateFederation, Handle : 2uav_CreateFederation - Exception
+1583244078	0	0	3	10	17	Federation Name : uav_CreateFederation_fomError, Handle : 3Module not found - Exception
+1583244078	1	0	4	9	0	Federation Name "uav_CreateFederation" (1) destroyed - OK
+1583244078	0	0	1	9	0	Socket 6 - OK
+1583244178	0	0	3	9	0	Federation Name : uav_CreateFederation, Handle : 4 created - OK
+1583244178	0	0	3	10	36	Federation Name : uav_CreateFederation, Handle : 5uav_CreateFederation - Exception
+1583244178	0	0	3	10	17	Federation Name : uav_CreateFederation_fomError, Handle : 6Module not found - Exception
+1583244178	4	0	4	9	0	Federation Name "uav_CreateFederation" (4) destroyed - OK
+1583244178	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244214	0	0	128	10	0
+1583244222	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244222	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244222	0	0	5	10	21	Federate "uav" joins Federation "uav_JoinFederation"4.5.5.b : Invalid FOM module. - Exception
+1583244265	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244291	0	0	128	10	0
+1583244296	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244296	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244296	0	0	5	10	21	Federate "uav" joins Federation "uav_JoinFederation"4.5.5.b : Invalid FOM module. - Exception
+1583244418	0	0	1	9	0	Socket 6 - OK
+1583244429	0	0	3	10	36	Federation Name : uav_JoinFederation, Handle : 2uav_JoinFederation - Exception
+1583244429	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244429	0	0	5	10	24	Federate "uav" joins Federation "uav_JoinFederation"Federate with same name <uav> has already joined the federation - Exception
+date	fed-o	fed	type	level	status	comment
+1583244440	0	0	128	10	0
+1583244447	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244447	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244447	0	0	5	9	0	Federate "uav" joins Federation "uav_JoinFederation"(1) with handle 2. Socket 6 - OK
+1583244447	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583244447	0	0	4	9	0	Federation Name "uav_JoinFederation" (1) destroyed - OK
+1583244447	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244469	0	0	128	10	0
+1583244473	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244473	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244473	0	0	5	10	21	Federate "uav" joins Federation "uav_JoinFederation"4.5.5.b : Invalid FOM module. - Exception
+1583244496	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244501	0	0	128	10	0
+1583244507	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244507	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244507	0	0	5	10	21	Federate "uav" joins Federation "uav_JoinFederation"4.5.5.b : Invalid FOM module. - Exception
+1583244531	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244534	0	0	128	10	0
+1583244539	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244539	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244539	0	0	5	9	0	Federate "uav" joins Federation "uav_JoinFederation"(1) with handle 2. Socket 6 - OK
+1583244539	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583244539	0	0	4	9	0	Federation Name "uav_JoinFederation" (1) destroyed - OK
+1583244539	0	0	1	9	0	Socket 6 - OK
+1583244770	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 2 created - OK
+1583244770	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244770	0	0	5	9	0	Federate "uav" joins Federation "uav_JoinFederation"(2) with handle 2. Socket 6 - OK
+1583244770	2	2	7	9	0	Federate 2 resign federation(2) - OK
+1583244770	0	0	4	9	0	Federation Name "uav_JoinFederation" (2) destroyed - OK
+1583244770	0	0	1	9	0	Socket 6 - OK
+1583244808	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 3 created - OK
+1583244808	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244808	0	0	5	9	0	Federate "uav" joins Federation "uav_JoinFederation"(3) with handle 2. Socket 6 - OK
+1583244808	3	2	7	9	0	Federate 2 resign federation(3) - OK
+1583244808	0	0	4	9	0	Federation Name "uav_JoinFederation" (3) destroyed - OK
+1583244808	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244815	0	0	128	10	0
+1583244821	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244821	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244821	0	0	5	9	0	Federate "uav" joins Federation "uav_JoinFederation"(1) with handle 2. Socket 6 - OK
+1583244821	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583244821	0	0	4	9	0	Federation Name "uav_JoinFederation" (1) destroyed - OK
+1583244821	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244928	0	0	128	10	0
+1583244933	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244933	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244933	0	0	5	9	0	Federate "uav" joins Federation "uav_JoinFederation"(1) with handle 2. Socket 6 - OK
+1583244933	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583244933	0	0	4	9	0	Federation Name "uav_JoinFederation" (1) destroyed - OK
+1583244933	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583244936	0	0	128	10	0
+1583244940	0	0	3	9	0	Federation Name : uav_JoinFederation, Handle : 1 created - OK
+1583244940	0	0	5	10	37	Federate "uav" joins Federation "uav_JoinFederation_2"uav_JoinFederation_2 - Exception
+1583244940	0	0	5	9	0	Federate "uav" joins Federation "uav_JoinFederation"(1) with handle 2. Socket 6 - OK
+1583244940	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583244940	0	0	4	9	0	Federation Name "uav_JoinFederation" (1) destroyed - OK
+1583244940	0	0	1	9	0	Socket 6 - OK
+1583245347	0	0	3	9	0	Federation Name : uav_ResignFederation, Handle : 2 created - OK
+1583245347	0	0	5	9	0	Federate "uav" joins Federation "uav_ResignFederation"(2) with handle 2. Socket 6 - OK
+1583245347	2	2	7	9	0	Federate 2 resign federation(2) - OK
+1583245347	0	0	4	9	0	Federation Name "uav_ResignFederation" (2) destroyed - OK
+1583245347	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583245384	0	0	128	10	0
+1583245388	0	0	3	9	0	Federation Name : uav_ResignFederation, Handle : 1 created - OK
+1583245388	0	0	5	10	21	Federate "uav" joins Federation "uav_ResignFederation"4.5.5.b : Invalid FOM module. - Exception
+1583245388	1	0	4	10	33	< uav > - Exception
+1583245420	0	0	1	9	0	Socket 6 - OK
+1583245520	0	0	3	10	36	Federation Name : uav_ResignFederation, Handle : 2uav_ResignFederation - Exception
+1583245520	0	0	5	10	24	Federate "uav" joins Federation "uav_ResignFederation"Federate with same name <uav> has already joined the federation - Exception
+1583245520	0	0	4	10	33	< uav > - Exception
+1583245551	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583245557	0	0	128	10	0
+1583245561	0	0	3	9	0	Federation Name : uav_ResignFederation, Handle : 1 created - OK
+1583245561	0	0	5	9	0	Federate "uav" joins Federation "uav_ResignFederation"(1) with handle 2. Socket 6 - OK
+1583245561	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583245561	0	0	4	9	0	Federation Name "uav_ResignFederation" (1) destroyed - OK
+1583245561	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583245630	0	0	128	10	0
+1583245635	0	0	3	9	0	Federation Name : uav_ResignFederation, Handle : 1 created - OK
+1583245635	0	0	5	9	0	Federate "uav" joins Federation "uav_ResignFederation"(1) with handle 2. Socket 6 - OK
+1583245635	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583245635	0	0	4	9	0	Federation Name "uav_ResignFederation" (1) destroyed - OK
+1583245635	0	0	1	9	0	Socket 6 - OK
+1583245777	0	0	3	9	0	Federation Name : uav_destroy, Handle : 2 created - OK
+1583245777	0	0	5	9	0	Federate "uav-send" joins Federation "uav_destroy"(2) with handle 2. Socket 6 - OK
+1583245777	2	2	4	10	33	< uav-send > - Exception
+1583245777	2	2	7	9	0	Federate 2 resign federation(2) - OK
+1583245777	0	0	4	9	0	Federation Name "uav_destroy" (2) destroyed - OK
+1583245777	0	0	4	10	37	uav_destroy - Exception
+1583245777	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583245829	0	0	128	10	0
+1583245834	0	0	3	9	0	Federation Name : uav_destroy, Handle : 1 created - OK
+1583245834	0	0	5	10	21	Federate "uav-send" joins Federation "uav_destroy"4.5.5.b : Invalid FOM module. - Exception
+1583245834	1	0	4	10	33	< uav-send > - Exception
+1583245882	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583245888	0	0	128	10	0
+1583245894	0	0	3	9	0	Federation Name : uav_destroy, Handle : 1 created - OK
+1583245894	0	0	5	9	0	Federate "uav-send" joins Federation "uav_destroy"(1) with handle 2. Socket 6 - OK
+1583245894	1	2	4	10	33	< uav-send > - Exception
+1583245894	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583245894	0	0	4	9	0	Federation Name "uav_destroy" (1) destroyed - OK
+1583245894	0	0	4	10	37	uav_destroy - Exception
+1583245894	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583246178	0	0	128	10	0
+1583246183	0	0	3	9	0	Federation Name : testTAR, Handle : 1 created - OK
+1583246183	0	0	3	10	36	Federation Name : testTAR, Handle : 2testTAR - Exception
+1583246183	0	0	5	10	21	Federate "fed-send" joins Federation "testTAR"4.5.5.b : Invalid FOM module. - Exception
+1583246183	0	0	5	10	28	Federate "fed-receive" joins Federation "testTAR"Federate handle 2 is not a member of Federation 1 - Exception
+date	fed-o	fed	type	level	status	comment
+1583246253	0	0	128	10	0
+1583246258	0	0	3	9	0	Federation Name : testTAR, Handle : 1 created - OK
+1583246258	0	0	3	10	36	Federation Name : testTAR, Handle : 2testTAR - Exception
+1583246258	0	0	5	10	21	Federate "fed-send" joins Federation "testTAR"4.5.5.b : Invalid FOM module. - Exception
+1583246258	0	0	5	10	28	Federate "fed-receive" joins Federation "testTAR"Federate handle 2 is not a member of Federation 1 - Exception
+1583246321	0	0	1	9	0	Socket 7 - OK
+1583246321	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583246328	0	0	128	10	0
+1583246333	0	0	3	9	0	Federation Name : testTAR, Handle : 1 created - OK
+1583246333	0	0	3	10	36	Federation Name : testTAR, Handle : 2testTAR - Exception
+1583246333	0	0	5	9	0	Federate "fed-receive" joins Federation "testTAR"(1) with handle 2. Socket 6 - OK
+1583246333	0	0	5	9	0	Federate "fed-send" joins Federation "testTAR"(1) with handle 3. Socket 7 - OK
+1583246333	1	2	37	7	0	Subscribe Object Class = 7, # of att. = 2 - OK
+1583246333	1	2	8	8	0	ON at time 0.100000 - OK
+1583246333	1	2	9	8	0	ON at time 0.000000 - OK
+1583246333	1	3	33	7	0	Publish Object Class = 7, # of att. = 2 - OK
+1583246333	1	3	43	6	0	Register Object Class = 7 - OK
+1583246333	1	3	8	8	0	ON at time 0.100000 - OK
+1583246333	1	3	9	8	0	ON at time 0.000000 - OK
+1583246333	1	2	12	8	0	Label "InitSync" registered. Tag is "   InitSync" - OK
+1583246333	1	3	15	8	0	Label "InitSync" ended - OK
+1583246333	1	2	15	8	0	Label "InitSync" ended - OK
+1583246333	1	2	56	6	0	ObjID = 4 - OK
+1583246334	1	3	49	6	0	Delete ObjID = 4 - OK
+1583246334	1	3	8	8	0	OFF - OK
+1583246334	1	3	7	9	0	Federate 3 resign federation(1) - OK
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	0	0	4	10	33	< fed-receive > - Exception
+1583246334	1	2	8	8	0	OFF - OK
+1583246334	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583246334	0	0	4	9	0	Federation Name "testTAR" (1) destroyed - OK
+1583246334	0	0	4	10	37	testTAR - Exception
+1583246334	0	0	1	9	0	Socket 7 - OK
+1583246334	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583246469	0	0	128	10	0
+1583246474	0	0	3	9	0	Federation Name : testTAR, Handle : 1 created - OK
+1583246474	0	0	3	10	36	Federation Name : testTAR, Handle : 2testTAR - Exception
+1583246474	0	0	5	10	21	Federate "fed-receive" joins Federation "testTAR"4.5.5.b : Invalid FOM module. - Exception
+1583246474	0	0	5	10	28	Federate "fed-send" joins Federation "testTAR"Federate handle 2 is not a member of Federation 1 - Exception
+1583246544	0	0	1	9	0	Socket 7 - OK
+1583246544	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583246549	0	0	128	10	0
+1583246554	0	0	3	9	0	Federation Name : testTAR, Handle : 1 created - OK
+1583246554	0	0	3	10	36	Federation Name : testTAR, Handle : 2testTAR - Exception
+1583246554	0	0	5	9	0	Federate "fed-receive" joins Federation "testTAR"(1) with handle 2. Socket 6 - OK
+1583246554	0	0	5	9	0	Federate "fed-send" joins Federation "testTAR"(1) with handle 3. Socket 7 - OK
+1583246554	1	2	37	7	0	Subscribe Object Class = 6, # of att. = 2 - OK
+1583246554	1	2	8	8	0	ON at time 0.100000 - OK
+1583246554	1	3	33	7	0	Publish Object Class = 6, # of att. = 2 - OK
+1583246554	1	2	9	8	0	ON at time 0.000000 - OK
+1583246554	1	3	43	6	0	Register Object Class = 6 - OK
+1583246554	1	3	8	8	0	ON at time 0.100000 - OK
+1583246554	1	3	9	8	0	ON at time 0.000000 - OK
+1583246554	1	2	12	8	0	Label "InitSync" registered. Tag is "   InitSync" - OK
+1583246554	1	3	15	8	0	Label "InitSync" ended - OK
+1583246554	1	2	15	8	0	Label "InitSync" ended - OK
+1583246554	1	2	56	6	0	ObjID = 4 - OK
+1583246555	1	3	49	6	0	Delete ObjID = 4 - OK
+1583246555	1	3	8	8	0	OFF - OK
+1583246555	1	3	7	9	0	Federate 3 resign federation(1) - OK
+1583246555	0	0	4	10	33	< fed-receive > - Exception
+1583246555	0	0	4	10	33	< fed-receive > - Exception
+1583246555	0	0	4	10	33	< fed-receive > - Exception
+1583246555	0	0	4	10	33	< fed-receive > - Exception
+1583246555	0	0	4	10	33	< fed-receive > - Exception
+1583246555	1	2	8	8	0	OFF - OK
+1583246555	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583246555	0	0	4	9	0	Federation Name "testTAR" (1) destroyed - OK
+1583246555	0	0	4	10	37	testTAR - Exception
+1583246555	0	0	1	9	0	Socket 7 - OK
+1583246557	0	0	1	9	0	Socket 6 - OK
+date	fed-o	fed	type	level	status	comment
+1583246591	0	0	128	10	0
+1583246595	0	0	3	9	0	Federation Name : testNMR2, Handle : 1 created - OK
+1583246595	0	0	3	10	36	Federation Name : testNMR2, Handle : 2testNMR2 - Exception
+1583246595	0	0	5	9	0	Federate "fed-send" joins Federation "testNMR2"(1) with handle 2. Socket 7 - OK
+1583246595	0	0	5	9	0	Federate "fed-receive" joins Federation "testNMR2"(1) with handle 3. Socket 6 - OK
+1583246595	1	2	33	7	0	Publish Object Class = 7, # of att. = 2 - OK
+1583246595	1	2	43	6	0	Register Object Class = 7 - OK
+1583246595	1	2	8	8	0	ON at time 0.100000 - OK
+1583246595	1	2	9	8	0	ON at time 0.000000 - OK
+1583246595	1	3	37	7	0	Subscribe Object Class = 7, # of att. = 2 - OK
+1583246595	1	3	8	8	0	ON at time 0.100000 - OK
+1583246595	1	3	9	8	0	ON at time 0.000000 - OK
+1583246595	1	3	56	6	0	ObjID = 4 - OK
+1583246595	1	2	12	8	0	Label "InitSync" registered. Tag is "   InitSync" - OK
+1583246595	1	3	15	8	0	Label "InitSync" ended - OK
+1583246595	1	2	15	8	0	Label "InitSync" ended - OK
+1583246596	1	2	49	6	0	Delete ObjID = 4 - OK
+1583246596	1	2	8	8	0	OFF - OK
+1583246596	1	2	7	9	0	Federate 2 resign federation(1) - OK
+1583246596	0	0	4	10	33	< fed-receive > - Exception
+1583246596	1	3	8	8	0	OFF - OK
+1583246596	1	3	7	9	0	Federate 3 resign federation(1) - OK
+1583246596	0	0	4	9	0	Federation Name "testNMR2" (1) destroyed - OK
+1583246596	0	0	4	10	37	testNMR2 - Exception
+1583246596	0	0	1	9	0	Socket 7 - OK
+1583246596	0	0	1	9	0	Socket 6 - OK
+1583246687	0	0	3	9	0	Federation Name : testNMR2, Handle : 3 created - OK
+1583246687	0	0	3	10	36	Federation Name : testNMR2, Handle : 4testNMR2 - Exception
+1583246687	0	0	5	9	0	Federate "fed-send" joins Federation "testNMR2"(3) with handle 2. Socket 7 - OK
+1583246687	0	0	5	9	0	Federate "fed-receive" joins Federation "testNMR2"(3) with handle 3. Socket 6 - OK
+1583246687	3	3	37	7	0	Subscribe Object Class = 6, # of att. = 2 - OK
+1583246687	3	2	33	7	0	Publish Object Class = 6, # of att. = 2 - OK
+1583246687	3	3	8	8	0	ON at time 0.100000 - OK
+1583246687	3	3	9	8	0	ON at time 0.000000 - OK
+1583246687	3	2	43	6	0	Register Object Class = 6 - OK
+1583246687	3	3	56	6	0	ObjID = 4 - OK
+1583246687	3	2	8	8	0	ON at time 0.100000 - OK
+1583246687	3	2	9	8	0	ON at time 0.000000 - OK
+1583246687	3	2	12	8	0	Label "InitSync" registered. Tag is "   InitSync" - OK
+1583246687	3	3	15	8	0	Label "InitSync" ended - OK
+1583246687	3	2	15	8	0	Label "InitSync" ended - OK
+1583246688	3	2	49	6	0	Delete ObjID = 4 - OK
+1583246688	3	2	8	8	0	OFF - OK
+1583246688	3	2	7	9	0	Federate 2 resign federation(3) - OK
+1583246688	0	0	4	10	33	< fed-receive > - Exception
+1583246688	0	0	4	10	33	< fed-receive > - Exception
+1583246688	3	3	8	8	0	OFF - OK
+1583246688	3	3	7	9	0	Federate 3 resign federation(3) - OK
+1583246688	0	0	4	9	0	Federation Name "testNMR2" (3) destroyed - OK
+1583246688	0	0	4	10	37	testNMR2 - Exception
+1583246688	0	0	1	9	0	Socket 7 - OK
+1583246688	0	0	1	9	0	Socket 6 - OK

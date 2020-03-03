@@ -1,16 +1,13 @@
-package integrationTests.TAR;
+package integrationTests.StringFddName.TAR;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
+import certi.rti1516e.impl.CertiRtiAmbassador;
 import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.AttributeHandleValueMap;
 import hla.rti1516e.CallbackModel;
 import hla.rti1516e.LogicalTime;
-import hla.rti1516e.RTIambassador;
 import hla.rti1516e.ResignAction;
 import hla.rti1516e.RtiFactory;
 import hla.rti1516e.RtiFactoryFactory;
@@ -18,16 +15,12 @@ import hla.rti1516e.encoding.ByteWrapper;
 import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.encoding.HLAfloat32BE;
 import hla.rti1516e.exceptions.CallNotAllowedFromWithinCallback;
-import hla.rti1516e.exceptions.CouldNotCreateLogicalTimeFactory;
-import hla.rti1516e.exceptions.CouldNotOpenFDD;
-import hla.rti1516e.exceptions.ErrorReadingFDD;
 import hla.rti1516e.exceptions.FederateIsExecutionMember;
 import hla.rti1516e.exceptions.FederateNotExecutionMember;
 import hla.rti1516e.exceptions.FederateOwnsAttributes;
 import hla.rti1516e.exceptions.FederatesCurrentlyJoined;
 import hla.rti1516e.exceptions.FederationExecutionAlreadyExists;
 import hla.rti1516e.exceptions.FederationExecutionDoesNotExist;
-import hla.rti1516e.exceptions.InconsistentFDD;
 import hla.rti1516e.exceptions.InvalidResignAction;
 import hla.rti1516e.exceptions.NotConnected;
 import hla.rti1516e.exceptions.OwnershipAcquisitionPending;
@@ -45,7 +38,7 @@ public class Sender {
 
 	private static final double BLOCKING_TIME = 0.1;
 
-	RTIambassador rtia_send;
+	CertiRtiAmbassador rtia_send;
 	SenderFederateAmbassador mya_send;
 	boolean senderIsCreator;
 
@@ -63,7 +56,7 @@ public class Sender {
 			return false;
 		}
 		try {
-			rtia_send = factory.getRtiAmbassador();
+			rtia_send = (CertiRtiAmbassador) factory.getRtiAmbassador();
 		} catch (RTIinternalError rtIinternalError) {
 			rtIinternalError.printStackTrace();
 			return false;
@@ -86,34 +79,26 @@ public class Sender {
 		}
 
 		// Create Federation
-		File fom = new File("uav.xml");
+		String fdd = "uav.xml";
 		String federationExecutionName = "testTAR";
 		try {
 			SendandReceiveValues_TAR.LOGGER.info("Sender ------- 2. Create federation");
-			rtia_send.createFederationExecution(federationExecutionName, fom.toURI().toURL());
+			rtia_send.createFederationExecution(federationExecutionName, fdd);
 			senderIsCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
 			SendandReceiveValues_TAR.LOGGER.warning("Sender ------- Can't create federation. It already exists.");
 			senderIsCreator = false;
-		} catch (MalformedURLException url) {
-			url.printStackTrace();
-			return false;
-
-		} catch (InconsistentFDD | ErrorReadingFDD | CouldNotOpenFDD | NotConnected | RTIinternalError ex) {
+		} catch (Exception e) {
 			return false;
 		}
 
 		// Join Federation
-		URL[] joinModules = new URL[] { (new File("uav.xml")).toURI().toURL() };
+		String[] joinModule = {"uav.xml"};
 		String federateName = "fed-send";
 		String federateType = "uav";
 		try {
 			SendandReceiveValues_TAR.LOGGER.info("Sender ------- 3. Join federation");
-			rtia_send.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
-		} catch (CouldNotCreateLogicalTimeFactory couldNotCreateLogicalTimeFactory) {
-			couldNotCreateLogicalTimeFactory.printStackTrace();
-			return false;
-
+			rtia_send.joinFederationExecution(federateName, federateType, federationExecutionName, joinModule);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

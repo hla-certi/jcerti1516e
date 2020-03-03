@@ -156,7 +156,7 @@ JAR List :
     <property name="jcerti.opt" value=""/>
 
 	<target name="ExecuteRTIG" depends="prepare-test" description="run Execute RTIG test">
-		<java classname="integrationTests.ExecuteRTIG.ExecuteRTIGTest" fork="true" dir="${test.work.dir}">
+		<java classname="integrationTests.WhithoutFederationCreation.ExecuteRTIGTest" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -165,7 +165,7 @@ JAR List :
 	</target>
 
 	<target name="Connect" depends="prepare-test" description="run Connect test">
-		<java classname="integrationTests.Connect.Connect" fork="true" dir="${test.work.dir}">
+		<java classname="integrationTests.WhithoutFederationCreation.Connect" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -173,8 +173,8 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="CreateFederation" depends="prepare-test" description="run Connect test">
-		<java classname="integrationTests.CreateFederation.CreateFederation" fork="true" dir="${test.work.dir}">
+	<target name="CreateFederation_StringFddName" depends="prepare-test" description="run test of funcion CreateFederation, using a String for Fdd name">
+		<java classname="integrationTests.StringFddName.CreateFederation" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -182,8 +182,17 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="JoinFederation" depends="prepare-test" description="run Join Federation test">
-		<java classname="integrationTests.JoinFederation.JoinFederation" fork="true" dir="${test.work.dir}">
+	<target name="CreateFederation_UrlFddName" depends="prepare-test" description="run test of funcion CreateFederation, using an URL for Fdd name">
+			<java classname="integrationTests.StringFddName.CreateFederation" fork="true" dir="${test.work.dir}">
+				<classpath refid="jcerti.classpath" />
+				<classpath refid="jcerti.test.classpath" />
+				<arg value="${jcerti.opt}" />
+				<arg value="1" />
+			</java>
+		</target>
+
+	<target name="JoinFederation_StringFddName" depends="prepare-test" description="run JoinFederation test, using a String for Fdd name">
+		<java classname="integrationTests.StringFddName.JoinFederation" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -191,8 +200,17 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="ResignFederation" depends="prepare-test" description="run Connect test">
-		<java classname="integrationTests.ResignFederation.ResignFederation" fork="true" dir="${test.work.dir}">
+	<target name="JoinFederation_UrlFddName" depends="prepare-test" description="run JoinFederation test, using an URL for Fdd name">
+			<java classname="integrationTests.UrlFddName.JoinFederation" fork="true" dir="${test.work.dir}">
+				<classpath refid="jcerti.classpath" />
+				<classpath refid="jcerti.test.classpath" />
+				<arg value="${jcerti.opt}" />
+				<arg value="1" />
+			</java>
+		</target>
+
+	<target name="ResignFederation_StringFddName" depends="prepare-test" description="run ResignFederation test, using a String for Fdd name">
+		<java classname="integrationTests.StringFddName.ResignFederation" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -200,8 +218,8 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="DestroyFederation" depends="prepare-test" description="run Destroy Federation test">
-		<java classname="integrationTests.DestroyFederation.DestroyFederation" fork="true" dir="${test.work.dir}">
+	<target name="ResignFederation_UrlFddName" depends="prepare-test" description="run ResignFederation test, using a URL for Fdd name">
+		<java classname="integrationTests.UrlFddName.ResignFederation" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -209,8 +227,8 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="TAR" depends="prepare-test" description="run TAR test">
-		<java classname="integrationTests.TAR.SendandReceiveValues_TAR" fork="true" dir="${test.work.dir}">
+	<target name="DestroyFederation_StringFddName" depends="prepare-test" description="run DestroyFederation test, using a Stirng for Fdd name">
+		<java classname="integrationTests.StringFddName.DestroyFederation" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
@@ -218,13 +236,48 @@ JAR List :
 		</java>
 	</target>
 
-	<target name="NMR" depends="prepare-test" description="run NMR test">
-		<java classname="integrationTests.NMR.SendandReceiveValues_NMR" fork="true" dir="${test.work.dir}">
+	<target name="DestroyFederation_URLFddName" depends="prepare-test" description="run DestroyFederation test, using a URL for Fdd name">
+		<java classname="integrationTests.UrlFddName.DestroyFederation" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />
 			<classpath refid="jcerti.test.classpath" />
 			<arg value="${jcerti.opt}" />
 			<arg value="1" />
+		</java>
+	</target>
 
+	<target name="TAR_StringFddName" depends="prepare-test" description="run TAR test, using a String for Fdd name">
+		<java classname="integrationTests.StringFddName.TAR.SendandReceiveValues_TAR" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+		</java>
+	</target>
+
+	<target name="TAR_UrlFddName" depends="prepare-test" description="run TAR test, using an URL for Fdd name">
+		<java classname="integrationTests.UrlFddName.TAR.SendandReceiveValues_TAR" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+		</java>
+	</target>
+
+	<target name="NMR_StringFddName" depends="prepare-test" description="run NMR test, using a String for Fdd name">
+		<java classname="integrationTests.StringFddName.NMR.SendandReceiveValues_NMR" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+		</java>
+	</target>
+
+	<target name="NMR_UrlFddName" depends="prepare-test" description="run NMR test, using an Url for Fdd name">
+		<java classname="integrationTests.UrlFddName.NMR.SendandReceiveValues_NMR" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
 		</java>
 	</target>
 

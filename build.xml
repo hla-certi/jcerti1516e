@@ -183,7 +183,7 @@ JAR List :
 	</target>
 
 	<target name="CreateFederation_UrlFddName" depends="prepare-test" description="run test of funcion CreateFederation, using an URL for Fdd name">
-			<java classname="integrationTests.StringFddName.CreateFederation" fork="true" dir="${test.work.dir}">
+			<java classname="integrationTests.UrlFddName.CreateFederation" fork="true" dir="${test.work.dir}">
 				<classpath refid="jcerti.classpath" />
 				<classpath refid="jcerti.test.classpath" />
 				<arg value="${jcerti.opt}" />

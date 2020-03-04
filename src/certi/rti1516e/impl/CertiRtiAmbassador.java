@@ -481,6 +481,10 @@ public class CertiRtiAmbassador implements RTIambassador {
             NotConnected,
             RTIinternalError
     {
+	if(rtiaProcess == null){
+            throw new NotConnected("RTIA not connected");
+        }
+
         if(federationExecutionName == null || federationExecutionName.length() == 0) {
             throw new RTIinternalError("Incorrect or empty federation execution name");
         }
@@ -557,6 +561,10 @@ public class CertiRtiAmbassador implements RTIambassador {
             NotConnected,
             RTIinternalError
     {
+	if(rtiaProcess == null){
+            throw new NotConnected("RTIA not connected");
+        }
+
         try {
             createFederationExecution(federationExecutionName, fomModules, null, logicalTimeImplementationName);
         } catch (ErrorReadingMIM | CouldNotOpenMIM | DesignatorIsHLAstandardMIM e) {
@@ -597,6 +605,10 @@ public class CertiRtiAmbassador implements RTIambassador {
             NotConnected,
             RTIinternalError
     {
+	if(rtiaProcess == null){
+            throw new NotConnected("RTIA not connected");
+        }
+
         try {
             createFederationExecution(federationExecutionName, fomModules, mimModule, null);
         } catch (CouldNotCreateLogicalTimeFactory e) {
@@ -632,6 +644,10 @@ public class CertiRtiAmbassador implements RTIambassador {
             NotConnected,
             RTIinternalError
     {
+	if(rtiaProcess == null){
+            throw new NotConnected("RTIA not connected");
+        }
+
         try {
             createFederationExecution(federationExecutionName, fomModules, null, null);
         } catch (CouldNotCreateLogicalTimeFactory | ErrorReadingMIM | CouldNotOpenMIM | DesignatorIsHLAstandardMIM e) {
@@ -666,6 +682,10 @@ public class CertiRtiAmbassador implements RTIambassador {
             NotConnected,
             RTIinternalError
     {
+	if(rtiaProcess == null){
+            throw new NotConnected("RTIA not connected");
+        }
+
         URL[] fomModules = {fomModule};
         try {
             createFederationExecution(federationExecutionName, fomModules, null, null);

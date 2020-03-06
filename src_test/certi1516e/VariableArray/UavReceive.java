@@ -27,6 +27,7 @@ import hla.rti1516e.RtiFactoryFactory;
 import hla.rti1516e.SynchronizationPointFailureReason;
 import hla.rti1516e.TransportationTypeHandle;
 import hla.rti1516e.encoding.ByteWrapper;
+import hla.rti1516e.encoding.DataElementFactory;
 import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.encoding.HLAfixedArray;
@@ -71,6 +72,7 @@ import hla.rti1516e.exceptions.UnsupportedCallbackModel;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
 import hla.rti1516e.jlc.BasicHLAinteger64BEImpl;
+import hla.rti1516e.jlc.EncoderFactory;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
 import hla.rti1516e.jlc.HLAfixedArrayImpl;
 import hla.rti1516e.jlc.HLAvariableArrayImpl;
@@ -549,11 +551,19 @@ public class UavReceive {
 				LOGGER.info(" RAV with time= " + ((CertiLogicalTime1516E) theTime).getTime());
 				for (AttributeHandle attributeHandle : attributeHandleSet) {
 					if (attributeHandle.hashCode() == arrayAttributeHandle.hashCode()) {
+						DataElementFactory<HLAinteger64BE> integer64BE_Factory = new DataElementFactory<HLAinteger64BE>() {
+							@Override
+							public HLAinteger64BE createElement(int index) {
+								// Class encoreFactory it used to create a specified factory. Like an Integer
+								// factory or a String factory
+								return EncoderFactory.getInstance().createHLAinteger64BE();
+							}
+						};
+
 						// We have to create array structure to receive the values
 						HLAinteger64BE x = new BasicHLAinteger64BEImpl();
 						HLAinteger64BE y = new BasicHLAinteger64BEImpl();
-						HLAinteger64BE[] data = { x, y };
-						HLAvariableArray<HLAinteger64BE> fixedArray = new HLAvariableArrayImpl<>(data);
+						HLAvariableArray<HLAinteger64BE> fixedArray = new HLAvariableArrayImpl<>(integer64BE_Factory, 2);
 
 						ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 						fixedArray.decode(bw);

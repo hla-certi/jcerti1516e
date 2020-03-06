@@ -172,7 +172,7 @@ public class UavSend {
 		// Wait synchronization point announcement (announceSynchronizationPoint
 		// callback)
 		while (!mya.inPause) {
-			LOGGER.info(" SP announce evokeCallback(" + BLOCKING_TIME);
+			//LOGGER.info(" SP announce evokeCallback(" + BLOCKING_TIME);
 			rtia.evokeCallback(BLOCKING_TIME);
 		}
 		// Informs the RTIG it is aware of the synchronization point

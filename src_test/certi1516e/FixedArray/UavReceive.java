@@ -31,7 +31,7 @@ import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.encoding.HLAfixedArray;
 import hla.rti1516e.encoding.HLAfloat32BE;
-import hla.rti1516e.encoding.HLAinteger64BE;
+import hla.rti1516e.encoding.HLAinteger32BE;
 import hla.rti1516e.exceptions.AlreadyConnected;
 import hla.rti1516e.exceptions.AsynchronousDeliveryAlreadyEnabled;
 import hla.rti1516e.exceptions.AttributeNotDefined;
@@ -69,7 +69,7 @@ import hla.rti1516e.exceptions.SynchronizationPointLabelNotAnnounced;
 import hla.rti1516e.exceptions.UnsupportedCallbackModel;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
-import hla.rti1516e.jlc.BasicHLAinteger64BEImpl;
+import hla.rti1516e.jlc.BasicHLAinteger32BEImpl;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
 import hla.rti1516e.jlc.HLAfixedArrayImpl;
 
@@ -548,15 +548,18 @@ public class UavReceive {
 				for (AttributeHandle attributeHandle : attributeHandleSet) {
 					if (attributeHandle.hashCode() == arrayAttributeHandle.hashCode()) {
 						// We have to create array structure to receive the values
-						HLAinteger64BE x = new BasicHLAinteger64BEImpl();
-						HLAinteger64BE y = new BasicHLAinteger64BEImpl();
-						HLAinteger64BE[] data = { x, y };
-						HLAfixedArray<HLAinteger64BE> fixedArray = new HLAfixedArrayImpl<>(data);
+						HLAinteger32BE x = new BasicHLAinteger32BEImpl();
+						HLAinteger32BE y = new BasicHLAinteger32BEImpl();
+						HLAinteger32BE z = new BasicHLAinteger32BEImpl();
+
+						HLAinteger32BE[] data = { x, y, z };
+						HLAfixedArray<HLAinteger32BE> fixedArray = new HLAfixedArrayImpl<>(data);
 
 						ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 						fixedArray.decode(bw);
 						LOGGER.info("     --> Array Attribute received : (x : " + fixedArray.get(0).getValue() + ", "
-								+ "y : " + fixedArray.get(1).getValue() + ")");
+								+ "y : " + fixedArray.get(1).getValue() + ",")
+								+ "z : " + fixedArray.get(1).getValue() + ")");
 					}
 					if (attributeHandle.hashCode() == fomAttributeHandle.hashCode()) {
 						HLAfloat32BE value = new BasicHLAfloat32BEImpl();

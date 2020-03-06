@@ -25,7 +25,7 @@ import hla.rti1516e.encoding.DataElementFactory;
 import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.encoding.HLAfixedArray;
 import hla.rti1516e.encoding.HLAfloat32BE;
-import hla.rti1516e.encoding.HLAinteger64BE;
+import hla.rti1516e.encoding.HLAinteger32BE;
 import hla.rti1516e.exceptions.AsynchronousDeliveryAlreadyEnabled;
 import hla.rti1516e.exceptions.AttributeNotDefined;
 import hla.rti1516e.exceptions.FederateInternalError;
@@ -46,7 +46,7 @@ import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
-import hla.rti1516e.jlc.BasicHLAinteger64BEImpl;
+import hla.rti1516e.jlc.BasicHLAinteger32BEImpl;
 import hla.rti1516e.jlc.EncoderFactory;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
 import hla.rti1516e.jlc.HLAfixedArrayImpl;
@@ -198,24 +198,28 @@ public class UavSend {
 			// type
 			// We have to create a new factory for the type in the array : here a factory of
 			// integer
-			DataElementFactory<HLAinteger64BE> integer64BE_Factory = new DataElementFactory<HLAinteger64BE>() {
+			DataElementFactory<HLAinteger32BE> integer32BE_Factory = new DataElementFactory<HLAinteger32BE>() {
 				@Override
-				public HLAinteger64BE createElement(int index) {
+				public HLAinteger32BE createElement(int index) {
 					// Class encoreFactory it used to create a specified factory. Like an Integer
 					// factory or a String factory
-					return EncoderFactory.getInstance().createHLAinteger64BE();
+					return EncoderFactory.getInstance().createHLAinteger32BE();
 				}
 			};
 
 			// We declared here the variables to put in the array, with the right type
-			HLAinteger64BE x = new BasicHLAinteger64BEImpl(1);
-			HLAinteger64BE y = new BasicHLAinteger64BEImpl(2);
+			HLAinteger32BE x = new BasicHLAinteger32BEImpl(8);
+			HLAinteger32BE y = new BasicHLAinteger32BEImpl(3);
+			HLAinteger32BE z = new BasicHLAinteger32BEImpl(5);
+
 
 			// Declaration of the array
-			HLAfixedArray<HLAinteger64BE> fixedArray = new HLAfixedArrayImpl<>(integer64BE_Factory, 2);
+			HLAfixedArray<HLAinteger32BE> fixedArray = new HLAfixedArrayImpl<>(integer32BE_Factory, 3);
 			// We add our 2 elements in the array
-			((HLAfixedArrayImpl<HLAinteger64BE>) fixedArray).addElement(x);
-			((HLAfixedArrayImpl<HLAinteger64BE>) fixedArray).addElement(y);
+			((HLAfixedArrayImpl<HLAinteger32BE>) fixedArray).addElement(x);
+			((HLAfixedArrayImpl<HLAinteger32BE>) fixedArray).addElement(y);
+			((HLAfixedArrayImpl<HLAinteger32BE>) fixedArray).addElement(z);
+
 
 			// We create a byte[] to get and send encode result
 			// Function getEncodedLength return array encoded length

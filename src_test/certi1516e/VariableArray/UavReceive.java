@@ -33,6 +33,7 @@ import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.encoding.HLAfixedArray;
 import hla.rti1516e.encoding.HLAvariableArray;
 import hla.rti1516e.encoding.HLAfloat32BE;
+import hla.rti1516e.encoding.HLAinteger32BE;
 import hla.rti1516e.encoding.HLAinteger64BE;
 import hla.rti1516e.exceptions.AlreadyConnected;
 import hla.rti1516e.exceptions.AsynchronousDeliveryAlreadyEnabled;
@@ -71,6 +72,7 @@ import hla.rti1516e.exceptions.SynchronizationPointLabelNotAnnounced;
 import hla.rti1516e.exceptions.UnsupportedCallbackModel;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
+import hla.rti1516e.jlc.BasicHLAinteger32BEImpl;
 import hla.rti1516e.jlc.BasicHLAinteger64BEImpl;
 import hla.rti1516e.jlc.EncoderFactory;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
@@ -551,19 +553,22 @@ public class UavReceive {
 				LOGGER.info(" RAV with time= " + ((CertiLogicalTime1516E) theTime).getTime());
 				for (AttributeHandle attributeHandle : attributeHandleSet) {
 					if (attributeHandle.hashCode() == arrayAttributeHandle.hashCode()) {
-						DataElementFactory<HLAinteger64BE> integer64BE_Factory = new DataElementFactory<HLAinteger64BE>() {
+						DataElementFactory<HLAinteger32BE> integer32BE_Factory = new DataElementFactory<HLAinteger32BE>() {
 							@Override
-							public HLAinteger64BE createElement(int index) {
+							public HLAinteger32BE createElement(int index) {
 								// Class encoreFactory it used to create a specified factory. Like an Integer
 								// factory or a String factory
-								return EncoderFactory.getInstance().createHLAinteger64BE();
+								return EncoderFactory.getInstance().createHLAinteger32BE();
 							}
 						};
 
 						// We have to create array structure to receive the values
-						HLAinteger64BE x = new BasicHLAinteger64BEImpl();
-						HLAinteger64BE y = new BasicHLAinteger64BEImpl();
-						HLAvariableArray<HLAinteger64BE> fixedArray = new HLAvariableArrayImpl<>(integer64BE_Factory, 2);
+						HLAinteger32BE x = new BasicHLAinteger32BEImpl();
+						HLAinteger32BE y = new BasicHLAinteger32BEImpl();
+						HLAinteger32BE z = new BasicHLAinteger32BEImpl();
+						HLAinteger32BE w = new BasicHLAinteger32BEImpl();
+
+						HLAvariableArray<HLAinteger32BE> fixedArray = new HLAvariableArrayImpl<>(integer32BE_Factory, 4);
 
 						ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 						fixedArray.decode(bw);

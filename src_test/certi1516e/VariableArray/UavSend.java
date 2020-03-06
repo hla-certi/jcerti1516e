@@ -109,8 +109,8 @@ public class UavSend {
 
 	// private static final double stopTime = 50.0; //If used in "Uav Loop".
 	private ObjectInstanceHandle myObject;
-	AttributeHandle textAttributeHandle;
-	AttributeHandle fomAttributeHandle;
+	AttributeHandle arrayAttributeHandle;
+	AttributeHandle doubleAttributeHandle;
 
 	/**
 	 * Run a federate since its creation to its destruction Updates values of two
@@ -233,19 +233,19 @@ public class UavSend {
 			// ByteWrapper is the object used to encode a Type
 			// We link the byteWrapper to the arrayAttribute to get the result from the
 			// byte[]
-			ByteWrapper byteWrapper = new ByteWrapper(arrayAttribute);
+			ByteWrapper arrayByteWrapper = new ByteWrapper(arrayAttribute);
 			// We encode the array
-			variableArray.encode(byteWrapper);
+			variableArray.encode(arrayByteWrapper);
 
 			// Float attribute
-			HLAfloat64BE fom = new BasicHLAfloat64BEImpl(3.14);
-			byte[] fomAttribute = new byte[fom.getEncodedLength()];
-			ByteWrapper fomWrapper = new ByteWrapper(fomAttribute);
-			fom.encode(fomWrapper);
+			HLAfloat64BE doubleAttribute = new BasicHLAfloat64BEImpl(3.14);
+			byte[] doubleAttributeBytes = new byte[doubleAttribute.getEncodedLength()];
+			ByteWrapper doubleByteWrapper = new ByteWrapper(doubleAttributeBytes);
+			doubleAttribute.encode(doubleByteWrapper);
 
 			AttributeHandleValueMap attr = rtia.getAttributeHandleValueMapFactory().create(2);
-			attr.put(textAttributeHandle, arrayAttribute);
-			//attr.put(fomAttributeHandle, fomAttribute);
+			attr.put(arrayAttributeHandle, arrayAttribute);
+			attr.put(doubleAttributeHandle, doubleAttributeBytes);
 
 			// Tag
 			HLAASCIIstring tag = new HLAASCIIstringImpl("update");
@@ -259,7 +259,9 @@ public class UavSend {
 			try {
 				rtia.updateAttributeValues(myObject, attr, tagBuffer, mya.updateTime);
 				LOGGER.info("     --> Array Attribute sent : (x : " + variableArray.get(0).getValue() + ", "
-						+ "y : " + variableArray.get(1).getValue() + ")");
+						+ "y : " + variableArray.get(1).getValue() + ", "
+						+ "z : " + variableArray.get(1).getValue() + ")");
+				LOGGER.info("     --> Double Attribute sent : " + doubleAttribute.getValue());
 			} catch (Exception e) {
 				LOGGER.info("Timestamp must be bigger than (localHlaTime + lookahead)");
 			}
@@ -389,12 +391,12 @@ public class UavSend {
 			ObjectClassHandle classHandle = rtia.getObjectClassHandle("SampleClass");
 
 			LOGGER.info("     4.2 Get atribute handles");
-			textAttributeHandle = rtia.getAttributeHandle(classHandle, "VariableArrayAttribute");
-			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "IntegerAttribute");
+			arrayAttributeHandle = rtia.getAttributeHandle(classHandle, "VariableArrayAttribute");
+			doubleAttributeHandle = rtia.getAttributeHandle(classHandle, "IntegerAttribute");
 
 			AttributeHandleSet attributes = new CertiAttributeHandleSet();
-			attributes.add(textAttributeHandle);
-			attributes.add(fomAttributeHandle);
+			attributes.add(arrayAttributeHandle);
+			attributes.add(doubleAttributeHandle);
 
 			try {
 				rtia.enableAsynchronousDelivery();

@@ -33,6 +33,7 @@ import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.encoding.HLAfixedArray;
 import hla.rti1516e.encoding.HLAvariableArray;
 import hla.rti1516e.encoding.HLAfloat32BE;
+import hla.rti1516e.encoding.HLAfloat64BE;
 import hla.rti1516e.encoding.HLAinteger32BE;
 import hla.rti1516e.encoding.HLAinteger64BE;
 import hla.rti1516e.exceptions.AlreadyConnected;
@@ -72,6 +73,7 @@ import hla.rti1516e.exceptions.SynchronizationPointLabelNotAnnounced;
 import hla.rti1516e.exceptions.UnsupportedCallbackModel;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
+import hla.rti1516e.jlc.BasicHLAfloat64BEImpl;
 import hla.rti1516e.jlc.BasicHLAinteger32BEImpl;
 import hla.rti1516e.jlc.BasicHLAinteger64BEImpl;
 import hla.rti1516e.jlc.EncoderFactory;
@@ -579,7 +581,7 @@ public class UavReceive {
 
 					}
 					if (attributeHandle.hashCode() == fomAttributeHandle.hashCode()) {
-						HLAfloat32BE value = new BasicHLAfloat32BEImpl();
+						HLAfloat64BE value = new BasicHLAfloat64BEImpl();
 						ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 						value.decode(bw);
 						LOGGER.info("     --> Attribute fom : " + value.getValue());

@@ -26,6 +26,7 @@ import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.encoding.HLAfixedArray;
 import hla.rti1516e.encoding.HLAvariableArray;
 import hla.rti1516e.encoding.HLAfloat32BE;
+import hla.rti1516e.encoding.HLAfloat64BE;
 import hla.rti1516e.encoding.HLAinteger32BE;
 import hla.rti1516e.encoding.HLAinteger64BE;
 import hla.rti1516e.exceptions.AsynchronousDeliveryAlreadyEnabled;
@@ -48,6 +49,7 @@ import hla.rti1516e.exceptions.RestoreInProgress;
 import hla.rti1516e.exceptions.SaveInProgress;
 import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
+import hla.rti1516e.jlc.BasicHLAfloat64BEImpl;
 import hla.rti1516e.jlc.BasicHLAinteger32BEImpl;
 import hla.rti1516e.jlc.BasicHLAinteger64BEImpl;
 import hla.rti1516e.jlc.EncoderFactory;
@@ -236,11 +238,11 @@ public class UavSend {
 			variableArray.encode(byteWrapper);
 
 			// Float attribute
-			/*HLAfloat32BE fom = new BasicHLAfloat32BEImpl((float) 3.14);
+			HLAfloat64BE fom = new BasicHLAfloat64BEImpl(3.14);
 			byte[] fomAttribute = new byte[fom.getEncodedLength()];
 			ByteWrapper fomWrapper = new ByteWrapper(fomAttribute);
 			fom.encode(fomWrapper);
-			 */
+
 			AttributeHandleValueMap attr = rtia.getAttributeHandleValueMapFactory().create(2);
 			attr.put(textAttributeHandle, arrayAttribute);
 			//attr.put(fomAttributeHandle, fomAttribute);
@@ -387,7 +389,7 @@ public class UavSend {
 			ObjectClassHandle classHandle = rtia.getObjectClassHandle("SampleClass");
 
 			LOGGER.info("     4.2 Get atribute handles");
-			textAttributeHandle = rtia.getAttributeHandle(classHandle, "FixedArrayAttribute");
+			textAttributeHandle = rtia.getAttributeHandle(classHandle, "VariableArrayAttribute");
 			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "IntegerAttribute");
 
 			AttributeHandleSet attributes = new CertiAttributeHandleSet();

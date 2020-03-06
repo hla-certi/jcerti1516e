@@ -21,7 +21,7 @@
 					<order>TimeStamp</order>
 				</attribute>
 				<attribute>
-					<name>IntegerAttribute</name>
+					<name>FloatAttribute</name>
 					<dataType>HLAInteger64BE</dataType>
 					<transportation>HLAreliable</transportation>
 					<order>TimeStamp</order>

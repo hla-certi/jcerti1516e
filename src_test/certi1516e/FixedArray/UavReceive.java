@@ -358,7 +358,7 @@ public class UavReceive {
 			ObjectClassHandle classHandle = rtia.getObjectClassHandle("SampleClass");
 
 			arrayAttributeHandle = rtia.getAttributeHandle(classHandle, "FixedArrayAttribute");
-			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "IntegerAttribute");
+			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "FloatAttribute");
 
 			attributes = new CertiAttributeHandleSet();
 			attributes.add(arrayAttributeHandle);
@@ -558,14 +558,14 @@ public class UavReceive {
 						ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 						fixedArray.decode(bw);
 						LOGGER.info("     --> Array Attribute received : (x : " + fixedArray.get(0).getValue() + ", "
-								+ "y : " + fixedArray.get(1).getValue() + ",")
-								+ "z : " + fixedArray.get(1).getValue() + ")");
+								+ "y : " + fixedArray.get(1).getValue() + ", "
+								+ "z : " + fixedArray.get(2).getValue() + ")");
 					}
 					if (attributeHandle.hashCode() == fomAttributeHandle.hashCode()) {
 						HLAfloat32BE value = new BasicHLAfloat32BEImpl();
 						ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 						value.decode(bw);
-						LOGGER.info("     --> Attribute fom : " + value.getValue());
+						LOGGER.info("     --> Attribute float : " + value.getValue());
 					}
 				}
 			} catch (DecoderException e) {

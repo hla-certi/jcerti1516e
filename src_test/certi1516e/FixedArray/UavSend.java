@@ -103,7 +103,7 @@ public class UavSend {
 
 	// private static final double stopTime = 50.0; //If used in "Uav Loop".
 	private ObjectInstanceHandle myObject;
-	AttributeHandle textAttributeHandle;
+	AttributeHandle arrayAttributeHandle;
 	AttributeHandle fomAttributeHandle;
 
 	/**
@@ -227,19 +227,19 @@ public class UavSend {
 			// ByteWrapper is the object used to encode a Type
 			// We link the byteWrapper to the arrayAttribute to get the result from the
 			// byte[]
-			ByteWrapper byteWrapper = new ByteWrapper(arrayAttribute);
+			ByteWrapper arrayByteWrapper = new ByteWrapper(arrayAttribute);
 			// We encode the array
-			fixedArray.encode(byteWrapper);
+			fixedArray.encode(arrayByteWrapper);
 
 			// Float attribute
-			HLAfloat32BE fom = new BasicHLAfloat32BEImpl((float) 3.14);
-			byte[] fomAttribute = new byte[fom.getEncodedLength()];
-			ByteWrapper fomWrapper = new ByteWrapper(fomAttribute);
-			fom.encode(fomWrapper);
+			HLAfloat32BE floatAttribute = new BasicHLAfloat32BEImpl((float) 3.14);
+			byte[] floatAttributeBytes = new byte[floatAttribute.getEncodedLength()];
+			ByteWrapper floatByteWrapper = new ByteWrapper(floatAttributeBytes);
+			floatAttribute.encode(floatByteWrapper);
 
-			AttributeHandleValueMap attr = rtia.getAttributeHandleValueMapFactory().create(2);
-			attr.put(textAttributeHandle, arrayAttribute);
-			attr.put(fomAttributeHandle, fomAttribute);
+			AttributeHandleValueMap attributesMap = rtia.getAttributeHandleValueMapFactory().create(2);
+			attributesMap.put(arrayAttributeHandle, arrayAttribute);
+			attributesMap.put(fomAttributeHandle, floatAttributeBytes);
 
 			// Tag
 			HLAASCIIstring tag = new HLAASCIIstringImpl("update");
@@ -251,9 +251,10 @@ public class UavSend {
 			// timestamp 'updateTime' is updated when a TAG is received.
 			LOGGER.info("     6.1 UAV with time = " + ((CertiLogicalTime1516E) mya.updateTime).getTime());
 			try {
-				rtia.updateAttributeValues(myObject, attr, tagBuffer, mya.updateTime);
+				rtia.updateAttributeValues(myObject, attributesMap, tagBuffer, mya.updateTime);
 				LOGGER.info("     --> Array Attribute sent : (x : " + fixedArray.get(0).getValue() + ", "
-						+ "y : " + fixedArray.get(1).getValue() + ")");
+						+ "y : " + fixedArray.get(1).getValue() + ", "
+						+ "z : " + fixedArray.get(2).getValue() + ")");
 			} catch (Exception e) {
 				LOGGER.info("Timestamp must be bigger than (localHlaTime + lookahead)");
 			}
@@ -383,11 +384,11 @@ public class UavSend {
 			ObjectClassHandle classHandle = rtia.getObjectClassHandle("SampleClass");
 
 			LOGGER.info("     4.2 Get atribute handles");
-			textAttributeHandle = rtia.getAttributeHandle(classHandle, "FixedArrayAttribute");
-			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "IntegerAttribute");
+			arrayAttributeHandle = rtia.getAttributeHandle(classHandle, "FixedArrayAttribute");
+			fomAttributeHandle = rtia.getAttributeHandle(classHandle, "FloatAttribute");
 
 			AttributeHandleSet attributes = new CertiAttributeHandleSet();
-			attributes.add(textAttributeHandle);
+			attributes.add(arrayAttributeHandle);
 			attributes.add(fomAttributeHandle);
 
 			try {

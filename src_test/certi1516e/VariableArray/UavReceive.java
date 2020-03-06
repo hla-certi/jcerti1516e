@@ -568,7 +568,10 @@ public class UavReceive {
 						ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
 						fixedArray.decode(bw);
 						LOGGER.info("     --> Array Attribute received : (x : " + fixedArray.get(0).getValue() + ", "
-								+ "y : " + fixedArray.get(1).getValue() + ")");
+								+ "y : " + fixedArray.get(1).getValue() + ", "
+								+ "z : " + fixedArray.get(2).getValue() + ", "
+								+ "w : " + fixedArray.get(3).getValue() + ")");
+
 					}
 					if (attributeHandle.hashCode() == fomAttributeHandle.hashCode()) {
 						HLAfloat32BE value = new BasicHLAfloat32BEImpl();

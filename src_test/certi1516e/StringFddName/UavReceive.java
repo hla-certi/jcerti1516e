@@ -162,11 +162,12 @@ public class UavReceive {
 		}
 
 		LOGGER.info("     3. Join federation");
-		String[] joinModules = { "uav.xml" };
+		// String[] joinModules = { "uav.xml" };
 		String federateName = "uav-receive";
 		String federateType = "uav";
 
-		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		//rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		rtia.joinFederationExecution(federateName, federateType, federationExecutionName);
 		mya.isCreator = flagCreator;
 
 		LOGGER.info("     4. Initialize Federate Ambassador");
@@ -226,7 +227,7 @@ public class UavReceive {
 		// The federate ask to advance to (current logical time + timeStep).
 		// The RAV are received in the TAR-TAG loop.
 
-		int i = 5; // 3
+		int i = 10; // 3
 		while (i-- > 0) {
 			// while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {
 			LOGGER.info("     6.1 TAR with time=" + ((CertiLogicalTime1516E) mya.timeAdvance).getTime());
@@ -312,7 +313,7 @@ public class UavReceive {
 	 * Implementation of a FederateAmbassador
 	 */
 
-	private static double BLOCKING_TIME = 0.1;
+	private static double BLOCKING_TIME = 1.0;
 
 	private class MyFederateAmbassador extends NullFederateAmbassador {
 

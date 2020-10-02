@@ -142,6 +142,7 @@ public class UavSend {
 		//String[] joinModules = { "uav.xml" };
 		String federateName = "uav-send";
 		String federateType = "uav";
+		//rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName);
 		mya.isCreator = flagCreator;
 
@@ -300,7 +301,7 @@ public class UavSend {
 	 * Implementation of a FederateAmbassador
 	 */
 
-	private static double BLOCKING_TIME = 0.1;
+	private static double BLOCKING_TIME = 1.0;
 
 	public class MyFederateAmbassador extends NullFederateAmbassador {
 		public boolean isCreator;
@@ -316,6 +317,7 @@ public class UavSend {
 		public boolean synchronizationSuccess;
 		public boolean synchronizationFailed;
 		public boolean inPause;
+		private RTIambassador rtia;
 		private String synchronizationPointName = "InitSync";
 
 		/**
@@ -350,6 +352,7 @@ public class UavSend {
 				AttributeNotDefined, OwnershipAcquisitionPending, SaveInProgress, RestoreInProgress,
 				ObjectClassNotPublished, NotConnected, InvalidObjectClassHandle, ObjectInstanceNameInUse,
 				ObjectInstanceNameNotReserved {
+			this.rtia = rtia;
 			LOGGER.info("     4.1 Get object class handle");
 			// The uav.xml has a class 'SampleClass' and attributes
 			// TextAttribute and FOMAttribute

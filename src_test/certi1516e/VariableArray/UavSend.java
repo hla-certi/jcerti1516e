@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
 import certi.rti1516e.impl.CertiRtiAmbassador;
+import certi.rti1516e.impl.RTIExecutor;
 import hla.rti1516e.AttributeHandle;
 import hla.rti1516e.AttributeHandleSet;
 import hla.rti1516e.AttributeHandleValueMap;
@@ -103,6 +104,7 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
 public class UavSend {
 
 	private final static Logger LOGGER = Logger.getLogger(UavSend.class.getName());
+	RTIExecutor rtiExecutor;
 
 	/** The sync point all federates will sync up on before starting */
 	public static final String READY_TO_RUN = "ReadyToRun";
@@ -119,6 +121,14 @@ public class UavSend {
 	public void runFederate(double timeStepArg, double uptdateTimeArg, double lookaheadArg) throws Exception {
 
 		LOGGER.info("        UAV-SEND");
+
+		LOGGER.info("     0. Launches the RTI");
+		rtiExecutor = new RTIExecutor();
+		try {
+			rtiExecutor.executeRTIG();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		LOGGER.info("     1. Get a link to the RTI");
 
 		RtiFactory factory = RtiFactoryFactory.getRtiFactory();
@@ -140,10 +150,11 @@ public class UavSend {
 		}
 		System.out.println();
 		LOGGER.info("     3. Join federation");
-		String[] joinModules = { "array.xml" };
+		//String[] joinModules = { "array.xml" };
 		String federateName = "uav-send";
 		String federateType = "uav";
-		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		//rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		rtia.joinFederationExecution(federateName, federateType, federationExecutionName);
 		mya.isCreator = flagCreator;
 
 		System.out.println();
@@ -196,7 +207,9 @@ public class UavSend {
 		// It depends on the value of "i" in 'Uav loop' and in 'Rav loop'.
 		// FIXME: may be this can be minimized.
 
-		LOGGER.info("     6 Uav Send");
+		int i = 10; // 0 with stopTime 4
+		LOGGER.info("     6 Uav Loop");
+		while (i-- > 0) {
 			// while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {i++;
 			// Array : fixed array -> array with a fixed length, all the elements have the
 			// same time, here integers
@@ -278,7 +291,8 @@ public class UavSend {
 			mya.timeAdvanceGranted = false;
 			Thread.sleep(1000);
 
-
+		}
+		
 		System.out.println();
 
 		LOGGER.info("     7 Resign federation execution");
@@ -335,7 +349,7 @@ public class UavSend {
 	 * Implementation of a FederateAmbassador
 	 */
 
-	private static double BLOCKING_TIME = 0.1;
+	private static double BLOCKING_TIME = 1.0;
 
 	public class MyFederateAmbassador extends NullFederateAmbassador {
 		public boolean isCreator;

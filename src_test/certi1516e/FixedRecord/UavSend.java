@@ -141,7 +141,7 @@ public class UavSend {
 		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
 		try {
-			String fomName = "uav_array.xml";
+			String fomName = "uav_arrayRecord.xml";
 			rtia.createFederationExecution(federationExecutionName, fomName);
 			flagCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
@@ -150,11 +150,14 @@ public class UavSend {
 		}
 		System.out.println();
 		LOGGER.info("     3. Join federation");
-		String[] joinModules = { "uav_array.xml" };
+		// joinModules is used only when there are modular FOMs, which is not the case here
+		//String[] joinModules = { "uav_arrayRecord.xml" };
 		String federateName = "uav-send";
 		String federateType = "uav";
-		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
-		mya.isCreator = flagCreator;
+		// joinModules is used only when there are modular FOMs, which is not the case here
+		//rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		rtia.joinFederationExecution(federateName, federateType, federationExecutionName);
+				mya.isCreator = flagCreator;
 
 		System.out.println();
 		LOGGER.info("     4. Initialize Federate Ambassador");
@@ -322,7 +325,7 @@ public class UavSend {
 	 * Implementation of a FederateAmbassador
 	 */
 
-	private static double BLOCKING_TIME = 0.1;
+	private static double BLOCKING_TIME = 1.0; // jbc 0.1;
 
 	public class MyFederateAmbassador extends NullFederateAmbassador {
 		public boolean isCreator;

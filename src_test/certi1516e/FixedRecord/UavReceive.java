@@ -164,7 +164,7 @@ public class UavReceive {
 		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
 		try {
-			String fomName = "uav_array.xml";
+			String fomName = "uav_arrayRecord.xml";
 			rtia.createFederationExecution(federationExecutionName, fomName);
 			flagCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
@@ -236,7 +236,7 @@ public class UavReceive {
 		// The federate ask to advance to (current logical time + timeStep).
 		// The RAV are received in the TAR-TAG loop.
 
-		int i = 5; // 3
+		int i = 10; // 5 // 3
 		while (i-- > 0) {
 			// while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {
 			LOGGER.info("     6.1 TAR with time=" + ((CertiLogicalTime1516E) mya.timeAdvance).getTime());
@@ -322,7 +322,7 @@ public class UavReceive {
 	 * Implementation of a FederateAmbassador
 	 */
 
-	private static double BLOCKING_TIME = 0.1;
+	private static double BLOCKING_TIME = 1.0; // jbc 0.1;
 
 	private class MyFederateAmbassador extends NullFederateAmbassador {
 

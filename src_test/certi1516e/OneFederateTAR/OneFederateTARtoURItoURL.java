@@ -3,6 +3,7 @@ package certi1516e.OneFederateTAR;
 import java.util.logging.Logger;
 import java.io.File;
 import java.net.URL;
+import java.net.URLDecoder;
 
 import certi.rti1516e.impl.CertiLogicalTime1516E;
 import certi.rti1516e.impl.CertiLogicalTimeInterval1516E;
@@ -139,7 +140,10 @@ public class OneFederateTARtoURItoURL {
 		LOGGER.info("FIXME: The fom file must be in jcerti folder, even if it is in $CERTI_FOM_PATH");
 		// The first launched federate creates the federation execution
 		File fom = new File(fomName);
+		
         // This service is deprecated, see certi.rti1516e.impl.CertiRtiAmbassador.java.
+		LOGGER.info("fom file is " + fom);
+		LOGGER.info("Address of fom file is " + fom.toURI().toURL());
 		try {
 			rtia.createFederationExecution(federationExecutionName, fom.toURI().toURL());
 			flagCreator = true;
@@ -153,10 +157,11 @@ public class OneFederateTARtoURItoURL {
         URL[] joinModules = new URL[]{
                 fom.toURI().toURL()
             };
+        LOGGER.info("String representation of URL joinModules is " + joinModules.toString());
         
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		mya.isCreator = flagCreator; //
-		System.out.println();
+		
 		LOGGER.info("     4. Initialize Federate Ambassador for federate " + federateName);
 		mya.initialize(rtia, timeStepArg, uptdateTimeArg, lookaheadArg);
 

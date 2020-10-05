@@ -68,7 +68,8 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * callback federationSynchronized() since there is no other federate.
  * </p>
  * <p>
- * First launch the rtig. 
+ * First launch the rtig, then use the command line:
+ * ant oneTARurl
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical

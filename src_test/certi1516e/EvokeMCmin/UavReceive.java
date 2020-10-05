@@ -88,8 +88,8 @@ import hla.rti1516e.jlc.HLAASCIIstringImpl;
  * federationSynchronized() for both federates.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVReceiver1516e-run
+ * This federate is called by the following command line (after launching rtig): 
+ * ant -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVReceive_1516e_MinEvokeMCUAV
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -110,8 +110,6 @@ import hla.rti1516e.jlc.HLAASCIIstringImpl;
  * time h'.
  */
 
-//FIXME: this class does not execute the RTIG: the RTIG must be launched by the first
-// launched federate
 
 public class UavReceive {
 
@@ -140,7 +138,7 @@ public class UavReceive {
 		MyFederateAmbassador mya = new MyFederateAmbassador();
 		rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
 		boolean flagCreator;
-		String federationExecutionName = "uav";
+		String federationExecutionName = "uavEvokeMC";
 
 		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
@@ -156,7 +154,7 @@ public class UavReceive {
 
 		LOGGER.info("     3. Join federation");
 		URL[] joinModules = new URL[] { (new File("uav.xml")).toURI().toURL() };
-		String federateName = "uav-receive";
+		String federateName = "uav-receiveEvokeMC";
 		String federateType = "uav";
 
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);

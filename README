@@ -1,6 +1,7 @@
 
 jcerti is a Java Binding for the CERTI HLA RTI.
 jcerti is SISO DLC compliant.  
+CERTI must be installed before jcerti.
 
 
 INSTALL/COMPILING INSTRUCTION
@@ -12,16 +13,16 @@ As a prerequisite, the following software should be installed
 
 Linux users, please make sure the appropriate 'javac' alternative is used.
 
+FIXME: keep these lines about Sun JDK?
 Enable the javac alternative from Sun JDK using:
 update-alternatives --install "/usr/bin/javac" javac "/usr/java/jdk1.6.0_19/bin/javac" 1
 update-alternatives --set javac /usr/java/jdk1.6.0_19/bin/javac
-
 
 jcerti comes with a build.xml ant file
 (see http://ant.apache.org/manual/)
 
 Thus building jcerti should be as simple as unpacking the source
-and calling
+and calling (at jcerti folder)
 "ant" 
 
 with no argument.
@@ -32,7 +33,7 @@ If you want more help about possible ant target just type
 
 RUNNING TEST INSTRUCTION
 -------------------------
-Before running jcerti example yuo should have C++ CERTI installed
+Before running jcerti example you should have C++ CERTI installed
 http://www.nongnu.org/certi/certi_doc/Install/html/index.html
 
 (or if you are a CERTI C++ developer you can just define
@@ -45,42 +46,23 @@ RUNNING TEST USING HLA 1516-2010 EVOLVED (jcerti/src_test/certi1516e)
 Shipped with jcerti 1516E there is currently small tests. Each federate must be
 executed in a different terminal.
 
-Federation "uav" with 1 federate OneFederateTAR.java:
+Federation "uav" with 1 federate OneFederateTAR.java: 
 =====================================================
 
 1) in a first terminal run rtig
 2) in a second terminal run "ant -DtimeStep=2   -DupdateTime=1 -Dlookahead=0.5 oneTAR-run" (press enter)
 
-Federation "uav" with 1 federate OneFederateTARrtig.java:
-=========================================================
+You can replace 'oneTAR-run' by 'oneTAR_RTI'. This federate launch the rtig and step 1) above is not needed.
 
-1) in a first terminal run rtig
-2) in a second terminal run "ant -DtimeStep=2   -DupdateTime=1 -Dlookahead=0.5 oneTARrtig-run" (press enter)
-
-
-Federation "uav" with 2 federates UavSendEvokeMCmin and UavReceiveEvokeMCmin: (using EvokeMultipleCallbacks)
+Federation "uav" with 2 federates EvokeMCmin/UavSend.java and EvokeMCmin/UavReceive.java: (using EvokeMultipleCallbacks)
 =============================================================================
 
 1) in a first terminal run rtig
-2) in a second terminal run "ant -DtimeStep=2   -DupdateTime=1 -Dlookahead=0.5 MinEvokeMCUAVSend1516e-run" (press enter)
-3) in a third terminal run "ant -DtimeStep=13 -DupdateTime=5 -Dlookahead=1 MinEvokeMCUAVReceive1516e-run" (press enter)
+2) in a second terminal run "ant -DtimeStep=2   -DupdateTime=1 -Dlookahead=0.5 UAVSend_1516e_MinEvokeMCUAV" (press enter)
+3) in a third terminal run "ant -DtimeStep=13 -DupdateTime=5 -Dlookahead=1 UAVReceive_1516e_MinEvokeMCUAV" (press enter)
 Then go back to terminal T2 and press Enter again.
 
-Federation "uav" with 2 federates UavSend.java and UavReceive.java: (using EvokeCallback and createFederation(string,string))
-===================================================================
-
-1) in a first terminal run rtig
-2) in a second terminal run "ant -DtimeStep=2   -DupdateTime=1 -Dlookahead=0.5 UAVSend1516eString-run" (press enter)
-3) in a third terminal run "ant -DtimeStep=13 -DupdateTime=5 -Dlookahead=1 UAVReceive1516eString-run" (press enter)
-Then go back to terminal T2 and press Enter again.
-
-Federation "uav" with 2 federates UavSend.java and UavReceive.java: (using EvokeCallback)
-===================================================================
-
-1) in a first terminal run rtig
-2) in a second terminal run "ant -DtimeStep=2   -DupdateTime=1 -Dlookahead=0.5 UAVSend1516e-run" (press enter)
-3) in a third terminal run "ant -DtimeStep=13 -DupdateTime=5 -Dlookahead=1 UAVReceive1516e-run" (press enter)
-Then go back to terminal T2 and press Enter again.
+See build.xml for other tests. See the code in jcerti/src_test/certi1516e for more details.
 
 
 RUNNING TEST USING HLA 1.3 (jcerti/src_test/certi)

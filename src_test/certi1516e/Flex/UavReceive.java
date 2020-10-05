@@ -91,9 +91,10 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federationSynchronized() for both federates.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend1516eString-run The
- * parameter DupdateTime is not used in this federate.
+ * This federate is called by the following command line: 
+ * ant  -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVReceive_1516e_Flex.
+ * 
+ * The parameter DupdateTime is not used in this federate.
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -165,8 +166,8 @@ public class UavReceive {
 		}
 
 		boolean flagCreator;
-		String federationExecutionName = "uav";
-		String federateName = "uav-receiveString";
+		String federationExecutionName = "flex";
+		String federateName = "uav-receiveFlex";
 		String federateType = "uav";
 
 		System.out.println();

@@ -68,8 +68,9 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federationSynchronized() for both federates.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend1516e-run
+ * This federate is called by the following command line (after launching rtig): 
+ * ant -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend_1516e_MinEvokeMCUAV
+ *  </p>
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -89,9 +90,6 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federates. If TAR is being used, the time returned always equals the asked
  * time h'.
  */
-//Execute the RTIG, create and join a federation and send various values
-//FIXME: this class does not execute the RTIG: the RTIG must be launched by the first
-//launched federate
 
 public class UavSend {
 
@@ -119,7 +117,7 @@ public class UavSend {
 		MyFederateAmbassador mya = new MyFederateAmbassador();
 		rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
 		boolean flagCreator;
-		String federationExecutionName = "uav";
+		String federationExecutionName = "uavEvokeMC";
 		System.out.println();
 		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
@@ -137,7 +135,7 @@ public class UavSend {
 		System.out.println();
 		LOGGER.info("     3. Join federation");
 		URL[] joinModules = new URL[] { (new File("uav.xml")).toURI().toURL() };
-		String federateName = "uav-send";
+		String federateName = "uav-sendEvokeMC";
 		String federateType = "uav";
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		mya.isCreator = flagCreator;

@@ -66,8 +66,12 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
 /**
  * This class implements a HLA federate. It is based on the JCERTI demo
  * compliant to HLA 1.3. It extends that class for be compliant with HLA
- * 1516-2010 Extended (HLA 1516e), and introduces some parameters. It creates
- * (if launched first) and joins a federation called federationExecutionName,
+ * 1516-2010 Extended (HLA 1516e), and introduces some parameters. 
+ * 
+ * If there is no RTIG running, it launches the RTIG (if launched first), 
+ * otherwise it uses the existent one (on the machine specified by $CERTI_HOST.
+ * 
+ * It creates (if launched first) and joins a federation called federationExecutionName,
  * advances its logical time with other federates and updates attributes of an
  * instance of a class.
  * </p>
@@ -79,8 +83,8 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federationSynchronized() for both federates.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend1516e-run
+ * This federate is called by the following command line:
+ * ant -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend_1516e_VariableArray
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -211,10 +215,7 @@ public class UavSend {
 		LOGGER.info("     6 Uav Loop");
 		while (i-- > 0) {
 			// while (((CertiLogicalTime1516E) mya.timeAdvance).getTime() < stopTime) {i++;
-			// Array : fixed array -> array with a fixed length, all the elements have the
-			// same time, here integers
-			// See the FixedArray documentation or HLA documentation to know more about the
-			// type
+
 			// We have to create a new factory for the type in the array : here a factory of
 			// integer
 			DataElementFactory<HLAinteger32BE> integer64BE_Factory = new DataElementFactory<HLAinteger32BE>() {

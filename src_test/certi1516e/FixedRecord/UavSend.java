@@ -66,7 +66,8 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
 /**
  * This class implements a HLA federate. It is based on the JCERTI demo
  * compliant to HLA 1.3. It extends that class for be compliant with HLA
- * 1516-2010 Extended (HLA 1516e), and introduces some parameters. It creates
+ * 1516-2010 Extended (HLA 1516e), and introduces some parameters. If launched
+ * first, it launches an rtig process (if there is no one running). It creates
  * (if launched first) and joins a federation called federationExecutionName,
  * advances its logical time with other federates and updates attributes of an
  * instance of a class.
@@ -79,8 +80,8 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federationSynchronized() for both federates.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend1516e-run
+ * This federate can be called by the following command line:
+ * ant -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVSend_1516e_FixedRecord
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -136,7 +137,7 @@ public class UavSend {
 		MyFederateAmbassador mya = new MyFederateAmbassador();
 		rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
 		boolean flagCreator;
-		String federationExecutionName = "uav";
+		String federationExecutionName = "uavFixedRecord";
 		System.out.println();
 		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
@@ -152,7 +153,7 @@ public class UavSend {
 		LOGGER.info("     3. Join federation");
 		// joinModules is used only when there are modular FOMs, which is not the case here
 		//String[] joinModules = { "uav_arrayRecord.xml" };
-		String federateName = "uav-send";
+		String federateName = "uav-sendFixedRec";
 		String federateType = "uav";
 		// joinModules is used only when there are modular FOMs, which is not the case here
 		//rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);

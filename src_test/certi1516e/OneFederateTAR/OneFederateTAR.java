@@ -62,9 +62,10 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federationSynchronized() since there is no other federate.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 oneTAR-run <CR> Or when using the
- * default values: ant oneTAR-run <CR>
+ * After launching the rtig, this federate is called by the following command line: 
+ * ant -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 oneTAR-run <CR> 
+ * Or when using the default values: 
+ * ant oneTAR-run <CR>
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -98,7 +99,7 @@ public class OneFederateTAR {
 	private static final double stopTime = 30.0;
 
 	// EvokeCallback waits until BLOCKING_TIME for delivering a callback (if any).
-	private static double BLOCKING_TIME = 0.1;
+	private static double BLOCKING_TIME = 0.1; // advised to use 1.0 by JBC.
 
 	/**
 	 * Run a federate since its creation to its destruction
@@ -114,9 +115,8 @@ public class OneFederateTAR {
 		LOGGER.info("        OneFederateTAR");
 		LOGGER.info("     1. Get a link to the RTI");
 		RtiFactory factory = RtiFactoryFactory.getRtiFactory();
-		// RTIambassador rtia = factory.getRtiAmbassador(); using toURI.toURL
-		CertiRtiAmbassador rtia = (CertiRtiAmbassador) factory.getRtiAmbassador(); // It can be done like this all the
-																					// time, also when we use URL
+		CertiRtiAmbassador rtia = (CertiRtiAmbassador) factory.getRtiAmbassador(); 
+																					
 		MyFederateAmbassador mya = new MyFederateAmbassador();
 		try {
 			rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
@@ -133,10 +133,8 @@ public class OneFederateTAR {
 				"     2. Federate " + federateName + " creates federation " + federationExecutionName + " - nofail");
 
 		// The first launched federate creates the federation execution
-		// File fom = new File(fomName);
 
 		try {
-			// rtia.createFederationExecution(federationExecutionName, fom.toURI().toURL());
 			rtia.createFederationExecution(federationExecutionName, fomName);
 			flagCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
@@ -146,10 +144,6 @@ public class OneFederateTAR {
 
 		System.out.println();
 		LOGGER.info("     3. Federate " + federateName + " join federation " + federationExecutionName);
-//        URL[] joinModules = new URL[]{
-//                fom.toURI().toURL()
-//            };
-//        rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		String[] joinModules = { "uav.xml" };
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		mya.isCreator = flagCreator; //
@@ -160,11 +154,6 @@ public class OneFederateTAR {
 		System.out.println();
 		// The first launched federate also registers the synchronization point.
 		if (mya.isCreator) {
-			// Uncomment the two lines bellow if the user wants to presses 'Enter'
-			// for starting the simulation.
-			// LOGGER.info(" 5. Press 'Enter' so this federate can register the
-			// Synchronization Point ");
-			// System.in.read();
 			HLAASCIIstring s = new HLAASCIIstringImpl(mya.synchronizationPointName);
 			byte[] tagsyns = new byte[s.getEncodedLength()];
 			ByteWrapper bw = new ByteWrapper(tagsyns);

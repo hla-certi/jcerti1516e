@@ -70,16 +70,19 @@ import hla.rti1516e.impl.CertiAttributeHandleSet;
 import hla.rti1516e.jlc.BasicHLAfloat32BEImpl;
 import hla.rti1516e.jlc.HLAASCIIstringImpl;
 
-/////////////////
-// UAV-RECEIVE //
-/////////////////
+//////////////////////////////////////
+// UAV-RECEIVE with toURI().toURL() //
+//////////////////////////////////////
 /**
  * This class implements a HLA federate. It is based on the JCERTI demo
  * compliant to HLA 1.3. It extends that class for be compliant with HLA
- * 1516-2010 Extended (HLA 1516e), and introduces some parameters. The RTIG
- * process must be launched before. It creates a federation called
- * federationExecutionName (if launched first) by using toURI().toURL(). This
- * way only works if the federate is in the same computer as the RTIG. For
+ * 1516-2010 Extended (HLA 1516e), and introduces some parameters. 
+ * 
+ * If there is no RTIG running, it launches the RTIG (if launched first), 
+ * otherwise it uses the existent one (on the machine specified by $CERTI_HOST.
+ * It creates (if launched first) and joins a federation called federationExecutionName,
+ * (if launched first) by using toURI().toURL(). 
+ * This way only works if the federate is in the same computer as the RTIG. For
  * allowing a distribution over different computers, String must be used, see
  * federate FlexUav*String.java. The federate then joins the federation,
  * advances its logical time with other federates and reflects attributes of an
@@ -93,8 +96,8 @@ import hla.rti1516e.jlc.HLAASCIIstringImpl;
  * federationSynchronized() for both federates.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVReceiver1516e-run
+ * This federate is called by the following command line:
+ * ant -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 UAVReceive_1516e_UrlFddName
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical

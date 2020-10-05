@@ -63,9 +63,10 @@ import hla.rti1516e.jlc.NullFederateAmbassador;
  * federationSynchronized() since there is no other federate.
  * </p>
  * <p>
- * This federate is called by the following command line, e.g.: ant
- * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 oneTARrtig-run <CR> Or when using
- * the default values: ant oneTARrtig-run <CR>
+ * This federate is called by the following command line:
+ * -DtimeStep=20 -DupdateTime=5 -Dlookahead=1 oneTAR_RTI <CR> 
+ * Or when using the default values: 
+ * ant oneTARrtig-run <CR>
  * <ul>
  * <li>lookahead: according to HLA, the federate promises it will not send any
  * message in the interval (h, h+lookahead), where 'h' is the current logical
@@ -138,10 +139,8 @@ public class OneFederateTARrti {
 		LOGGER.info(
 				"     2. Federate " + federateName + " creates federation " + federationExecutionName + " - nofail");
 		// The first launched federate creates the federation execution
-		// File fom = new File(fomName);
 
 		try {
-			// rtia.createFederationExecution(federationExecutionName, fom.toURI().toURL());
 			rtia.createFederationExecution(federationExecutionName, fomName);
 			flagCreator = true;
 		} catch (FederationExecutionAlreadyExists ex) {
@@ -151,10 +150,7 @@ public class OneFederateTARrti {
 
 		System.out.println();
 		LOGGER.info("     3. Federate " + federateName + " join federation " + federationExecutionName);
-//        URL[] joinModules = new URL[]{
-//                fom.toURI().toURL()
-//            };
-//        rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
+		
 		String[] joinModules = { "uav.xml" };
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		mya.isCreator = flagCreator; //
@@ -165,11 +161,6 @@ public class OneFederateTARrti {
 		System.out.println();
 		// The first launched federate also registers the synchronization point.
 		if (mya.isCreator) {
-			// Uncomment the two lines bellow if the user wants to presses 'Enter'
-			// for starting the simulation.
-			// LOGGER.info(" 5. Press 'Enter' so this federate can register the
-			// Synchronization Point ");
-			// System.in.read();
 			HLAASCIIstring s = new HLAASCIIstringImpl(mya.synchronizationPointName);
 			byte[] tagsyns = new byte[s.getEncodedLength()];
 			ByteWrapper bw = new ByteWrapper(tagsyns);
@@ -242,7 +233,7 @@ public class OneFederateTARrti {
 				}
 			}
 		} finally {
-			LOGGER.info("     9 Disconect from the rti and kill the RTIG (if " + "launched by this federate.");
+			LOGGER.info("     9 Disconnect from the rti and kill the RTIG (if " + "launched by this federate.");
 			try {
 				rtia.disconnect();
 				rtiExecutor.killRTIG();

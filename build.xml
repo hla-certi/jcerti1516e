@@ -312,7 +312,15 @@ JAR List :
 		</java>
 	</target>
 
-
+	<target name="oneTARurl" depends="prepare-test" description="Launches the rtig, advances its time and kill the rtig.">
+		<java classname="certi1516e.OneFederateTAR.OneFederateTARtoURItoURL" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+		</java>
+	</target>
+			
 	<target name="oneTAR-run" depends="prepare-test" description="Creates the federation and advances its time using TAR">
 		<java classname="certi1516e.OneFederateTAR.OneFederateTAR" fork="true" dir="${test.work.dir}">
 			<classpath refid="jcerti.classpath" />

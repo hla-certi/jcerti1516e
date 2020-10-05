@@ -157,7 +157,9 @@ public class OneFederateTARtoURItoURL {
         URL[] joinModules = new URL[]{
                 fom.toURI().toURL()
             };
-        LOGGER.info("String representation of URL joinModules is " + joinModules.toString());
+        for (URL u : joinModules) {
+        	LOGGER.info("String representation of URL joinModules is " + u.toString());
+        }
         
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);
 		mya.isCreator = flagCreator; //

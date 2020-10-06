@@ -115,7 +115,8 @@ public class OneFederateTARtoURItoURL {
 		String federationExecutionName = "TimeAdvanceTARurl";
 		String federateName = "fedTARurl";
 		String federateType = "whatIsFedType"; // FIXME: What is the goal of this parameter?
-		String fomName = "uav.xml";
+		String fomName = "Create1516e.xml";
+		String fomJoinName = "Join1516e.xml";
 
 		LOGGER.info("        OneFederateTAR");
 		LOGGER.info("     1. Get a link to the RTI");
@@ -140,6 +141,7 @@ public class OneFederateTARtoURItoURL {
 		LOGGER.info("FIXME: The fom file must be in jcerti folder, even if it is in $CERTI_FOM_PATH");
 		// The first launched federate creates the federation execution
 		File fom = new File(fomName);
+		File fomJoin = new File(fomJoinName);
 		
         // This service is deprecated, see certi.rti1516e.impl.CertiRtiAmbassador.java.
 		LOGGER.info("fom file is " + fom);
@@ -155,10 +157,13 @@ public class OneFederateTARtoURItoURL {
 		System.out.println();
 		LOGGER.info("     3. Federate " + federateName + " join federation " + federationExecutionName);
         URL[] joinModules = new URL[]{
-                fom.toURI().toURL()
+                fom.toURI().toURL(),
+    			fomJoin.toURI().toURL()
             };
-        for (URL u : joinModules) {
-        	LOGGER.info("String representation of URL joinModules is " + u.toString());
+
+    	LOGGER.info("String representation of URL joinModules is: ");
+    	for (URL u : joinModules) {
+        	LOGGER.info("URL is " + u.toString());
         }
         
 		rtia.joinFederationExecution(federateName, federateType, federationExecutionName, joinModules);

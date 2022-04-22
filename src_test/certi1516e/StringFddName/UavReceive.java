@@ -151,7 +151,7 @@ public class UavReceive {
 		MyFederateAmbassador mya = new MyFederateAmbassador();
 		rtia.connect(mya, CallbackModel.HLA_IMMEDIATE);
 		boolean flagCreator;
-		String federationExecutionName = "uavuavStringFddName";
+		String federationExecutionName = "uavStringFddName";
 
 		LOGGER.info("     2. Create federation - nofail");
 		// The first launched federate creates the federation execution
